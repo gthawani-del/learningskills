@@ -59,3 +59,17 @@ test('an environment flag and client confirmation cannot bypass planning reserva
 test('site icon routes return the actual SVG asset',async()=>{
  const handler=await createHandler({env:{}});for(const path of ['/favicon.ico','/favicon.svg']){const r=await call(handler,path);assert.equal(r.status,200);assert.match(r.headers['Content-Type'],/image\/svg\+xml/);assert.match(String(r.data),/<svg/);}
 });
+test('production review state reflects current scene dependencies without authorizing generation',async t=>{
+ const {handler}=await setup(t);let p=(await call(handler,'/api/projects',{title:'Review graph'})).json.project;
+ let r=await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,story:{treatment:'A quiet arrival.',scenes:[{id:'s1',description:'A letter arrives.'}]},shots:[{id:'one',title:'Arrival',description:'A keeper opens the letter.',sceneId:'s1',duration:5}]},{method:'PATCH'});p=r.json.project;
+ await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'story',version:p.story.version,decision:'approved'});await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'one',version:p.shots[0].version,decision:'approved'});
+ r=await call(handler,`/api/projects/${p.id}/production-state`);assert.equal(r.status,200);assert.equal(r.json.production.generationAuthorized,false);assert.equal(r.json.production.nodes.find(n=>n.id==='one').readyForRouteReview,true);
+ await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,story:{...p.story,scenes:[{id:'s1',description:'The keeper burns the letter.'}]}},{method:'PATCH'});
+ r=await call(handler,`/api/projects/${p.id}/production-state`);assert.equal(r.json.production.nodes.find(n=>n.id==='one').specificationApproved,false);
+});
+test('pending imports reject ordinary edits and approvals while allowing completion',async t=>{
+ const {handler}=await setup(t);const started=await call(handler,'/api/imports',{sourceId:'device-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',project:{title:'Pending copy',premise:'Wait for references',story:{treatment:'A letter arrives.',scenes:[]},shots:[]},assets:[]});assert.equal(started.status,200);const p=started.json.project;
+ assert.equal((await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,stage:'story'},{method:'PATCH'})).status,409);
+ assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'story',version:p.story.version,decision:'approved'})).status,409);
+ assert.equal((await call(handler,`/api/projects/${p.id}/import-complete`,{})).status,200);
+});

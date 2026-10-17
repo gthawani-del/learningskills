@@ -1,6 +1,6 @@
 # Director Studio — Development Tracker
 
-Audited 17 October 2026. Baseline: `e05c45b`. This is an implementation ledger, not a replacement blueprint.
+Audited 17 October 2026. Baseline before this batch: `f7cc9f0`. This is an implementation ledger, not a replacement blueprint.
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
@@ -11,12 +11,18 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 ## Current batch and dependencies
 
 - Audit: complete as an initial baseline; refine each row while implementing. Broad section coverage is not line-by-line certification.
-- Cloud sessions: refresh rotation/current-browser logout and adapter/client tests implemented in this batch; live Supabase verification still blocked by deployment configuration.
-- Device-to-cloud migration: current project-copy action does not migrate media, notes or approvals atomically; this remains open and must not be labeled full migration.
+- Cloud sessions: refresh rotation/current-browser logout and adapter/client tests deployed in the previous batch; live Supabase verification still blocked by deployment configuration.
+- Device-to-cloud migration: retry-safe checksummed project/media import, note preservation and reference rebinding implemented. Interrupted-upload recovery passes through the real local demo API/browser. Device source remains intact; device approvals are not imported. Real Supabase integration pending.
 - Vercel: connection authorization pending. Do not print or recover service keys through SQL.
 - Media/AI: routes remain inactive; no paid call, quality result or two-attempt success is established.
 - Export: local FFmpeg proof only; no hosted worker selected.
 - UI: deployed v2 layout and browser-device editing flow; physical mobile tests outstanding.
+
+## Current verification
+
+60 automated tests, syntax checks and production build pass. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Full production records and real Supabase evidence remain incomplete.
+
+Retries resend whole files; byte/chunk-resumable transport is not implemented. Scene edits preserve neighboring shot versions, but global story reapproval still holds their route readiness.
 
 ## Execution order
 
@@ -42,11 +48,11 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 | F001 | Explore pre-rendered sample | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F002 | Sign up and sign in | 2 | partial | Password login/session rotation implemented; signup, verification and recovery UX missing; live credentials pending. |
 | F003 | Recover account and end session | 2 | partial | Current-session logout implemented; password recovery/reset and live revocation verification missing. |
-| F004 | Create or reopen project | 2 | partial | Device drafts verified; real authenticated Supabase create/reopen across sessions not verified. |
+| F004 | Create or reopen project | 2 | partial | Create/reopen plus retry-safe import implemented; real authenticated Supabase cross-browser verification pending. |
 | F005 | Autosave and resolve concurrent edits | 2 | partial | Optimistic saves exist; full autosave UX, conflict merge/recovery and live database concurrency verification missing. |
 | F006 | Import script/project | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F007 | Search project and media library | 2 | missing | No complete executable workflow found; implement and verify before activation. |
-| F008 | Upload and finalize source media | 2 | partial | 2 MB proxied upload and local assets exist; signed/resumable media upload/finalize pipeline and live storage verification missing. |
+| F008 | Upload and finalize source media | 2 | partial | Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing. |
 | F009 | Preview or download private media | 2 | partial | Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing. |
 | F010 | Interpret brief and ask necessary questions | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -59,8 +65,8 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 | F018 | Create sound/music cue plan | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F019 | Translate/localize approved dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F020 | Interpret natural-language revision | 6 | partial | Scoped instruction/proposal envelope exists; no semantic interpretation or model execution. |
-| F021 | Approve creative version | 6 | partial | Versioned story/shot specification approval exists; all creative artifact/take approval categories incomplete. |
-| F022 | Invalidate dependent approvals on change | 6 | partial | Version mismatch prevents reuse for changed artifact; cross-artifact dependency invalidation missing. |
+| F021 | Approve creative version | 6 | partial | Story/shot specification approval and review graph implemented; cast, voice, takes and other approval categories incomplete. |
+| F022 | Invalidate dependent approvals on change | 6 | partial | Scene changes invalidate linked shots; brief changes require story review; character/voice/take/audio/edit dependencies and live validation remain incomplete. |
 | F023 | Decode song and inspect metadata | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F024 | Understand song mood, instrumentation and development | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F025 | Secondary audio-question/interpretation benchmark | 8 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -75,7 +81,7 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 | F034 | Derive reference-preserving looks, angles and frames | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F035 | Review reference identity, wardrobe and composition | 7 | partial | Manual uploaded reference preview only; reviewed identity/composition evidence workflow missing. |
 | F036 | Manage character/world versions and use rights | 7 | partial | Asset role/scope/version and unverified rights marker only; character/world entities and consent lifecycle missing. |
-| F037 | Create storyboard direction and shot contracts | 7 | partial | Editable shot specifications; full production contract and department validation not integrated. |
+| F037 | Create storyboard direction and shot contracts | 7 | partial | Versioned shots and deterministic review graph implemented; complete department production contracts/orchestration remain incomplete. |
 | F038 | Generate storyboard/keyframes from references | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F039 | Approve/order shots and choose takes | 7 | partial | Shot specification approval and uploaded-media selection; take comparison, ordering and generated take review missing. |
 | F040 | Assemble timed animatic before motion production | 7 | missing | No complete executable workflow found; implement and verify before activation. |

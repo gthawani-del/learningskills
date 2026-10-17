@@ -32,7 +32,7 @@ Use two designated test accounts with separate verified Supabase identities; do 
 
 ## Current implementation constraints
 
-Uploads use a 2 MB proxied JSON request. This is insufficient for typical source songs/footage; larger private resumable uploads, completion verification, checksum/metadata validation and orphan cleanup remain planned. Private video proxy does not yet implement full range streaming. Project-copy action currently omits media and notes and is not retry-safe migration.
+Uploads use a 2 MB proxied JSON request. This is insufficient for typical source songs/footage; larger private chunk-resumable uploads, hosted large-media verification and orphan cleanup remain planned. Small-file import already validates checksums, MIME, size and completion records. Private video proxy does not yet implement full range streaming. The new project-copy action includes checksummed references, reference rebinding and notes, and resumes after interrupted uploads. Its API/browser proof uses the local demo store; production Supabase verification remains pending. Device approvals are not transferred.
 
 ## Documentation verification
 

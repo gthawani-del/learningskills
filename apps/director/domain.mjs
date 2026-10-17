@@ -1,3 +1,4 @@
+import {sceneChanged,briefChanged} from './public/revision-impact.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -20,14 +21,19 @@ export function patchProject(previous,body){
  if(body.stage!==undefined){if(!stages.includes(body.stage))fail(400,'Invalid film stage.');next.stage=body.stage;}
  if(body.duration!==undefined){if(!Number.isFinite(body.duration)||body.duration<1||body.duration>3600)fail(400,'Runtime must be between 1 and 3600 seconds.');next.duration=body.duration;}
  if(body.story!==undefined){const s=body.story;if(!s||!Array.isArray(s.scenes)||s.scenes.length>200)fail(400,'Invalid scene list.');
- const content={treatment:text(s.treatment||'','treatment',40000),scenes:s.scenes.map(x=>({id:text(x.id,'scene ID',100),description:text(x.description||'','scene description',5000)}))};
+ const content={treatment:text(s.treatment||'','treatment',40000),scenes:s.scenes.map(x=>{if(!x||typeof x!=='object'||Array.isArray(x))fail(400,'Invalid scene.');return {id:text(x.id,'scene ID',100),description:text(x.description||'','scene description',5000)};})};
+ const sceneIds=content.scenes.map(s=>s.id);if(sceneIds.some(id=>!id.trim())||new Set(sceneIds).size!==sceneIds.length)fail(400,'Scene IDs must be nonempty and unique.');
  const old={treatment:previous.story.treatment,scenes:previous.story.scenes};next.story={...content,version:hash(old)===hash(content)?previous.story.version:previous.story.version+1};}
  if(body.shots!==undefined){if(!Array.isArray(body.shots)||body.shots.length>200)fail(400,'Invalid shot list.');const ids=new Set();
  next.shots=body.shots.map(s=>{if(!s||typeof s!=='object')fail(400,'Invalid shot.');const id=text(s.id,'shot ID',100);if(!id||ids.has(id))fail(400,'Shot IDs must be unique.');ids.add(id);
  const duration=Number(s.duration);if(!Number.isFinite(duration)||duration<=0||duration>900)fail(400,'Invalid shot duration.');
  const current=previous.shots.find(x=>x.id===id);const data={id,title:text(s.title||'Untitled shot','shot title',200),description:text(s.description||'','shot direction',12000),duration,framing:text(s.framing||'medium','framing',100),camera:text(s.camera||'static','camera',200),constraints:text(s.constraints||'','constraints',12000),clipAssetId:s.clipAssetId||null,referenceAssetId:s.referenceAssetId||null,sceneId:text(s.sceneId||'','scene ID',100),dialogue:text(s.dialogue||'','dialogue',5000),continuity:text(s.continuity||'','continuity',12000)};
- const comparable=x=>({id:x.id,title:x.title,description:x.description,duration:x.duration,framing:x.framing,camera:x.camera,constraints:x.constraints||'',clipAssetId:x.clipAssetId||null,referenceAssetId:x.referenceAssetId||null,sceneId:x.sceneId||'',dialogue:x.dialogue||'',continuity:x.continuity||''});
- const changed=!current||hash(comparable(current))!==hash(data);return {...data,version:current?current.version+(changed?1:0):1,status:changed?'draft':current.status||'draft'};});}
+ const comparable=x=>{const {version,status,...content}=x;return content;};
+ const dependencyChanged=current&&sceneChanged(previous,next,current.sceneId,data.sceneId);
+ const changed=!current||hash(comparable(current))!==hash(data)||dependencyChanged;return {...data,version:current?current.version+(changed?1:0):1,status:changed?'draft':current.status||'draft'};});}
+ // A scene edit invalidates only shots explicitly linked to that scene. Existing media stays intact.
+ if(body.shots===undefined&&body.story!==undefined)next.shots=next.shots.map(s=>sceneChanged(previous,next,s.sceneId)?{...s,version:s.version+1,status:'draft'}:s);
+ if(briefChanged(previous,next)&&next.story.version===previous.story.version)next.story={...next.story,version:previous.story.version+1};
  next.version=previous.version+1;return next;
 }
 export function artifacts(project){return [

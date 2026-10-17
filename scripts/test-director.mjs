@@ -5,3 +5,6 @@ await import('../apps/director/tests/providers.test.mjs');
 await import('../apps/director/tests/render.test.mjs');
 await import('../apps/studio/tests/production-contract.test.mjs');
 await import('../apps/director/tests/cloud-session.test.mjs');
+await import('../apps/director/tests/imports.test.mjs');
+await import('../apps/director/tests/production-state.test.mjs');
+await import('../apps/director/tests/media-storage.test.mjs');

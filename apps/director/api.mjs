@@ -1,3 +1,6 @@
+import {productionState} from './production-state.mjs';
+import {createImportController} from './imports.mjs';
+import {createMediaStorage} from './media-storage.mjs';
 import {randomUUID} from 'node:crypto';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -35,6 +38,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const isAdmin=user=>(env.DIRECTOR_ADMIN_IDS||'').split(',').map(x=>x.trim()).includes(user?.id);
  // Remains closed until planning has its own verified quote and durable reservation.
  const planning=false;
+ const mediaStorage=createMediaStorage({env,fetcher,demo});
+ const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
  const clearSession=()=>[cookie('director_session','',0),cookie('director_refresh','',0,'/api')];
  const sessionHeaders=session=>{
@@ -64,6 +69,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  return reply(200,{ok:true},{'Set-Cookie':clearSession()});}
  if(!store)fail(503,'Configure the server Supabase connection before saving projects.');
  if(!user)fail(401,'Sign in to access your workspace.');
+ if(path==='/api/imports'&&req.method==='POST')return reply(200,{project:await imports.start(user.id,body)});
  if(path==='/api/skills'&&req.method==='GET')return reply(200,{skills});
  if(path==='/api/projects'){
  if(req.method==='GET')return reply(200,{projects:await store.list(user.id)});
@@ -77,13 +83,18 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);
  if(!action&&req.method==='GET')return reply(200,{project});
+ if(project.importState?.status==='awaiting_media'&&req.method!=='GET'&&action!=='import-complete'&&!/^import-assets\/[0-9a-f-]+$/.test(action||''))fail(409,'This cloud copy is still importing. Reopen the device draft and choose Save to workspace to finish before editing or approving it.');
  if(!action&&req.method==='PATCH'){const next=patchProject(project,body);if(body.shots){const allowed=await store.records('assets',id);if(next.shots.some(s=>s.clipAssetId&&!allowed.some(a=>a.id===s.clipAssetId&&a.mime==='video/mp4')||s.referenceAssetId&&!allowed.some(a=>a.id===s.referenceAssetId&&a.mime.startsWith('image/'))))fail(400,'A selected clip is unavailable.');}return reply(200,{project:await store.save(next,project.version)});}
+ const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
+ if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
+ if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
  if(action==='plan'&&req.method==='POST'){
  if(!planning)fail(503,'AI planning is not enabled. You can write the story manually.');
  if(body.authorizePlanning!==true)fail(402,'Confirm the planning operation before submitting.');
  const plan=await providers.planFilm({brief:project.premise+'\nDirection: '+project.direction+'\nLanguage: '+project.language,durationSeconds:project.duration,authorized:true});
  const next=patchProject(project,{story:{treatment:plan.treatment,scenes:plan.scenes},shots:plan.shots.map(s=>({id:s.id,title:s.description.slice(0,70),description:s.description,duration:s.durationSeconds,camera:s.camera,dialogue:s.dialogue,continuity:s.continuity,sceneId:s.sceneId,framing:'medium'})),title:plan.title});
  return reply(200,{project:await store.save(next,project.version)});}
+ if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id))});
  if(action==='approvals'&&req.method==='POST'){
  if(!['approved','rejected','revoked'].includes(body.decision)||!Number.isSafeInteger(body.version))fail(400,'Invalid approval decision.');return reply(201,{approval:await store.approve(project,body,user.id)});}
  if(action==='approvals'&&req.method==='GET')return reply(200,{approvals:await store.records('approvals',id)});

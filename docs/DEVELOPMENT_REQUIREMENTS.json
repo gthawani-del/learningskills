@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-17",
-  "baselineCommit": "e05c45bdedfc36f95d3d72aa1e9d5533e1dbbb54",
+  "baselineCommit": "f7cc9f03856fc081d9e6bf745eb9e75e938914b6",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
   "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100–F105 remain explicit non-promises.",
   "requirements": [
@@ -68,14 +68,17 @@
       "code": [
         "apps/director/public/device-drafts.js",
         "apps/director/store.mjs",
-        "apps/director/api.mjs"
+        "apps/director/api.mjs",
+        "apps/director/imports.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/migration-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Device drafts verified; real authenticated Supabase create/reopen across sessions not verified.",
+      "gap": "Create/reopen plus retry-safe import implemented; real authenticated Supabase cross-browser verification pending.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F004",
       "dependencies": [
         "cloud-connection"
@@ -140,14 +143,19 @@
       "status": "partial",
       "code": [
         "apps/director/api.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/imports.mjs",
+        "apps/director/media-storage.mjs",
+        "apps/director/public/cloud-migration.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/migration-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "2 MB proxied upload and local assets exist; signed/resumable media upload/finalize pipeline and live storage verification missing.",
+      "gap": "Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F008",
       "dependencies": [
         "cloud-connection"
@@ -382,13 +390,15 @@
       "status": "partial",
       "code": [
         "apps/director/store.mjs",
-        "apps/director/domain.mjs"
+        "apps/director/domain.mjs",
+        "apps/director/production-state.mjs"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/production-state.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Versioned story/shot specification approval exists; all creative artifact/take approval categories incomplete.",
+      "gap": "Story/shot specification approval and review graph implemented; cast, voice, takes and other approval categories incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -403,13 +413,16 @@
       "status": "partial",
       "code": [
         "apps/director/domain.mjs",
-        "database/director-project-persistence.sql"
+        "database/director-project-persistence.sql",
+        "apps/director/production-state.mjs",
+        "apps/director/public/revision-impact.js"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/production-state.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Version mismatch prevents reuse for changed artifact; cross-artifact dependency invalidation missing.",
+      "gap": "Scene changes invalidate linked shots; brief changes require story review; character/voice/take/audio/edit dependencies and live validation remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -657,14 +670,16 @@
       "status": "partial",
       "code": [
         "apps/director/domain.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/production-state.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/production-state.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Editable shot specifications; full production contract and department validation not integrated.",
+      "gap": "Versioned shots and deterministic review graph implemented; complete department production contracts/orchestration remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F037",
       "dependencies": [
         "versioned-project-records",
@@ -1824,13 +1839,16 @@
       "step": 10,
       "status": "partial",
       "code": [
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/imports.mjs",
+        "apps/director/public/cloud-migration.js"
       ],
       "tests": [
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/migration-browser.py"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Device persistence verified; authenticated cloud restore unverified.",
+      "gap": "Device persistence and interrupted local-demo migration verified; real authenticated cloud restore remains unverified.",
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
@@ -3656,6 +3674,10 @@
     "FUNCTIONALITY_ENDPOINT_MATRIX.csv": "0e30d8a5de1146e0a0fae26e9885165ed5750579b36457771f523fa12e9e988d",
     "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md": "2b698d3ff01271f199b6c1dd46fe3f56ab3e2fe78d2d61e6ff2e0ad5a295787d",
     "REALISM_INTELLIGENCE_LAYER.md": "057b35b7838756e18a31f9e1567de65e60b1cb3d6d968725598fd566846e4205",
-    "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529"
-  }
+    "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529",
+    "FILM_STUDIO_BLUEPRINT.md": "433b532b8536f9338a703a7d03b05fd9f2094256bb4a30b3faeebe0124a6e1f9",
+    "PRODUCT_EXPERIENCE_SPEC.md": "b9466df60b6c0b10360e36df300c3fc6da46f2eee197d17f7b08fbeee6d14c80",
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "8c29cb3b14c63c2a1598182d5c6c349afd37eeef49a333bb8abd2b2818311402"
+  },
+  "currentBatch": "Resumable device migration and selective scene/brief revision invalidation; local and browser-demo verification only, real Supabase pending."
 }

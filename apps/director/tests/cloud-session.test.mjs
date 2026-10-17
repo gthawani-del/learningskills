@@ -60,3 +60,12 @@ test('authenticated API selects verified owner and rejects cross-account project
  assert.equal((await call(h,'/api/admin/overview',undefined,'director_session=owner-token')).status,403);
  const config=await call(h,'/api/config',undefined,'director_session=expired; director_refresh=fixture-private-refresh');assert.equal(config.json.session.refreshAvailable,true);assert.equal(config.json.user,null);assert.ok(!JSON.stringify(config.json).includes('fixture-private-refresh'));
 });
+test('Supabase approval history resolves immutable artifact versions in explicit event order',async()=>{
+ const urls=[];const store=new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher:async url=>{urls.push(url);return {ok:true,status:200,json:async()=>Number(new URL(url).searchParams.get('offset'))>0?[]:url.includes('director_artifacts')?[{id:'artifact',logical_key:'story',version:3}]:[{artifact_id:'artifact',project_id:'project',actor_id:owner,decision:'revoked',ordinal:2}]};}});
+ const rows=await store.records('approvals','project');assert.equal(rows[0].artifactId,'story');assert.equal(rows[0].version,3);assert.equal(rows[0].decision,'revoked');assert.ok(urls[0].includes('order=ordinal.asc'));assert.ok(urls[0].includes('offset=0'));
+});
+test('approval pagination retains later revocations even when provider row cap is below requested page size',async()=>{
+ const calls=[];const events=[{artifact_id:'a',project_id:'p',decision:'approved',ordinal:1},{artifact_id:'a',project_id:'p',decision:'revoked',ordinal:2}];
+ const store=new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher:async url=>{calls.push(url);const offset=Number(new URL(url).searchParams.get('offset'));const list=url.includes('director_artifacts')?[{id:'a',logical_key:'story',version:1}]:events;return {ok:true,status:200,json:async()=>list.slice(offset,offset+1)};}});
+ const rows=await store.records('approvals','p');assert.equal(rows.length,2);assert.equal(rows.at(-1).decision,'revoked');assert.ok(calls.some(url=>url.includes('director_approvals')&&url.includes('offset=2')));
+});
