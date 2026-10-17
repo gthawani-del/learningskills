@@ -2,7 +2,7 @@ import http from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {createDirectorAPI} from './api.mjs';
-const files={'/':'index.html','/index.html':'index.html','/styles.css':'styles.css','/studio-v2.css':'studio-v2.css','/device-drafts.js':'device-drafts.js','/app.js':'app.js','/admin':'admin.html','/admin.html':'admin.html','/admin.js':'admin.js'};
+const files={'/':'index.html','/index.html':'index.html','/favicon.ico':'favicon.svg','/favicon.svg':'favicon.svg','/styles.css':'styles.css','/studio-v2.css':'studio-v2.css','/api-client.js':'api-client.js','/device-drafts.js':'device-drafts.js','/app.js':'app.js','/admin':'admin.html','/admin.html':'admin.html','/admin.js':'admin.js'};
 export async function createHandler(options={}){
  const api=await createDirectorAPI(options),env=options.env||process.env;
  return async(req,res)=>{try{
@@ -21,7 +21,7 @@ export async function createHandler(options={}){
  try{body=JSON.parse(Buffer.concat(chunks).toString());if(!body||typeof body!=='object'||Array.isArray(body))throw Error();}catch{throw Object.assign(new Error('Invalid JSON request.'),{status:400});}}
  return await api(req,res,path,body);}
  const name=files[path];if(!name){res.writeHead(404);return res.end('Not found');}
- const content=await readFile(new URL(`public/${name}`,import.meta.url));const type=name.endsWith('.js')?'text/javascript':name.endsWith('.css')?'text/css':'text/html';res.writeHead(200,{'Content-Type':`${type}; charset=utf-8`,'Cache-Control':'no-store'});res.end(content);
+ const content=await readFile(new URL(`public/${name}`,import.meta.url));const type=name.endsWith('.svg')?'image/svg+xml':name.endsWith('.js')?'text/javascript':name.endsWith('.css')?'text/css':'text/html';res.writeHead(200,{'Content-Type':`${type}; charset=utf-8`,'Cache-Control':'no-store'});res.end(content);
  }catch(e){if(!res.headersSent){res.writeHead(e.status||500,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify({error:e.status?e.message:'The request could not finish. Your draft is preserved.'}));}else res.end();}};
 }
 export async function createServer(options={}){return http.createServer(await createHandler(options));}

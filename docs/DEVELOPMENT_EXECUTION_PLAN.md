@@ -2,7 +2,11 @@
 
 Revision 1 · 17 October 2026 UTC. This is an execution map for existing specifications, not another product blueprint. Development is requested; paid generations and production deployment still need their existing explicit authorizations.
 
-## Current baseline and rollback
+## Current execution pointer
+
+The following revision-1 baseline is historical. Main now includes the app, documents and deployed v2 UI at `e05c45b`. Use [Development Tracker](DEVELOPMENT_TRACKER.md) for the current twelve-step backlog and [Implementation Status](IMPLEMENTATION_STATUS.md) for observed results. Existing user authorization includes development, pushing main and production deployment; paid model calls still require a concrete approved budget.
+
+## Historical baseline and rollback
 
 Local code lives in `apps/studio/`: dependency-free Node development server, browser IndexedDB project, direct OpenAI storyboard/Sora calls and FFmpeg silent assembly. It is an old prototype, not the planned studio. GitHub README and recursive main tree reads succeeded. Main is `290c33dba38b3508bae77c9aa9e6a5637fd588d6` and contains only README/REA research and inventory scripts, not the app or planning docs; `apps/studio/package.json` returned 404. There is no usable local Git checkout. Reconcile repository tree/branch before treating local code as an authoritative patch or opening a PR. Do not overwrite remote files from this directory blindly.
 

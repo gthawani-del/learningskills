@@ -35,18 +35,33 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const isAdmin=user=>(env.DIRECTOR_ADMIN_IDS||'').split(',').map(x=>x.trim()).includes(user?.id);
  // Remains closed until planning has its own verified quote and durable reservation.
  const planning=false;
- const sessionCookie=(token,maxAge)=>`director_session=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
+ const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
+ const clearSession=()=>[cookie('director_session','',0),cookie('director_refresh','',0,'/api')];
+ const sessionHeaders=session=>{
+ if(!session?.user?.id||!session.access_token||!session.refresh_token||![session.access_token,session.refresh_token].every(t=>typeof t==='string'&&/^[A-Za-z0-9._~-]{1,8192}$/.test(t)))fail(502,'The account service returned an incomplete session. Please sign in again.');
+ const lifetime=Number.isFinite(session.expires_in)?Math.max(1,Math.min(Math.floor(session.expires_in),3600)):3600;
+ return {'Set-Cookie':[cookie('director_session',session.access_token,lifetime),cookie('director_refresh',session.refresh_token,30*86400,'/api')]};
+ };
+ const refreshing=new Map();
+ const refreshSession=async token=>{if(!token||token.length>8192)fail(401,'Sign in again to continue.');let pending=refreshing.get(token);if(!pending){pending=store.refresh(token);refreshing.set(token,pending);}try{return await pending;}finally{if(refreshing.get(token)===pending)refreshing.delete(token);}};
  return async(req,res,path,body={})=>{
  const reply=(status,value,headers={})=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store',...headers});res.end(JSON.stringify(value));};
- const token=cookies(req).director_session;const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
- if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user)}:null,capabilities:{planning,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
+ const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
+ if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
  if(path==='/api/auth/login'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
  if(typeof body.email!=='string'||body.email.length>254||typeof body.password!=='string'||body.password.length>1024)fail(400,'Enter an email and password.');
  const ip=req.socket?.remoteAddress||'serverless';const key=ip+':'+body.email.toLowerCase();const hit=loginAttempts.get(key)||{n:0,start:Date.now()};if(Date.now()-hit.start>600000){hit.n=0;hit.start=Date.now();}if(hit.n>=8)fail(429,'Too many sign-in attempts. Try again later.');hit.n++;loginAttempts.set(key,hit);if(loginAttempts.size>1000)loginAttempts.delete(loginAttempts.keys().next().value);
  const session=await store.login(body.email,body.password);if(!session.access_token||!session.user)fail(401,'Sign-in failed. Check your credentials.');loginAttempts.delete(key);
- return reply(200,{user:{id:session.user.id,email:session.user.email}},{'Set-Cookie':sessionCookie(session.access_token,Math.min(session.expires_in||3600,3600))});}
- if(path==='/api/auth/logout'&&req.method==='POST'){if(store&&token&&!demo)await store.request('/auth/v1/logout',{method:'POST',token});return reply(200,{ok:true},{'Set-Cookie':sessionCookie('',0)});}
+ return reply(200,{user:{id:session.user.id,email:session.user.email}},sessionHeaders(session));}
+ if(path==='/api/auth/refresh'&&req.method==='POST'){
+ if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
+ try{const session=await refreshSession(refreshToken);return reply(200,{user:{id:session.user?.id,email:session.user?.email}},sessionHeaders(session));}
+ catch(error){if(error.status===401)return reply(401,{error:'Your session ended. Sign in again; your draft is preserved.'},{'Set-Cookie':clearSession()});throw error;}}
+ if(path==='/api/auth/logout'&&req.method==='POST'){
+ let current=token;if(store&&!demo){if(!user&&refreshToken)try{current=(await refreshSession(refreshToken)).access_token;}catch(error){if(error.status!==401)throw error;current=null;}
+ if(current)try{await store.request('/auth/v1/logout?scope=local',{method:'POST',token:current});}catch(error){if(error.status!==401)throw error;}}
+ return reply(200,{ok:true},{'Set-Cookie':clearSession()});}
  if(!store)fail(503,'Configure the server Supabase connection before saving projects.');
  if(!user)fail(401,'Sign in to access your workspace.');
  if(path==='/api/skills'&&req.method==='GET')return reply(200,{skills});

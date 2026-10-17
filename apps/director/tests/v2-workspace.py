@@ -9,7 +9,7 @@ subprocess.run(['ffmpeg','-y','-f','lavfi','-i','testsrc2=size=640x360:rate=24',
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
  c=b.new_context(viewport={'width':1440,'height':1000},ignore_https_errors=base.startswith('https:'))
- page=c.new_page(); page.set_default_timeout(12000); errors=[]; page.on('pageerror',lambda e:errors.append(str(e)))
+ page=c.new_page(); page.set_default_timeout(12000); errors=[]; console=[]; failed=[]; page.on('console',lambda m: console.append({'type':m.type,'text':m.text}) if m.type in ['error','warning'] else None); page.on('response',lambda r: failed.append({'status':r.status,'url':r.url}) if r.status>=400 else None); page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(base); page.locator('#premise').fill('A station keeper finds a letter from tomorrow.'); page.locator('#start-form button[type=submit]').click()
  expect(page.locator('.workspace.briefing')).to_be_visible()
  page.locator('#brief-form input[name=title]').fill('Tomorrow’s Letter'); page.locator('#brief-form button[type=submit]').click()
@@ -46,6 +46,6 @@ with sync_playwright() as p:
  page.locator('#mobile-director').click(); expect(page.locator('#brief-form')).to_be_visible()
  page.screenshot(path=str(out/'v2-brief-mobile-viewport.png'),full_page=True)
  assert not errors, errors
- (out/'v2-workspace-results.json').write_text(json.dumps({'url':base,'passed':['brief editing','story version and approval','shot editing','image preview','video playback pause seek','draft and media reload persistence','direction notes','truthful cloud gate','draft JSON download','390px viewport drawers and overflow'],'pageErrors':errors,'physicalMobileTested':False},indent=2))
+ (out/'v2-workspace-results.json').write_text(json.dumps({'url':base,'passed':['brief editing','story version and approval','shot editing','image preview','video playback pause seek','draft and media reload persistence','direction notes','truthful cloud gate','draft JSON download','390px viewport drawers and overflow'],'pageErrors':errors,'console':console,'httpErrors':failed,'physicalMobileTested':False},indent=2))
  print('PASS: v2 device workspace flows; no page exceptions. Physical mobile untested.')
  b.close()

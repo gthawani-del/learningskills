@@ -1,51 +1,46 @@
 # Director Studio — Implementation Status
 
-Updated 17 October 2026 UTC. This record distinguishes actual work from the much broader approved blueprint. It does not declare the entire studio complete.
+Updated 17 October 2026 UTC. This record replaces the earlier foundation-only status. Specifications describe intended behavior; this file and the [Development Tracker](DEVELOPMENT_TRACKER.md) distinguish code, tests and production acceptance.
 
-## Repository
+## Repository and deployment baseline
 
-Development branch: `codex/director-studio-foundation`, based on main `290c33dba38b3508bae77c9aa9e6a5637fd588d6`. The complete 29-file planning/reference set was preserved in commit `78036bdceddfa0a87b35b06006afa992ab5500a4`; main was not changed. Application additions are prepared as a separate reviewable commit/PR.
+Repository: `gthawani-del/learningskills`. Main baseline `e05c45bdedfc36f95d3d72aa1e9d5533e1dbbb54` deployed the v2 UI to https://learningskills.vercel.app. The current development batch adds the requirements ledger and cloud session recovery. Release status must be checked against its GitHub commit/Vercel result, not inferred from this document.
 
-## Implemented
+The active app is `apps/director/`, served through `api/index.mjs`. `apps/studio/` is preserved legacy prototype code; its direct Sora/silent-render routes are not the active product architecture.
 
-- Responsive light briefing and dark project/canvas/Director workspace; mobile navigation and Director sheet.
-- Editable projects, treatments/scenes and shot direction with optimistic version checks; scoped composer drafts, keyboard `/skills`, `@references` and classified uploads.
-- Cookie-based existing-account sign-in with server verification through Supabase; owner checks on project routes; no service credential in the client.
-- Atomic project snapshot persistence, immutable artifacts/approvals, private asset retrieval and owner-scoped records.
-- Actual Supabase foundation: 12 RLS-protected tables, private `director-media` bucket and 20 inactive model candidates with task-purpose descriptions and dated evidence.
-- Spending/attempt reservations, canonical payload hash checks, atomic dispatch claims, current approval/authorization checks and uncertain-submission holds.
-- Mock-tested direct OpenAI planning and fal queue adapters; no paid execution.
-- Read-only admin job/registry views, restricted to configured administrators. Current overview is explicitly limited to administrator-owned projects; global operational access and management actions are not complete.
-- Local-only sound-preserving FFmpeg export from approved uploaded clips with actual duration checks. It does not strip sound, stretch audio or freeze-pad a clip to satisfy the plan.
+## Implemented and verified within stated limits
 
-## Verified versus pending
+- V2 light conversational briefing and graphite project/viewer/Director production workspace, responsive drawers, shot strip and audio reference lanes.
+- Explicit browser-device drafts in IndexedDB: brief, story, shots, local approvals, direction notes and uploaded media. These are not cloud backups or generated assets.
+- Manual story and shot editing, optimistic version checks, current-version specification approvals, keyboard skill selection and scoped reference mentions.
+- Supabase server adapter: account login, verified user lookup, owner-filtered project access, versioned save RPC and private media proxy. Production cloud application integration remains unverified.
+- Current batch: separate HttpOnly access/refresh cookies, server refresh rotation, one shared client refresh for concurrent expired requests, current-browser logout and no retries after uncertain network/provider outcomes. Tests use fixture accounts/transports, not real Supabase sessions. Signup and password recovery remain unfinished.
+- Job reservation/dispatch/unknown-submission foundations and direct OpenAI/fal adapters, tested with mocks. No paid model call made in this batch; API planning stays disabled and routes stay inactive.
+- Local FFmpeg assembly preserves sound and validates duration. Hosted rendering/export remains unavailable.
+- Admin allowlist and limited read-only own-project/registry views. The full backoffice is not implemented.
+- Actual site icon and explicit SVG/legacy icon routes replace the missing favicon route. Verify the complete live console after deployment.
 
-Unit and local HTTP tests cover manual planning/persistence, version conflicts, reference isolation, authorization boundaries, immutable job identity, uncertain submissions and sound-preserving export. Mock provider tests establish request/response handling only. Live SQL checks establish schema/privilege state, not a complete multi-user production integration.
+## Database read-only verification in this batch
 
-No live OpenAI/fal generation, generated-human realism test, singing proof, user usability study or production application deployment is claimed. The short synthetic export proof is not the representative 45–60 second filmmaking pilot.
+Director Supabase project `ygyjqubrpqwfgbquwqeo`: `ACTIVE_HEALTHY`; 12 public Director tables returned, all RLS enabled; 20 model candidate rows; no projects or jobs returned by inventory. Security advisor returned no findings. These observations establish database state, not successful application login or cloud persistence. No schema, credential, policy or production configuration changed in this batch.
 
-## Operational gates still closed
+## Tests and limitations
 
-| Gate | Required next evidence |
-| --- | --- |
-| Real application Supabase connection | Configure server URL/service credential and test sign-in, owner isolation and persistence through the deployed/test app |
-| AI script planning | Verified quote/allowance, durable reservation/idempotency/uncertain charge lifecycle; environment flag alone cannot enable billing |
-| Media generation | Use-case execution/quality validation and explicitly activated profile, quote and approved budget; all seeded routes remain inactive |
-| Premium casting/voice/singing | Actual image/listening/temporal benchmarks and resolution of provider-document conflicts |
-| Hosted export | Chosen durable worker/queue, private asset access and final A/V playback test |
-| Full backoffice | Workspace-wide authorized operations, reviewed registry management, reconciliation, reporting and support workflows |
-| Production release | Reviewable PR, remaining integration checks and explicit deployment approval |
+- `npm test`: 40 scenario tests pass after this batch, including nine cloud-session/adapter/client scenarios and the icon regression check.
+- Syntax checks and production packaging pass.
+- `apps/director/tests/v2-workspace.py`: actual browser editing, approvals, image preview, uploaded-video play/pause/seek, reload persistence, notes, cloud-unavailable messaging, JSON draft download and 390px viewport drawers/overflow. Run against the current deployment after release; evidence saved under gitignored `test-results/`.
+- Physical mobile-device/keyboard testing is outstanding. Browser viewport checks are not device verification.
+- No generated-human, voice, singing or finished-film quality claim. No measured two-attempt acceptance rate.
+- Supabase account/session tests are local transport and API fixtures. Real two-account, cross-browser, private-storage and expiry/revocation checks remain blocked by production connection configuration.
 
-## Verification record
+## Next gates
 
-Final case counts, browser evidence and database advisor results are recorded below as checks complete. A check must not be called passed merely because the screen or schema exists.
+1. Complete Vercel connection authorization; inspect environment keys/targets without revealing values. Verify `SUPABASE_URL` and server-only `SUPABASE_SERVICE_ROLE_KEY` are available to the deployed runtime. Neither database-tool access nor a publishable browser key substitutes for this server configuration.
+2. Verify real login, refresh, current-device logout, owner isolation, project persistence and private assets with designated test accounts.
+3. Complete retry-safe device-to-cloud migration, including media/reference rebinding and note preservation. Current project-copy action does not transfer those items or preserve creative approvals as cloud authorizations.
+4. Implement production record dependencies, staff permissions, ledger/quotes, reviewed skill/model activation, Director orchestration and media workflows in the tracker order.
+5. Add hosted render workers, complete customer/admin acceptance, then produce and review representative paid pilots within an approved budget.
 
-### Completed browser and application checks
+## Rollback
 
-- `npm test`: 30 scenario tests passed.
-- `npm run check`: JavaScript syntax checks passed.
-- `python3 apps/director/tests/browser-flow.py` against explicit local demo: desktop project creation, manual story/shot editing, current-version approvals, locked constraints persistence, keyboard skill selection, classified upload, asset mention, scoped proposal, mobile Director sheet/navigation, unavailable-voice recovery, reload persistence and no horizontal overflow passed. No page JavaScript errors were observed.
-- Desktop and mobile screenshots were visually inspected. Local evidence is under `test-results/` (gitignored); it depicts real local app behavior, not generated product screens.
-- HTTP synthetic-media proof exported a playable four-second MP4 with sound. This does not validate AI filmmaking quality.
-- Supabase verification confirmed 12 RLS tables, 20 inactive candidates and a private bucket. Server-only table/function privileges were checked. Security advisor returned no findings after removal of unnecessary direct-client database read grants.
-- Browser checks used local demo persistence. Real Supabase login, storage and project integration through the application remain unverified until hosting credentials are configured. No production application deployment or paid generation occurred.
+The batch does not change database state. Revert its application files to the previous main baseline and redeploy to remove session changes. Existing device drafts remain in IndexedDB. Clearing browser storage removes local drafts/media, so do not use it as an operational rollback procedure for customer data.

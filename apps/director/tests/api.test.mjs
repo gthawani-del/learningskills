@@ -55,3 +55,7 @@ test('an environment flag and client confirmation cannot bypass planning reserva
  const p=(await call(handler,'/api/projects',{title:'No hidden charges'},extra)).json.project;
  assert.equal((await call(handler,`/api/projects/${p.id}/plan`,{authorizePlanning:true},extra)).status,503);assert.equal(calls,0);
 });
+
+test('site icon routes return the actual SVG asset',async()=>{
+ const handler=await createHandler({env:{}});for(const path of ['/favicon.ico','/favicon.svg']){const r=await call(handler,path);assert.equal(r.status,200);assert.match(r.headers['Content-Type'],/image\/svg\+xml/);assert.match(String(r.data),/<svg/);}
+});

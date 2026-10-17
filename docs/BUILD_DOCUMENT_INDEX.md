@@ -2,6 +2,12 @@
 
 Updated 17 October 2026 UTC. Planning/document inventory only; no application implementation is authorized by this index.
 
+## Current development record
+
+The initial 23-artifact inventory is preserved below. Additional knowledge, execution and QA artifacts bring the current physical `docs/` inventory to 37 files in the current inventory. Physical-file count is not requirement count.
+
+[Development Tracker](DEVELOPMENT_TRACKER.md) is the current implementation ledger. Its [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv) track 167 items and evidence limits. [Implementation Status](IMPLEMENTATION_STATUS.md) records current runtime state. Historical statements below describe their original inspection pass; they do not override current verified status. The active specification precedence remains unchanged.
+
 ## 1. Ordered build references
 
 There are **six active planning specifications**, plus this index. The new v2 frontend specification takes precedence for customer-facing UI/UX. It does not replace the production architecture, model routing, realism requirements or administrator design.
