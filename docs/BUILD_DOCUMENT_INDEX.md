@@ -100,3 +100,7 @@ The three user-supplied filmmaking knowledge documents are preserved in `knowled
 ## 7. Count after this consolidation
 
 Six active planning specifications remain. Two operational documents (execution plan and research register), three original knowledge sources and one schema-evidence file are added. Including this index, existing historical exports, supporting package artifacts and five screenshots, there are **29 retained files under docs/**. Physical-file count is distinct from independent requirements. No source attachment duplicates were added.
+
+## 8. Implementation tracking
+
+[Implementation Status](IMPLEMENTATION_STATUS.md) records what is actually built, tested, applied and still gated. Read it with the execution plan; specifications describe the intended product, not completed functionality.

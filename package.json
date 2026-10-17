@@ -1,0 +1,14 @@
+{
+  "name": "director-studio",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node apps/director/server.mjs",
+    "test": "node scripts/test-director.mjs",
+    "check": "node --check apps/director/server.mjs && node --check apps/director/api.mjs && node --check apps/director/public/app.js && node --check apps/director/providers.mjs"
+  }
+}
