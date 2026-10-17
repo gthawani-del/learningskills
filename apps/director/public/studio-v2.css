@@ -17,3 +17,5 @@
 
 @media(max-width:999px){.briefing .brief-inspector{display:none;position:fixed;inset:auto 0 0;height:85dvh;max-height:85dvh;z-index:30;overflow:auto;border-radius:18px 18px 0 0;box-shadow:0 -15px 60px #0003}.briefing .brief-inspector.open{display:block}.brief-inspector .director-head{display:flex;position:sticky;top:0;z-index:2;background:white}.briefing .brief-inspector .close-sheet{display:block!important}}
 .production-state small{display:block;margin-top:8px;font-size:11px;color:#a4afbd}.audio-lane .lane-track{font-size:11px;min-height:22px;display:flex;align-items:center;padding:3px 8px}.shot-details-bar{padding:0 18px 18px;font-size:11px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.reference-list .asset-item{display:flex;gap:6px;align-items:center}.reference-list .asset-item>span:last-child{min-width:0;overflow-wrap:anywhere}
+
+.shot-sequence-heading{flex:1;margin:0}

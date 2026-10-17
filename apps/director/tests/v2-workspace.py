@@ -8,7 +8,7 @@ clip=out/'qa-reference.mp4'
 subprocess.run(['ffmpeg','-y','-f','lavfi','-i','testsrc2=size=640x360:rate=24','-t','3','-c:v','libx264','-pix_fmt','yuv420p',str(clip)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
- c=b.new_context(viewport={'width':1440,'height':1000},ignore_https_errors=base.startswith('https:'))
+ c=b.new_context(viewport={'width':1440,'height':1000},ignore_https_errors=False)
  page=c.new_page(); page.set_default_timeout(12000); errors=[]; console=[]; failed=[]; page.on('console',lambda m: console.append({'type':m.type,'text':m.text}) if m.type in ['error','warning'] else None); page.on('response',lambda r: failed.append({'status':r.status,'url':r.url}) if r.status>=400 else None); page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(base); page.locator('#premise').fill('A station keeper finds a letter from tomorrow.'); page.locator('#start-form button[type=submit]').click()
  expect(page.locator('.workspace.briefing')).to_be_visible()
@@ -25,7 +25,17 @@ with sync_playwright() as p:
  page.locator('[data-stage=production]').click(); expect(page.locator('.workspace.production')).to_be_visible()
  page.locator('#viewer-add').click(); page.locator('#upload-file').set_input_files({'name':'reference.png','mimeType':'image/png','buffer':base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=')})
  page.locator('#upload-form button[type=submit]').click(); expect(page.locator('#studio-still')).to_be_visible()
+ first_image=page.locator('#studio-still').get_attribute('src')
+ page.locator('.stage-switch summary').click(); page.locator('[data-stage=cast]').click()
+ page.locator('#cast-upload').click(); page.locator('#upload-scope').select_option('project'); page.locator('#upload-role').select_option('visual_style')
+ page.locator('#upload-file').set_input_files({'name':'alternate-reference.png','mimeType':'image/png','buffer':base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=')})
+ page.locator('#upload-form button[type=submit]').click()
+ page.locator('.panel').filter(has=page.get_by_role('heading',name='alternate-reference.png',exact=True)).locator('[data-use-media]').click()
+ page.locator('[data-stage=production]').click(); expect(page.locator('#studio-still')).to_be_visible(); assert page.locator('#studio-still').get_attribute('src')!=first_image
  page.locator('#rail-upload').click(); page.locator('#upload-scope').select_option('shot'); page.locator('#upload-role').select_option('shot_reference'); page.locator('#upload-file').set_input_files(str(clip)); page.locator('#upload-form button[type=submit]').click()
+ page.locator('.stage-switch summary').click(); page.locator('[data-stage=cast]').click()
+ page.locator('.panel').filter(has=page.get_by_role('heading',name='qa-reference.mp4',exact=True)).locator('[data-use-media]').click()
+ page.locator('[data-stage=production]').click()
  expect(page.locator('#studio-player')).to_be_visible(); page.locator('#player-toggle').click()
  print('Checking playback',flush=True); page.wait_for_function('()=>document.querySelector("#studio-player").currentTime > 0.3')
  page.locator('#player-toggle').click(); assert page.locator('#studio-player').evaluate('(v)=>v.paused')
@@ -35,8 +45,10 @@ with sync_playwright() as p:
  expect(page.locator('#messages')).to_contain_text('Hold the final frame longer.')
  page.reload(); expect(page.locator('#studio-player')).to_be_visible(); expect(page.locator('#messages')).to_contain_text('Hold the final frame longer.')
  page.screenshot(path=str(out/'v2-production-desktop.png'),full_page=True)
+ page.locator('#projects-button').click(); expect(page.locator('#project-list')).to_contain_text('Tomorrow’s Letter'); page.locator('[data-project]').first.click(); expect(page.locator('#studio-player')).to_be_visible()
  page.locator('#cloud-save').click(); expect(page.locator('#toast')).to_contain_text('not connected')
  page.locator('.stage-switch summary').click(); page.locator('[data-stage=export]').click()
+ expect(page.locator('.shot-details-bar')).to_contain_text('Hosted export is not connected')
  with page.expect_download() as d: page.locator('#download-draft').click()
  assert d.value.suggested_filename.endswith('.json')
  page.set_viewport_size({'width':390,'height':844}); page.reload(); expect(page.locator('#mobile-director')).to_be_visible()
@@ -46,6 +58,8 @@ with sync_playwright() as p:
  page.locator('#mobile-director').click(); expect(page.locator('#brief-form')).to_be_visible()
  page.screenshot(path=str(out/'v2-brief-mobile-viewport.png'),full_page=True)
  assert not errors, errors
- (out/'v2-workspace-results.json').write_text(json.dumps({'url':base,'passed':['brief editing','story version and approval','shot editing','image preview','video playback pause seek','draft and media reload persistence','direction notes','truthful cloud gate','draft JSON download','390px viewport drawers and overflow'],'pageErrors':errors,'console':console,'httpErrors':failed,'physicalMobileTested':False},indent=2))
+ assert not console, console
+ assert not failed, failed
+ (out/'v2-workspace-results.json').write_text(json.dumps({'url':base,'passed':['brief editing','story version and approval','shot editing','image preview and alternate image selection','video playback pause seek','draft and media reload persistence','direction notes and saved-project picker','truthful cloud gate','draft JSON download','390px viewport drawers and overflow'],'pageErrors':errors,'console':console,'httpErrors':failed,'physicalMobileTested':False},indent=2))
  print('PASS: v2 device workspace flows; no page exceptions. Physical mobile untested.')
  b.close()
