@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node apps/director/server.mjs",
     "test": "node scripts/test-director.mjs",
-    "check": "node --check apps/director/server.mjs && node --check apps/director/api.mjs && node --check apps/director/public/app.js && node --check apps/director/providers.mjs"
+    "check": "node --check apps/director/server.mjs && node --check apps/director/api.mjs && node --check apps/director/public/app.js && node --check apps/director/providers.mjs",
+    "build": "node scripts/build-director.mjs"
   }
 }
