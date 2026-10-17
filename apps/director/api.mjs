@@ -62,7 +62,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);
  if(!action&&req.method==='GET')return reply(200,{project});
- if(!action&&req.method==='PATCH'){const next=patchProject(project,body);if(body.shots){const allowed=await store.records('assets',id);if(next.shots.some(s=>s.clipAssetId&&!allowed.some(a=>a.id===s.clipAssetId&&a.mime==='video/mp4')))fail(400,'A selected clip is unavailable.');}return reply(200,{project:await store.save(next,project.version)});}
+ if(!action&&req.method==='PATCH'){const next=patchProject(project,body);if(body.shots){const allowed=await store.records('assets',id);if(next.shots.some(s=>s.clipAssetId&&!allowed.some(a=>a.id===s.clipAssetId&&a.mime==='video/mp4')||s.referenceAssetId&&!allowed.some(a=>a.id===s.referenceAssetId&&a.mime.startsWith('image/'))))fail(400,'A selected clip is unavailable.');}return reply(200,{project:await store.save(next,project.version)});}
  if(action==='plan'&&req.method==='POST'){
  if(!planning)fail(503,'AI planning is not enabled. You can write the story manually.');
  if(body.authorizePlanning!==true)fail(402,'Confirm the planning operation before submitting.');

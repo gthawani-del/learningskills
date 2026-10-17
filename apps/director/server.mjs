@@ -2,7 +2,7 @@ import http from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {createDirectorAPI} from './api.mjs';
-const files={'/':'index.html','/index.html':'index.html','/styles.css':'styles.css','/app.js':'app.js','/admin':'admin.html','/admin.html':'admin.html','/admin.js':'admin.js'};
+const files={'/':'index.html','/index.html':'index.html','/styles.css':'styles.css','/studio-v2.css':'studio-v2.css','/device-drafts.js':'device-drafts.js','/app.js':'app.js','/admin':'admin.html','/admin.html':'admin.html','/admin.js':'admin.js'};
 export async function createHandler(options={}){
  const api=await createDirectorAPI(options),env=options.env||process.env;
  return async(req,res)=>{try{
