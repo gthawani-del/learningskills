@@ -1,0 +1,128 @@
+{
+  "checked_at": "2026-10-17",
+  "note": "Lookup observations; not quotes or actual charges",
+  "prices": [
+    {
+      "endpoint_id": "fal-ai/z-image/turbo",
+      "unit_price": 0.005,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "elevenlabs/tts/eleven-v4",
+      "unit_price": 0.08,
+      "unit": "1000 characters",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/sync-lipsync/react-1",
+      "unit_price": 10,
+      "unit": "minutes",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "openrouter/router",
+      "unit_price": 0.01,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "openrouter/router/audio",
+      "unit_price": 0.01,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "openrouter/router/vision",
+      "unit_price": 0.01,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "openrouter/router/video",
+      "unit_price": 0.01,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/audio-understanding",
+      "unit_price": 0.01,
+      "unit": "5 seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "unit_price": 0.008,
+      "unit": "minutes",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/forced-alignment",
+      "unit_price": 0.22,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/demucs",
+      "unit_price": 0.0007,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "bytedance/seedream/v5/pro/edit",
+      "unit_price": 0.0675,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "veed/fabric-1.0",
+      "unit_price": 0.08,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "elevenlabs/music/v2.5",
+      "unit_price": 0.6,
+      "unit": "minutes",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/sound-effects/v2",
+      "unit_price": 0.002,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/kling-video/o3/pro/video-to-video/edit",
+      "unit_price": 0.14,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/bytedance-upscaler/upscale/video",
+      "unit_price": 0.0072,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/minimax-music/v2.6",
+      "unit_price": 0.15,
+      "unit": "audios",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/minimax/voice-clone",
+      "unit_price": 1.5,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

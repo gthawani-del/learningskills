@@ -1,0 +1,3591 @@
+{
+  "observed_at": "2026-10-17",
+  "execution_tested": false,
+  "schemas": [
+    {
+      "endpoint_id": "fal-ai/sync-lipsync/react-1",
+      "display_name": "Sync React-1",
+      "category": "video-to-video",
+      "description": "Use React-1 from SyncLabs to refine human emotions and do realistic lip-sync without losing details!",
+      "input_params": [
+        {
+          "name": "model_mode",
+          "type": "string",
+          "description": "Controls the edit region and movement scope for the model. Available options:\n- `lips`: Only lipsync using react-1 (minimal facial changes).\n- `face`: Lipsync + facial expressions without head movements.\n- `head`: Lipsync + facial expressions + natural talking head movements.",
+          "required": false,
+          "default": "face",
+          "enum": [
+            "lips",
+            "face",
+            "head"
+          ]
+        },
+        {
+          "name": "video_url",
+          "type": "string",
+          "description": "URL to the input video. Must be **15 seconds or shorter**.",
+          "required": true
+        },
+        {
+          "name": "emotion",
+          "type": "string",
+          "description": "Emotion prompt for the generation. Currently supports single-word emotions only.",
+          "required": true,
+          "enum": [
+            "happy",
+            "sad",
+            "angry",
+            "disgusted",
+            "surprised",
+            "neutral"
+          ]
+        },
+        {
+          "name": "temperature",
+          "type": "number",
+          "description": "Controls the expresiveness of the lipsync.",
+          "required": false,
+          "default": 0.5
+        },
+        {
+          "name": "lipsync_mode",
+          "type": "string",
+          "description": "Lipsync mode when audio and video durations are out of sync.",
+          "required": false,
+          "default": "bounce",
+          "enum": [
+            "cut_off",
+            "loop",
+            "bounce",
+            "silence",
+            "remap"
+          ]
+        },
+        {
+          "name": "audio_url",
+          "type": "string",
+          "description": "URL to the input audio. Must be **15 seconds or shorter**.",
+          "required": true
+        }
+      ],
+      "output_fields": [
+        {
+          "name": "video",
+          "type": "object",
+          "description": "The generated video with synchronized lip and facial movements.",
+          "required": true
+        }
+      ],
+      "input_schema": {
+        "type": "object",
+        "title": "React1Input",
+        "properties": {
+          "model_mode": {
+            "title": "Model Mode",
+            "type": "string",
+            "enum": [
+              "lips",
+              "face",
+              "head"
+            ],
+            "description": "Controls the edit region and movement scope for the model. Available options:\n- `lips`: Only lipsync using react-1 (minimal facial changes).\n- `face`: Lipsync + facial expressions without head movements.\n- `head`: Lipsync + facial expressions + natural talking head movements.",
+            "default": "face"
+          },
+          "video_url": {
+            "type": "string",
+            "examples": [
+              "https://storage.googleapis.com/falserverless/example_inputs/react_1/input.mp4"
+            ],
+            "description": "URL to the input video. Must be **15 seconds or shorter**.",
+            "title": "Video Url"
+          },
+          "emotion": {
+            "type": "string",
+            "examples": [
+              "neutral"
+            ],
+            "enum": [
+              "happy",
+              "sad",
+              "angry",
+              "disgusted",
+              "surprised",
+              "neutral"
+            ],
+            "description": "Emotion prompt for the generation. Currently supports single-word emotions only.",
+            "title": "Emotion"
+          },
+          "temperature": {
+            "maximum": 1,
+            "title": "Temperature",
+            "minimum": 0,
+            "description": "Controls the expresiveness of the lipsync.",
+            "type": "number",
+            "default": 0.5
+          },
+          "lipsync_mode": {
+            "title": "Lipsync Mode",
+            "type": "string",
+            "enum": [
+              "cut_off",
+              "loop",
+              "bounce",
+              "silence",
+              "remap"
+            ],
+            "description": "Lipsync mode when audio and video durations are out of sync.",
+            "default": "bounce"
+          },
+          "audio_url": {
+            "type": "string",
+            "examples": [
+              "https://storage.googleapis.com/falserverless/example_inputs/react_1/input.mp3"
+            ],
+            "description": "URL to the input audio. Must be **15 seconds or shorter**.",
+            "title": "Audio Url"
+          }
+        },
+        "x-fal-order-properties": [
+          "video_url",
+          "audio_url",
+          "emotion",
+          "model_mode",
+          "lipsync_mode",
+          "temperature"
+        ],
+        "required": [
+          "video_url",
+          "audio_url",
+          "emotion"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "title": "React1Output",
+        "properties": {
+          "video": {
+            "type": "object",
+            "title": "VideoFile",
+            "properties": {
+              "num_frames": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Num Frames",
+                "description": "The number of frames in the video"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "examples": [
+                  "image/png"
+                ],
+                "description": "The mime type of the file."
+              },
+              "width": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Width",
+                "description": "The width of the video"
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "examples": [
+                  4404019
+                ],
+                "description": "The size of the file in bytes."
+              },
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Height",
+                "description": "The height of the video"
+              },
+              "fps": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Fps",
+                "description": "The FPS of the video"
+              },
+              "duration": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Duration",
+                "description": "The duration of the video"
+              },
+              "url": {
+                "type": "string",
+                "title": "Url",
+                "description": "The URL where the file can be downloaded from."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size",
+              "width",
+              "height",
+              "fps",
+              "duration",
+              "num_frames"
+            ],
+            "required": [
+              "url"
+            ],
+            "examples": [
+              {
+                "num_frames": 169,
+                "content_type": "video/mp4",
+                "width": 1920,
+                "file_name": "output.mp4",
+                "height": 1088,
+                "fps": 24,
+                "duration": 7.041667,
+                "url": "https://storage.googleapis.com/falserverless/example_outputs/react_1/output.mp4"
+              }
+            ],
+            "description": "The generated video with synchronized lip and facial movements."
+          }
+        },
+        "x-fal-order-properties": [
+          "video"
+        ],
+        "required": [
+          "video"
+        ]
+      },
+      "exact_input_schema": {
+        "$ref": "#/components/schemas/SyncLipsyncReact1Input"
+      },
+      "exact_output_schema": {
+        "$ref": "#/components/schemas/SyncLipsyncReact1Output"
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Fal Key"
+          }
+        },
+        "schemas": {
+          "QueueStatus": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "IN_QUEUE",
+                  "IN_PROGRESS",
+                  "COMPLETED"
+                ]
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The request id."
+              },
+              "response_url": {
+                "type": "string",
+                "description": "The response url."
+              },
+              "status_url": {
+                "type": "string",
+                "description": "The status url."
+              },
+              "cancel_url": {
+                "type": "string",
+                "description": "The cancel url."
+              },
+              "logs": {
+                "type": "object",
+                "description": "The logs.",
+                "additionalProperties": true
+              },
+              "metrics": {
+                "type": "object",
+                "description": "The metrics.",
+                "additionalProperties": true
+              },
+              "queue_position": {
+                "type": "integer",
+                "description": "The queue position."
+              }
+            },
+            "required": [
+              "status",
+              "request_id"
+            ]
+          },
+          "SyncLipsyncReact1Input": {
+            "type": "object",
+            "title": "React1Input",
+            "properties": {
+              "model_mode": {
+                "title": "Model Mode",
+                "type": "string",
+                "enum": [
+                  "lips",
+                  "face",
+                  "head"
+                ],
+                "description": "Controls the edit region and movement scope for the model. Available options:\n- `lips`: Only lipsync using react-1 (minimal facial changes).\n- `face`: Lipsync + facial expressions without head movements.\n- `head`: Lipsync + facial expressions + natural talking head movements.",
+                "default": "face"
+              },
+              "video_url": {
+                "type": "string",
+                "examples": [
+                  "https://storage.googleapis.com/falserverless/example_inputs/react_1/input.mp4"
+                ],
+                "description": "URL to the input video. Must be **15 seconds or shorter**.",
+                "title": "Video Url"
+              },
+              "emotion": {
+                "type": "string",
+                "examples": [
+                  "neutral"
+                ],
+                "enum": [
+                  "happy",
+                  "sad",
+                  "angry",
+                  "disgusted",
+                  "surprised",
+                  "neutral"
+                ],
+                "description": "Emotion prompt for the generation. Currently supports single-word emotions only.",
+                "title": "Emotion"
+              },
+              "temperature": {
+                "maximum": 1,
+                "title": "Temperature",
+                "minimum": 0,
+                "description": "Controls the expresiveness of the lipsync.",
+                "type": "number",
+                "default": 0.5
+              },
+              "lipsync_mode": {
+                "title": "Lipsync Mode",
+                "type": "string",
+                "enum": [
+                  "cut_off",
+                  "loop",
+                  "bounce",
+                  "silence",
+                  "remap"
+                ],
+                "description": "Lipsync mode when audio and video durations are out of sync.",
+                "default": "bounce"
+              },
+              "audio_url": {
+                "type": "string",
+                "examples": [
+                  "https://storage.googleapis.com/falserverless/example_inputs/react_1/input.mp3"
+                ],
+                "description": "URL to the input audio. Must be **15 seconds or shorter**.",
+                "title": "Audio Url"
+              }
+            },
+            "x-fal-order-properties": [
+              "video_url",
+              "audio_url",
+              "emotion",
+              "model_mode",
+              "lipsync_mode",
+              "temperature"
+            ],
+            "required": [
+              "video_url",
+              "audio_url",
+              "emotion"
+            ]
+          },
+          "SyncLipsyncReact1Output": {
+            "type": "object",
+            "title": "React1Output",
+            "properties": {
+              "video": {
+                "$ref": "#/components/schemas/VideoFile",
+                "examples": [
+                  {
+                    "num_frames": 169,
+                    "content_type": "video/mp4",
+                    "width": 1920,
+                    "file_name": "output.mp4",
+                    "height": 1088,
+                    "fps": 24,
+                    "duration": 7.041667,
+                    "url": "https://storage.googleapis.com/falserverless/example_outputs/react_1/output.mp4"
+                  }
+                ],
+                "description": "The generated video with synchronized lip and facial movements."
+              }
+            },
+            "x-fal-order-properties": [
+              "video"
+            ],
+            "required": [
+              "video"
+            ]
+          },
+          "VideoFile": {
+            "type": "object",
+            "title": "VideoFile",
+            "properties": {
+              "num_frames": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Num Frames",
+                "description": "The number of frames in the video"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "examples": [
+                  "image/png"
+                ],
+                "description": "The mime type of the file."
+              },
+              "width": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Width",
+                "description": "The width of the video"
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "examples": [
+                  4404019
+                ],
+                "description": "The size of the file in bytes."
+              },
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Height",
+                "description": "The height of the video"
+              },
+              "fps": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Fps",
+                "description": "The FPS of the video"
+              },
+              "duration": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Duration",
+                "description": "The duration of the video"
+              },
+              "url": {
+                "type": "string",
+                "title": "Url",
+                "description": "The URL where the file can be downloaded from."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size",
+              "width",
+              "height",
+              "fps",
+              "duration",
+              "num_frames"
+            ],
+            "required": [
+              "url"
+            ]
+          }
+        }
+      },
+      "openapi_version": "3.0.4",
+      "selection_guidance": "To choose a model for a task, call recommend_model: it applies current published guidance, checks fit and returns next_call with an input contract. Catalog order is not a quality ranking. Copy endpoint_id exactly; never add or change a provider prefix such as fal-ai/.",
+      "knowledge_status": "complete",
+      "knowledge_retrieval": {
+        "fetched_at": "2026-10-17T20:25:06.568Z",
+        "warnings": []
+      },
+      "model_knowledge": {
+        "models": [
+          {
+            "endpoint_id": "fal-ai/sync-lipsync/react-1",
+            "display_name": "Sync React-1",
+            "category": "video-to-video",
+            "relevance": null,
+            "insights": []
+          }
+        ],
+        "evidence": {
+          "version": 3,
+          "compiled_at": null,
+          "window_start": null,
+          "window_end": null,
+          "evaluated_at": "2026-10-17T20:25:06.970Z",
+          "latency_definition": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees.",
+          "instructions": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices.",
+          "models": [
+            {
+              "endpoint_id": "fal-ai/sync-lipsync/react-1",
+              "evidence": null
+            }
+          ]
+        },
+        "unavailable_endpoint_ids": [],
+        "stats_available": false,
+        "note": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices."
+      }
+    },
+    {
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "display_name": "H3 Max Reference to Video",
+      "category": "image-to-video",
+      "description": "fal's H3 Max is a post-trained variant of MiniMax H3, tuned for stronger prompt adherence and better aesthetics while co-optimized with our custom inference stack for higher throughput with no compromises on output quality",
+      "input_params": [
+        {
+          "name": "image_url",
+          "type": "string | null",
+          "description": "Optional URL of the image to use as the first frame. The video opens exactly on this image while the references keep the subjects consistent; the output canvas follows this image.",
+          "required": false
+        },
+        {
+          "name": "reference_image_urls",
+          "type": "array<string>",
+          "description": "URLs of subject/style reference images, referenced in the prompt as Image 1, Image 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+          "required": false
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "description": "Text prompt for video generation. Refer to reference assets by their modality and order in the reference lists: Image 1, Image 2, Video 1, Audio 1, and so on.",
+          "required": true
+        },
+        {
+          "name": "sync_mode",
+          "type": "boolean",
+          "description": "Return the generated video as base64 instead of a CDN URL.",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "description": "Video length in seconds. The output can run up to about 0.7 s longer than requested.",
+          "required": false,
+          "default": 5
+        },
+        {
+          "name": "reference_video_urls",
+          "type": "array<string>",
+          "description": "URLs of motion/reference video clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Video 1, Video 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+          "required": false
+        },
+        {
+          "name": "seed",
+          "type": "integer | null",
+          "description": "Random seed. A random seed is selected when omitted.",
+          "required": false
+        },
+        {
+          "name": "reference_conditions",
+          "type": "array<object>",
+          "description": "Ordered reference list; cross-modality order is semantic and is preserved end-to-end. Do not combine with reference_*_urls.",
+          "required": false
+        },
+        {
+          "name": "prompt_expansion_mode",
+          "type": "string",
+          "description": "How much effort to spend rewriting the prompt before generation. 'disabled' skips prompt expansion. 'balanced' returns in about a second. 'quality' spends up to ~30s on a richer prompt.",
+          "required": true,
+          "default": "balanced"
+        },
+        {
+          "name": "enable_safety_checker",
+          "type": "boolean",
+          "description": "If set to true, the safety checker will be enabled.",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "aspect_ratio",
+          "type": "string",
+          "description": "The aspect ratio of the generated video.",
+          "required": false,
+          "default": "adaptive",
+          "enum": [
+            "adaptive",
+            "21:9",
+            "16:9",
+            "4:3",
+            "1:1",
+            "3:4",
+            "9:16"
+          ]
+        },
+        {
+          "name": "reference_audio_urls",
+          "type": "array<string>",
+          "description": "URLs of reference audio clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Audio 1, Audio 2, and so on. Images, videos, and audio can be provided individually or together. Reference images, videos, and audio clips must add up to at most 12 files.",
+          "required": false
+        },
+        {
+          "name": "middle_frame_time",
+          "type": "number | null",
+          "description": "Target time for the middle image, in seconds from the start. Rounded to the nearest frame at 24 fps; it must fall strictly between the first and last frames of the requested duration. Requires middle_image_url.",
+          "required": false
+        },
+        {
+          "name": "middle_image_url",
+          "type": "string | null",
+          "description": "Optional image to guide the video at middle_frame_time. Requires start and end images and native 480P or 768P resolution.",
+          "required": false
+        },
+        {
+          "name": "resolution",
+          "type": "string",
+          "description": "The native generation resolution, or 1080P latent refinement from a native 768P source.",
+          "required": false,
+          "default": "768P",
+          "enum": [
+            "480P",
+            "768P",
+            "1080P"
+          ]
+        },
+        {
+          "name": "end_image_url",
+          "type": "string | null",
+          "description": "Optional URL of the image to use as the last frame. The video ends exactly on this image.",
+          "required": false
+        }
+      ],
+      "output_fields": [
+        {
+          "name": "timings",
+          "type": "object | null",
+          "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend. Null on routes that do not report backend timings.",
+          "required": false
+        },
+        {
+          "name": "video",
+          "type": "object",
+          "description": "The generated video",
+          "required": true
+        },
+        {
+          "name": "expanded_prompt",
+          "type": "string | null",
+          "description": "The prompt after expansion, as sent to the model. Null when prompt expansion was disabled, left the prompt unchanged, or was performed internally by MiniMax's hosted API.",
+          "required": false
+        },
+        {
+          "name": "seed",
+          "type": "integer",
+          "description": "Base seed for reproducing the generation.",
+          "required": true
+        }
+      ],
+      "input_schema": {
+        "title": "TurboReferenceToVideoHailuo03Input",
+        "type": "object",
+        "properties": {
+          "image_url": {
+            "title": "Start Image URL",
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional URL of the image to use as the first frame. The video opens exactly on this image while the references keep the subjects consistent; the output canvas follows this image."
+          },
+          "reference_image_urls": {
+            "examples": [
+              [
+                "https://storage.googleapis.com/falserverless/example_inputs/hailuo23/pro_i2v_in.jpg"
+              ]
+            ],
+            "title": "Reference Image URLs",
+            "type": "array",
+            "description": "URLs of subject/style reference images, referenced in the prompt as Image 1, Image 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 9
+          },
+          "prompt": {
+            "examples": [
+              "Image 1 is the female protagonist. Image 2 is her small dog. Keep the woman and dog consistent with their respective reference images while they walk together through a sunlit garden."
+            ],
+            "maxLength": 50000,
+            "title": "Prompt",
+            "type": "string",
+            "minLength": 1,
+            "description": "Text prompt for video generation. Refer to reference assets by their modality and order in the reference lists: Image 1, Image 2, Video 1, Audio 1, and so on."
+          },
+          "sync_mode": {
+            "title": "Sync Mode",
+            "type": "boolean",
+            "description": "Return the generated video as base64 instead of a CDN URL.",
+            "default": false
+          },
+          "duration": {
+            "title": "Duration",
+            "type": "number",
+            "minimum": 0.92,
+            "maximum": 15,
+            "description": "Video length in seconds. The output can run up to about 0.7 s longer than requested.",
+            "default": 5
+          },
+          "reference_video_urls": {
+            "title": "Reference Video URLs",
+            "type": "array",
+            "description": "URLs of motion/reference video clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Video 1, Video 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3
+          },
+          "seed": {
+            "title": "Seed",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Random seed. A random seed is selected when omitted."
+          },
+          "reference_conditions": {
+            "title": "Reference Conditions",
+            "description": "Ordered reference list; cross-modality order is semantic and is preserved end-to-end. Do not combine with reference_*_urls.",
+            "type": "array",
+            "items": {
+              "title": "ReferenceCondition",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "title": "Type",
+                  "type": "string",
+                  "enum": [
+                    "image",
+                    "video",
+                    "audio"
+                  ],
+                  "description": "Reference modality. Cross-modality list order is semantic."
+                },
+                "url": {
+                  "title": "Url",
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "URL of the reference media."
+                }
+              },
+              "x-fal-order-properties": [
+                "type",
+                "url"
+              ],
+              "description": "One ordered Ref2VA media condition.",
+              "required": [
+                "type",
+                "url"
+              ]
+            },
+            "maxItems": 12
+          },
+          "prompt_expansion_mode": {
+            "examples": [
+              "disabled",
+              "balanced",
+              "quality"
+            ],
+            "title": "Prompt Expansion Mode",
+            "type": "string",
+            "description": "How much effort to spend rewriting the prompt before generation. 'disabled' skips prompt expansion. 'balanced' returns in about a second. 'quality' spends up to ~30s on a richer prompt.",
+            "default": "balanced"
+          },
+          "enable_safety_checker": {
+            "title": "Enable Safety Checker",
+            "type": "boolean",
+            "description": "If set to true, the safety checker will be enabled.",
+            "default": true
+          },
+          "aspect_ratio": {
+            "title": "Aspect Ratio",
+            "type": "string",
+            "enum": [
+              "adaptive",
+              "21:9",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "description": "The aspect ratio of the generated video.",
+            "default": "adaptive"
+          },
+          "reference_audio_urls": {
+            "title": "Reference Audio URLs",
+            "type": "array",
+            "description": "URLs of reference audio clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Audio 1, Audio 2, and so on. Images, videos, and audio can be provided individually or together. Reference images, videos, and audio clips must add up to at most 12 files.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3
+          },
+          "middle_frame_time": {
+            "examples": [
+              2.5
+            ],
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMaximum": 15,
+                "exclusiveMinimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time (seconds)",
+            "description": "Target time for the middle image, in seconds from the start. Rounded to the nearest frame at 24 fps; it must fall strictly between the first and last frames of the requested duration. Requires middle_image_url."
+          },
+          "middle_image_url": {
+            "title": "Middle Image",
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional image to guide the video at middle_frame_time. Requires start and end images and native 480P or 768P resolution."
+          },
+          "resolution": {
+            "title": "Resolution",
+            "type": "string",
+            "enum": [
+              "480P",
+              "768P",
+              "1080P"
+            ],
+            "description": "The native generation resolution, or 1080P latent refinement from a native 768P source.",
+            "default": "768P"
+          },
+          "end_image_url": {
+            "title": "End Image URL",
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional URL of the image to use as the last frame. The video ends exactly on this image."
+          }
+        },
+        "x-fal-order-properties": [
+          "prompt",
+          "reference_image_urls",
+          "reference_video_urls",
+          "reference_audio_urls",
+          "image_url",
+          "middle_image_url",
+          "middle_frame_time",
+          "end_image_url",
+          "duration",
+          "resolution",
+          "seed",
+          "enable_safety_checker",
+          "sync_mode",
+          "prompt_expansion_mode",
+          "aspect_ratio",
+          "reference_conditions"
+        ],
+        "required": [
+          "prompt",
+          "prompt_expansion_mode"
+        ]
+      },
+      "output_schema": {
+        "title": "TurboReferenceToVideoHailuo03Output",
+        "type": "object",
+        "properties": {
+          "timings": {
+            "title": "Timings",
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend. Null on routes that do not report backend timings."
+          },
+          "video": {
+            "title": "File",
+            "type": "object",
+            "properties": {
+              "file_name": {
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "url": {
+                "title": "Url",
+                "type": "string",
+                "description": "The URL where the file can be downloaded from."
+              },
+              "content_type": {
+                "examples": [
+                  "image/png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "description": "The mime type of the file."
+              },
+              "file_size": {
+                "examples": [
+                  4404019
+                ],
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "description": "The size of the file in bytes."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "required": [
+              "url"
+            ],
+            "description": "The generated video"
+          },
+          "expanded_prompt": {
+            "title": "Expanded Prompt",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The prompt after expansion, as sent to the model. Null when prompt expansion was disabled, left the prompt unchanged, or was performed internally by MiniMax's hosted API."
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer",
+            "description": "Base seed for reproducing the generation."
+          }
+        },
+        "x-fal-order-properties": [
+          "video",
+          "expanded_prompt",
+          "seed",
+          "timings"
+        ],
+        "required": [
+          "video",
+          "seed"
+        ]
+      },
+      "exact_input_schema": {
+        "$ref": "#/components/schemas/MinimaxH3TurboReferenceToVideoInput"
+      },
+      "exact_output_schema": {
+        "$ref": "#/components/schemas/MinimaxH3TurboReferenceToVideoOutput"
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Fal Key"
+          }
+        },
+        "schemas": {
+          "QueueStatus": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "IN_QUEUE",
+                  "IN_PROGRESS",
+                  "COMPLETED"
+                ]
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The request id."
+              },
+              "response_url": {
+                "type": "string",
+                "description": "The response url."
+              },
+              "status_url": {
+                "type": "string",
+                "description": "The status url."
+              },
+              "cancel_url": {
+                "type": "string",
+                "description": "The cancel url."
+              },
+              "logs": {
+                "type": "object",
+                "description": "The logs.",
+                "additionalProperties": true
+              },
+              "metrics": {
+                "type": "object",
+                "description": "The metrics.",
+                "additionalProperties": true
+              },
+              "queue_position": {
+                "type": "integer",
+                "description": "The queue position."
+              }
+            },
+            "required": [
+              "status",
+              "request_id"
+            ]
+          },
+          "MinimaxH3TurboReferenceToVideoInput": {
+            "title": "TurboReferenceToVideoHailuo03Input",
+            "type": "object",
+            "properties": {
+              "image_url": {
+                "title": "Start Image URL",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Optional URL of the image to use as the first frame. The video opens exactly on this image while the references keep the subjects consistent; the output canvas follows this image."
+              },
+              "reference_image_urls": {
+                "examples": [
+                  [
+                    "https://storage.googleapis.com/falserverless/example_inputs/hailuo23/pro_i2v_in.jpg"
+                  ]
+                ],
+                "title": "Reference Image URLs",
+                "type": "array",
+                "description": "URLs of subject/style reference images, referenced in the prompt as Image 1, Image 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 9
+              },
+              "prompt": {
+                "examples": [
+                  "Image 1 is the female protagonist. Image 2 is her small dog. Keep the woman and dog consistent with their respective reference images while they walk together through a sunlit garden."
+                ],
+                "maxLength": 50000,
+                "title": "Prompt",
+                "type": "string",
+                "minLength": 1,
+                "description": "Text prompt for video generation. Refer to reference assets by their modality and order in the reference lists: Image 1, Image 2, Video 1, Audio 1, and so on."
+              },
+              "sync_mode": {
+                "title": "Sync Mode",
+                "type": "boolean",
+                "description": "Return the generated video as base64 instead of a CDN URL.",
+                "default": false
+              },
+              "duration": {
+                "title": "Duration",
+                "type": "number",
+                "minimum": 0.92,
+                "maximum": 15,
+                "description": "Video length in seconds. The output can run up to about 0.7 s longer than requested.",
+                "default": 5
+              },
+              "reference_video_urls": {
+                "title": "Reference Video URLs",
+                "type": "array",
+                "description": "URLs of motion/reference video clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Video 1, Video 2, and so on. Reference images, videos, and audio clips must add up to at most 12 files.",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 3
+              },
+              "seed": {
+                "title": "Seed",
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Random seed. A random seed is selected when omitted."
+              },
+              "reference_conditions": {
+                "title": "Reference Conditions",
+                "description": "Ordered reference list; cross-modality order is semantic and is preserved end-to-end. Do not combine with reference_*_urls.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReferenceCondition"
+                },
+                "maxItems": 12
+              },
+              "prompt_expansion_mode": {
+                "examples": [
+                  "disabled",
+                  "balanced",
+                  "quality"
+                ],
+                "title": "Prompt Expansion Mode",
+                "type": "string",
+                "description": "How much effort to spend rewriting the prompt before generation. 'disabled' skips prompt expansion. 'balanced' returns in about a second. 'quality' spends up to ~30s on a richer prompt.",
+                "default": "balanced"
+              },
+              "enable_safety_checker": {
+                "title": "Enable Safety Checker",
+                "type": "boolean",
+                "description": "If set to true, the safety checker will be enabled.",
+                "default": true
+              },
+              "aspect_ratio": {
+                "title": "Aspect Ratio",
+                "type": "string",
+                "enum": [
+                  "adaptive",
+                  "21:9",
+                  "16:9",
+                  "4:3",
+                  "1:1",
+                  "3:4",
+                  "9:16"
+                ],
+                "description": "The aspect ratio of the generated video.",
+                "default": "adaptive"
+              },
+              "reference_audio_urls": {
+                "title": "Reference Audio URLs",
+                "type": "array",
+                "description": "URLs of reference audio clips (2-15 seconds each, combined duration at most 15 seconds), referenced in the prompt as Audio 1, Audio 2, and so on. Images, videos, and audio can be provided individually or together. Reference images, videos, and audio clips must add up to at most 12 files.",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 3
+              },
+              "middle_frame_time": {
+                "examples": [
+                  2.5
+                ],
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "exclusiveMaximum": 15,
+                    "exclusiveMinimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Time (seconds)",
+                "description": "Target time for the middle image, in seconds from the start. Rounded to the nearest frame at 24 fps; it must fall strictly between the first and last frames of the requested duration. Requires middle_image_url."
+              },
+              "middle_image_url": {
+                "title": "Middle Image",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Optional image to guide the video at middle_frame_time. Requires start and end images and native 480P or 768P resolution."
+              },
+              "resolution": {
+                "title": "Resolution",
+                "type": "string",
+                "enum": [
+                  "480P",
+                  "768P",
+                  "1080P"
+                ],
+                "description": "The native generation resolution, or 1080P latent refinement from a native 768P source.",
+                "default": "768P"
+              },
+              "end_image_url": {
+                "title": "End Image URL",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Optional URL of the image to use as the last frame. The video ends exactly on this image."
+              }
+            },
+            "x-fal-order-properties": [
+              "prompt",
+              "reference_image_urls",
+              "reference_video_urls",
+              "reference_audio_urls",
+              "image_url",
+              "middle_image_url",
+              "middle_frame_time",
+              "end_image_url",
+              "duration",
+              "resolution",
+              "seed",
+              "enable_safety_checker",
+              "sync_mode",
+              "prompt_expansion_mode",
+              "aspect_ratio",
+              "reference_conditions"
+            ],
+            "required": [
+              "prompt",
+              "prompt_expansion_mode"
+            ]
+          },
+          "MinimaxH3TurboReferenceToVideoOutput": {
+            "title": "TurboReferenceToVideoHailuo03Output",
+            "type": "object",
+            "properties": {
+              "timings": {
+                "title": "Timings",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend. Null on routes that do not report backend timings."
+              },
+              "video": {
+                "$ref": "#/components/schemas/File",
+                "description": "The generated video"
+              },
+              "expanded_prompt": {
+                "title": "Expanded Prompt",
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The prompt after expansion, as sent to the model. Null when prompt expansion was disabled, left the prompt unchanged, or was performed internally by MiniMax's hosted API."
+              },
+              "seed": {
+                "title": "Seed",
+                "type": "integer",
+                "description": "Base seed for reproducing the generation."
+              }
+            },
+            "x-fal-order-properties": [
+              "video",
+              "expanded_prompt",
+              "seed",
+              "timings"
+            ],
+            "required": [
+              "video",
+              "seed"
+            ]
+          },
+          "ReferenceCondition": {
+            "title": "ReferenceCondition",
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "type": "string",
+                "enum": [
+                  "image",
+                  "video",
+                  "audio"
+                ],
+                "description": "Reference modality. Cross-modality list order is semantic."
+              },
+              "url": {
+                "title": "Url",
+                "type": "string",
+                "minLength": 1,
+                "description": "URL of the reference media."
+              }
+            },
+            "x-fal-order-properties": [
+              "type",
+              "url"
+            ],
+            "description": "One ordered Ref2VA media condition.",
+            "required": [
+              "type",
+              "url"
+            ]
+          },
+          "File": {
+            "title": "File",
+            "type": "object",
+            "properties": {
+              "file_name": {
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "url": {
+                "title": "Url",
+                "type": "string",
+                "description": "The URL where the file can be downloaded from."
+              },
+              "content_type": {
+                "examples": [
+                  "image/png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "description": "The mime type of the file."
+              },
+              "file_size": {
+                "examples": [
+                  4404019
+                ],
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "description": "The size of the file in bytes."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "required": [
+              "url"
+            ]
+          }
+        }
+      },
+      "openapi_version": "3.0.4",
+      "selection_guidance": "To choose a model for a task, call recommend_model: it applies current published guidance, checks fit and returns next_call with an input contract. Catalog order is not a quality ranking. Copy endpoint_id exactly; never add or change a provider prefix such as fal-ai/.",
+      "knowledge_status": "complete",
+      "knowledge_retrieval": {
+        "fetched_at": "2026-10-17T20:25:06.942Z",
+        "warnings": []
+      },
+      "model_knowledge": {
+        "models": [
+          {
+            "endpoint_id": "minimax/h3-max/reference-to-video",
+            "display_name": "H3 Max Reference to Video",
+            "category": "image-to-video",
+            "relevance": null,
+            "insights": [
+              {
+                "kind": "default_pick",
+                "body": "Default when the request edits footage or brings image/video/audio references. Pass them via reference_image_urls / reference_video_urls / reference_audio_urls, at most 12 files total; audio can't be the only reference.",
+                "source": "curated",
+                "task": {
+                  "name": "Video to video",
+                  "category": "video-to-video"
+                },
+                "rank": 1
+              },
+              {
+                "kind": "weakness",
+                "body": "Does not accept explicit document or webpage URL inputs; route those to alibaba/wan-3.0-prime/reference-to-video.",
+                "source": "curated",
+                "task": null,
+                "rank": null
+              }
+            ]
+          }
+        ],
+        "evidence": {
+          "version": 3,
+          "compiled_at": null,
+          "window_start": null,
+          "window_end": null,
+          "evaluated_at": "2026-10-17T20:25:08.550Z",
+          "latency_definition": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees.",
+          "instructions": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices.",
+          "models": [
+            {
+              "endpoint_id": "minimax/h3-max/reference-to-video",
+              "evidence": null
+            }
+          ]
+        },
+        "unavailable_endpoint_ids": [],
+        "stats_available": false,
+        "note": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices."
+      }
+    },
+    {
+      "endpoint_id": "openai/gpt-image-2.5/sunburst/text-to-image",
+      "display_name": "GPT Image 2.5 Sunburst Text to Image",
+      "category": "text-to-image",
+      "description": "OpenAI's precision-focused image model, built for premium visual work, extra fidelity on intricate detail, in exchange for longer generation times.",
+      "input_params": [
+        {
+          "name": "enable_safety_checker",
+          "type": "boolean",
+          "description": "Authorized callers may set false to request relaxed screening.",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "num_images",
+          "type": "integer",
+          "description": "Number of images to generate",
+          "required": false,
+          "default": 1
+        },
+        {
+          "name": "sync_mode",
+          "type": "boolean",
+          "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "output_format",
+          "type": "string",
+          "description": "Output format for the images",
+          "required": false,
+          "default": "png",
+          "enum": [
+            "jpeg",
+            "png",
+            "webp"
+          ]
+        },
+        {
+          "name": "prompt",
+          "type": "string",
+          "description": "The prompt for image generation",
+          "required": true
+        },
+        {
+          "name": "background",
+          "type": "string",
+          "description": "Background for the generated image",
+          "required": false,
+          "default": "auto",
+          "enum": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        {
+          "name": "quality",
+          "type": "string",
+          "description": "Quality for the generated image. Higher settings increase detail, latency, and token usage. Use 'auto' to let the model choose.",
+          "required": false,
+          "default": "high",
+          "enum": [
+            "auto",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        {
+          "name": "image_size",
+          "type": "object | string",
+          "description": "The size of the generated image. Supports preset names, explicit {width, height}, or 'auto' to let the model pick the best size. Concrete sizes must have both dimensions as multiples of 16, max edge 3840px, aspect ratio <= 3:1, total pixels between 655,360 and 8,294,400.",
+          "required": false,
+          "default": "landscape_4_3"
+        },
+        {
+          "name": "output_compression",
+          "type": "integer | null",
+          "description": "Compression level from 0 to 100. Only supported when output_format is 'jpeg' or 'webp'.",
+          "required": false
+        }
+      ],
+      "output_fields": [
+        {
+          "name": "images",
+          "type": "array<object>",
+          "description": "The generated images.",
+          "required": true
+        }
+      ],
+      "input_schema": {
+        "description": "GPT Image 2.5 generation inputs, kept separate from GPT Image 2.",
+        "properties": {
+          "enable_safety_checker": {
+            "description": "Authorized callers may set false to request relaxed screening.",
+            "type": "boolean",
+            "title": "Enable Safety Checker",
+            "default": true
+          },
+          "num_images": {
+            "description": "Number of images to generate",
+            "maximum": 10,
+            "title": "Number of Images",
+            "default": 1,
+            "type": "integer",
+            "minimum": 1,
+            "examples": [
+              1
+            ]
+          },
+          "sync_mode": {
+            "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+            "type": "boolean",
+            "title": "Sync Mode",
+            "default": false
+          },
+          "output_format": {
+            "enum": [
+              "jpeg",
+              "png",
+              "webp"
+            ],
+            "description": "Output format for the images",
+            "type": "string",
+            "title": "Output Format",
+            "default": "png"
+          },
+          "prompt": {
+            "description": "The prompt for image generation",
+            "type": "string",
+            "minLength": 1,
+            "title": "Prompt",
+            "maxLength": 32000,
+            "examples": [
+              "create a realistic image taken with iphone at these coordinates 41°43′32″N 49°56′49″W 15 April 1912"
+            ]
+          },
+          "background": {
+            "enum": [
+              "auto",
+              "transparent",
+              "opaque"
+            ],
+            "description": "Background for the generated image",
+            "type": "string",
+            "title": "Background",
+            "default": "auto"
+          },
+          "quality": {
+            "enum": [
+              "auto",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ],
+            "description": "Quality for the generated image. Higher settings increase detail, latency, and token usage. Use 'auto' to let the model choose.",
+            "title": "Quality",
+            "default": "high",
+            "type": "string"
+          },
+          "image_size": {
+            "anyOf": [
+              {
+                "properties": {
+                  "height": {
+                    "description": "The height of the generated image.",
+                    "maximum": 14142,
+                    "title": "Height",
+                    "default": 512,
+                    "exclusiveMinimum": 0,
+                    "type": "integer"
+                  },
+                  "width": {
+                    "description": "The width of the generated image.",
+                    "maximum": 14142,
+                    "title": "Width",
+                    "default": 512,
+                    "exclusiveMinimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "title": "ImageSize",
+                "type": "object",
+                "x-fal-order-properties": [
+                  "width",
+                  "height"
+                ]
+              },
+              {
+                "enum": [
+                  "square_hd",
+                  "square",
+                  "portrait_4_3",
+                  "portrait_16_9",
+                  "landscape_4_3",
+                  "landscape_16_9",
+                  "auto"
+                ],
+                "type": "string"
+              }
+            ],
+            "description": "The size of the generated image. Supports preset names, explicit {width, height}, or 'auto' to let the model pick the best size. Concrete sizes must have both dimensions as multiples of 16, max edge 3840px, aspect ratio <= 3:1, total pixels between 655,360 and 8,294,400.",
+            "title": "Image Size",
+            "default": "landscape_4_3"
+          },
+          "output_compression": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Compression level from 0 to 100. Only supported when output_format is 'jpeg' or 'webp'.",
+            "title": "Output Compression"
+          }
+        },
+        "title": "GPTImage25TextToImageRequest",
+        "type": "object",
+        "x-fal-order-properties": [
+          "prompt",
+          "image_size",
+          "background",
+          "quality",
+          "num_images",
+          "output_format",
+          "output_compression",
+          "sync_mode",
+          "enable_safety_checker"
+        ],
+        "required": [
+          "prompt"
+        ]
+      },
+      "output_schema": {
+        "properties": {
+          "images": {
+            "description": "The generated images.",
+            "type": "array",
+            "title": "Images",
+            "items": {
+              "properties": {
+                "url": {
+                  "description": "The URL where the file can be downloaded from.",
+                  "type": "string",
+                  "title": "Url"
+                },
+                "file_name": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "The name of the file. It will be auto-generated if not provided.",
+                  "examples": [
+                    "z9RV14K95DvU.png"
+                  ],
+                  "title": "File Name"
+                },
+                "file_size": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "The size of the file in bytes.",
+                  "examples": [
+                    4404019
+                  ],
+                  "title": "File Size"
+                },
+                "height": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "The height of the image",
+                  "title": "Height"
+                },
+                "width": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "The width of the image",
+                  "title": "Width"
+                },
+                "content_type": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "The mime type of the file.",
+                  "examples": [
+                    "image/png"
+                  ],
+                  "title": "Content Type"
+                }
+              },
+              "title": "ImageFile",
+              "type": "object",
+              "x-fal-order-properties": [
+                "url",
+                "content_type",
+                "file_name",
+                "file_size",
+                "width",
+                "height"
+              ],
+              "required": [
+                "url"
+              ]
+            },
+            "examples": [
+              [
+                {
+                  "url": "https://v3b.fal.media/files/b/0a869129/EnWrO3XWjPE0nxBDpaQrj.png",
+                  "file_name": "EnWrO3XWjPE0nxBDpaQrj.png",
+                  "height": 1024,
+                  "width": 1024,
+                  "content_type": "image/png"
+                }
+              ]
+            ]
+          }
+        },
+        "title": "ImageResponse",
+        "type": "object",
+        "x-fal-order-properties": [
+          "images"
+        ],
+        "required": [
+          "images"
+        ]
+      },
+      "exact_input_schema": {
+        "$ref": "#/components/schemas/GptImage25SunburstInput"
+      },
+      "exact_output_schema": {
+        "$ref": "#/components/schemas/GptImage25SunburstOutput"
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Fal Key"
+          }
+        },
+        "schemas": {
+          "QueueStatus": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "IN_QUEUE",
+                  "IN_PROGRESS",
+                  "COMPLETED"
+                ]
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The request id."
+              },
+              "response_url": {
+                "type": "string",
+                "description": "The response url."
+              },
+              "status_url": {
+                "type": "string",
+                "description": "The status url."
+              },
+              "cancel_url": {
+                "type": "string",
+                "description": "The cancel url."
+              },
+              "logs": {
+                "type": "object",
+                "description": "The logs.",
+                "additionalProperties": true
+              },
+              "metrics": {
+                "type": "object",
+                "description": "The metrics.",
+                "additionalProperties": true
+              },
+              "queue_position": {
+                "type": "integer",
+                "description": "The queue position."
+              }
+            },
+            "required": [
+              "status",
+              "request_id"
+            ]
+          },
+          "GptImage25SunburstInput": {
+            "description": "GPT Image 2.5 generation inputs, kept separate from GPT Image 2.",
+            "properties": {
+              "enable_safety_checker": {
+                "description": "Authorized callers may set false to request relaxed screening.",
+                "type": "boolean",
+                "title": "Enable Safety Checker",
+                "default": true
+              },
+              "num_images": {
+                "description": "Number of images to generate",
+                "maximum": 10,
+                "title": "Number of Images",
+                "default": 1,
+                "type": "integer",
+                "minimum": 1,
+                "examples": [
+                  1
+                ]
+              },
+              "sync_mode": {
+                "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+                "type": "boolean",
+                "title": "Sync Mode",
+                "default": false
+              },
+              "output_format": {
+                "enum": [
+                  "jpeg",
+                  "png",
+                  "webp"
+                ],
+                "description": "Output format for the images",
+                "type": "string",
+                "title": "Output Format",
+                "default": "png"
+              },
+              "prompt": {
+                "description": "The prompt for image generation",
+                "type": "string",
+                "minLength": 1,
+                "title": "Prompt",
+                "maxLength": 32000,
+                "examples": [
+                  "create a realistic image taken with iphone at these coordinates 41°43′32″N 49°56′49″W 15 April 1912"
+                ]
+              },
+              "background": {
+                "enum": [
+                  "auto",
+                  "transparent",
+                  "opaque"
+                ],
+                "description": "Background for the generated image",
+                "type": "string",
+                "title": "Background",
+                "default": "auto"
+              },
+              "quality": {
+                "enum": [
+                  "auto",
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ],
+                "description": "Quality for the generated image. Higher settings increase detail, latency, and token usage. Use 'auto' to let the model choose.",
+                "title": "Quality",
+                "default": "high",
+                "type": "string"
+              },
+              "image_size": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ImageSize"
+                  },
+                  {
+                    "enum": [
+                      "square_hd",
+                      "square",
+                      "portrait_4_3",
+                      "portrait_16_9",
+                      "landscape_4_3",
+                      "landscape_16_9",
+                      "auto"
+                    ],
+                    "type": "string"
+                  }
+                ],
+                "description": "The size of the generated image. Supports preset names, explicit {width, height}, or 'auto' to let the model pick the best size. Concrete sizes must have both dimensions as multiples of 16, max edge 3840px, aspect ratio <= 3:1, total pixels between 655,360 and 8,294,400.",
+                "title": "Image Size",
+                "default": "landscape_4_3"
+              },
+              "output_compression": {
+                "anyOf": [
+                  {
+                    "maximum": 100,
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Compression level from 0 to 100. Only supported when output_format is 'jpeg' or 'webp'.",
+                "title": "Output Compression"
+              }
+            },
+            "title": "GPTImage25TextToImageRequest",
+            "type": "object",
+            "x-fal-order-properties": [
+              "prompt",
+              "image_size",
+              "background",
+              "quality",
+              "num_images",
+              "output_format",
+              "output_compression",
+              "sync_mode",
+              "enable_safety_checker"
+            ],
+            "required": [
+              "prompt"
+            ]
+          },
+          "GptImage25SunburstOutput": {
+            "properties": {
+              "images": {
+                "description": "The generated images.",
+                "type": "array",
+                "title": "Images",
+                "items": {
+                  "$ref": "#/components/schemas/ImageFile"
+                },
+                "examples": [
+                  [
+                    {
+                      "url": "https://v3b.fal.media/files/b/0a869129/EnWrO3XWjPE0nxBDpaQrj.png",
+                      "file_name": "EnWrO3XWjPE0nxBDpaQrj.png",
+                      "height": 1024,
+                      "width": 1024,
+                      "content_type": "image/png"
+                    }
+                  ]
+                ]
+              }
+            },
+            "title": "ImageResponse",
+            "type": "object",
+            "x-fal-order-properties": [
+              "images"
+            ],
+            "required": [
+              "images"
+            ]
+          },
+          "ImageSize": {
+            "properties": {
+              "height": {
+                "description": "The height of the generated image.",
+                "maximum": 14142,
+                "title": "Height",
+                "default": 512,
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              },
+              "width": {
+                "description": "The width of the generated image.",
+                "maximum": 14142,
+                "title": "Width",
+                "default": 512,
+                "exclusiveMinimum": 0,
+                "type": "integer"
+              }
+            },
+            "title": "ImageSize",
+            "type": "object",
+            "x-fal-order-properties": [
+              "width",
+              "height"
+            ]
+          },
+          "ImageFile": {
+            "properties": {
+              "url": {
+                "description": "The URL where the file can be downloaded from.",
+                "type": "string",
+                "title": "Url"
+              },
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided.",
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "title": "File Name"
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The size of the file in bytes.",
+                "examples": [
+                  4404019
+                ],
+                "title": "File Size"
+              },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The height of the image",
+                "title": "Height"
+              },
+              "width": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The width of the image",
+                "title": "Width"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The mime type of the file.",
+                "examples": [
+                  "image/png"
+                ],
+                "title": "Content Type"
+              }
+            },
+            "title": "ImageFile",
+            "type": "object",
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size",
+              "width",
+              "height"
+            ],
+            "required": [
+              "url"
+            ]
+          }
+        }
+      },
+      "openapi_version": "3.0.4",
+      "selection_guidance": "To choose a model for a task, call recommend_model: it applies current published guidance, checks fit and returns next_call with an input contract. Catalog order is not a quality ranking. Copy endpoint_id exactly; never add or change a provider prefix such as fal-ai/.",
+      "knowledge_status": "complete",
+      "knowledge_retrieval": {
+        "fetched_at": "2026-10-17T20:25:07.052Z",
+        "warnings": []
+      },
+      "model_knowledge": {
+        "models": [
+          {
+            "endpoint_id": "openai/gpt-image-2.5/sunburst/text-to-image",
+            "display_name": "GPT Image 2.5 Sunburst Text to Image",
+            "category": "text-to-image",
+            "relevance": null,
+            "insights": []
+          }
+        ],
+        "evidence": {
+          "version": 3,
+          "compiled_at": null,
+          "window_start": null,
+          "window_end": null,
+          "evaluated_at": "2026-10-17T20:25:08.483Z",
+          "latency_definition": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees.",
+          "instructions": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices.",
+          "models": [
+            {
+              "endpoint_id": "openai/gpt-image-2.5/sunburst/text-to-image",
+              "evidence": null
+            }
+          ]
+        },
+        "unavailable_endpoint_ids": [],
+        "stats_available": false,
+        "note": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices."
+      }
+    },
+    {
+      "endpoint_id": "minimax/h3-max/lip-sync/image-to-video",
+      "display_name": "H3 Max Lip Sync Image to Video",
+      "category": "image-to-video",
+      "description": "H3 Max Lip Sync generates a video from an image and supplied audio, synchronizing mouth movements to the soundtrack. It supports optional transcription guidance and output resolutions from 480p to 2K.",
+      "input_params": [
+        {
+          "name": "audio_url",
+          "type": "string",
+          "description": "Audio to synchronize the mouth movements to, at least 5 seconds long. Supports up to 15 minutes. The output video matches the supplied audio duration.",
+          "required": true
+        },
+        {
+          "name": "seed",
+          "type": "integer | null",
+          "description": "Random seed; selected randomly if omitted.",
+          "required": false
+        },
+        {
+          "name": "image_url",
+          "type": "string",
+          "description": "Image to animate. The aspect ratio must be between 0.4 and 2.5.",
+          "required": true
+        },
+        {
+          "name": "resolution",
+          "type": "string",
+          "description": "Output resolution. Uses the supported aspect ratio nearest the image.",
+          "required": false,
+          "default": "768P",
+          "enum": [
+            "480P",
+            "768P",
+            "1080P",
+            "2K"
+          ]
+        },
+        {
+          "name": "enable_transcription",
+          "type": "boolean",
+          "description": "Transcribe the supplied audio to guide lip synchronization. When disabled, synchronize to the audio without a transcript.",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "enable_safety_checker",
+          "type": "boolean",
+          "description": "Enable content safety checks.",
+          "required": false,
+          "default": true
+        }
+      ],
+      "output_fields": [
+        {
+          "name": "timings",
+          "type": "object | null",
+          "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend, summed over every window this request generated. Null on routes that do not report backend timings.",
+          "required": false
+        },
+        {
+          "name": "seed",
+          "type": "integer",
+          "description": "Random seed used for generation.",
+          "required": true
+        },
+        {
+          "name": "video",
+          "type": "object",
+          "description": "Lip-synced video with the supplied soundtrack.",
+          "required": true
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "description": "Output duration in seconds.",
+          "required": true
+        }
+      ],
+      "input_schema": {
+        "title": "LipSyncImageInput",
+        "type": "object",
+        "properties": {
+          "audio_url": {
+            "title": "Audio Url",
+            "type": "string",
+            "description": "Audio to synchronize the mouth movements to, at least 5 seconds long. Supports up to 15 minutes. The output video matches the supplied audio duration."
+          },
+          "seed": {
+            "title": "Seed",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Random seed; selected randomly if omitted."
+          },
+          "image_url": {
+            "title": "Image Url",
+            "type": "string",
+            "description": "Image to animate. The aspect ratio must be between 0.4 and 2.5."
+          },
+          "resolution": {
+            "title": "Resolution",
+            "type": "string",
+            "enum": [
+              "480P",
+              "768P",
+              "1080P",
+              "2K"
+            ],
+            "description": "Output resolution. Uses the supported aspect ratio nearest the image.",
+            "default": "768P"
+          },
+          "enable_transcription": {
+            "title": "Enable Transcription",
+            "type": "boolean",
+            "description": "Transcribe the supplied audio to guide lip synchronization. When disabled, synchronize to the audio without a transcript.",
+            "default": false
+          },
+          "enable_safety_checker": {
+            "title": "Enable Safety Checker",
+            "type": "boolean",
+            "description": "Enable content safety checks.",
+            "default": true
+          }
+        },
+        "x-fal-order-properties": [
+          "image_url",
+          "audio_url",
+          "resolution",
+          "enable_transcription",
+          "seed",
+          "enable_safety_checker"
+        ],
+        "required": [
+          "image_url",
+          "audio_url"
+        ]
+      },
+      "output_schema": {
+        "title": "LipSyncOutput",
+        "type": "object",
+        "properties": {
+          "timings": {
+            "title": "Timings",
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend, summed over every window this request generated. Null on routes that do not report backend timings."
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer",
+            "description": "Random seed used for generation."
+          },
+          "video": {
+            "title": "File",
+            "type": "object",
+            "properties": {
+              "file_name": {
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "url": {
+                "title": "Url",
+                "type": "string",
+                "description": "The URL where the file can be downloaded from."
+              },
+              "content_type": {
+                "examples": [
+                  "image/png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "description": "The mime type of the file."
+              },
+              "file_size": {
+                "examples": [
+                  4404019
+                ],
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "description": "The size of the file in bytes."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "required": [
+              "url"
+            ],
+            "description": "Lip-synced video with the supplied soundtrack."
+          },
+          "duration": {
+            "title": "Duration",
+            "type": "number",
+            "description": "Output duration in seconds."
+          }
+        },
+        "x-fal-order-properties": [
+          "video",
+          "seed",
+          "duration",
+          "timings"
+        ],
+        "required": [
+          "video",
+          "seed",
+          "duration"
+        ]
+      },
+      "exact_input_schema": {
+        "$ref": "#/components/schemas/MinimaxH3TurboLipSyncImageToVideoInput"
+      },
+      "exact_output_schema": {
+        "$ref": "#/components/schemas/MinimaxH3TurboLipSyncImageToVideoOutput"
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Fal Key"
+          }
+        },
+        "schemas": {
+          "QueueStatus": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "IN_QUEUE",
+                  "IN_PROGRESS",
+                  "COMPLETED"
+                ]
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The request id."
+              },
+              "response_url": {
+                "type": "string",
+                "description": "The response url."
+              },
+              "status_url": {
+                "type": "string",
+                "description": "The status url."
+              },
+              "cancel_url": {
+                "type": "string",
+                "description": "The cancel url."
+              },
+              "logs": {
+                "type": "object",
+                "description": "The logs.",
+                "additionalProperties": true
+              },
+              "metrics": {
+                "type": "object",
+                "description": "The metrics.",
+                "additionalProperties": true
+              },
+              "queue_position": {
+                "type": "integer",
+                "description": "The queue position."
+              }
+            },
+            "required": [
+              "status",
+              "request_id"
+            ]
+          },
+          "MinimaxH3TurboLipSyncImageToVideoInput": {
+            "title": "LipSyncImageInput",
+            "type": "object",
+            "properties": {
+              "audio_url": {
+                "title": "Audio Url",
+                "type": "string",
+                "description": "Audio to synchronize the mouth movements to, at least 5 seconds long. Supports up to 15 minutes. The output video matches the supplied audio duration."
+              },
+              "seed": {
+                "title": "Seed",
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Random seed; selected randomly if omitted."
+              },
+              "image_url": {
+                "title": "Image Url",
+                "type": "string",
+                "description": "Image to animate. The aspect ratio must be between 0.4 and 2.5."
+              },
+              "resolution": {
+                "title": "Resolution",
+                "type": "string",
+                "enum": [
+                  "480P",
+                  "768P",
+                  "1080P",
+                  "2K"
+                ],
+                "description": "Output resolution. Uses the supported aspect ratio nearest the image.",
+                "default": "768P"
+              },
+              "enable_transcription": {
+                "title": "Enable Transcription",
+                "type": "boolean",
+                "description": "Transcribe the supplied audio to guide lip synchronization. When disabled, synchronize to the audio without a transcript.",
+                "default": false
+              },
+              "enable_safety_checker": {
+                "title": "Enable Safety Checker",
+                "type": "boolean",
+                "description": "Enable content safety checks.",
+                "default": true
+              }
+            },
+            "x-fal-order-properties": [
+              "image_url",
+              "audio_url",
+              "resolution",
+              "enable_transcription",
+              "seed",
+              "enable_safety_checker"
+            ],
+            "required": [
+              "image_url",
+              "audio_url"
+            ]
+          },
+          "MinimaxH3TurboLipSyncImageToVideoOutput": {
+            "title": "LipSyncOutput",
+            "type": "object",
+            "properties": {
+              "timings": {
+                "title": "Timings",
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Timing breakdown in seconds. 'inference' is the DiT denoising time on the GPU backend, summed over every window this request generated. Null on routes that do not report backend timings."
+              },
+              "seed": {
+                "title": "Seed",
+                "type": "integer",
+                "description": "Random seed used for generation."
+              },
+              "video": {
+                "$ref": "#/components/schemas/File",
+                "description": "Lip-synced video with the supplied soundtrack."
+              },
+              "duration": {
+                "title": "Duration",
+                "type": "number",
+                "description": "Output duration in seconds."
+              }
+            },
+            "x-fal-order-properties": [
+              "video",
+              "seed",
+              "duration",
+              "timings"
+            ],
+            "required": [
+              "video",
+              "seed",
+              "duration"
+            ]
+          },
+          "File": {
+            "title": "File",
+            "type": "object",
+            "properties": {
+              "file_name": {
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "url": {
+                "title": "Url",
+                "type": "string",
+                "description": "The URL where the file can be downloaded from."
+              },
+              "content_type": {
+                "examples": [
+                  "image/png"
+                ],
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "description": "The mime type of the file."
+              },
+              "file_size": {
+                "examples": [
+                  4404019
+                ],
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "description": "The size of the file in bytes."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "required": [
+              "url"
+            ]
+          }
+        }
+      },
+      "openapi_version": "3.0.4",
+      "selection_guidance": "To choose a model for a task, call recommend_model: it applies current published guidance, checks fit and returns next_call with an input contract. Catalog order is not a quality ranking. Copy endpoint_id exactly; never add or change a provider prefix such as fal-ai/.",
+      "knowledge_status": "complete",
+      "knowledge_retrieval": {
+        "fetched_at": "2026-10-17T20:25:34.618Z",
+        "warnings": []
+      },
+      "model_knowledge": {
+        "models": [
+          {
+            "endpoint_id": "minimax/h3-max/lip-sync/image-to-video",
+            "display_name": "H3 Max Lip Sync Image to Video",
+            "category": "image-to-video",
+            "relevance": null,
+            "insights": []
+          }
+        ],
+        "evidence": {
+          "version": 3,
+          "compiled_at": null,
+          "window_start": null,
+          "window_end": null,
+          "evaluated_at": "2026-10-17T20:25:35.426Z",
+          "latency_definition": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees.",
+          "instructions": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices.",
+          "models": [
+            {
+              "endpoint_id": "minimax/h3-max/lip-sync/image-to-video",
+              "evidence": null
+            }
+          ]
+        },
+        "unavailable_endpoint_ids": [],
+        "stats_available": false,
+        "note": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices."
+      }
+    },
+    {
+      "endpoint_id": "elevenlabs/tts/eleven-v4",
+      "display_name": "Eleven v4",
+      "category": "text-to-speech",
+      "description": "Generate expressive speech with Eleven v4 from ElevenLabs. Control delivery with audio tags, voice stability, similarity settings, and IPA pronunciation.",
+      "input_params": [
+        {
+          "name": "output_format",
+          "type": "string",
+          "description": "Output format of the generated audio. Formatted as codec_sample_rate_bitrate.",
+          "required": false,
+          "default": "mp3_44100_128",
+          "enum": [
+            "mp3_22050_32",
+            "mp3_44100_32",
+            "mp3_44100_64",
+            "mp3_44100_96",
+            "mp3_44100_128",
+            "mp3_44100_192",
+            "pcm_8000",
+            "pcm_16000",
+            "pcm_22050",
+            "pcm_24000",
+            "pcm_44100",
+            "pcm_48000",
+            "ulaw_8000",
+            "alaw_8000",
+            "opus_48000_32",
+            "opus_48000_64",
+            "opus_48000_96",
+            "opus_48000_128",
+            "opus_48000_192"
+          ]
+        },
+        {
+          "name": "voice",
+          "type": "string",
+          "description": "The voice to use for speech generation",
+          "required": false,
+          "default": "Rachel"
+        },
+        {
+          "name": "similarity_boost",
+          "type": "number",
+          "description": "How closely the output follows the reference voice. Higher values increase similarity but may reduce naturalness.",
+          "required": false,
+          "default": 0.75
+        },
+        {
+          "name": "stability",
+          "type": "number",
+          "description": "Voice stability. Lower values allow more expressive delivery; higher values make delivery more consistent.",
+          "required": false,
+          "default": 0.5
+        },
+        {
+          "name": "seed",
+          "type": "integer | null",
+          "description": "Seed for best-effort reproducibility. Identical output is not guaranteed.",
+          "required": false
+        },
+        {
+          "name": "apply_text_normalization",
+          "type": "string",
+          "description": "Whether to normalize text such as numbers and dates before generation.",
+          "required": false,
+          "default": "auto",
+          "enum": [
+            "auto",
+            "on",
+            "off"
+          ]
+        },
+        {
+          "name": "timestamps",
+          "type": "boolean",
+          "description": "Whether to return character-level timing information with the generated audio.",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "language_code",
+          "type": "string | null",
+          "description": "Language code (ISO 639-1) for speech generation and text normalization.",
+          "required": false
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "description": "The text to convert to speech. Supports audio tags such as [whispering] and IPA pronunciation enclosed in forward slashes.",
+          "required": true
+        }
+      ],
+      "output_fields": [
+        {
+          "name": "audio",
+          "type": "object",
+          "description": "The generated audio file",
+          "required": true
+        },
+        {
+          "name": "timestamps",
+          "type": "array<unknown> | null",
+          "description": "Timestamps for each word in the generated speech. Only returned if `timestamps` is set to True in the request.",
+          "required": false
+        }
+      ],
+      "input_schema": {
+        "required": [
+          "text"
+        ],
+        "title": "TextToSpeechRequestV4",
+        "properties": {
+          "output_format": {
+            "title": "Output Format",
+            "default": "mp3_44100_128",
+            "enum": [
+              "mp3_22050_32",
+              "mp3_44100_32",
+              "mp3_44100_64",
+              "mp3_44100_96",
+              "mp3_44100_128",
+              "mp3_44100_192",
+              "pcm_8000",
+              "pcm_16000",
+              "pcm_22050",
+              "pcm_24000",
+              "pcm_44100",
+              "pcm_48000",
+              "ulaw_8000",
+              "alaw_8000",
+              "opus_48000_32",
+              "opus_48000_64",
+              "opus_48000_96",
+              "opus_48000_128",
+              "opus_48000_192"
+            ],
+            "description": "Output format of the generated audio. Formatted as codec_sample_rate_bitrate.",
+            "type": "string"
+          },
+          "voice": {
+            "examples": [
+              "Aria",
+              "Roger",
+              "Sarah",
+              "Laura",
+              "Charlie",
+              "George",
+              "Callum",
+              "River",
+              "Liam",
+              "Charlotte",
+              "Alice",
+              "Matilda",
+              "Will",
+              "Jessica",
+              "Eric",
+              "Chris",
+              "Brian",
+              "Daniel",
+              "Lily",
+              "Bill"
+            ],
+            "default": "Rachel",
+            "title": "Voice",
+            "description": "The voice to use for speech generation",
+            "type": "string"
+          },
+          "similarity_boost": {
+            "title": "Similarity Boost",
+            "default": 0.75,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "How closely the output follows the reference voice. Higher values increase similarity but may reduce naturalness.",
+            "type": "number"
+          },
+          "stability": {
+            "title": "Stability",
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "description": "Voice stability. Lower values allow more expressive delivery; higher values make delivery more consistent.",
+            "type": "number"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "maximum": 4294967295,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed",
+            "description": "Seed for best-effort reproducibility. Identical output is not guaranteed."
+          },
+          "apply_text_normalization": {
+            "title": "Apply Text Normalization",
+            "default": "auto",
+            "enum": [
+              "auto",
+              "on",
+              "off"
+            ],
+            "description": "Whether to normalize text such as numbers and dates before generation.",
+            "type": "string"
+          },
+          "timestamps": {
+            "title": "Timestamps",
+            "default": false,
+            "description": "Whether to return character-level timing information with the generated audio.",
+            "type": "boolean"
+          },
+          "language_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language Code",
+            "description": "Language code (ISO 639-1) for speech generation and text normalization."
+          },
+          "text": {
+            "title": "Text",
+            "examples": [
+              "[excited] Hello! Welcome to Eleven v4."
+            ],
+            "description": "The text to convert to speech. Supports audio tags such as [whispering] and IPA pronunciation enclosed in forward slashes.",
+            "maxLength": 5000,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "x-fal-order-properties": [
+          "text",
+          "voice",
+          "stability",
+          "similarity_boost",
+          "seed",
+          "language_code",
+          "output_format",
+          "apply_text_normalization",
+          "timestamps"
+        ],
+        "type": "object"
+      },
+      "output_schema": {
+        "required": [
+          "audio"
+        ],
+        "title": "TTSOutput",
+        "properties": {
+          "audio": {
+            "required": [
+              "url"
+            ],
+            "title": "File",
+            "properties": {
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "examples": [
+                  4404019
+                ],
+                "description": "The size of the file in bytes."
+              },
+              "url": {
+                "title": "Url",
+                "description": "The URL where the file can be downloaded from.",
+                "type": "string"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "examples": [
+                  "image/png"
+                ],
+                "description": "The mime type of the file."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "type": "object",
+            "examples": [
+              {
+                "url": "https://v3.fal.media/files/zebra/zJL_oRY8h5RWwjoK1w7tx_output.mp3"
+              }
+            ],
+            "description": "The generated audio file"
+          },
+          "timestamps": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamps",
+            "description": "Timestamps for each word in the generated speech. Only returned if `timestamps` is set to True in the request."
+          }
+        },
+        "x-fal-order-properties": [
+          "audio",
+          "timestamps"
+        ],
+        "type": "object"
+      },
+      "exact_input_schema": {
+        "$ref": "#/components/schemas/ElevenlabsTtsElevenV4Input"
+      },
+      "exact_output_schema": {
+        "$ref": "#/components/schemas/ElevenlabsTtsElevenV4Output"
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Fal Key"
+          }
+        },
+        "schemas": {
+          "QueueStatus": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "IN_QUEUE",
+                  "IN_PROGRESS",
+                  "COMPLETED"
+                ]
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The request id."
+              },
+              "response_url": {
+                "type": "string",
+                "description": "The response url."
+              },
+              "status_url": {
+                "type": "string",
+                "description": "The status url."
+              },
+              "cancel_url": {
+                "type": "string",
+                "description": "The cancel url."
+              },
+              "logs": {
+                "type": "object",
+                "description": "The logs.",
+                "additionalProperties": true
+              },
+              "metrics": {
+                "type": "object",
+                "description": "The metrics.",
+                "additionalProperties": true
+              },
+              "queue_position": {
+                "type": "integer",
+                "description": "The queue position."
+              }
+            },
+            "required": [
+              "status",
+              "request_id"
+            ]
+          },
+          "ElevenlabsTtsElevenV4Input": {
+            "required": [
+              "text"
+            ],
+            "title": "TextToSpeechRequestV4",
+            "properties": {
+              "output_format": {
+                "title": "Output Format",
+                "default": "mp3_44100_128",
+                "enum": [
+                  "mp3_22050_32",
+                  "mp3_44100_32",
+                  "mp3_44100_64",
+                  "mp3_44100_96",
+                  "mp3_44100_128",
+                  "mp3_44100_192",
+                  "pcm_8000",
+                  "pcm_16000",
+                  "pcm_22050",
+                  "pcm_24000",
+                  "pcm_44100",
+                  "pcm_48000",
+                  "ulaw_8000",
+                  "alaw_8000",
+                  "opus_48000_32",
+                  "opus_48000_64",
+                  "opus_48000_96",
+                  "opus_48000_128",
+                  "opus_48000_192"
+                ],
+                "description": "Output format of the generated audio. Formatted as codec_sample_rate_bitrate.",
+                "type": "string"
+              },
+              "voice": {
+                "examples": [
+                  "Aria",
+                  "Roger",
+                  "Sarah",
+                  "Laura",
+                  "Charlie",
+                  "George",
+                  "Callum",
+                  "River",
+                  "Liam",
+                  "Charlotte",
+                  "Alice",
+                  "Matilda",
+                  "Will",
+                  "Jessica",
+                  "Eric",
+                  "Chris",
+                  "Brian",
+                  "Daniel",
+                  "Lily",
+                  "Bill"
+                ],
+                "default": "Rachel",
+                "title": "Voice",
+                "description": "The voice to use for speech generation",
+                "type": "string"
+              },
+              "similarity_boost": {
+                "title": "Similarity Boost",
+                "default": 0.75,
+                "maximum": 1,
+                "minimum": 0,
+                "description": "How closely the output follows the reference voice. Higher values increase similarity but may reduce naturalness.",
+                "type": "number"
+              },
+              "stability": {
+                "title": "Stability",
+                "default": 0.5,
+                "maximum": 1,
+                "minimum": 0,
+                "description": "Voice stability. Lower values allow more expressive delivery; higher values make delivery more consistent.",
+                "type": "number"
+              },
+              "seed": {
+                "anyOf": [
+                  {
+                    "maximum": 4294967295,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Seed",
+                "description": "Seed for best-effort reproducibility. Identical output is not guaranteed."
+              },
+              "apply_text_normalization": {
+                "title": "Apply Text Normalization",
+                "default": "auto",
+                "enum": [
+                  "auto",
+                  "on",
+                  "off"
+                ],
+                "description": "Whether to normalize text such as numbers and dates before generation.",
+                "type": "string"
+              },
+              "timestamps": {
+                "title": "Timestamps",
+                "default": false,
+                "description": "Whether to return character-level timing information with the generated audio.",
+                "type": "boolean"
+              },
+              "language_code": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Language Code",
+                "description": "Language code (ISO 639-1) for speech generation and text normalization."
+              },
+              "text": {
+                "title": "Text",
+                "examples": [
+                  "[excited] Hello! Welcome to Eleven v4."
+                ],
+                "description": "The text to convert to speech. Supports audio tags such as [whispering] and IPA pronunciation enclosed in forward slashes.",
+                "maxLength": 5000,
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "x-fal-order-properties": [
+              "text",
+              "voice",
+              "stability",
+              "similarity_boost",
+              "seed",
+              "language_code",
+              "output_format",
+              "apply_text_normalization",
+              "timestamps"
+            ],
+            "type": "object"
+          },
+          "ElevenlabsTtsElevenV4Output": {
+            "required": [
+              "audio"
+            ],
+            "title": "TTSOutput",
+            "properties": {
+              "audio": {
+                "examples": [
+                  {
+                    "url": "https://v3.fal.media/files/zebra/zJL_oRY8h5RWwjoK1w7tx_output.mp3"
+                  }
+                ],
+                "description": "The generated audio file",
+                "$ref": "#/components/schemas/File"
+              },
+              "timestamps": {
+                "anyOf": [
+                  {
+                    "items": {},
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Timestamps",
+                "description": "Timestamps for each word in the generated speech. Only returned if `timestamps` is set to True in the request."
+              }
+            },
+            "x-fal-order-properties": [
+              "audio",
+              "timestamps"
+            ],
+            "type": "object"
+          },
+          "File": {
+            "required": [
+              "url"
+            ],
+            "title": "File",
+            "properties": {
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Name",
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided."
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "File Size",
+                "examples": [
+                  4404019
+                ],
+                "description": "The size of the file in bytes."
+              },
+              "url": {
+                "title": "Url",
+                "description": "The URL where the file can be downloaded from.",
+                "type": "string"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Content Type",
+                "examples": [
+                  "image/png"
+                ],
+                "description": "The mime type of the file."
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size"
+            ],
+            "type": "object"
+          }
+        }
+      },
+      "openapi_version": "3.0.4",
+      "selection_guidance": "To choose a model for a task, call recommend_model: it applies current published guidance, checks fit and returns next_call with an input contract. Catalog order is not a quality ranking. Copy endpoint_id exactly; never add or change a provider prefix such as fal-ai/.",
+      "knowledge_status": "complete",
+      "knowledge_retrieval": {
+        "fetched_at": "2026-10-17T20:25:35.121Z",
+        "warnings": []
+      },
+      "model_knowledge": {
+        "models": [
+          {
+            "endpoint_id": "elevenlabs/tts/eleven-v4",
+            "display_name": "Eleven v4",
+            "category": "text-to-speech",
+            "relevance": null,
+            "insights": []
+          }
+        ],
+        "evidence": {
+          "version": 3,
+          "compiled_at": null,
+          "window_start": null,
+          "window_end": null,
+          "evaluated_at": "2026-10-17T20:25:35.605Z",
+          "latency_definition": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees.",
+          "instructions": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices.",
+          "models": [
+            {
+              "endpoint_id": "elevenlabs/tts/eleven-v4",
+              "evidence": null
+            }
+          ]
+        },
+        "unavailable_endpoint_ids": [],
+        "stats_available": false,
+        "note": "Successful execution observations in milliseconds; mixed workloads; excludes queue/startup; not runtime guarantees. Report p50/p90 with their measurement window. Null means unknown, never zero. Trending is the analytics category rank at its source timestamp, not adoption or quality. New means registry publication within 30 days of the response evaluation time, not first usage. Lab recommendations are authored guidance, not measured latency, trending or newness. Use the existing pricing tool for current prices, preserving billing units and required configuration; these observations contain no prices."
+      }
+    }
+  ]
+}

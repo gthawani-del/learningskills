@@ -1,0 +1,709 @@
+{
+  "status": "planning candidates; not an applied migration or deployed registry",
+  "checked_at": "2026-10-17",
+  "entries": [
+    {
+      "reference": "M01",
+      "endpoint_id": "openrouter/router",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": "google/gemini-2.5-flash",
+      "underlying_model_basis": "Live schema examples only; availability/access/exact version untested",
+      "required_inputs": [
+        "prompt",
+        "model"
+      ],
+      "input_names": [
+        "reasoning",
+        "enable_web_search",
+        "temperature",
+        "model",
+        "max_tokens",
+        "prompt",
+        "web_search_options",
+        "system_prompt"
+      ],
+      "output_fields": [
+        "reasoning",
+        "partial",
+        "output",
+        "error",
+        "usage"
+      ],
+      "price_observation": {
+        "endpoint_id": "openrouter/router",
+        "unit_price": 0.01,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M02",
+      "endpoint_id": "openrouter/router/audio",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": "google/gemini-2.5-flash",
+      "underlying_model_basis": "Live schema examples only; availability/access/exact version untested",
+      "required_inputs": [
+        "prompt",
+        "audio_url",
+        "model"
+      ],
+      "input_names": [
+        "reasoning",
+        "enable_web_search",
+        "temperature",
+        "model",
+        "max_tokens",
+        "prompt",
+        "web_search_options",
+        "system_prompt",
+        "audio_url"
+      ],
+      "output_fields": [
+        "output",
+        "usage"
+      ],
+      "price_observation": {
+        "endpoint_id": "openrouter/router/audio",
+        "unit_price": 0.01,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M03",
+      "endpoint_id": "openrouter/router/vision",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": "google/gemini-2.5-flash",
+      "underlying_model_basis": "Live schema examples only; availability/access/exact version untested",
+      "required_inputs": [
+        "prompt",
+        "model"
+      ],
+      "input_names": [
+        "reasoning",
+        "enable_web_search",
+        "image_urls",
+        "temperature",
+        "model",
+        "max_tokens",
+        "prompt",
+        "web_search_options",
+        "system_prompt",
+        "pdf_urls"
+      ],
+      "output_fields": [
+        "output",
+        "usage"
+      ],
+      "price_observation": {
+        "endpoint_id": "openrouter/router/vision",
+        "unit_price": 0.01,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M04",
+      "endpoint_id": "openrouter/router/video",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": "google/gemini-2.5-flash",
+      "underlying_model_basis": "Live schema examples only; availability/access/exact version untested",
+      "required_inputs": [
+        "prompt",
+        "model"
+      ],
+      "input_names": [
+        "reasoning",
+        "enable_web_search",
+        "video_urls",
+        "temperature",
+        "web_search_options",
+        "max_tokens",
+        "prompt",
+        "model",
+        "system_prompt"
+      ],
+      "output_fields": [
+        "output",
+        "usage"
+      ],
+      "price_observation": {
+        "endpoint_id": "openrouter/router/video",
+        "unit_price": 0.01,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M05",
+      "endpoint_id": "fal-ai/audio-understanding",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "audio_url",
+        "prompt"
+      ],
+      "input_names": [
+        "prompt",
+        "audio_url",
+        "detailed_analysis"
+      ],
+      "output_fields": [
+        "output"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/audio-understanding",
+        "unit_price": 0.01,
+        "unit": "5 seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M06",
+      "endpoint_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "audio_url"
+      ],
+      "input_names": [
+        "audio_url",
+        "tag_audio_events",
+        "diarize",
+        "keyterms",
+        "language_code"
+      ],
+      "output_fields": [
+        "text",
+        "language_probability",
+        "language_code",
+        "words"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+        "unit_price": 0.008,
+        "unit": "minutes",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M07",
+      "endpoint_id": "fal-ai/elevenlabs/forced-alignment",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "audio_url",
+        "text"
+      ],
+      "input_names": [
+        "audio_url",
+        "text"
+      ],
+      "output_fields": [
+        "loss",
+        "characters",
+        "words"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/elevenlabs/forced-alignment",
+        "unit_price": 0.22,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M08",
+      "endpoint_id": "fal-ai/demucs",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "audio_url"
+      ],
+      "input_names": [
+        "segment_length",
+        "audio_url",
+        "stems",
+        "output_format",
+        "model",
+        "overlap",
+        "shifts"
+      ],
+      "output_fields": [
+        "piano",
+        "guitar",
+        "drums",
+        "bass",
+        "vocals",
+        "other"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/demucs",
+        "unit_price": 0.0007,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M09",
+      "endpoint_id": "bytedance/seedream/v5/pro/edit",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "prompt",
+        "image_urls"
+      ],
+      "input_names": [
+        "enhance_prompt_mode",
+        "prompt",
+        "sync_mode",
+        "enable_safety_checker",
+        "image_size",
+        "image_urls",
+        "num_images",
+        "output_format"
+      ],
+      "output_fields": [
+        "images"
+      ],
+      "price_observation": {
+        "endpoint_id": "bytedance/seedream/v5/pro/edit",
+        "unit_price": 0.0675,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M10",
+      "endpoint_id": "veed/fabric-1.0",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "image_url",
+        "audio_url",
+        "resolution"
+      ],
+      "input_names": [
+        "audio_url",
+        "image_url",
+        "resolution"
+      ],
+      "output_fields": [
+        "video"
+      ],
+      "price_observation": {
+        "endpoint_id": "veed/fabric-1.0",
+        "unit_price": 0.08,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M11",
+      "endpoint_id": "elevenlabs/music/v2.5",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [],
+      "input_names": [
+        "output_format",
+        "force_instrumental",
+        "seed",
+        "music_length_ms",
+        "composition_plan",
+        "prompt"
+      ],
+      "output_fields": [
+        "audio"
+      ],
+      "price_observation": {
+        "endpoint_id": "elevenlabs/music/v2.5",
+        "unit_price": 0.6,
+        "unit": "minutes",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M12",
+      "endpoint_id": "fal-ai/elevenlabs/sound-effects/v2",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "text"
+      ],
+      "input_names": [
+        "output_format",
+        "duration_seconds",
+        "prompt_influence",
+        "loop",
+        "text"
+      ],
+      "output_fields": [
+        "audio"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/elevenlabs/sound-effects/v2",
+        "unit_price": 0.002,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M13",
+      "endpoint_id": "fal-ai/kling-video/o3/pro/video-to-video/edit",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "prompt",
+        "video_url"
+      ],
+      "input_names": [
+        "keep_audio",
+        "video_url",
+        "image_urls",
+        "shot_type",
+        "enable_safety_checker",
+        "prompt",
+        "elements"
+      ],
+      "output_fields": [
+        "video"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/kling-video/o3/pro/video-to-video/edit",
+        "unit_price": 0.14,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M14",
+      "endpoint_id": "fal-ai/bytedance-upscaler/upscale/video",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "video_url"
+      ],
+      "input_names": [
+        "enhancement_tier",
+        "bit_depth",
+        "target_fps",
+        "video_url",
+        "target_resolution",
+        "fidelity",
+        "enhancement_preset",
+        "scale_ratio"
+      ],
+      "output_fields": [
+        "duration",
+        "video"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/bytedance-upscaler/upscale/video",
+        "unit_price": 0.0072,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M15",
+      "endpoint_id": "fal-ai/minimax-music/v2.6",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "prompt"
+      ],
+      "input_names": [
+        "lyrics",
+        "audio_setting",
+        "prompt",
+        "is_instrumental",
+        "enable_safety_checker",
+        "lyrics_optimizer"
+      ],
+      "output_fields": [
+        "audio"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/minimax-music/v2.6",
+        "unit_price": 0.15,
+        "unit": "audios",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M16",
+      "endpoint_id": "fal-ai/minimax/voice-clone",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "audio_url"
+      ],
+      "input_names": [
+        "audio_url",
+        "model",
+        "text",
+        "accuracy",
+        "enable_safety_checker",
+        "noise_reduction",
+        "need_volume_normalization"
+      ],
+      "output_fields": [
+        "custom_voice_id",
+        "audio"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/minimax/voice-clone",
+        "unit_price": 1.5,
+        "unit": "units",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M17",
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "prompt",
+        "prompt_expansion_mode"
+      ],
+      "input_names": [
+        "image_url",
+        "reference_image_urls",
+        "prompt",
+        "sync_mode",
+        "duration",
+        "reference_video_urls",
+        "seed",
+        "reference_conditions",
+        "prompt_expansion_mode",
+        "enable_safety_checker",
+        "aspect_ratio",
+        "reference_audio_urls",
+        "middle_frame_time",
+        "middle_image_url",
+        "resolution",
+        "end_image_url"
+      ],
+      "output_fields": [
+        "timings",
+        "video",
+        "expanded_prompt",
+        "seed"
+      ],
+      "price_observation": {
+        "endpoint_id": "minimax/h3-max/reference-to-video",
+        "unit_price": 0.05,
+        "unit": "seconds",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M18",
+      "endpoint_id": "fal-ai/z-image/turbo",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "prompt"
+      ],
+      "input_names": [
+        "enable_prompt_expansion",
+        "num_images",
+        "sync_mode",
+        "output_format",
+        "prompt",
+        "acceleration",
+        "num_inference_steps",
+        "enable_safety_checker",
+        "seed",
+        "image_size"
+      ],
+      "output_fields": [
+        "timings",
+        "images",
+        "has_nsfw_concepts",
+        "seed",
+        "prompt"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/z-image/turbo",
+        "unit_price": 0.005,
+        "unit": "megapixels",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M19",
+      "endpoint_id": "elevenlabs/tts/eleven-v4",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "text"
+      ],
+      "input_names": [
+        "output_format",
+        "voice",
+        "similarity_boost",
+        "stability",
+        "seed",
+        "apply_text_normalization",
+        "timestamps",
+        "language_code",
+        "text"
+      ],
+      "output_fields": [
+        "audio",
+        "timestamps"
+      ],
+      "price_observation": {
+        "endpoint_id": "elevenlabs/tts/eleven-v4",
+        "unit_price": 0.08,
+        "unit": "1000 characters",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    },
+    {
+      "reference": "M20",
+      "endpoint_id": "fal-ai/sync-lipsync/react-1",
+      "lifecycle": "schema-inspected",
+      "deployment_key_verified": false,
+      "execution_tested": false,
+      "quality_validated": false,
+      "checked_at": "2026-10-17",
+      "candidate_underlying_model": null,
+      "underlying_model_basis": "Endpoint-bound; underlying weights/version not necessarily disclosed",
+      "required_inputs": [
+        "video_url",
+        "audio_url",
+        "emotion"
+      ],
+      "input_names": [
+        "model_mode",
+        "video_url",
+        "emotion",
+        "temperature",
+        "lipsync_mode",
+        "audio_url"
+      ],
+      "output_fields": [
+        "video"
+      ],
+      "price_observation": {
+        "endpoint_id": "fal-ai/sync-lipsync/react-1",
+        "unit_price": 10,
+        "unit": "minutes",
+        "currency": "USD"
+      },
+      "schema_evidence": "evidence/FAL_ENDPOINT_SCHEMAS.json"
+    }
+  ]
+}
