@@ -135,3 +135,14 @@ Report design review, interactive verification and real user validation separate
 Related execution coverage: [Functionality to Endpoint Matrix](FUNCTIONALITY_ENDPOINT_MATRIX.md), [CSV contracts](FUNCTIONALITY_ENDPOINT_MATRIX.csv), [candidate registry](TOOL_REGISTRY_CANDIDATES.json). These supersede any inference that the four initial endpoint examples covered the whole product.
 
 Current model/tool bindings, all 105 function contracts and dated costs are consolidated in [Model Router Intelligence Bible](MODEL_ROUTER_INTELLIGENCE_BIBLE.md). Earlier endpoint examples are historical where they differ.
+
+## Per-creation customer cost contract — user requirement, 18 October 2026
+
+Every user must see creation-level cost before authorizing any billable planning, audition, reference, storyboard, animatic, footage, audio, finishing, export or repair operation. Integrate this into the approved UI's existing action/estimate surfaces, project spend summary, activity and usage history; preserve the approved layout and palette.
+
+Show scope/settings, quantity and billing unit, customer estimate and maximum authorization, fees/credit conversion, quote freshness, reused/included items and stage/project totals. Unknown prices block paid submission. During work separate reserved, estimated, spent and unknown amounts; after reconciliation display the actual customer receipt and credits/refunds. Re-estimate and obtain consent for increased scope or spend. Each item is owner-scoped and accessible on mobile/desktop; provider cost/margin remains backoffice data. Economical/Balanced/Premium choices must explain applicable trade-offs without silently lowering approved quality or changing an explicitly selected route. This requirement is not implemented merely because a read-only estimate API exists.
+
+
+## User intent and audience adaptation — 18 October 2026
+
+Begin with the job, desired result, audience/platform, creative references, control preferences and constraints. Adapt guidance to stated experience and preferences; age alone does not determine style, budget or quality. Ask only material clarifications, show assumptions and offer a small number of job-relevant trade-offs. Optional cost/quality mode labels do not replace this brief. Explain why the recommended workflow/model fits the user's creation, then show its complete estimated cost. This adaptive intelligence remains incomplete in runtime.

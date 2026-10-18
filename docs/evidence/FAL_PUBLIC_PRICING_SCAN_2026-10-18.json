@@ -1,0 +1,378 @@
+{
+  "checkedAt": "2026-10-18T01:16:48.915178+00:00",
+  "source": "https://fal.ai/pricing",
+  "sourceSha256": "cc157d5e2c6101ce9992c6626e4413a1b9363f0121376480e1166fa577a767b6",
+  "scope": "40 model rows rendered on the retrieved public page: 10 each video, image, audio, 3D; not the entire fal catalog",
+  "note": "Listed base rates, not configuration-complete quotes or charges. Preserve native units. GPU compute rates are a separate product and excluded here.",
+  "prices": [
+    {
+      "category": "video",
+      "name": "H3 Max Reference to Video",
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 seconds"
+    },
+    {
+      "category": "video",
+      "name": "H3 Max Image to Video",
+      "endpoint_id": "minimax/h3-max/image-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 seconds"
+    },
+    {
+      "category": "video",
+      "name": "MiniMax H3 Max Text to Video",
+      "endpoint_id": "minimax/h3-max/text-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 seconds"
+    },
+    {
+      "category": "video",
+      "name": "H3 Max Turbo Image to Video",
+      "endpoint_id": "minimax/h3-max-turbo/image-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.025",
+      "displayedUnitsPerDollar": "40 seconds"
+    },
+    {
+      "category": "video",
+      "name": "H3 Max Turbo Text to Video",
+      "endpoint_id": "minimax/h3-max-turbo/text-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.025",
+      "displayedUnitsPerDollar": "40 seconds"
+    },
+    {
+      "category": "video",
+      "name": "Kling Video",
+      "endpoint_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.07",
+      "displayedUnitsPerDollar": "14.29 seconds"
+    },
+    {
+      "category": "video",
+      "name": "Kling Video v3 Image to Video [Pro]",
+      "endpoint_id": "fal-ai/kling-video/v3/pro/image-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.14",
+      "displayedUnitsPerDollar": "7.14 seconds"
+    },
+    {
+      "category": "video",
+      "name": "Kling Video v3 Text to Video [Pro]",
+      "endpoint_id": "fal-ai/kling-video/v3/pro/text-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.14",
+      "displayedUnitsPerDollar": "7.14 seconds"
+    },
+    {
+      "category": "video",
+      "name": "Kling Video v3 Image to Video [Standard]",
+      "endpoint_id": "fal-ai/kling-video/v3/standard/image-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.14",
+      "displayedUnitsPerDollar": "7.14 seconds"
+    },
+    {
+      "category": "video",
+      "name": "Kling Video v3 Text to Video [Standard]",
+      "endpoint_id": "fal-ai/kling-video/v3/standard/text-to-video",
+      "unit": "seconds",
+      "listedPriceUsd": "0.14",
+      "displayedUnitsPerDollar": "7.14 seconds"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana 2",
+      "endpoint_id": "fal-ai/nano-banana-2/edit",
+      "unit": "images",
+      "listedPriceUsd": "0.08",
+      "displayedUnitsPerDollar": "12.5 images"
+    },
+    {
+      "category": "image",
+      "name": "Flux 3 Image",
+      "endpoint_id": "blackforestlabs/flux-3/edit-image",
+      "unit": "megapixels",
+      "listedPriceUsd": "0.048",
+      "displayedUnitsPerDollar": "20.83 megapixels"
+    },
+    {
+      "category": "image",
+      "name": "GPT Image 2 API",
+      "endpoint_id": "openai/gpt-image-2/edit",
+      "unit": "units",
+      "listedPriceUsd": "1",
+      "displayedUnitsPerDollar": "1 units"
+    },
+    {
+      "category": "image",
+      "name": "GPT Image 2 API",
+      "endpoint_id": "openai/gpt-image-2",
+      "unit": "units",
+      "listedPriceUsd": "1",
+      "displayedUnitsPerDollar": "1 units"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana 2",
+      "endpoint_id": "fal-ai/nano-banana-2",
+      "unit": "images",
+      "listedPriceUsd": "0.08",
+      "displayedUnitsPerDollar": "12.5 images"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana Pro",
+      "endpoint_id": "fal-ai/nano-banana-pro/edit",
+      "unit": "images",
+      "listedPriceUsd": "0.15",
+      "displayedUnitsPerDollar": "6.67 images"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana Pro",
+      "endpoint_id": "fal-ai/nano-banana-pro",
+      "unit": "images",
+      "listedPriceUsd": "0.15",
+      "displayedUnitsPerDollar": "6.67 images"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana",
+      "endpoint_id": "fal-ai/nano-banana/edit",
+      "unit": "images",
+      "listedPriceUsd": "0.0398",
+      "displayedUnitsPerDollar": "25.13 images"
+    },
+    {
+      "category": "image",
+      "name": "Nano Banana",
+      "endpoint_id": "fal-ai/nano-banana",
+      "unit": "images",
+      "listedPriceUsd": "0.0398",
+      "displayedUnitsPerDollar": "25.13 images"
+    },
+    {
+      "category": "image",
+      "name": "Z Image Turbo",
+      "endpoint_id": "fal-ai/z-image/turbo",
+      "unit": "megapixels",
+      "listedPriceUsd": "0.005",
+      "displayedUnitsPerDollar": "200 megapixels"
+    },
+    {
+      "category": "audio",
+      "name": "ElevenLabs TTS Multilingual v2",
+      "endpoint_id": "fal-ai/elevenlabs/tts/multilingual-v2",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.1",
+      "displayedUnitsPerDollar": "10 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "Elevenlabs Tts Eleven V3",
+      "endpoint_id": "fal-ai/elevenlabs/tts/eleven-v3",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.1",
+      "displayedUnitsPerDollar": "10 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "Elevenlabs Sound Effects V2",
+      "endpoint_id": "fal-ai/elevenlabs/sound-effects/v2",
+      "unit": "seconds",
+      "listedPriceUsd": "0.002",
+      "displayedUnitsPerDollar": "500 seconds"
+    },
+    {
+      "category": "audio",
+      "name": "ACE Step Prompt To Audio",
+      "endpoint_id": "fal-ai/ace-step/prompt-to-audio",
+      "unit": "seconds",
+      "listedPriceUsd": "0.0002",
+      "displayedUnitsPerDollar": "5,000 seconds"
+    },
+    {
+      "category": "audio",
+      "name": "ElevenLabs TTS Turbo v2.5",
+      "endpoint_id": "fal-ai/elevenlabs/tts/turbo-v2.5",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "MiniMax Speech-02 HD",
+      "endpoint_id": "fal-ai/minimax/speech-02-hd",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.1",
+      "displayedUnitsPerDollar": "10 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "xAI Text to Speech",
+      "endpoint_id": "xai/tts/v1",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.015",
+      "displayedUnitsPerDollar": "66.67 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "MiniMax Speech 2.8 [HD]",
+      "endpoint_id": "fal-ai/minimax/speech-2.8-hd",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.1",
+      "displayedUnitsPerDollar": "10 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "MiniMax Speech 2.8 [Turbo]",
+      "endpoint_id": "fal-ai/minimax/speech-2.8-turbo",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.06",
+      "displayedUnitsPerDollar": "16.67 1000 characters"
+    },
+    {
+      "category": "audio",
+      "name": "Gemini 3.1 Flash Tts",
+      "endpoint_id": "fal-ai/gemini-3.1-flash-tts",
+      "unit": "1000 characters",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 1000 characters"
+    },
+    {
+      "category": "3d",
+      "name": "Sam 3",
+      "endpoint_id": "fal-ai/sam-3/3d-objects",
+      "unit": "units",
+      "listedPriceUsd": "0.02",
+      "displayedUnitsPerDollar": "50 units"
+    },
+    {
+      "category": "3d",
+      "name": "Hunyuan Motion [1B]",
+      "endpoint_id": "fal-ai/hunyuan-motion",
+      "unit": "generations",
+      "listedPriceUsd": "0.08",
+      "displayedUnitsPerDollar": "12.5 generations"
+    },
+    {
+      "category": "3d",
+      "name": "Trellis",
+      "endpoint_id": "fal-ai/trellis",
+      "unit": "generations",
+      "listedPriceUsd": "0.02",
+      "displayedUnitsPerDollar": "50 generations"
+    },
+    {
+      "category": "3d",
+      "name": "Tripo H3.1 Image to 3D",
+      "endpoint_id": "tripo3d/h3.1/image-to-3d",
+      "unit": "credits",
+      "listedPriceUsd": "0.01",
+      "displayedUnitsPerDollar": "100 credits"
+    },
+    {
+      "category": "3d",
+      "name": "Tripo H3.1 Text to 3D",
+      "endpoint_id": "tripo3d/h3.1/text-to-3d",
+      "unit": "credits",
+      "listedPriceUsd": "0.01",
+      "displayedUnitsPerDollar": "100 credits"
+    },
+    {
+      "category": "3d",
+      "name": "Tripo H3.1 Multiview to 3D",
+      "endpoint_id": "tripo3d/h3.1/multiview-to-3d",
+      "unit": "credits",
+      "listedPriceUsd": "0.01",
+      "displayedUnitsPerDollar": "100 credits"
+    },
+    {
+      "category": "3d",
+      "name": "Meshy 6 Preview",
+      "endpoint_id": "fal-ai/meshy/v6-preview/image-to-3d",
+      "unit": "generations",
+      "listedPriceUsd": "0.8",
+      "displayedUnitsPerDollar": "1.25 generations"
+    },
+    {
+      "category": "3d",
+      "name": "Hunyuan 3D Pro Image to 3D",
+      "endpoint_id": "fal-ai/hunyuan-3d/v3.1/pro/image-to-3d",
+      "unit": "units",
+      "listedPriceUsd": "0.015",
+      "displayedUnitsPerDollar": "66.67 units"
+    },
+    {
+      "category": "3d",
+      "name": "Hunyuan 3D Pro Text to 3D",
+      "endpoint_id": "fal-ai/hunyuan-3d/v3.1/pro/text-to-3d",
+      "unit": "units",
+      "listedPriceUsd": "0.015",
+      "displayedUnitsPerDollar": "66.67 units"
+    },
+    {
+      "category": "3d",
+      "name": "Trellis 2",
+      "endpoint_id": "fal-ai/trellis-2",
+      "unit": "units",
+      "listedPriceUsd": "0.05",
+      "displayedUnitsPerDollar": "20 units"
+    }
+  ],
+  "computeTable": [
+    [
+      "GPU",
+      "VRAM",
+      "List Price",
+      "As low as"
+    ],
+    [
+      "B300",
+      "288GB",
+      "$12.99/h",
+      "$5.99/h"
+    ],
+    [
+      "GB200",
+      "192GB",
+      "$9.99/h",
+      "$5.89/h"
+    ],
+    [
+      "B200",
+      "192GB",
+      "$7.99/h",
+      "$5.49/h"
+    ],
+    [
+      "H200",
+      "141GB",
+      "$6.00/h",
+      "$2.99/h"
+    ],
+    [
+      "H100",
+      "80GB",
+      "$4.50/h",
+      "$2.49/h"
+    ],
+    [
+      "RTX PRO 6000",
+      "96GB",
+      "$4.00/h",
+      "$1.99/h"
+    ]
+  ],
+  "blogHomepage": {
+    "url": "https://blog.fal.ai",
+    "sha256": "bae104579b717bdef6941feab12c2c051da647edb01c0623c6a13cb7e461bd07",
+    "scope": "Homepage; five selected relevant articles reviewed separately, not complete archive"
+  }
+}

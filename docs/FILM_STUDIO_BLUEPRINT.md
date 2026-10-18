@@ -10,6 +10,12 @@ The production goal is a coherent, editable film with deliberate performances, c
 
 The first proof should be a 45–60 second film. This is a validation scope, not a permanent product duration limit. Longer films require evidence that continuity, cost, job recovery and editing scale successfully.
 
+## 1a. Mandatory production-unit coverage — 18 October 2026 correction
+
+Every applicable filmmaking unit must produce explicit, versioned work and review evidence. The required sequence is brief/script/breakdown → character selection/identity → approved look/world → voice auditions or explicit original-audio decision → shot plan → actual storyboard frames and sequence approval → playable timed animatic → final footage/performance → sound/edit/finishing → export QC. Department applicability, dependencies, costs and recovery must be recorded. These responsibilities can share agents/tools.
+
+The full binding department manifest and scenario/cost rules are in the Bible's [mandatory workflow correction](MODEL_ROUTER_INTELLIGENCE_BIBLE.md#mandatory-department-workflow-and-approval-gates--user-correction-18-october-2026). A shot list is not a generated storyboard. Casting and voice choices cannot be inferred as approved from a user's brief. Mark non-applicable units explicitly. Complete estimates include preparation, auditions, storyboard/animatic and finishing—not only final model calls. Implementation status remains missing/partial until verified.
+
 ## 2. Confirmed environment and remaining dependencies
 
 | Component | Evidence and status | Design consequence |
@@ -115,6 +121,10 @@ Every approved shot version distinguishes mandatory requirements, permitted vari
 ### Intended and observed continuity
 
 Maintain separate intended and observed scene-state snapshots: positions, prop ownership and hand, wardrobe condition, physical state, emotion, and each character's knowledge. Selected footage supplies observations. A discrepancy is a defect until an authorized creative change explicitly revises intended state; generated mistakes must not become upstream truth for subsequent shots. State changes are versioned and invalidate dependent work as appropriate.
+
+### Planning task and reduction isolation — reviewed knowledge addition, 18 October 2026
+
+Independent department planning tasks may run concurrently under bounded execution. Each binds tenant, project, sequence, run, input versions, skill/model version, dependencies and budget class. Reduce only required results from the same approved baseline, with explicit partial/error handling, idempotent identities and transactional/version checks. Preserve newer decisions and immutable artifact lineage. Plan validation, executable capability checks and observed media approval are distinct gates. See the [Gemini source reconciliation](GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md); its supplied duplicate tables and sample code are not adopted.
 
 ## 8. Approval and revision rules
 

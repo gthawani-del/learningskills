@@ -1,3 +1,15 @@
+# Routing and spending controls — 18 October 2026
+
+Job-aware evidence-ranked routing, reviewed dynamic task bindings, exact composite tariffs, durable quote receipts, explicit cost caps/revocation and a customer Costs panel are implemented. **168 automated tests, syntax checks and the production build pass locally.** Real local browser/server/file-store checks pass with no page/console/HTTP errors; fixture browser checks cover lost-response replay. These use synthetic model/price evidence, not paid media.
+
+Director Supabase migration **`20261018025605_director_quote_authorization_guards`** is applied. Native verification confirms service-only authorization RPC access, quote-table RLS, wall-clock expiry checks, zero active models and generation paused. Security advisor returns no findings. Thirteen isolated PostgreSQL/WASM proof groups pass, including recursive approvals, null evidence, composite tariff parity, replay, cap conservation and uncertain holds. These are single-connection checks, not a cross-session lock-race proof or real cloud-account browser acceptance.
+
+See [Spending authorization acceptance](SPENDING_AUTHORIZATION_ACCEPTANCE.md). This advances Step 5; complete sequence pricing, real evaluated route profiles, billing-feed integration/customer billing, cross-session race tests and approved-budget quality pilots remain unfinished. Vercel-dependent cloud-account tests remain deferred by user instruction. Release/deployment is recorded separately; no live customer flow or physical mobile-device verification is claimed here.
+
+Tracker counts remain 61 partial, 100 missing/unverified and 6 deferred; zero fully production-accepted.
+
+---
+
 # Operational controls — 18 October 2026
 
 Staff permissions, atomic audited pause/model-disable/use-note commands and a backoffice Controls/Audit UI are implemented. **88 automated tests and the production build pass.** Local browser recovery and narrow-layout checks pass. Director database migration `20261018002640` and rollback guard fixtures pass; security advisor reports no findings. See [Operational controls acceptance](OPERATIONAL_CONTROLS_ACCEPTANCE.md).

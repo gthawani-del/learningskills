@@ -1,3 +1,7 @@
+import {selectRoutes} from './model-router.mjs';
+import {createCostQuote} from './cost-quotes.mjs';
+import {routingTasks,knownRoutingTask,taskCandidates,routingCatalogExplanation} from './routing-task-catalog.mjs';
+import {quoteRequirements} from './quote-input.mjs';
 import {staffRole,staffPermissions,adminCommand} from './operations.mjs';
 import {applyProductionRecord,recordDependencies} from './production-records.mjs';
 import {productionState} from './production-state.mjs';
@@ -100,6 +104,34 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const plan=await providers.planFilm({brief:project.premise+'\nDirection: '+project.direction+'\nLanguage: '+project.language,durationSeconds:project.duration,authorized:true});
  const next=patchProject(project,{story:{treatment:plan.treatment,scenes:plan.scenes},shots:plan.shots.map(s=>({id:s.id,title:s.description.slice(0,70),description:s.description,duration:s.durationSeconds,camera:s.camera,dialogue:s.dialogue,continuity:s.continuity,sceneId:s.sceneId,framing:'medium'})),title:plan.title});
  return reply(200,{project:await store.save(next,project.version)});}
+ if(action==='spending'&&req.method==='GET'){if(typeof store.spendingSummary!=='function')fail(503,'Saved spending controls are not configured.');return reply(200,await store.spendingSummary(user.id,id));}
+ const revokeMatch=action?.match(/^spending-authorizations\/([0-9a-f-]+)\/revoke$/);
+ if((action==='spending-authorizations'||revokeMatch)&&req.method==='POST'){
+ const allowed=revokeMatch?['requestId','expectedVersion','reason']:['requestId','expectedVersion','quoteId','maxMicroUsd','finishReserveMicroUsd'];
+ if(Object.keys(body).some(k=>!allowed.includes(k))||!uuid.test(body.requestId||'')||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1)fail(400,'Supply a request identity, project version and supported spending fields.');
+ if(revokeMatch&&(!uuid.test(revokeMatch[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000))fail(400,'Supply a valid authorization and a reason of 5–1000 characters.');
+ if(!revokeMatch&&(!/^[a-f0-9]{64}$/.test(body.quoteId||'')||!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0))fail(400,'Supply a saved quote and integer USD spending limits.');
+ const command={...body,actorId:user.id,projectId:id};if(revokeMatch)command.authorizationId=revokeMatch[1];
+ const method=revokeMatch?'revokeCostAuthorization':'authorizeCostQuote';if(typeof store[method]!=='function')fail(503,'Saved spending controls are not configured.');
+ return reply(200,{authorization:await store[method](command)});
+ }
+ if(action==='routes'&&req.method==='GET')return reply(200,{tasks:routingTasks,scope:routingCatalogExplanation,generationAuthorized:false});
+ if((action==='routes'||action==='quotes')&&req.method==='POST'){
+ const allowed=action==='routes'?['task','requirements','intent']:['task','requirements','intent','requestId','expectedVersion','modelId','artifactId','artifactVersion','input'];
+ if(Object.keys(body).some(k=>!allowed.includes(k)))fail(400,'Unsupported routing or quote field.');
+ if(!knownRoutingTask(body.task))fail(400,'Choose a known production task.');
+ const requestFingerprint=hash(body);
+ if(action==='quotes'&&body.requestId!==undefined){if(!uuid.test(body.requestId))fail(400,'Use a valid quote request UUID.');if(typeof store.replayCostQuote!=='function')fail(503,'Saved spending controls are not configured.');const previous=await store.replayCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,requestFingerprint});if(previous)return reply(200,{quote:previous,saved:true});}
+ const models=taskCandidates(body.task,await store.registry()),now=new Date();
+ const routing=selectRoutes({task:body.task,requirements:body.requirements??{},intent:body.intent,models,now});
+ if(action==='routes')return reply(200,routing);
+ if(body.expectedVersion!==project.version)fail(409,'This project changed. Reopen it before requesting a quote.');
+ const model=models.find(m=>m.id===body.modelId);if(!model||!routing.eligibleForQuote.includes(model.id))fail(409,'No verified route is eligible for this quote.');
+ const requirements=quoteRequirements({task:body.task,requirements:body.requirements??{},model,input:body.input});
+ const quote=createCostQuote({project,artifactId:body.artifactId,artifactVersion:body.artifactVersion,task:body.task,requirements,intent:body.intent,model,input:body.input,now});
+ if(body.requestId!==undefined){const saved=await store.persistCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,expectedVersion:body.expectedVersion,requestFingerprint,quote,input:body.input});return reply(201,{quote:saved,saved:true});}
+ return reply(200,{quote});
+ }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
  if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id))});

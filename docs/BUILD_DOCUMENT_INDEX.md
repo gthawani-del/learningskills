@@ -110,3 +110,23 @@ Six active planning specifications remain. Two operational documents (execution 
 ## 8. Implementation tracking
 
 [Implementation Status](IMPLEMENTATION_STATUS.md) records what is actually built, tested, applied and still gated. Read it with the execution plan; specifications describe the intended product, not completed functionality.
+
+## 9. fal source refresh — 18 October 2026
+
+Read [fal routing and intelligence reconciliation](FAL_ROUTING_KNOWLEDGE_REFRESH_2026-10-18.md) with the Bible before extending model routing or provider execution. Preserved source attachments: [Model APIs overview](knowledge-sources/fal/overview-2026-10-18.md) and [Available models](knowledge-sources/fal/models-2026-10-18.md). [Source hashes and URLs](evidence/FAL_DOCUMENTATION_REFRESH_2026-10-18.json) distinguish fetched documentation from model execution and quality evidence. The earlier retained-file count is historical, not a current count after later development additions.
+
+## 10. fal pricing and blog learnings — 18 October 2026
+
+[Pricing and production-learning reconciliation](FAL_PRICING_BLOG_LEARNINGS_2026-10-18.md), incorporated into the Bible, records the scan scope and implementation implications. Preserve the [40 public endpoint rates](evidence/FAL_PUBLIC_PRICING_SCAN_2026-10-18.json) separately from the [15 connected pricing observations](evidence/FAL_ACCOUNT_PRICE_OBSERVATIONS_2026-10-18.json). Neither file authorizes spending or proves a production model's quality.
+
+## fal Learn research addendum — 18 October 2026
+
+[fal Learn studio guidance](FAL_LEARN_STUDIO_GUIDANCE_2026-10-18.md) adds source-backed production and routing guidance to the Bible. The [source manifest](evidence/FAL_LEARN_REVIEW_2026-10-18.json) distinguishes reviewed guides, inspected listings and fetched-only material. This supporting research does not replace the six active specifications or imply implementation acceptance.
+
+## User-supplied Gemini knowledge — 18 October 2026
+
+[Deduplicated knowledge review](GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md) maps the attachment's nine sections into existing specifications and records corrected claims, source-code faults and implementation handoff. [Original attachment](knowledge-sources/Director_AI_Codex_Master_Knowledge_Base.md) is retained byte-for-byte as provenance; it is not another controlling blueprint or a deployable code package. [Review evidence](evidence/GEMINI_KNOWLEDGE_REVIEW_2026-10-18.json) records hashes and review scope. Six active specifications and their precedence remain unchanged.
+
+## Routing and spending implementation evidence — 18 October 2026
+
+[Spending authorization acceptance](SPENDING_AUTHORIZATION_ACCEPTANCE.md) records the implemented API/UI/SQL boundaries, tests and remaining gates. It is an execution record, not another independent product blueprint.

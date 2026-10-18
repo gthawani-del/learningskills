@@ -47,6 +47,12 @@ These are responsibilities, not a requirement for eleven independent autonomous 
 
 A reasoning model proposes plans and structured contracts. The application validates required fields, supported controls, budgets and dependencies. Media models generate assets. Deterministic tools measure properties they can actually measure. Creative reviewers judge the visible and audible result. No layer should claim another layer's checks were completed without evidence.
 
+### Required visible preproduction gates — 18 October 2026 correction
+
+Photographic realism and believable voice begin with explicit user choices: character selection/identity master → look, wardrobe and world references → representative voice auditions (or an approved original-song/silent-workflow decision) → approved storyboard frames → a playable timed animatic. The storyboard must demonstrate composition, continuity and intended action; the animatic must demonstrate pacing and measured audiovisual timing. Neither is replaced by a text shot list or an endpoint recommendation.
+
+Approve each artifact/version before the expensive work that depends on it. Revisions trigger scoped downstream review while preserving accepted media. Count audition/casting/storyboard candidates and preparation costs in project quality/cost reporting. Reusing approved references or original song audio is a recorded choice; it is not an omitted department. These gates are requirements, not currently proven runtime functionality. See the Bible's mandatory department workflow correction.
+
 ## 4. The expectation contract
 
 Before spending, compile the request into these fields:
@@ -495,3 +501,12 @@ Example: a listener hears a particular name, pauses, looks toward a photograph, 
 ### Capability refresh
 
 The premium image candidate's schema is now inspected; pricing, execution and casting quality remain unverified. A separate H3 Max lip-sync candidate is now documented for singing investigation, not approved use. Its public guide and live schema disagree on maximum duration and transcription defaults. See the [research validation register](RESEARCH_VALIDATION_REGISTER.md). Existing M01–M20 IDs remain unchanged. No quality or cost entitlement is inferred from schema discovery.
+
+
+## Reviewed Gemini knowledge refinements — 18 October 2026
+
+Read the [source reconciliation](GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md) for provenance and corrections. Keep intended optical/physical direction, exposed provider controls and observed output evidence separate. Reference-led identity and actual sequence playback remain essential; JSON, a seed, a color palette or a speed in prompt text cannot certify realism.
+
+For applicable scenes, attach action-axis, screen-direction, eyeline and entry/exit relationships to intended continuity state. Record justified exceptions, including visible line crossing, neutral coverage or establishing resets, and inspect the resulting sequence for orientation. Maintain coherent coverage while allowing motivated focal-length, viewpoint and camera changes. Ad hooks and audiovisual timing follow audience/message/music intent rather than universal timing formulas.
+
+Unknown geometry stays unknown until evidence supplies it. Classify unsupported mandatory controls before spending; do not fabricate coordinates or silently reinterpret a protected requirement to match a generated defect. The full department, casting/look/voice, storyboard, animatic and final audiovisual gates remain required.

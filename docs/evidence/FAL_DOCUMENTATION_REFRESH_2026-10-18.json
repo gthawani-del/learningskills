@@ -1,0 +1,118 @@
+{
+  "reviewedAt": "2026-10-18T01:12:28.340260+00:00",
+  "sources": [
+    {
+      "name": "pricing",
+      "url": "https://fal.ai/docs/documentation/model-apis/pricing.md",
+      "chars": 7442,
+      "ok": true,
+      "sha256": "3a91e45f18bc94cd4308f6d2a21fd1a5652b21f2d057ce1d74d80b13b7ae2808",
+      "bytes": 7442,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "queue",
+      "url": "https://fal.ai/docs/documentation/model-apis/inference/queue.md",
+      "chars": 25716,
+      "ok": true,
+      "sha256": "a349924837e1fef96372c5eec60a71fccc09bc20d4e21e395e4a4318e73f163a",
+      "bytes": 25716,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "webhooks",
+      "url": "https://fal.ai/docs/documentation/model-apis/inference/webhooks.md",
+      "chars": 22337,
+      "ok": true,
+      "sha256": "e8def5d04dfbdb905869644064aef5372b170857525bf534104a049ad7ea85dc",
+      "bytes": 22349,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "cdn",
+      "url": "https://fal.ai/docs/documentation/model-apis/fal-cdn.md",
+      "chars": 9798,
+      "ok": true,
+      "sha256": "cafaf685d428dcdcd354003b7f279e66c17689a50cbba7b7a865665ae3a4e533",
+      "bytes": 9798,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "model-search",
+      "url": "https://fal.ai/docs/platform-apis/v1/models.md",
+      "chars": 32485,
+      "ok": true,
+      "sha256": "7d9e1b3a04fdd9aceda9a2f1a4cc5e6587f9915d131b7a7a0ecb41021a4a60ff",
+      "bytes": 32493,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "cost-estimate",
+      "url": "https://fal.ai/docs/platform-apis/v1/models/pricing/estimate.md",
+      "chars": 17415,
+      "ok": true,
+      "sha256": "fd4d0ed0416ad7affb17cda2b217e27dcf82868f056b6adfc7085dd1fcd08939",
+      "bytes": 17418,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "billing-events",
+      "url": "https://fal.ai/docs/platform-apis/v1/models/billing-events.md",
+      "chars": 31898,
+      "ok": true,
+      "sha256": "b18ddd9b835138b7f966c9da341f0e096a88722edc1157ea8b70ba5bf97dfd20",
+      "bytes": 31907,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "parameters",
+      "url": "https://fal.ai/docs/documentation/model-apis/common-parameters.md",
+      "sha256": "78b35374f39f5f001b313944087b0b3089f7a6e6c4ee4ad2fde72c236e7e3627",
+      "bytes": 16322,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "reliability",
+      "url": "https://fal.ai/docs/documentation/model-apis/inference/reliability.md",
+      "sha256": "16a25a82aa573e1033212901ba7a7d6e228fb89445e2470a8024ab5b49e0708f",
+      "bytes": 7422,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "retention",
+      "url": "https://fal.ai/docs/documentation/model-apis/media-expiration.md",
+      "sha256": "9281da6dae64c127fac6273ad30cf0b7d9e469f47aa4361c9aeb5f7e4d6374b4",
+      "bytes": 9388,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "acl",
+      "url": "https://fal.ai/docs/documentation/model-apis/file-access-controls.md",
+      "sha256": "cebe8bb1fbff45f2bcee62a83ef0c2e0cfb07beb2caefacae75ceb706ff13108",
+      "bytes": 20941,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    },
+    {
+      "name": "llms",
+      "url": "https://fal.ai/docs/llms.txt",
+      "sha256": "ddefede15a6e904404d0191b36d4faf5c6cec772d3b069c4459487484f40ce8c",
+      "bytes": 33169,
+      "evidence": "directly fetched documentation; not an execution or quality test"
+    }
+  ],
+  "attachments": [
+    {
+      "path": "docs/knowledge-sources/fal/models-2026-10-18.md",
+      "sha256": "30aca31de7c004a172b41bb090e478ad81c2741bfa978602d609e391bea47c6b",
+      "provenance": "User attachment; exact preserved content"
+    },
+    {
+      "path": "docs/knowledge-sources/fal/overview-2026-10-18.md",
+      "sha256": "130ff720ea414c85dd1360606ecb0f541ecd4798ef4805c2d629f3f1a1377588",
+      "provenance": "User attachment; exact preserved content"
+    }
+  ],
+  "paidCalls": 0,
+  "registryActivation": false,
+  "implementationChanged": false
+}

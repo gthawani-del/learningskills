@@ -1,0 +1,24 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no production database",
+  "passed": [
+    "recursive positive/revocation/reference/cycle fixtures",
+    "durable quote + original-time replay + fingerprint conflict",
+    "expired and stale quotes rejected",
+    "consent separate from creative approval/budget; authorization replay",
+    "registry change invalidates authorization",
+    "sequential reservations conserve cap and deny third spend (not multiclient race proof)",
+    "post-authorization registry changes block reservation and claim; unchanged quote claims successfully",
+    "unknown hold retained across cap reduction rejection and authorization revocation",
+    "scalar/composite omitted and JSON-null expiry/version/source/verification/configuration/rate matrices fail closed",
+    "exact composite second/image/megapixel/Unicode+UTF16+UTF8/thousand-character/request arithmetic, allowances/minima, tamper rejection and token hold",
+    "meaningful intent requires fresh model-bound profile metadata/hash attestation; null/omitted/mismatched/expired attestations and overlong quote expiry held",
+    "customer RPC execution denied; functional RPCs executed as service_role",
+    "rollback leaves no fixture users/projects/jobs"
+  ],
+  "limitations": [
+    "single-connection sequential transactions; no true cross-session lock race proof",
+    "no paid provider calls, production credentials, cloud Auth or Storage tests",
+    "trusted server canonical hashes; SQL compares exact stored JSON payload/snapshots"
+  ],
+  "productionApplied": false
+}

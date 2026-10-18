@@ -1,0 +1,99 @@
+{
+  "checkedAt": "2026-10-18T01:15:52.047Z",
+  "source": "fal get_pricing tool; connected-account lookup",
+  "note": "Read-only base-rate observations, possibly cached up to 5 minutes; not configuration-complete quotes, settled charges or model activation. Account identifiers excluded.",
+  "prices": [
+    {
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "minimax/h3-max-turbo/text-to-video",
+      "unit_price": 0.01625,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/kling-video/v3/pro/image-to-video",
+      "unit_price": 0.14,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "openai/gpt-image-2/edit",
+      "unit_price": 1,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/nano-banana-2/edit",
+      "unit_price": 0.08,
+      "unit": "images",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "blackforestlabs/flux-3/edit-image",
+      "unit_price": 0.048,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/z-image/turbo",
+      "unit_price": 0.005,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "elevenlabs/tts/eleven-v4",
+      "unit_price": 0.08,
+      "unit": "1000 characters",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/sync-lipsync/v3",
+      "unit_price": 8,
+      "unit": "minutes",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flashtalk",
+      "unit_price": 0.02,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "nvidia/nemotron-3-nano-omni/audio",
+      "unit_price": 0.01,
+      "unit": "1000 tokens",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "bytedance/seedream/v5/pro/edit",
+      "unit_price": 0.0675,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "sonilo/v1.1/video-to-sound-effects",
+      "unit_price": 0.009,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "mirelo-ai/sfx-v1.5/video-to-audio",
+      "unit_price": 0.01,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/ltx-2.3/audio-to-video",
+      "unit_price": 0.1,
+      "unit": "seconds",
+      "currency": "USD"
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

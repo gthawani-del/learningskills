@@ -1,0 +1,13 @@
+{
+  "reviewedAt": "2026-10-18",
+  "source": "knowledge-sources/Director_AI_Codex_Master_Knowledge_Base.md",
+  "sourceSha256": "af59b279a65250f17641a68378a8d17d68359400912f27ed20a4c40fde3ba923",
+  "preservedByteForByte": true,
+  "scope": "All nine source sections read; compared with existing Bible, realism, blueprint, admin and fal Learn guidance; independent read-only agent code review. No article/video/book verification or execution of source snippets.",
+  "disposition": "GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md",
+  "authority": "Supporting knowledge only; existing specification precedence preserved.",
+  "runtimeChanges": false,
+  "databaseChanges": false,
+  "paidCalls": false,
+  "independentReview": "Source snippets reviewed by /root/review; no current-application vulnerability inferred."
+}

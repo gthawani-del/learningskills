@@ -64,3 +64,7 @@ All 24 summaries remain unverified against the actual audiovisual content. Attem
 A candidate progresses through source located → official capability checked → schema inspected → account execution tested → use-case quality reviewed → approved production profile. A failed or unavailable check stays explicit. Pending videos do not block implementing independently supported craft rules, but their exclusive capabilities remain unavailable.
 
 Outstanding critical gates: premium casting price/identity evaluation; selected voice/language listening; singing lip sync and duration conflict; temporal evaluation; worker/storage; provider retention. No model is quality-approved by this register.
+
+## Gemini excerpts — 18 October 2026
+
+The [review and disposition](GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md) incorporates structured-contract, motion-semantics, geography and run-isolation refinements. The attachment's lecture excerpts lack source URLs/speakers/timestamps; listed channels/books remain research leads, not verified transcripts or open licenses. No video/book verification, code execution, model quality test or runtime adoption was performed. Supplied RLS/retry/type/schema faults concern the attachment, not findings against the existing deployed application.

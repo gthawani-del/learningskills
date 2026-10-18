@@ -473,3 +473,10 @@ The design package contains the screenshots shown here, the standalone HTML conc
 **Implementation check:** Desktop Production Studio, Desktop Briefing, Mobile Composer, Mobile Skill Menu and Mobile Attachment Menu must be compared to the final code output. Maintain purpose and hierarchy, not every prototype pixel.
 
 **Definition of done:** a customer can start/return to a project; attach and classify authorized references; type `/` and select an approved skill; use `@` for existing project assets; speak or type (once enabled); understand exact selected-shot scope; review an actionable proposal; and approve spending/creative output separately, all without exposing raw system thinking or accidentally replacing accepted work.
+
+## Per-creation customer cost contract — user requirement, 18 October 2026
+
+Every user must see creation-level cost before authorizing any billable planning, audition, reference, storyboard, animatic, footage, audio, finishing, export or repair operation. Integrate this into the approved UI's existing action/estimate surfaces, project spend summary, activity and usage history; preserve the approved layout and palette.
+
+Show scope/settings, quantity and billing unit, customer estimate and maximum authorization, fees/credit conversion, quote freshness, reused/included items and stage/project totals. Unknown prices block paid submission. During work separate reserved, estimated, spent and unknown amounts; after reconciliation display the actual customer receipt and credits/refunds. Re-estimate and obtain consent for increased scope or spend. Each item is owner-scoped and accessible on mobile/desktop; provider cost/margin remains backoffice data. Economical/Balanced/Premium choices must explain applicable trade-offs without silently lowering approved quality or changing an explicitly selected route. This requirement is not implemented merely because a read-only estimate API exists.
+

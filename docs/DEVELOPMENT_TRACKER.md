@@ -1,12 +1,24 @@
 # Director Studio — Development Tracker
 
-Updated 18 October 2026. Baseline before the operational-controls batch: `fdd1784`. This is an implementation ledger, not a replacement blueprint.
+Updated 18 October 2026. Baseline before the routing/quote batch: `76960d5`. This is an implementation ledger, not a replacement blueprint.
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
-Status: 60 partial, 101 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+Status: 61 partial, 100 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
 
 Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
+
+## User correction: complete filmmaking units — 18 October 2026
+
+Mandatory character/identity selection, look development, voice auditions or explicit original-audio choice, generated storyboard frames and a playable timed animatic are required before their dependent final production. Every department needs applicability, outputs, versioned approvals, cost and recovery evidence. Existing text shot lists/record APIs do not complete these stages. Earlier scenario generation budgets omitted preparation and must be recomputed as full-workflow estimates. See the Bible's mandatory department workflow correction. No implementation status is upgraded by this specification update.
+
+## User requirement: per-creation costs and economical models — 18 October 2026
+
+Every user must see itemized creation costs before authorization, reserved/pending costs during work and reconciled charges/credits afterward. Preparation and repairs count. Compare suitable Wan, FLUX and other budget candidates under the same approved quality constraints; dated rates do not activate routes. Estimate/billing UI and quality-constrained cost optimization remain incomplete.
+
+## Routing/spending implementation — 18 October 2026
+
+[Acceptance record](SPENDING_AUTHORIZATION_ACCEPTANCE.md): evidence-ranked job intent, dynamic reviewed task bindings, scalar/composite quotes, durable receipts/caps/revocation, owner-safe APIs and Costs UI implemented. 168 automated tests and production build pass; real local browser/server flow has no console/HTTP errors. Database migration `20261018025605` applied, service-only grants/RLS/pause verified and security advisor clean. Thirteen isolated PostgreSQL proof groups pass; true cross-session races, deployed account/browser integration, live billing-feed settlement and media pilots remain unverified. A pure cost-reconciliation foundation is not complete customer billing. No requirement is upgraded to full acceptance.
 
 ## Current batch and dependencies
 
@@ -55,7 +67,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F007 | Search project and media library | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F008 | Upload and finalize source media | 2 | partial | Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing. |
 | F009 | Preview or download private media | 2 | partial | Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing. |
-| F010 | Interpret brief and ask necessary questions | 6 | missing | No complete executable workflow found; implement and verify before activation. |
+| F010 | Interpret brief and ask necessary questions | 6 | missing | Intent compiler must capture purpose, audience/platform, desired result/style/control, references and budget/deadline; clarify material ambiguities and adapt to explicit preferences without age-based assumptions. Full intelligent interpretation remains missing. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F012 | Develop treatment and story arc | 6 | partial | Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow. |
 | F013 | Write screenplay and dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -78,18 +90,18 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F030 | Estimate tempo, beats, onsets and energy | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F031 | Propose musical sections and visual pacing | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F032 | Map song moments to story and shots | 8 | missing | No complete executable workflow found; implement and verify before activation. |
-| F033 | Generate initial casting/location/prop concepts | 7 | missing | No complete executable workflow found; implement and verify before activation. |
-| F034 | Derive reference-preserving looks, angles and frames | 7 | missing | No complete executable workflow found; implement and verify before activation. |
-| F035 | Review reference identity, wardrobe and composition | 7 | partial | Manual uploaded reference preview only; reviewed identity/composition evidence workflow missing. |
+| F033 | Generate initial casting/location/prop concepts | 7 | missing | Mandatory character selection and world/prop concepts with agreed candidate quantity, actual outputs and identity-master approval; generation, selection UX and end-to-end review remain missing. |
+| F034 | Derive reference-preserving looks, angles and frames | 7 | missing | Mandatory look development from approved identity: angles/expressions, wardrobe, grooming and world references; actual generation and approved reference-pack workflow remain missing. |
+| F035 | Review reference identity, wardrobe and composition | 7 | partial | Versioned records exist; actual identity/look/wardrobe/composition approval and quality evidence must precede storyboard/final footage and remain incomplete. |
 | F036 | Manage character/world versions and use rights | 7 | partial | Versioned character, voice, location, wardrobe and prop records with scoped references and history implemented; use-rights evidence and generated identity review remain incomplete. |
-| F037 | Create storyboard direction and shot contracts | 7 | partial | Versioned shots and deterministic review graph implemented; complete department production contracts/orchestration remain incomplete. |
-| F038 | Generate storyboard/keyframes from references | 7 | missing | No complete executable workflow found; implement and verify before activation. |
+| F037 | Create storyboard direction and shot contracts | 7 | partial | Text shot contracts/version records exist; a complete department manifest, explicit camera/lighting/performance plan and dependency orchestration remain incomplete. A shot list is not a storyboard. |
+| F038 | Generate storyboard/keyframes from references | 7 | missing | Mandatory actual storyboard/keyframe generation from approved identity/look references, stable shot IDs, annotations and sequence approval; generation and review UX remain missing. |
 | F039 | Approve/order shots and choose takes | 7 | partial | Shot specification approval and uploaded-media selection; take comparison, ordering and generated take review missing. |
-| F040 | Assemble timed animatic before motion production | 7 | missing | No complete executable workflow found; implement and verify before activation. |
-| F041 | Generate scene from approved references/keyframes | 7 | missing | No complete executable workflow found; implement and verify before activation. |
+| F040 | Assemble timed animatic before motion production | 7 | missing | Mandatory playable timed animatic using approved storyboard frames and song/dialogue timing; pacing/coverage approval before final footage remains missing. |
+| F041 | Generate scene from approved references/keyframes | 7 | missing | Final motion generation must consume approved identity/look, applicable voice/audio, storyboard and timed-animatic versions; complete production and gate enforcement remain missing. |
 | F042 | Generate text-only establishing/background clip | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F043 | Edit targeted video defects or appearance | 7 | missing | No complete executable workflow found; implement and verify before activation. |
-| F044 | Generate dialogue/narration voice take | 7 | missing | No complete executable workflow found; implement and verify before activation. |
+| F044 | Generate dialogue/narration voice take | 7 | missing | Mandatory voice casting/auditions with actual-language dialogue, approved accent/pronunciation/performance and measured takes; original-song/silent applicability decisions must be recorded. Production generation/review remains missing. |
 | F045 | Clone authorized voice for optional future use | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F046 | Animate portrait with approved voice recording | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F047 | Synchronize existing visible speaking footage | 7 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -115,8 +127,8 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F067 | Final MP4 and requested variants | 9 | partial | Sound-preserving local export tested; hosted durable export and output variants unavailable. |
 | F068 | Verify exported file and delivery access | 9 | partial | Local decode/duration proof only; hosted private delivery verification missing. |
 | F069 | Share/revoke review links and download | 9 | missing | No complete executable workflow found; implement and verify before activation. |
-| F070 | Quote route and sequence profile | 5 | missing | No complete executable workflow found; implement and verify before activation. |
-| F071 | Authorize and reserve budget atomically | 5 | partial | Reservation RPC and gate exist; quote/authorization creation, conservation ledger and live concurrency checks incomplete. |
+| F070 | Quote route and sequence profile | 5 | partial | Read-only capability routing/estimates exist. Job/user-intent/audience-led workflow selection, verified quality-constrained cost ranking, complete sequence estimates and customer cost UI remain incomplete. Age and cheapest price are not recommendation rules. |
+| F071 | Authorize and reserve budget atomically | 5 | partial | Each billable creation needs disclosed scope, quantity, fresh customer price and explicit bounded authorization. Durable quotes/authorizations, shared-budget concurrency, fees/credit rules and ledger conservation remain incomplete. |
 | F072 | Submit approved fal operation | 5 | partial | Mock-tested dispatch; no active profile or paid execution. |
 | F073 | Reconcile status and retrieve results | 5 | partial | Mock-tested reconciliation; durable private ingestion of completed outputs incomplete. |
 | F074 | Handle provider callback safely | 5 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -135,7 +147,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F087 | Benchmark and regression execution | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F088 | Quality triage and defect/repair history | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F089 | Customer support and remediation | 11 | missing | No complete executable workflow found; implement and verify before activation. |
-| F090 | Cost, credits and provider reconciliation | 11 | missing | No complete executable workflow found; implement and verify before activation. |
+| F090 | Cost, credits and provider reconciliation | 11 | missing | Mandatory owner-scoped creation receipts/history, actual customer charges, provider reconciliation, unknown-charge states and refunds/credits. Complete customer billing and commercial ledger remain missing. |
 | F091 | Issue goodwill credits or refunds | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F092 | Tenant/provider kill switches | 4 | partial | Audited global pause and model disable with fail-closed dispatch guards implemented; tenant/render-specific kill switches and live provider concurrency proof remain incomplete. |
 | F093 | Incident management and alert triage | 11 | missing | No complete executable workflow found; implement and verify before activation. |

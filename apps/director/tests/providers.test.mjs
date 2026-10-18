@@ -19,6 +19,8 @@ test('fal submission uses canonical server route and rejects malicious response 
   assert.equal(result.statusUrl, 'https://queue.fal.run/minimax/h3-max/requests/req-123/status');
   assert.equal(calls[0].url, `https://queue.fal.run/${endpoint}`);
   assert.equal(calls[0].options.headers.Authorization, 'Key test-secret');
+  assert.equal(calls[0].options.headers['x-app-fal-disable-fallback'], 'true');
+  assert.equal(calls[0].options.headers['X-Fal-No-Retry'], '1');
   await client.getFalJob({ endpoint, requestId: result.requestId });
   assert.equal(calls[1].url, result.statusUrl);
   await assert.rejects(client.getFalJob({ endpoint, requestId: '../secret' }), /Invalid request ID/);

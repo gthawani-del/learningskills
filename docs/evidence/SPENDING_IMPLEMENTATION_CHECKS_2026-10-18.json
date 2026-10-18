@@ -1,0 +1,77 @@
+{
+  "checkedAt": "2026-10-18",
+  "automatedTests": {
+    "passed": 168,
+    "failed": 0,
+    "scope": "Local module/API/mock-adapter tests; synthetic provider and pricing fixtures"
+  },
+  "syntax": "passed",
+  "productionBuild": "passed",
+  "browser": {
+    "scope": "Real local browser/server/LocalStore; synthetic model and price; no request interception or provider calls",
+    "passed": [
+      "Saved quote display",
+      "Exact cap and finishing authorization",
+      "Reload persistence",
+      "Explicit revocation",
+      "390px no horizontal overflow"
+    ],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "physicalMobileTested": false
+  },
+  "fixtureBrowser": {
+    "passed": [
+      "Exact microUSD conversion",
+      "Cap includes finishing amount",
+      "Same UUID after ambiguous response",
+      "Explicit revoke",
+      "390px no horizontal overflow"
+    ],
+    "injectedNetworkFailure": true,
+    "scope": "Intercepted API fixtures, not real billing"
+  },
+  "isolatedPostgres": {
+    "environment": "isolated PGlite PostgreSQL/WASM; no production database",
+    "passed": [
+      "recursive positive/revocation/reference/cycle fixtures",
+      "durable quote + original-time replay + fingerprint conflict",
+      "expired and stale quotes rejected",
+      "consent separate from creative approval/budget; authorization replay",
+      "registry change invalidates authorization",
+      "sequential reservations conserve cap and deny third spend (not multiclient race proof)",
+      "post-authorization registry changes block reservation and claim; unchanged quote claims successfully",
+      "unknown hold retained across cap reduction rejection and authorization revocation",
+      "scalar/composite omitted and JSON-null expiry/version/source/verification/configuration/rate matrices fail closed",
+      "exact composite second/image/megapixel/Unicode+UTF16+UTF8/thousand-character/request arithmetic, allowances/minima, tamper rejection and token hold",
+      "meaningful intent requires fresh model-bound profile metadata/hash attestation; null/omitted/mismatched/expired attestations and overlong quote expiry held",
+      "customer RPC execution denied; functional RPCs executed as service_role",
+      "rollback leaves no fixture users/projects/jobs"
+    ],
+    "limitations": [
+      "single-connection sequential transactions; no true cross-session lock race proof",
+      "no paid provider calls, production credentials, cloud Auth or Storage tests",
+      "trusted server canonical hashes; SQL compares exact stored JSON payload/snapshots"
+    ],
+    "productionApplied": false
+  },
+  "nativeDatabase": {
+    "migration": "20261018025605_director_quote_authorization_guards",
+    "applied": true,
+    "quoteTableRls": true,
+    "serviceCanAuthorize": true,
+    "customerCanAuthorize": false,
+    "wallClockExpiry": true,
+    "generationPaused": true,
+    "activeModels": 0,
+    "projects": 0,
+    "jobs": 0,
+    "quotes": 0,
+    "authorizations": 0,
+    "securityAdvisorFindings": 0
+  },
+  "deploymentBrowserTest": "deferred by user",
+  "paidProviderCalls": 0,
+  "physicalMobileTested": false,
+  "qualityTargetValidated": false
+}

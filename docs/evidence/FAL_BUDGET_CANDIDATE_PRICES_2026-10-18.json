@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-10-18T01:29:58.222Z",
+  "source": "fal live discovery and connected-account get_pricing",
+  "scope": "Selected Wan, FLUX, Z Image and H3 candidates; not exhaustive",
+  "status": "Discovery and base-rate observations only; schemas, configuration-specific prices, execution and creative quality not promoted",
+  "note": "Preserve native units; rates may be cached for up to 5 minutes; names do not establish price or capability; no paid calls",
+  "prices": [
+    {
+      "endpoint_id": "alibaba/wan-3.0/image-to-video",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "alibaba/wan-3.0-prime/image-to-video",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/wan/v2.7/image-to-video",
+      "unit_price": 0.1,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "wan/v2.6/image-to-video/flash",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flux/schnell",
+      "unit_price": 0.003,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flux-2/klein/9b",
+      "unit_price": 0.006,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flux-2/klein/9b/edit",
+      "unit_price": 0.011,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/flux-2/klein/4b",
+      "unit_price": 0.005,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/z-image/turbo",
+      "unit_price": 0.005,
+      "unit": "megapixels",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "minimax/h3-max/reference-to-video",
+      "unit_price": 0.05,
+      "unit": "seconds",
+      "currency": "USD"
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

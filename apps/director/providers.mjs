@@ -35,6 +35,7 @@ function mediaUrl(value) {
   const u = new URL(value);
   if (u.protocol !== 'https:' || u.username || u.password || u.hostname === 'localhost' || /^(127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)/.test(u.hostname) || u.hostname.includes(':')) fail('Reference media must use a public HTTPS asset URL');
 }
+export function reviewedFalInputSchema(endpoint) {const schema=schemas.get(endpoint);return schema?structuredClone(schema):null;}
 export function validateFalInput(endpoint, input) {
   const schema = schemas.get(endpoint);
   if (!schema) fail('Endpoint is not in the reviewed adapter allowlist');
@@ -122,7 +123,7 @@ export function createProviderClients({ fetcher = globalThis.fetch, env = proces
     async submitFalJob({ endpoint, input, authorized = false }) {
       auth(authorized, 'FAL_API_KEY');
       validateFalInput(endpoint, input);
-      const result = await request(`https://queue.fal.run/${endpoint}`, { method: 'POST', headers: { Authorization: `Key ${env.FAL_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
+      const result = await request(`https://queue.fal.run/${endpoint}`, { method: 'POST', headers: { Authorization: `Key ${env.FAL_API_KEY}`, 'Content-Type': 'application/json', 'x-app-fal-disable-fallback': 'true', 'X-Fal-No-Retry': '1' }, body: JSON.stringify(input) });
       const requestId = result.request_id;
       const statusUrl = route(endpoint, requestId, '/status');
       return { requestId, statusUrl, responseUrl: route(endpoint, requestId), status: result.status || 'IN_QUEUE' };

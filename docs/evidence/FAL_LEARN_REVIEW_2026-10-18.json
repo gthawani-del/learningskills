@@ -1,0 +1,111 @@
+{
+  "retrievedAt": "2026-10-18",
+  "scope": "Landing and category listings inspected; twelve selected guides reviewed for studio-relevant guidance. Not the full archive. Article media not played. No model calls.",
+  "sources": [
+    {
+      "url": "https://fal.ai/learn",
+      "sha256": "bcf9b7e586331e29533d5d5d1c028604b13438fbf4eda9ea5f3b7a1f8533120c",
+      "review": "listing-inspected"
+    },
+    {
+      "url": "https://fal.ai/learn/devs/how-to-fine-tune-wan-with-the-api",
+      "sha256": "7b833cdccc2eec65d024e454e9323163d4a1d0fb3a963265a73953326d298c56",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/serverless/nvidia-b200-price",
+      "sha256": "43962b97e87a90675515a7d3f8878b60a6e89eff989043838825c35a0f285a92",
+      "review": "fetched-only"
+    },
+    {
+      "url": "https://fal.ai/learn/devs/nano-banana-2-1-vs-gpt-image-2-5",
+      "sha256": "5fba91ca48d5f3cb1b6894b975db67fd84a831be1f93b8edf25b3c7862359f25",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/serverless/reserve-nvidia-b300",
+      "sha256": "c08d6596891c7a0303e91e92f484bb1bf225f91bf757fe12a3fca3b39e4ce0af",
+      "review": "fetched-only"
+    },
+    {
+      "url": "https://fal.ai/learn/devs/nano-banana-2-1-vs-nano-banana-2",
+      "sha256": "463938893080efef8b85aad6d0276d05bfc430e2a10a673520d1bd163c51034b",
+      "review": "fetched-only"
+    },
+    {
+      "url": "https://fal.ai/learn/serverless/ai-inference-provider-for-generative-media",
+      "sha256": "a04f99bab0606287abb78801be7f8fd6b4ed7525554e6fd4dce5c57b316a0dc5",
+      "review": "fetched-only"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/how-to-use-nano-banana-2-1",
+      "sha256": "8848dcac66f32de47a02158ead790b927174ff9e4796b19f352eebeb27d30ecf",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/krea-3-prompting-guide",
+      "sha256": "e0ad4bd12a6435cf89e20cdca3756cb92500f8a51aa95ef6bcbbcc9c0f6f4815",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/how-to-make-a-character-replacement-video",
+      "sha256": "34151c19cec8d676a00b922940764786881bbd04c5ad6c36642b3cdca2fea4fe",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/motion-design-video-generation-with-claude",
+      "sha256": "f797cba1f134cce0e82e411f0890eead11ba20fa2ac47d88fd2e047c83bd919f",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/how-to-build-a-game-with-gpt-6-astra",
+      "sha256": "14699c14935ac09d6e69e6d73600bdc8f4d15120fdb6df4644c70aabadb5e094",
+      "review": "fetched-only"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/how-to-use-gpt-6-astra-for-video-editing",
+      "sha256": "fa2d92af5f27eb7b6b07ed0792f66b0f30466820143f7105c516a08fa1b565dc",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/devs",
+      "sha256": "88632227e75d83c34092cd53be3c42979ac1cdaba7ebbf7152cf9b4d17ee5845",
+      "review": "listing-inspected"
+    },
+    {
+      "url": "https://fal.ai/learn/tools",
+      "sha256": "16989fca62daef708a286ad6921c5002ea17b9dbcb6ded947615a775d46ce266",
+      "review": "listing-inspected"
+    },
+    {
+      "url": "https://fal.ai/learn/biz",
+      "sha256": "0c1055b27334db21ddea406861c8d7bc9f7e3db268ff9d75089cd565abea32c9",
+      "review": "listing-inspected"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/ai-character-consistency",
+      "sha256": "9cd03cae3db7754f4b880304f4680c678a175447a0d51b508bbc0c58e39fc619",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/how-to-generate-photorealistic-images-with-ai",
+      "sha256": "e8ec8a7d210ee479f40198827c9031410812cb16f5a087da2dd797ccb7c44805",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/tools/what-is-reference-to-video",
+      "sha256": "c3c1a77317f106a7222f33934f1fc9a04d1c3bdc5b05479203533b9017ffc6a0",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/biz/eleven-music-prompt-guide",
+      "sha256": "4e411a983bdcfc85b72acfa184708032e8611aadb0b36a9073a071c363b2e349",
+      "review": "selected-guide-reviewed"
+    },
+    {
+      "url": "https://fal.ai/learn/devs/wan-3-vs-wan-2-7",
+      "sha256": "ea5c98cf7d6ce0554b2d3e36b0678bbf173ce3eb5dcee79dcab1a1db64dcf0f2",
+      "review": "selected-guide-reviewed"
+    }
+  ]
+}

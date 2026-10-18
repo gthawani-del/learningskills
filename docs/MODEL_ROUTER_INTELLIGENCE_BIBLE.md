@@ -8,6 +8,125 @@ This bible is a decision specification, not a deployed model router. No paid mod
 
 Realism-specific production rules, original prompt templates, voice and character direction, evidence gates and the two-attempt policy are specified in the [Realism Intelligence Layer](REALISM_INTELLIGENCE_LAYER.md), incorporated here by reference. This companion is a planning specification; its media quality remains unvalidated.
 
+## Runtime routing/spending advancement — 18 October 2026
+
+The [spending acceptance record](SPENDING_AUTHORIZATION_ACCEPTANCE.md) distinguishes current implementation from this planning specification. Evidence-ranked intent, reviewed dynamic task bindings, exact scalar/composite tariffs, durable quote/cap/revocation records and customer Costs controls now have local tests; additive quote/approval guards are applied to Director Supabase. No models are active and generation remains paused. Complete sequence estimates, real task evaluations, billing-feed reconciliation/customer billing and quality pilots remain unfinished. Reading this Bible or passing synthetic tests does not validate a production media route.
+
+## Official fal source refresh — 18 October 2026
+
+The user supplied the current Model APIs overview and available-models reference. Their reconciliation with live official docs is incorporated by reference in [fal routing knowledge refresh](FAL_ROUTING_KNOWLEDGE_REFRESH_2026-10-18.md). It updates planning requirements for catalog/schema discovery, provider fallback/retries, media privacy/retention, request-level billing and newer analysis/portrait/lip-sync candidates. Exact endpoint schemas and benchmarks remain required; historical M01–M20 records are not silently replaced or activated.
+
+The current app's single-operation estimate implementation is distinct from this planning specification and does not establish full live routing, spending authorization or creative quality. Documentation alone does not validate the two-attempt quality target.
+
+## Pricing and production-learning refresh — 18 October 2026
+
+[Pricing and blog learnings](FAL_PRICING_BLOG_LEARNINGS_2026-10-18.md) incorporates the public pricing scan, a 15-endpoint connected price lookup and five selected production articles. Preserve billing units, dated/account-specific rate differences and configuration rules. Controlled physical blockout, endpoint-specific prompting and voice-performance workflows are research inputs; high-volume blog sampling and reported rankings do not prove our two-attempt target. The dated public/account snapshots are observations, not activation-ready quotes or actual charges.
+
+## fal Learn integration — 18 October 2026
+
+[fal Learn studio guidance](FAL_LEARN_STUDIO_GUIDANCE_2026-10-18.md) incorporates twelve selected guides on character/reference continuity, storyboard/keyframe preparation, protected-attribute edits, realism, music direction, Wan training and model-specific cost controls. Canonical identity masters anchor shots; reference ordering and approved changes become review contracts. Composite/reference-token charges and unresolved unit rules require verified tariff adapters before quoting. Source examples do not activate models or validate creative quality.
+
+## Mandatory department workflow and approval gates — user correction, 18 October 2026
+
+This correction governs scenario answers, production planning, model routing and implementation acceptance. Earlier ad/music-video/docuseries cost examples described selected model calls and omitted preparation stages; they are incomplete component subtotals, not complete production estimates. Recalculate them using the full workflow below.
+
+Every project must carry a department-coverage manifest. Each unit records applicability, responsible skill/controller, inputs, planned work, output artifacts and versions, dependencies, approval evidence, quality checks, cost/attempt budget, current status and recovery path. Responsibilities can share agents or tools; there is no requirement for one model call or autonomous agent per department. A missing unit cannot silently count as complete. A non-applicable unit requires a recorded rationale consistent with the brief, visible to the user.
+
+| Unit | Required planning/output and review |
+| --- | --- |
+| Producing / production management | Audience, deliverables, duration, aspect ratios, schedule, rights/consent, budget including finishing reserve and measurable success criteria. |
+| Research / writing / script supervision | Sourced research where needed, concept, treatment, script/dialogue, scene breakdown and revision lineage. Documentary fact review is distinct from fluent writing. |
+| Direction / assistant direction | Scene purpose, blocking, performance beats, coverage and production plan. |
+| Casting / character design | User-reviewable character choices, approved identity master, expressions/angles and continuity references; preserve the approved person across shots. |
+| Art / production design / wardrobe / hair and makeup / props | Approved world, locations, clothing, grooming, materials, product assets and scene-specific states. Product labels and logos need exact preservation. |
+| Voice casting / dialogue / performance | Auditions using the actual language and representative script, accent/pronunciation, delivery/emotion, voice-to-character binding and consent. Record the selected voice and measured audio/timing. |
+| Cinematography / camera / lighting / grip | Shot objective, framing, lens intent, motivated lighting, camera and subject movement, eyelines and continuity rules. |
+| Storyboard department | Actual generated/drawn storyboard frames from approved references, stable shot IDs, camera/action/dialogue/timing annotations and frame/sequence review. A shot list is not a storyboard. |
+| Animatic / previsualization | Playable timed assembly of approved frames with the actual song, approved/scratch dialogue and provisional sound. Check pacing, coverage, duration and audiovisual timing before final footage. |
+| Production / continuity / effects and compositing | Generate final takes from approved plans/references; review identity, anatomy, physical interaction, world continuity and performance. Repair only failed scope; retain accepted neighboring work. |
+| Sound / music | Dialogue/ADR where applicable, score, ambience, Foley, effects and appropriate lip sync; listening, language and synchronization checks remain separate. |
+| Editorial / finishing / delivery | Take selection, edit, graphics/captions, factual labels, colour matching, sound mix, output settings, durable render, playback/export and final delivery QC. |
+
+### Required sequence
+
+Brief and applicability → treatment/script/breakdown → character choices and identity approval → look/world/wardrobe approval → voice audition or explicit original-audio/silent-workflow decision → shot/camera/lighting plan → generated storyboard and sequence approval → timed animatic approval → final footage/performance production → sound/edit/finishing → export QC.
+
+Department work may proceed in parallel when dependencies allow. Approved project assets and voices should be reused, not auditioned again for every B-roll shot. Final dialogue/lip-sync production requires measured approved audio. Storyboard or animatic approval does not approve final motion, voice quality, likeness rights or spending. Changing an approved identity, look, script, voice or timing must identify downstream work needing review without deleting accepted media.
+
+For an uploaded song, preserve the original vocal performance by default and record that voice decision; replacement voices need explicit user direction and appropriate rights. For a documentary without an on-screen host, record why on-screen casting is not applicable; narration still requires the applicable voice-selection review. For a silent/product-only ad, record those applicability choices rather than generating unnecessary humans or speech.
+
+### Cost and quality accounting
+
+Every scenario budget must include applicable writing/research, casting options, identity/reference packs, look development, voice auditions, storyboard frames, animatic assembly, final takes, speech/music/sound, edits/finishing/export, evaluations and repairs. Show reused/user-supplied assets, deterministic work, human work and unpriced dependencies explicitly. A selected-call subtotal must be labelled as such. Record candidate quantities and consented spend before generating a shortlist; preparation outputs and rejected candidates must not disappear from total cost or two-attempt reporting.
+
+The two-attempt quality target must be reported both per defined work unit and at project outcome level. It is not proven by good reference frames, a cheap video rate, a storyboard approval or a successful API response. Do not silently bypass preparation gates to present a shorter workflow or cheaper budget.
+
+### Implementation status
+
+These are mandatory requirements, not a claim that all departments are operational. Generated casting/look choices, voice auditions, generated storyboards and a timed animatic remain incomplete in the current application. Existing record/version and review controls are foundations. The tracker must retain missing/partial status until corresponding end-to-end evidence exists.
+
+## Per-user, per-creation cost visibility and economical routing — 18 October 2026
+
+This is an explicit user requirement. Every user must see the applicable customer price for every creation and repair, including planning, character/look options, voice auditions, storyboards, animatics, final footage, audio, finishing and export. A whole-film total alone is insufficient. Display component costs plus stage/project totals, quantities, included/reused work and unknown items. Do not call a selected-call subtotal the full production cost.
+
+### Customer cost contract
+
+- **Before execution:** show what will be created, candidate/take count, settings and duration, billable quantity/unit, verified estimate/range, applicable customer fees/credits/taxes, quote expiry and maximum authorized spend. Explain reuse, included work and repair scope. Unknown or stale pricing blocks paid submission. Any paid planning/analysis stage needs its own disclosed cost/authorization; browsing or selecting a skill must not silently charge.
+- **During execution:** show estimated and reserved amounts distinctly, completed work, remaining authorization and unresolved charges. Provider completion does not establish a settled bill. Concurrent jobs must not overspend the shared allowance.
+- **After reconciliation:** show the customer charge/receipt, itemized creation/repair history, credits/refunds and project totals. Keep unknown charges visibly pending; never invent a final amount or automatically duplicate an uncertain submission.
+- **User control:** disclose and obtain authorization for a scope, quantity, rate, configuration or price increase beyond the existing approval. Preserve the approved ceiling; make any additional spend a deliberate decision. Prefer repair of failed scope over a whole-project reroll.
+- **Visibility and privacy:** show costs beside the relevant creation/review action and in project/account history on desktop and mobile. Customer prices come from a versioned published tariff/entitlement policy; provider actuals, discounts and margin belong in restricted backoffice records. Currency/credit conversion, rounding and fees must be explicit and auditable. One user must not access another user's quotes, receipts or usage.
+
+### Cost-aware model comparison
+
+Evaluate economical as well as premium candidates for every applicable task. Candidate families include Wan video, FLUX Schnell/Klein generation/editing, Z Image drafts and competitive H3/Turbo routes, alongside other verified endpoints. Do not assume that every Wan/FLUX variant is cheaper, that all image routes accept identity references or that a text-only draft route preserves a character or exact product label.
+
+A user-facing production preference may offer Economical / Balanced / Premium where meaningful. The router must meet the agreed quality, continuity, identity, language, motion and output requirements in every mode. Lower resolution, weaker controls or more candidate generations require disclosure and appropriate consent. Preserve explicit model choices. No silent fallback, provider switch or quality downgrade is permitted.
+
+Compare configuration-specific **expected cost of an accepted result**, using observed repair/failure rates where available, not only the cheapest nominal call. Label missing benchmark evidence unknown; do not fabricate failure probabilities or claim two-attempt success. Reuse approved assets and deterministic tools when they meet the brief. Current priority-based routing and simple-unit estimates do not yet implement this complete optimizer or customer billing UI.
+
+### Selected dated price observations
+
+[Budget-candidate evidence](evidence/FAL_BUDGET_CANDIDATE_PRICES_2026-10-18.json) records live discovery/pricing observations, not production activation:
+
+| Candidate endpoint | Observed USD rate | Boundary |
+| --- | --- | --- |
+| `alibaba/wan-3.0/image-to-video` | $0.05 / second | Same displayed base rate as H3 Max reference video; capability/setting fit decides. |
+| `alibaba/wan-3.0-prime/image-to-video` | $0.05 / second | Different endpoint; do not infer identical controls or quality. |
+| `fal-ai/wan/v2.7/image-to-video` | $0.10 / second | This observed Wan version is more expensive than those two variants. |
+| `wan/v2.6/image-to-video/flash` | $0.05 / second | Version lifecycle, schema and quality need review. |
+| `fal-ai/flux/schnell` | $0.003 / megapixel | Fast draft candidate; not per-image pricing or proven final identity production. |
+| `fal-ai/flux-2/klein/9b` | $0.006 / megapixel | Generation route; inspect actual reference/control inputs. |
+| `fal-ai/flux-2/klein/9b/edit` | $0.011 / megapixel | Reference/edit candidate requiring its own schema and preservation benchmark. |
+| `fal-ai/flux-2/klein/4b` | $0.005 / megapixel | Lower nominal rate does not establish equivalent output. |
+| `fal-ai/z-image/turbo` | $0.005 / megapixel | Draft route; preserve unit and capability limits. |
+
+No automatic conversion of megapixels, duration, minima or generic billing units is authorized by this table. Public and account-specific rates remain dated evidence; customer pricing still needs a complete configuration-specific contract.
+
+**Acceptance remains incomplete:** the requirement update adds no new runtime UI, qualified adapter, activated route or commercial ledger. Track implementation and verification separately.
+
+## Job-led and user-intent-led routing — user clarification, 18 October 2026
+
+Model recommendations start with the creative job and the user's intended result. Lowest price, age group, popularity and a generic premium label are insufficient recommendation rules. Cost is an explicit constraint within task fitness, capability, quality, rights and delivery requirements.
+
+The brief compiler must capture: creation purpose; intended audience/platform; desired style and emotional effect; realism/stylization; duration/aspect/output requirements; identity/product/text fidelity; language/performance; user-supplied references; preferred degree of creative control; draft/final intent; budget/deadline and reuse. Personalize assistance to stated experience and preferences. Ask concise questions only where missing information materially changes production. Show assumptions and let the user revise them.
+
+Young creators and other users can have different goals, cultural references, interaction preferences and expectations, but age alone does not establish any individual's taste, spending tolerance, seriousness, skill or quality requirements. A young creator may request cinematic realism; a professional may request rapid experimental drafts. Use the brief and explicit preferences rather than demographic stereotypes.
+
+Recommendations must explain fit for THIS job: relevant model controls, expected benefit, measured limitations, continuity/performance requirements, latency and complete-workflow estimated cost. Evaluate affordable and higher-cost candidates against those requirements. Where requirements conflict, present a small number of meaningful trade-offs and ask which outcome matters most. Do not label the cheapest route universally recommended or automatically assign users to a quality tier.
+
+| Stated job / preference | Routing emphasis |
+| --- | --- |
+| Short social experiment with playful stylization and fast iteration | Hook, distinctive visual style, platform framing, speed and bounded experimentation; choose only candidates that support the requested controls. |
+| Cooking-oil brand advertisement | Exact packaging/logo, appetising food, believable interaction, local language/performance and brand approval; select routes by preservation and physical-action evidence. |
+| Personal or professional narrative film | Character/world continuity, performance, camera intent, coherent coverage, sound and editable production records. |
+| Music video | Meaning, beat/phrase timing, approved performer look, original vocal performance, style and validated singing/performance support where needed. |
+| Factual documentary | Sources, provenance, archive/graphic accuracy, narrator clarity and visibly identified reconstructions; evidence requirements govern generation choices. |
+
+Economical/Balanced/Premium can be optional preference shortcuts, never replacements for the brief. A route must satisfy the agreed result in any mode; additional cost is justified only by relevant controls or demonstrated quality benefit. Where benchmark evidence is missing, report uncertainty and use bounded validation rather than assert superiority.
+
+This is an intelligence-layer requirement. The current deterministic capability/priority router does not yet implement the complete intent compiler, audience-aware workflow selection or empirically evaluated job-specific ranking. Keep those implementation gaps visible.
+
 ## Navigation
 
 1. [Stack and authority](#1-stack-and-authority)
@@ -4666,3 +4785,12 @@ These extensions do not rewrite the embedded historical 20-candidate registry or
 ### 14.6 Knowledge provenance and prompt injection boundary
 
 Store source attribution and a reviewed internal rule separately from user input. Source documents, transcripts and uploaded references are untrusted data; they cannot grant permissions, change budgets, select unauthorized endpoints or override instructions. Retrieve the relevant reviewed rules by task and stage rather than pasting the full corpus into every request. The local compiler is a first contract validator, not an LLM director, provider adapter or production authorization service.
+
+
+### 14.7 User-supplied Gemini excerpts — reviewed integration, 18 October 2026
+
+The [deduplicated review](GEMINI_KNOWLEDGE_RECONCILIATION_2026-10-18.md) governs interpretation of the preserved attachment. Use one versioned internal shot contract with three distinct layers: creative intent, verified executable controls and observed acceptance. Classify each requested camera/control value as an exposed API field, prompt-only direction, reference/blockout conditioning or unsupported. Schema validation and stable orchestration do not guarantee deterministic media.
+
+Represent translation, rotation, orbit, focus and zoom with appropriate semantics and units. Record applicable action-axis, eyeline and screen-direction relationships, plus intentional crossing/reset decisions. Review observed sequence geography independently of planned coordinates. Do not impose a universal 85mm close-up threshold, identical focal length across a scene, 350-character prompt limit, required negative prompt, fixed three-second hook or mandatory audiovisual offset. Existing endpoint capability, creative intent, identity-reference, attempt and cost gates remain controlling.
+
+Parallel planning tasks and their reduction must bind tenant/project/sequence/run, approved input versions, dependencies and skill/model versions. Merge required outputs against the same baseline with bounded concurrency, error attribution, idempotency and atomic version checks. A palette union is not a continuity review. Use the existing registry and versioned records; the attachment's framework/provider defaults and SQL snippets do not replace them. Its code/security and source-attribution issues are recorded in the review; no supplied code is adopted by this incorporation.
