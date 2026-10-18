@@ -12,6 +12,10 @@ Realism-specific production rules, original prompt templates, voice and characte
 
 The [spending acceptance record](SPENDING_AUTHORIZATION_ACCEPTANCE.md) distinguishes current implementation from this planning specification. Evidence-ranked intent, reviewed dynamic task bindings, exact scalar/composite tariffs, durable quote/cap/revocation records and customer Costs controls now have local tests; additive quote/approval guards are applied to Director Supabase. No models are active and generation remains paused. Complete sequence estimates, real task evaluations, billing-feed reconciliation/customer billing and quality pilots remain unfinished. Reading this Bible or passing synthetic tests does not validate a production media route.
 
+## Hybrid planning authorization — 18 October 2026
+
+The [hybrid planning acceptance record](HYBRID_PLANNING_ACCEPTANCE.md) incorporates the user-approved hybrid rule: deterministic/manual work avoids model calls; creative planning uses an explicit initial scope and cap, with per-call atomic reservations and no repeated financial grant while that scope and allowance remain valid. Changed approved decisions, model/pricing evidence or scope require renewed consent. Maximum reservation, measured usage cost and provider invoice reconciliation are distinct. Current runtime implements exact saved-call reuse; the separate approved-result cache remains a policy-level future path. Live planning remains disabled pending evaluated profiles and operational enablement; no writing-quality result is implied.
+
 ## Official fal source refresh — 18 October 2026
 
 The user supplied the current Model APIs overview and available-models reference. Their reconciliation with live official docs is incorporated by reference in [fal routing knowledge refresh](FAL_ROUTING_KNOWLEDGE_REFRESH_2026-10-18.md). It updates planning requirements for catalog/schema discovery, provider fallback/retries, media privacy/retention, request-level billing and newer analysis/portrait/lip-sync candidates. Exact endpoint schemas and benchmarks remain required; historical M01–M20 records are not silently replaced or activated.

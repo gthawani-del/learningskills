@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-18",
+  "sources": [
+    {
+      "url": "https://developers.openai.com/api/docs/guides/background",
+      "sha256": "079f0af04d3155d6f7cc18177955eacadc4587561ba49f31f03cfca09bf42797",
+      "review": "Relevant request/background/usage/context sections inspected; not a complete API audit"
+    },
+    {
+      "url": "https://developers.openai.com/api/reference/resources/responses/methods/create",
+      "sha256": "b7575e1dbe3e726b05a9557aacf2d305786cbe6c9059be7ab19bbb3b06203ec6",
+      "review": "Relevant request/background/usage/context sections inspected; not a complete API audit"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1",
+      "sha256": "916516f471f69ed89fede88c2513ea941e02c0d96a54dc3dbdd6e0ed6bd06cc3",
+      "review": "Relevant request/background/usage/context sections inspected; not a complete API audit"
+    }
+  ],
+  "findings": [
+    "Background response storage/polling verified; implementation explicitly uses store:true and requires approved data policy.",
+    "Responses usage separates input, cached input and output; malformed usage must not release a hold.",
+    "GPT-4.1 page shows 1,047,576 context and 32,768 maximum output; these observations do not select or activate that model."
+  ],
+  "paidCalls": 0,
+  "modelAccessVerified": false
+}

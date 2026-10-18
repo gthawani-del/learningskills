@@ -30,3 +30,11 @@ await import('../apps/director/tests/tariffs.test.mjs');
 await import('../apps/director/tests/cost-reconciliation.test.mjs');
 
 await import('../apps/director/tests/spending-cloud.test.mjs');
+
+await import('../apps/director/tests/planning-provider.test.mjs');
+await import('../apps/director/tests/planning-policy.test.mjs');
+await import('../apps/director/tests/planning-consent.test.mjs');
+
+await import('../apps/director/tests/planning-api.test.mjs');
+
+await import('../apps/director/tests/planning-cloud.test.mjs');

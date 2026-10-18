@@ -1,0 +1,84 @@
+{
+  "checkedAt": "2026-10-18",
+  "automatedTests": {
+    "passed": 213,
+    "failed": 0,
+    "scope": "Local module/API/cloud-adapter tests with simulated provider/price evidence"
+  },
+  "syntax": "passed",
+  "productionBuild": "passed",
+  "browser": {
+    "scope": "Real local browser/API/file store with server-side synthetic planning provider; no browser request interception or paid provider calls",
+    "passed": [
+      "Consent does not submit",
+      "Explicit bounded call",
+      "Known response survives reload",
+      "Explicit poll and usage settlement",
+      "Revocation",
+      "Approved story preserved",
+      "390px no horizontal overflow"
+    ],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "physicalMobileTested": false
+  },
+  "fixtureBrowser": {
+    "scope": "Intercepted planning API fixtures",
+    "passed": [
+      "Unavailable-route gate",
+      "One-call minimum and finishing reserve",
+      "Maximum count is a ceiling",
+      "No automatic call on consent",
+      "Same UUID after interrupted response",
+      "Unknown blocks replacement",
+      "Explicit poll",
+      "Reserved resume/release",
+      "Unknown cannot release",
+      "Revocation",
+      "390px no overflow"
+    ],
+    "injectedNetworkFailure": true,
+    "physicalMobileTested": false
+  },
+  "isolatedPostgres": {
+    "environment": "isolated PGlite PostgreSQL/WASM; no external transport",
+    "passed": [
+      "scoped consent and request replay/conflict; stale project rejected",
+      "three atomic reservations preserve finishing reserve and capped call count",
+      "owner-scoped summary/read/replay restore original request without new reservation",
+      "database pause blocks reservation and dispatch claim atomically",
+      "claim rechecks brief scope, approval fence and full registry snapshot",
+      "claim exactly once; replay cannot submit; another submission held",
+      "nonterminal status persisted without changing holds; terminal result cannot be overwritten",
+      "known response ID immutable; exact cached/uncached/output rational token costs settled",
+      "unknown submission retains hold; no release/replacement/grant replenishment",
+      "post-edit/revocation incurred usage retained; overrun preserved above reserved cap and remains held",
+      "null/missing profile and pricing evidence fail closed",
+      "summary exposes bounded proposal errors without full plan/input",
+      "service-only RPCs; all functional transitions executed as service_role",
+      "rollback clears all synthetic fixture records"
+    ],
+    "productionApplied": false,
+    "limitations": [
+      "single-connection sequential transactions; true cross-session lock races not tested",
+      "canonical hashes and result semantic validation remain trusted-server responsibilities",
+      "provider billing must be reconciled separately from conservative micro-USD token ceilings"
+    ]
+  },
+  "nativeDatabase": {
+    "migration": "20261018031931_director_hybrid_planning_consent",
+    "applied": true,
+    "allPlanningTablesRls": true,
+    "serviceCanPlan": true,
+    "customerCanPlan": false,
+    "generationPaused": true,
+    "activeOpenAiModels": 0,
+    "planningConsents": 0,
+    "planningReservations": 0,
+    "securityAdvisorFindings": 0
+  },
+  "paidProviderCalls": 0,
+  "physicalMobileTested": false,
+  "productionBrowserTests": "deferred by user",
+  "writingQualityValidated": false
+}

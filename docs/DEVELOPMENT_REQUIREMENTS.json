@@ -222,13 +222,21 @@
       "status": "partial",
       "code": [
         "apps/director/providers.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/planning.mjs",
+        "apps/director/planning-profile.mjs",
+        "apps/director/planning-provider.mjs",
+        "apps/director/planning-consent.mjs",
+        "apps/director/planning-store.mjs"
       ],
       "tests": [
-        "apps/director/tests/providers.test.mjs"
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow.",
+      "gap": "Background planning proposals have scoped budget/reservation and semantic timing checks with simulated providers. Real model/profile activation, treatment/writing quality, department completeness and user proposal-review integration remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F012",
       "dependencies": [
         "versioned-project-records",
@@ -258,13 +266,21 @@
       "step": 6,
       "status": "partial",
       "code": [
-        "apps/director/providers.mjs"
+        "apps/director/providers.mjs",
+        "apps/director/planning.mjs",
+        "apps/director/planning-profile.mjs",
+        "apps/director/planning-provider.mjs",
+        "apps/director/planning-consent.mjs",
+        "apps/director/planning-store.mjs"
       ],
       "tests": [
-        "apps/director/tests/providers.test.mjs"
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Structured scene/shot planning adapter only; no executed production breakdown or scheduling.",
+      "gap": "Planning authorization and structured response foundations implemented. Full department breakdown, production scheduling and actual model-generated planning quality remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F014",
       "dependencies": [
         "versioned-project-records",
@@ -1295,17 +1311,25 @@
         "apps/director/spending.mjs",
         "apps/director/spending-store.mjs",
         "database/director-durable-quotes.sql",
-        "database/director-recursive-approval-guards.sql"
+        "database/director-recursive-approval-guards.sql",
+        "apps/director/planning.mjs",
+        "apps/director/planning-profile.mjs",
+        "apps/director/planning-provider.mjs",
+        "apps/director/planning-consent.mjs",
+        "apps/director/planning-store.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
         "apps/director/tests/spending.test.mjs",
         "apps/director/tests/spending-api.test.mjs",
         "apps/director/tests/spending-cloud.test.mjs",
-        "database/checks/durable-quotes-pglite.mjs"
+        "database/checks/durable-quotes-pglite.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Durable quotes, explicit caps/finishing/revocation, exact replay and applied SQL reservation freshness guards implemented. Thirteen isolated PostgreSQL groups pass; true cross-session races, deployed customer cloud flow, wallet/customer billing and financial settlement remain incomplete.",
+      "gap": "Media and hybrid-planning grants/reservations, protected finishing amounts, replay, unknown holds and applied SQL guards implemented. True cross-session races, deployed customer account flow, provider billing settlement and full commercial accounting remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F071",
       "dependencies": [
         "versioned-project-records",
@@ -3801,7 +3825,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529",
     "FILM_STUDIO_BLUEPRINT.md": "52bbfe2ae5b69745dd4b23e730144e18a2ba94a0e820635c8aac60ae97945be0",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "d5c906ce8b2e8119f17af07d0761e3f007de4107b1aaf5595040507d20ac51ae"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "8b43cff4a1affe070b9a38dfa7c5fb3d9c1d258187bc212857d430911c0104ee"
   },
-  "currentBatch": "Routing/intent/composite quotes/durable cost consent and Costs UI implemented; 168 tests/build/local browser pass. Migration20261018025605 applied and secured; generation paused; actual routes/billing/production pilots not validated."
+  "currentBatch": "Step6point1 hybrid planning authorization implemented and locally verified: 213 tests/build/browser,14isolatedSQLgroups; migration20261018031931 applied. Zero activeOpenAI models and generation paused; realpaidquality and deployment/account tests remain unverified/deferred."
 }

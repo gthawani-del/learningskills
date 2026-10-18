@@ -1,3 +1,13 @@
+# Hybrid planning authorization — 18 October 2026
+
+Step 6 point 1 implemented: deterministic manual/rule policy, scoped multi-call planning consent, model-bound token-cost ceilings, durable reserve/claim-once background requests, known-ID polling, usage/unknown/overrun accounting and unstarted-call recovery. Costs → Planning limits records consent separately from submission. Returned plans remain proposals and do not overwrite approved story content.
+
+**213 automated tests, syntax checks and production build pass.** Fourteen isolated PostgreSQL/WASM proof groups pass; fixture and real local browser/API/file-store tests pass (the latter uses a simulated provider). Native Supabase migration `20261018031931_director_hybrid_planning_consent` is applied; RLS and service-only RPC privileges verified, security advisor clean. Zero active OpenAI models; generation remains paused. No paid call, real-account workflow, physical mobile test or writing-quality claim. See [Hybrid planning acceptance](HYBRID_PLANNING_ACCEPTANCE.md).
+
+Next: Step 6 point 2, structured brief interpretation. Live planning activation requires an evaluated model/profile, current pricing and token evidence, approved provider-data policy, configured credentials and explicit operational enablement. The existing Vercel/account tests remain deferred. Full approved-result caching and provider billing reconciliation are not implemented by this increment.
+
+---
+
 # Routing and spending controls — 18 October 2026
 
 Job-aware evidence-ranked routing, reviewed dynamic task bindings, exact composite tariffs, durable quote receipts, explicit cost caps/revocation and a customer Costs panel are implemented. **168 automated tests, syntax checks and the production build pass locally.** Real local browser/server/file-store checks pass with no page/console/HTTP errors; fixture browser checks cover lost-response replay. These use synthetic model/price evidence, not paid media.

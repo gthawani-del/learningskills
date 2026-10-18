@@ -130,3 +130,7 @@ Read [fal routing and intelligence reconciliation](FAL_ROUTING_KNOWLEDGE_REFRESH
 ## Routing and spending implementation evidence — 18 October 2026
 
 [Spending authorization acceptance](SPENDING_AUTHORIZATION_ACCEPTANCE.md) records the implemented API/UI/SQL boundaries, tests and remaining gates. It is an execution record, not another independent product blueprint.
+
+## Hybrid planning implementation — 18 October 2026
+
+[Hybrid planning acceptance](HYBRID_PLANNING_ACCEPTANCE.md) and its [evidence](evidence/HYBRID_PLANNING_CHECKS_2026-10-18.json) record Step 6 point 1. This is an execution record, not a new competing blueprint. [Official OpenAI source observations](evidence/OPENAI_PLANNING_SOURCES_2026-10-18.json) distinguish documentation from model execution/quality evidence.

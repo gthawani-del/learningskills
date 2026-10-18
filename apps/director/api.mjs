@@ -1,3 +1,6 @@
+import {createPlanningController} from './planning.mjs';
+import {createPlanningProvider} from './planning-provider.mjs';
+import {visiblePlanningCall} from './planning-store.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
 import {routingTasks,knownRoutingTask,taskCandidates,routingCatalogExplanation} from './routing-task-catalog.mjs';
@@ -34,7 +37,7 @@ export function validateUpload(body){
  if(body.mime&&body.mime!==mime&&!(mime==='video/mp4'&&body.mime==='video/quicktime'))fail(415,'File content does not match its declared type.');
  return {bytes,mime};
 }
-export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders}={}){
+export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders,planningProvider:providedPlanningProvider}={}){
  const demo=env.DIRECTOR_DEMO==='1'&&env.NODE_ENV!=='production'&&!env.VERCEL;
  const connected=!!(env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY);
  const store=providedStore||(demo?await new LocalStore(env.DIRECTOR_DATA_FILE||'/tmp/director-studio/projects.json').init():connected?new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher}):null);
@@ -44,6 +47,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const isAdmin=user=>!!staffRole(user?.id,env);
  // Remains closed until planning has its own verified quote and durable reservation.
  const planning=false;
+ const planningController=store?createPlanningController({store,provider:providedPlanningProvider||createPlanningProvider({env,fetcher}),env}):null;
  const mediaStorage=createMediaStorage({env,fetcher,demo});
  const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
@@ -58,7 +62,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  return async(req,res,path,body={})=>{
  const reply=(status,value,headers={})=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store',...headers});res.end(JSON.stringify(value));};
  const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
- if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
+ if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,planningControls:!!store,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
  if(path==='/api/auth/login'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
  if(typeof body.email!=='string'||body.email.length>254||typeof body.password!=='string'||body.password.length>1024)fail(400,'Enter an email and password.');
@@ -98,6 +102,18 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
+ if(action==='planning'&&req.method==='GET')return reply(200,await planningController.summary(user.id,id));
+ const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
+ if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
+ const allowed=planningPoll?(planningPoll[2]==='poll'?['requestId']:['requestId','expectedVersion']):consentRevoke?['requestId','expectedVersion','reason']:action==='planning-consents'?['requestId','expectedVersion','maxMicroUsd','finishReserveMicroUsd','maxCalls']:['requestId','expectedVersion','consentId','operation'];
+ if(Object.keys(body).some(k=>!allowed.includes(k))||!uuid.test(body.requestId||'')||(!planningPoll||planningPoll[2]!=='poll')&&(!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1))fail(400,'Supply a request identity, project version and supported planning fields.');
+ const c={...body,actorId:user.id,projectId:id};
+ if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
+ if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
+ if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
+ }
  if(action==='plan'&&req.method==='POST'){
  if(!planning)fail(503,'AI planning is not enabled. You can write the story manually.');
  if(body.authorizePlanning!==true)fail(402,'Confirm the planning operation before submitting.');

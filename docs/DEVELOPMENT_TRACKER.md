@@ -20,6 +20,10 @@ Every user must see itemized creation costs before authorization, reserved/pendi
 
 [Acceptance record](SPENDING_AUTHORIZATION_ACCEPTANCE.md): evidence-ranked job intent, dynamic reviewed task bindings, scalar/composite quotes, durable receipts/caps/revocation, owner-safe APIs and Costs UI implemented. 168 automated tests and production build pass; real local browser/server flow has no console/HTTP errors. Database migration `20261018025605` applied, service-only grants/RLS/pause verified and security advisor clean. Thirteen isolated PostgreSQL proof groups pass; true cross-session races, deployed account/browser integration, live billing-feed settlement and media pilots remain unverified. A pure cost-reconciliation foundation is not complete customer billing. No requirement is upgraded to full acceptance.
 
+## Hybrid planning authorization — 18 October 2026
+
+[Acceptance record](HYBRID_PLANNING_ACCEPTANCE.md): Step 6 point 1 is implemented with scoped initial limits, multiple bounded calls, deterministic manual paths, token-bound maximum reservations, exact replay, safe resume/cancel and usage recovery. 213 tests/build and local browsers pass; fourteen PostgreSQL proof groups pass; migration `20261018031931` applied and security advisor clean. Live planning stays disabled with zero active OpenAI models. No new requirement is fully production-accepted. Structured brief interpretation, writing/department workflows and quality pilots remain outstanding.
+
 ## Current batch and dependencies
 
 - Audit: complete as an initial baseline; refine each row while implementing. Broad section coverage is not line-by-line certification.

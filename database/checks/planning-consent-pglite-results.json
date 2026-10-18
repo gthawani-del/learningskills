@@ -1,0 +1,25 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no external transport",
+  "passed": [
+    "scoped consent and request replay/conflict; stale project rejected",
+    "three atomic reservations preserve finishing reserve and capped call count",
+    "owner-scoped summary/read/replay restore original request without new reservation",
+    "database pause blocks reservation and dispatch claim atomically",
+    "claim rechecks brief scope, approval fence and full registry snapshot",
+    "claim exactly once; replay cannot submit; another submission held",
+    "nonterminal status persisted without changing holds; terminal result cannot be overwritten",
+    "known response ID immutable; exact cached/uncached/output rational token costs settled",
+    "unknown submission retains hold; no release/replacement/grant replenishment",
+    "post-edit/revocation incurred usage retained; overrun preserved above reserved cap and remains held",
+    "null/missing profile and pricing evidence fail closed",
+    "summary exposes bounded proposal errors without full plan/input",
+    "service-only RPCs; all functional transitions executed as service_role",
+    "rollback clears all synthetic fixture records"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "single-connection sequential transactions; true cross-session lock races not tested",
+    "canonical hashes and result semantic validation remain trusted-server responsibilities",
+    "provider billing must be reconciled separately from conservative micro-USD token ceilings"
+  ]
+}
