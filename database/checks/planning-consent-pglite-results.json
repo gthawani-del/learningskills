@@ -13,6 +13,9 @@
     "post-edit/revocation incurred usage retained; overrun preserved above reserved cap and remains held",
     "null/missing profile and pricing evidence fail closed",
     "summary exposes bounded proposal errors without full plan/input",
+    "interpret_brief uses existing capped allowance; exact brief archive mutation blocks reserve/claim even with stale app hash and revision; renewed scope succeeds",
+    "brief approvals require exact current snapshot and current parsed source signature; mismatched/stale content rejected, valid current brief approved",
+    "media review gate requires current approved brief: unapproved/revoked/source-stale blocked, approved succeeds; legacy no-archive unchanged",
     "service-only RPCs; all functional transitions executed as service_role",
     "rollback clears all synthetic fixture records"
   ],

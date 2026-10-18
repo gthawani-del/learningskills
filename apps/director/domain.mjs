@@ -1,4 +1,5 @@
 import {sceneChanged,briefChanged} from './public/revision-impact.js';
+import {briefArtifact} from './public/creative-brief-core.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -11,7 +12,7 @@ export function text(value,name,max=10000){if(typeof value!=='string'||value.len
 export function newProject(body,owner){
  const title=text(body.title||'Untitled film','title',200).trim();if(!title)fail(400,'A title is required.');
  if(!['short_film','music_video','advertisement'].includes(body.format||'short_film'))fail(400,'Invalid project format.');
- return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],production:{records:[]},createdAt:new Date().toISOString()};
+ return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',briefExplicitFields:['premise',...(body.format?['format']:[])],stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],production:{records:[]},createdAt:new Date().toISOString()};
 }
 export function patchProject(previous,body){
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
@@ -37,9 +38,11 @@ export function patchProject(previous,body){
  // A scene edit invalidates only shots explicitly linked to that scene. Existing media stays intact.
  if(body.shots===undefined&&body.story!==undefined)next.shots=next.shots.map(s=>sceneChanged(previous,next,s.sceneId)?{...s,version:s.version+1,status:'draft'}:s);
  if(briefChanged(previous,next)&&next.story.version===previous.story.version)next.story={...next.story,version:previous.story.version+1};
+ const explicit=new Set(previous.briefExplicitFields||[]);for(const key of ['premise','direction','language','duration','format'])if(body[key]!==undefined&&body[key]!==previous[key])explicit.add(key);next.briefExplicitFields=[...explicit].sort();
  next.version=previous.version+1;return next;
 }
 export function artifacts(project){return [
+ ...(briefArtifact(project)?[briefArtifact(project)]:[]),
  {logical_key:'story',kind:'story',version:project.story.version,content:project.story},
  ...project.shots.map(s=>({logical_key:s.id,kind:'shot',version:s.version,content:s}))
 ].map(a=>({...a,content_hash:hash(a.content)}));}

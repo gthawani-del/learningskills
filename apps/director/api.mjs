@@ -1,6 +1,9 @@
 import {createPlanningController} from './planning.mjs';
 import {createPlanningProvider} from './planning-provider.mjs';
 import {visiblePlanningCall} from './planning-store.mjs';
+import {applyBriefCommand,briefPlanningContext} from './public/creative-brief-core.js';
+import {planningCreativeContext} from './planning-profile.mjs';
+import {validatePlanningResult} from './planning-provider.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
 import {routingTasks,knownRoutingTask,taskCandidates,routingCatalogExplanation} from './routing-task-catalog.mjs';
@@ -102,6 +105,29 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
+ if(action==='brief'&&req.method==='GET')return reply(200,{briefContext:briefPlanningContext(project,await store.records('approvals',id))});
+ if((action==='brief'||action==='brief/apply-proposal')&&req.method==='POST'){
+  const applying=action==='brief/apply-proposal',allowed=applying?['expectedVersion','callId']:['expectedVersion','action','changes'];
+  if(Object.keys(body).some(k=>!allowed.includes(k))||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1||(!applying&&!['interpret','update'].includes(body.action)))fail(400,'Supply a current project version and a supported creative brief edit.');
+  if(body.expectedVersion!==project.version)fail(409,'This project changed. Reopen it before reviewing the brief.');
+  const approvals=await store.records('approvals',id);let command=body;
+  if(applying){
+   if(!uuid.test(body.callId||''))fail(400,'Choose a saved interpretation proposal.');
+   const saved=await store.readPlanningCall(user.id,id,body.callId),proposal=saved.result?.briefProposal;
+   if(saved.reservation.operation!=='interpret_brief'||saved.result?.providerStatus!=='completed'||!proposal)fail(409,'This call has no completed interpretation proposal to review.');
+   validatePlanningResult(proposal,saved.request);
+   const input=JSON.parse(saved.request.body.input);
+   if(hash(input.context)!==hash(planningCreativeContext(project,approvals)))fail(409,'The source brief or reviewed decisions changed. Keep the current brief and prepare a new interpretation if needed.');
+   command={expectedVersion:body.expectedVersion,action:'apply_proposal',proposal};
+  }
+  const next=applyBriefCommand(project,command,approvals),saved=next.version===project.version?project:await store.save(next,project.version);
+  return reply(200,{project:saved,briefContext:briefPlanningContext(saved,approvals)});
+ }
+ const planningRead=action?.match(/^planning-calls\/([0-9a-f-]+)$/);
+ if(planningRead&&req.method==='GET'){
+  if(!uuid.test(planningRead[1]))fail(400,'Invalid planning call identity.');
+  const saved=await store.readPlanningCall(user.id,id,planningRead[1]);return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null});
+ }
  if(action==='planning'&&req.method==='GET')return reply(200,await planningController.summary(user.id,id));
  const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
  if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
@@ -111,7 +137,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
  if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
  if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
- if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
  return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
  }
  if(action==='plan'&&req.method==='POST'){

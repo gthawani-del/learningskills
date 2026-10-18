@@ -1,4 +1,5 @@
 import {normalizeProductionArchive} from './production-records.mjs';
+import {normalizeBriefArchive} from './public/creative-brief-core.js';
 import {newProject,patchProject,hash,text,fail} from './domain.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const roles=new Set(['character_identity','wardrobe','location','visual_style','prop','shot_reference','master_song','dialogue','script','voice_reference','ambience']);
@@ -10,6 +11,8 @@ function normalize(body,owner){
  if(!Array.isArray(source.shots||[])||(source.shots||[]).some(s=>!s||typeof s!=='object'))fail(400,'Invalid shot list.');
  const shots=(source.shots||[]).map(({clipAssetId,referenceAssetId,productionBindings,...s})=>s);
  const project=patchProject(base,{title:source.title,premise:source.premise,duration:source.duration,language:source.language,direction:source.direction,stage:source.stage,story:source.story,shots});
+ if(source.briefExplicitFields!==undefined){if(!Array.isArray(source.briefExplicitFields)||source.briefExplicitFields.length>5||new Set(source.briefExplicitFields).size!==source.briefExplicitFields.length||source.briefExplicitFields.some(k=>!['premise','direction','language','duration','format'].includes(k)))fail(400,'Invalid explicit brief source fields.');project.briefExplicitFields=[...source.briefExplicitFields].sort();}
+ const creativeBrief=normalizeBriefArchive(source.creativeBrief,project);if(creativeBrief)project.creativeBrief=creativeBrief;
  if(!Array.isArray(source.notes||[])||(source.notes||[]).length>200)fail(400,'Invalid direction notes.');
  project.notes=(source.notes||[]).map(n=>{if(!n||typeof n!=='object')fail(400,'Invalid direction note.');return {role:'You',text:text(n.text,'direction note',6000)};});
  const seen=new Set();const assets=body.assets.map(a=>{
@@ -21,6 +24,7 @@ function normalize(body,owner){
  const links=(source.shots||[]).map(s=>{const bindings=s.productionBindings||[];if(!Array.isArray(bindings)||bindings.length>100||new Set(bindings.map(b=>b?.recordId)).size!==bindings.length||bindings.some(b=>!productionArchive.records.some(r=>r.id===b?.recordId&&r.versions.some(v=>v.version===b.version))))fail(400,'A library binding is missing from this draft.');return {shotId:s.id,clip:s.clipAssetId||null,image:s.referenceAssetId||null,bindings};});
  for(const l of links)for(const [key,mime]of [['clip','video/'],['image','image/']])if(l[key]&&!assets.some(a=>a.sourceId===l[key]&&a.mime.startsWith(mime)))fail(400,'A selected reference is missing from this draft.');
  const content={title:project.title,premise:project.premise,format:project.format,duration:project.duration,language:project.language,direction:project.direction,stage:project.stage,story:project.story,shots:project.shots.map(({productionBindings,...s})=>productionBindings?.length?{...s,productionBindings}:s),notes:project.notes,assets,links:links.map(({bindings,...l})=>bindings?.length?{...l,bindings}:l),...(productionArchive.records.length?{productionArchive}:{})};
+ if(creativeBrief){content.creativeBrief=creativeBrief;content.briefExplicitFields=project.briefExplicitFields;}
  const fingerprint=hash(content);project.id=stableImportId({owner,sourceId:body.sourceId,fingerprint});project.version=1;
  project.importState={sourceId:body.sourceId,fingerprint,status:'awaiting_media',assets,links,productionArchive};
  return project;

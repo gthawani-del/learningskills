@@ -4,7 +4,7 @@ Updated 18 October 2026. Baseline before the routing/quote batch: `76960d5`. Thi
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
-Status: 61 partial, 100 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+Status: 62 partial, 99 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
 
 Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
 
@@ -22,7 +22,13 @@ Every user must see itemized creation costs before authorization, reserved/pendi
 
 ## Hybrid planning authorization — 18 October 2026
 
-[Acceptance record](HYBRID_PLANNING_ACCEPTANCE.md): Step 6 point 1 is implemented with scoped initial limits, multiple bounded calls, deterministic manual paths, token-bound maximum reservations, exact replay, safe resume/cancel and usage recovery. 213 tests/build and local browsers pass; fourteen PostgreSQL proof groups pass; migration `20261018031931` applied and security advisor clean. Live planning stays disabled with zero active OpenAI models. No new requirement is fully production-accepted. Structured brief interpretation, writing/department workflows and quality pilots remain outstanding.
+[Acceptance record](HYBRID_PLANNING_ACCEPTANCE.md): Step 6 point 1 is implemented with scoped initial limits, multiple bounded calls, deterministic manual paths, token-bound maximum reservations, exact replay, safe resume/cancel and usage recovery. 213 tests/build and local browsers pass; fourteen PostgreSQL proof groups pass; migration `20261018031931` applied and security advisor clean. Live planning stays disabled with zero active OpenAI models. No new requirement is fully production-accepted. Structured brief implementation is covered in the following batch; writing/department workflows and quality pilots remain outstanding.
+
+## Structured brief and creative intent — 18 October 2026
+
+[Implementation and acceptance record](CREATIVE_INTENT_INTELLIGENCE.md): Step 6 brief interpretation now includes versioned explicit/inferred/unknown fields, focused questions, department handoffs, free corrections and a bounded AI proposal path with explicit review/application. Approved choices, current source settings and media history are preserved. Stale proposals and approvals are held. 251 automated tests and production build pass; actual local device/API browsers pass with no console/HTTP errors. A simulated provider proves orchestration, not real creative quality. Seventeen isolated PostgreSQL proof groups pass; migration `20261018035212` applied, service-only grants/RLS verified and security advisor clean. F010 moves from missing to partial. Live paid interpretation, deployed accounts, physical mobile and production quality remain unverified.
+
+[Competitor review](CREATIVE_INTENT_COMPETITOR_REVIEW_2026-10-18.md): fresh official Luma, Hedra and Krea guides inform reference roles and preserved constraints. Fresh REA inventory succeeded but listed Privacy error pages; product UI and bundle checks were blocked. No internal Theory of Mind architecture is asserted.
 
 ## Current batch and dependencies
 
@@ -35,7 +41,7 @@ Every user must see itemized creation costs before authorization, reserved/pendi
 - Export: local FFmpeg proof only; no hosted worker selected.
 - UI: deployed v2 layout and browser-device editing flow; physical mobile tests outstanding.
 
-## Current verification
+## Earlier verification baseline
 
 88 automated tests, syntax checks and production build pass locally for the operational-controls update. The prior library release 539b65b passed live public-site library and v2 workspace browser checks. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
 
@@ -71,7 +77,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F007 | Search project and media library | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F008 | Upload and finalize source media | 2 | partial | Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing. |
 | F009 | Preview or download private media | 2 | partial | Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing. |
-| F010 | Interpret brief and ask necessary questions | 6 | missing | Intent compiler must capture purpose, audience/platform, desired result/style/control, references and budget/deadline; clarify material ambiguities and adapt to explicit preferences without age-based assumptions. Full intelligent interpretation remains missing. |
+| F010 | Interpret brief and ask necessary questions | 6 | partial | Versioned explicit/inferred/unknown brief, max-three questions, manual corrections, optional capped AI proposals, approval and exact-context guards implemented. Free path conservatively preserves known settings, not arbitrary natural-language understanding. Real interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F012 | Develop treatment and story arc | 6 | partial | Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow. |
 | F013 | Write screenplay and dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |

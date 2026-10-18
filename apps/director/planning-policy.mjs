@@ -1,9 +1,11 @@
 import {hash, fail} from './domain.mjs';
-const operations = new Set(['initial_plan', 'revise_plan']);
+const operations = new Set(['initial_plan', 'revise_plan', 'interpret_brief']);
 const digest = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 export function planningScope(project, approvals = []) {
  if (!project || typeof project !== 'object' || !Array.isArray(approvals)) fail(400, 'A project and approved decisions are required.');
  const brief = Object.fromEntries(['premise','direction','language','duration','format'].map(key => [key, project[key] ?? null]));
+ if (project.creativeBrief) brief.creativeBrief = project.creativeBrief;
+ if (project.briefExplicitFields) brief.briefExplicitFields = project.briefExplicitFields;
  const latest = new Map();
  for (const decision of approvals) {
   if (typeof decision?.artifactId !== 'string' || !Number.isSafeInteger(decision.version) || decision.version < 1) continue;

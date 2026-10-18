@@ -1,4 +1,5 @@
 import {localPlanningMethods,cloudPlanningMethods} from './planning-store.mjs';
+import {assertBriefApproval} from './public/creative-brief-core.js';
 import {localSpendingMethods,cloudSpendingMethods} from './spending-store.mjs';
 import {defaultControl,applyAdminCommand,normalizedControl,visibleCommand} from './operations.mjs';
 import {recordArtifacts,recordDependencies} from './production-records.mjs';
@@ -24,6 +25,7 @@ export class LocalStore {
  async operationalCommand(request){return this.serial(()=>applyAdminCommand(this.state,request));}
  async approve(project,body,owner){return this.serial(()=>{
  const current=this.state.projects.find(p=>p.id===project.id&&p.ownerId===owner);if(!current)fail(404,'Project not found.');
+ assertBriefApproval(current,body);
  const a=snapshots(current).find(a=>a.logical_key===body.artifactId&&a.version===body.version);if(!a)fail(409,'That artifact version is no longer current.');
  const graph=recordDependencies(current);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(body.decision==='approved'&&holds?.length)fail(409,'Update the linked production versions before approval.');
  if(body.decision==='approved'&&a.kind==='story'&&!a.content.treatment.trim())fail(400,'Write a treatment before approving it.');if(body.decision==='approved'&&a.kind==='shot'&&!a.content.description.trim())fail(400,'Write the shot direction before approval.');
@@ -53,7 +55,7 @@ export class SupabaseStore {
  async add(kind,value){if(kind==='assets'){const r=await this.request('/rest/v1/director_assets',{method:'POST',body:{id:value.id,project_id:value.projectId,kind:value.mime,storage_key:value.storageKey,metadata:value,rights_evidence:{status:'user-supplied-unverified'}}});return {...r[0].metadata,id:r[0].id};}
  if(kind==='audit'){return this.request('/rest/v1/director_audit_events',{method:'POST',body:{project_id:value.projectId,actor_id:value.actorId,event_type:value.type,details:value.details}});}
  fail(503,'This record requires a verified route and quote.');}
- async approve(project,body,owner){const a=snapshots(project).find(a=>a.logical_key===body.artifactId&&a.version===body.version);if(!a)fail(409,'That artifact version is no longer current.');
+ async approve(project,body,owner){project=await this.get(project.id,owner);assertBriefApproval(project,body);const a=snapshots(project).find(a=>a.logical_key===body.artifactId&&a.version===body.version);if(!a)fail(409,'That artifact version is no longer current.');
  const graph=recordDependencies(project);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(body.decision==='approved'&&holds?.length)fail(409,'Update the linked production versions before approval.');
  if(body.decision==='approved'&&(a.kind==='story'&&!a.content.treatment.trim()||a.kind==='shot'&&!a.content.description.trim()))fail(400,'Complete the artifact before approving it.');
  const rows=await this.request(`/rest/v1/director_artifacts?project_id=eq.${project.id}&logical_key=eq.${encodeURIComponent(a.logical_key)}&version=eq.${a.version}`);if(!rows.length)fail(409,'Save this version before approval.');

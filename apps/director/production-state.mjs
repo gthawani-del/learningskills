@@ -1,10 +1,13 @@
 import {recordDependencies} from './production-records.mjs';
 import {hash} from './domain.mjs';
+import {briefPlanningContext} from './public/creative-brief-core.js';
 // A deterministic review graph, not a generation authorization or a claim of media quality.
 export function productionState(project,assets,approvals){
  const approved=(key,version)=>approvals.filter(a=>a.artifactId===key&&a.version===version).at(-1)?.decision==='approved';
- const storyReady=!!project.story.treatment.trim()&&approved('story',project.story.version);
+ const creative=briefPlanningContext(project,approvals),briefReady=!creative.brief||creative.approved;
+ const storyReady=briefReady&&!!project.story.treatment.trim()&&approved('story',project.story.version);
  const nodes=[{id:'story',kind:'story',version:project.story.version,contentHash:hash(project.story),approved:storyReady,dependencies:[],holds:storyReady?[]:['Review and approve the current story version.']}];
+ if(creative.brief){nodes.unshift({id:'brief',kind:'brief',version:creative.brief.version,contentHash:hash(creative.brief),approved:creative.approved,dependencies:[],holds:creative.approved?[]:[creative.stale?'The source brief changed. Update and approve the interpretation.':'Review and approve the current creative brief and assumptions.']});nodes.find(n=>n.id==='story').dependencies.push('brief');if(!briefReady)nodes.find(n=>n.id==='story').holds.push('Current creative brief approval required.');}
  for(const asset of assets)nodes.push({id:'asset:'+asset.id,kind:'reference',version:asset.version,role:asset.role,contentHash:asset.checksum||null,dependencies:[],holds:[],approved:false});
  for(const scene of project.story.scenes)nodes.push({id:'scene:'+scene.id,kind:'scene',contentHash:hash(scene),dependencies:['story'],holds:[]});
  for(const shot of project.shots){

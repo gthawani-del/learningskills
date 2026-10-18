@@ -3,12 +3,13 @@ import {hash,fail} from './domain.mjs';
 import {planningScope,decidePlanningPath} from './planning-policy.mjs';
 import {preparePlanningRequest} from './planning-profile.mjs';
 import {calculatePlanningCost,validatePlanningResult} from './planning-provider.mjs';
+import {briefPlanningContext} from './public/creative-brief-core.js';
 export function createPlanningController({store,provider,env,now=()=>new Date()}){
  async function context(actorId,projectId,operation='initial_plan'){
   const project=await store.get(projectId,actorId),approvals=await store.records('approvals',projectId),scope=planningScope(project,approvals);
   const models=(await store.planningModels()).filter(m=>m.provider==='openai'&&m.model_version===env.OPENAI_STORY_MODEL);
   if(models.length!==1)fail(409,'No verified planning model is configured. Manual editing remains available.');
-  return {project,scope,model:models[0],...preparePlanningRequest(project,models[0],operation,now())};
+  return {project,scope,model:models[0],...preparePlanningRequest(project,models[0],operation,now(),approvals)};
  }
  async function enabled(){
   if(env.DIRECTOR_PLANNING_ENABLED!=='1'||!env.OPENAI_API_KEY)fail(409,'Paid planning is not enabled. Manual editing remains available.');
@@ -25,8 +26,9 @@ export function createPlanningController({store,provider,env,now=()=>new Date()}
   }
   let actualMicroUsd;
   try{if(snapshot.usage)actualMicroUsd=calculatePlanningCost({pricing:current.profileSnapshot.price_evidence,model:current.profileSnapshot.model_version,...snapshot.usage,now:Date.parse(current.reservation.createdAt)}).totalMicroUsd;}catch{}
-  if(snapshot.plan)try{validatePlanningResult(snapshot.plan,current.request);}catch{snapshot={...snapshot,plan:undefined,planError:'The proposed plan did not meet the saved timing and structure requirements.'};}
-  const result={providerStatus:snapshot.status,...(snapshot.plan?{plan:snapshot.plan}:{}),...(snapshot.planError?{planError:snapshot.planError}:{}),...(snapshot.usageError?{usageError:snapshot.usageError}:{}),...(snapshot.error?{error:snapshot.error}:{})};
+  const proposal=snapshot.briefProposal??snapshot.plan;
+  if(proposal)try{validatePlanningResult(proposal,current.request);}catch{snapshot={...snapshot,plan:undefined,briefProposal:undefined,planError:'The proposed result did not meet the saved creative request requirements.'};}
+  const result={providerStatus:snapshot.status,...(snapshot.plan?{plan:snapshot.plan}:{}),...(snapshot.briefProposal?{briefProposal:snapshot.briefProposal}:{}),...(snapshot.planError?{planError:snapshot.planError}:{}),...(snapshot.usageError?{usageError:snapshot.usageError}:{}),...(snapshot.error?{error:snapshot.error}:{})};
   const project=await store.get(projectId,actorId);
   await store.planningCommand('settle_planning',{actorId,projectId,requestId:randomUUID(),expectedVersion:project.version,reservationId:call.id,outcome:actualMicroUsd===undefined?'unknown':'completed',...(actualMicroUsd===undefined?{}:{actualMicroUsd,resultHash:hash(result)})},{usage:snapshot.usage,result,providerResponseId:snapshot.id});
   return store.readPlanningCall(actorId,projectId,call.id);
@@ -46,17 +48,17 @@ export function createPlanningController({store,provider,env,now=()=>new Date()}
  }
  return {
   async summary(actorId,projectId){
-   const project=await store.get(projectId,actorId),scope=planningScope(project,await store.records('approvals',projectId));let availability={enabled:false,reason:'No verified planning model is configured.'},quote=null;
-   try{const c=await context(actorId,projectId);quote={maxCallMicroUsd:c.quote.totalMicroUsd,currency:'USD',expiresAt:c.profile.expiresAt,quoteKind:c.quote.quoteKind};await enabled();availability={enabled:true,reason:'Creative planning can use an explicitly approved scope and budget.'};}catch(e){availability.reason=e.status?e.message:'Planning controls are temporarily unavailable.';}
+   const project=await store.get(projectId,actorId),approvals=await store.records('approvals',projectId),scope=planningScope(project,approvals),briefContext=briefPlanningContext(project,approvals);let availability={enabled:false,reason:'No verified planning model is configured.'},quote=null;
+   try{const c=await context(actorId,projectId,'interpret_brief');quote={maxCallMicroUsd:c.quote.totalMicroUsd,currency:'USD',expiresAt:c.profile.expiresAt,quoteKind:c.quote.quoteKind};await enabled();availability={enabled:true,reason:'Creative planning can use an explicitly approved scope and budget.'};}catch(e){availability.reason=e.status?e.message:'Planning controls are temporarily unavailable.';}
    const records=await store.planningSummary(actorId,projectId);
-   return {policy:{path:availability.enabled?'llm':'manual',reason:'Manual and supported rule-based edits use no model. Creative planning uses a scoped allowance.'},availability,scope,quote,...records,providerDataPolicy:'Background planning stores a response with the configured provider; approved project data policies must permit this.'};
+   return {policy:{path:availability.enabled?'llm':'manual',reason:'Manual and supported rule-based edits use no model. Creative planning uses a scoped allowance.'},availability,scope,quote,briefContext,...records,providerDataPolicy:'Background planning stores a response with the configured provider; approved project data policies must permit this.'};
   },
-  async consent(c){const previous=await store.replayPlanningDecision('grant_planning',c);if(previous)return previous;const ctx=await context(c.actorId,c.projectId);return store.planningCommand('grant_planning',c,ctx);},
+  async consent(c){const previous=await store.replayPlanningDecision('grant_planning',c);if(previous)return previous;const ctx=await context(c.actorId,c.projectId,'interpret_brief');return store.planningCommand('grant_planning',c,ctx);},
   async revoke(c){return store.planningCommand('revoke_planning',c);},
   async start(c){
    const replay=await store.replayPlanningCall(c);if(replay?.reservation.submitClaimed||replay&&replay.reservation.status!=='held')return replay;
    await enabled();const ctx=await context(c.actorId,c.projectId,c.operation);
-   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan']}});
+   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan','interpret_brief']}});
    if(policy.path!=='llm')fail(409,'This operation does not require a new creative planning call.');
    const call=replay?.reservation||await store.planningCommand('reserve_planning',{...c,requestHash:ctx.request.requestHash,quotedMicroUsd:ctx.quote.totalMicroUsd},{...ctx,apiRequest:c});
    return dispatch(c,call,ctx);

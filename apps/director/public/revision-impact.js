@@ -3,4 +3,4 @@ export function sceneChanged(previous,next,oldId,newId=oldId){
  const value=(project,id)=>{const s=project.story.scenes.find(s=>s.id===id);return s?JSON.stringify({id:s.id,description:s.description}):null;};
  return !!newId&&value(previous,oldId)!==value(next,newId);
 }
-export const briefChanged=(previous,next)=>['premise','direction','language','duration'].some(k=>next[k]!==previous[k]);
+export const briefChanged=(previous,next)=>['premise','direction','language','duration','format'].some(k=>next[k]!==previous[k])||JSON.stringify(previous.creativeBrief||null)!==JSON.stringify(next.creativeBrief||null);

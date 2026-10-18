@@ -1,25 +1,30 @@
 import { hash } from './domain.mjs';
 import { planSchema, instruction, validateFilmPlan } from './providers.mjs';
-export const PLANNING_VERSION = 'director-planning-v1';
+import { briefProposalSchema, briefProposalInstruction, validateBriefProposal } from './brief-proposal.mjs';
+export const PLANNING_VERSION = 'director-planning-v2';
+export const filmPlanningInstruction = instruction + ' Approved structured-brief decisions in context are binding creative constraints. Preserve their values; material conflicts require review rather than silently rewriting approved choices.';
 const plain = value => !!value && typeof value === 'object' && !Array.isArray(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
 function fail(status, message) { throw Object.assign(new Error(message), { status }); }
 function bound(value) { if (value > BigInt(Number.MAX_SAFE_INTEGER)) fail(409, 'Planning cost exceeds safe integer precision.'); return Number(value); }
-export function buildPlanningRequest({ brief, refs = [], duration, model, maxOutputTokens } = {}) {
+export function buildPlanningRequest({ brief, refs = [], duration, model, maxOutputTokens, operation = 'initial_plan', context = {} } = {}) {
   if (typeof brief !== 'string' || !brief.trim() || brief.length > 20000) fail(400, 'Planning brief required (maximum 20000 characters).');
   if (!Array.isArray(refs) || refs.length > 12 || refs.some(ref => typeof ref !== 'string' || ref.length > 4000) || JSON.stringify(refs).length > 20000) fail(400, 'References must be bounded text descriptions; image tokens require a separate reviewed adapter.');
   if (!Number.isFinite(duration) || duration <= 0 || duration > 600) fail(400, 'Planning duration must be between zero and 600 seconds.');
   if (typeof model !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,199}$/.test(model)) fail(400, 'An explicit trusted planning model is required.');
   if (!integer(maxOutputTokens) || maxOutputTokens < 1 || maxOutputTokens > 100000) fail(400, 'An explicit bounded output-token limit is required.');
-  const body = { model, instructions: instruction, input: JSON.stringify({ brief, references: refs, durationSeconds: duration }), max_output_tokens: maxOutputTokens, background: true, store: true, text: { format: { type: 'json_schema', name: 'film_plan', strict: true, schema: structuredClone(planSchema) } } };
-  return { version: PLANNING_VERSION, model, body, requestHash: hash({ version: PLANNING_VERSION, body }) };
+  if (!['initial_plan','revise_plan','interpret_brief'].includes(operation) || !plain(context) || JSON.stringify(context).length > 30000) fail(400, 'Invalid planning operation or bounded creative context.');
+  if (operation === 'interpret_brief' && (typeof context.inputSignature !== 'string' || !context.inputSignature)) fail(400, 'Brief interpretation requires its saved input signature.');
+  const interpretation = operation === 'interpret_brief';
+  const body = { model, instructions: interpretation ? briefProposalInstruction : filmPlanningInstruction, input: JSON.stringify({ brief, references: refs, durationSeconds: duration, operation, context }), max_output_tokens: maxOutputTokens, background: true, store: true, text: { format: { type: 'json_schema', name: interpretation ? 'creative_brief_proposal' : 'film_plan', strict: true, schema: structuredClone(interpretation ? briefProposalSchema : planSchema) } } };
+  return { version: PLANNING_VERSION, model, operation, body, requestHash: hash({ version: PLANNING_VERSION, body }) };
 }
 function requestValid(request) {
   if (!plain(request) || request.version !== PLANNING_VERSION || !plain(request.body) || request.model !== request.body.model || hash({ version: request.version, body: request.body }) !== request.requestHash) fail(409, 'Planning request hash or version changed.');
   let input;
   try { input = JSON.parse(request.body.input); } catch { fail(409, 'Planning input is invalid.'); }
-  const rebuilt = buildPlanningRequest({ brief: input.brief, refs: input.references, duration: input.durationSeconds, model: request.model, maxOutputTokens: request.body.max_output_tokens });
-  if (rebuilt.requestHash !== request.requestHash) fail(409, 'Planning request differs from the reviewed request contract.');
+  const rebuilt = buildPlanningRequest({ brief: input.brief, refs: input.references, duration: input.durationSeconds, model: request.model, maxOutputTokens: request.body.max_output_tokens, operation: input.operation, context: input.context });
+  if (request.operation !== input.operation || rebuilt.requestHash !== request.requestHash) fail(409, 'Planning request differs from the reviewed request contract.');
 }
 function pricingValid(pricing, model, now) {
   if (!plain(pricing) || pricing.verified !== true || pricing.model !== model || typeof pricing.version !== 'string' || !pricing.version || pricing.currency !== 'USD' || !(Date.parse(pricing.expiresAt) > now)) fail(409, 'Fresh model-bound planning pricing required.');
@@ -58,8 +63,10 @@ export function quotePlanningBound({ request, pricing, tokenEvidence, now = Date
 }
 export function validatePlanningResult(plan, request) {
   requestValid(request);
+  const savedInput = JSON.parse(request.body.input);
+  if (savedInput.operation === 'interpret_brief') return validateBriefProposal(plan, { inputSignature: savedInput.context.inputSignature, sources: [savedInput.brief,savedInput.references,savedInput.context] });
   validateFilmPlan(plan);
-  const expected = JSON.parse(request.body.input).durationSeconds;
+  const expected = savedInput.durationSeconds;
   const sceneIds = plan.scenes.map(scene => scene.id);
   const shotIds = plan.shots.map(shot => shot.id);
   if (sceneIds.some(id => typeof id !== 'string' || !id.trim()) || shotIds.some(id => typeof id !== 'string' || !id.trim()) || new Set(sceneIds).size !== sceneIds.length || new Set(shotIds).size !== shotIds.length) fail(409, 'Planning result scene and shot identities must be unique and nonempty.');
@@ -69,9 +76,15 @@ export function validatePlanningResult(plan, request) {
   return plan;
 }
 function validateSnapshotPlan(snapshot, request) {
-  if (snapshot.plan && request) {
-    try { validatePlanningResult(snapshot.plan, request); }
-    catch { delete snapshot.plan; snapshot.planError = 'Planning result failed the saved request contract; retain response identity and usage for reconciliation.'; }
+  if (snapshot.parsedOutput !== undefined) {
+    try {
+      if (request) {
+        const operation = JSON.parse(request.body.input).operation;
+        const validated = validatePlanningResult(snapshot.parsedOutput, request);
+        snapshot[operation === 'interpret_brief' ? 'briefProposal' : 'plan'] = validated;
+      } else snapshot.plan = validateFilmPlan(snapshot.parsedOutput);
+    } catch { snapshot.planError = 'Creative result failed the saved request contract; retain response identity and usage for reconciliation.'; }
+    delete snapshot.parsedOutput;
   }
   return snapshot;
 }
@@ -92,7 +105,7 @@ function snapshot(response) {
       const content = response.output.flatMap(item => item.content || []);
       if (content.some(item => !plain(item))) throw new Error('Malformed output content');
       const text = content.filter(item => item.type === 'output_text').map(item => { if (typeof item.text !== 'string') throw new Error('Malformed output text'); return item.text; }).join('');
-      result.plan = validateFilmPlan(JSON.parse(text));
+      result.parsedOutput = JSON.parse(text);
     } catch (error) {
       if (error.message.startsWith('Malformed output')) result.status = 'unknown';
       result.planError = 'Completed planning response contains no valid film plan; retain response identity and usage for reconciliation.';

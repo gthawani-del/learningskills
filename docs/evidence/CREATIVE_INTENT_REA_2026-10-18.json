@@ -1,0 +1,190 @@
+{
+  "reviewDate": "2026-10-18",
+  "scope": "Public competitor workflow research; no authentication or generated-media testing",
+  "officialDocumentation": [
+    {
+      "id": "LUMA-REF-20261018",
+      "url": "https://lumalabs.ai/learning-center/articles/how-to-use-references-properly",
+      "title": "How To Use References Properly",
+      "publishedDate": "2026-03-09",
+      "retrieval": "web open tool",
+      "status": "retrieved",
+      "classification": "official guidance, not browser-interaction proof",
+      "supports": [
+        "master-reference anchors",
+        "changeable versus immovable constraints",
+        "analysis and planning before generation",
+        "explicit open questions"
+      ]
+    },
+    {
+      "id": "HEDRA-C3-20261018",
+      "url": "https://www.hedra.com/models/video/hedra/character-3",
+      "title": "Hedra Character 3",
+      "retrieval": "web open tool",
+      "status": "retrieved",
+      "classification": "official model/product claims, not output validation",
+      "supports": [
+        "required audio and portrait workflow",
+        "delivery direction",
+        "clean audio guidance",
+        "restrained motion guidance"
+      ]
+    },
+    {
+      "id": "KREA-STYLE-20261018",
+      "url": "https://www.krea.ai/blog/how-to-generate-images-with-style-references-in-krea",
+      "title": "How to Generate Images With a Style Reference in Krea (5 Steps)",
+      "publishedDate": "2026-06-08",
+      "retrieval": "web open tool",
+      "status": "retrieved",
+      "classification": "official guide with illustrated UI; controls not operated",
+      "supports": [
+        "subject and style separated",
+        "visible selected-reference control",
+        "documented strength adjustment"
+      ]
+    }
+  ],
+  "rea": {
+    "package": "rea-agents",
+    "version": "6.5.0",
+    "packagePath": "/tmp/rea-npm-cache/_npx/ad9a3fdbcad992c6/node_modules/rea-agents",
+    "status": "Current pinned REA inventory completed; only browser Privacy error targets observed. Application bundle analysis blocked.",
+    "attempts": [
+      {
+        "command": "node /tmp/creative-intent-research/research.cjs",
+        "status": "browser_launch_failed",
+        "browser": "/usr/bin/chromium",
+        "intendedCDPEndpoint": "http://127.0.0.1:9331",
+        "configuredIgnoreHTTPSErrors": false,
+        "observedError": "setsockopt: Operation not permitted; Chromium SIGTRAP",
+        "navigationPerformed": false,
+        "successfulREAObservation": false
+      },
+      {
+        "command": "node /tmp/creative-intent-research/research.cjs",
+        "permissionRequest": {
+          "network.enabled": true
+        },
+        "status": "tool_wait_aborted_without_result",
+        "capturesProduced": false,
+        "successfulREAObservation": false
+      },
+      {
+        "command": "node /tmp/rea-npm-cache/_npx/ad9a3fdbcad992c6/node_modules/rea-agents/scripts/rea.mjs list-browser-targets http://127.0.0.1:9222 --format json",
+        "operation": "list_browser_targets",
+        "status": "failed",
+        "error": {
+          "code": "provider_unavailable",
+          "category": "unavailable",
+          "reason": "endpoint_unreachable"
+        },
+        "successfulREAObservation": false
+      }
+    ],
+    "successfulCaptures": []
+  },
+  "priorEvidenceExcluded": {
+    "path": "/tmp/studio-ux-research",
+    "date": "2026-10-17",
+    "reason": "Historical captures configured ignoreHTTPSErrors true; not accepted as current TLS-verified evidence"
+  },
+  "currentBrowserInteractionObservations": [],
+  "authenticatedWorkflowsAttempted": false,
+  "paidGenerationAttempted": false,
+  "TLSBypassUsedInThisPass": false,
+  "privateArchitectureVerified": false,
+  "adoptionImplications": [
+    "Represent explicit instructions, proposed interpretations and unknowns separately.",
+    "Preserve approved decisions and reference versions during later edits.",
+    "Make reference roles visible.",
+    "Do not infer competitor Theory of Mind architecture from workflow documentation."
+  ],
+  "parentCollection": {
+    "status": "completed_with_access_limit",
+    "command": "node /tmp/director-intent-rea-current/inspect.cjs",
+    "browser": "/usr/bin/chromium",
+    "cdpEndpoint": "http://127.0.0.1:9229",
+    "ignoreHTTPSErrors": false,
+    "requestedURLs": [
+      "https://www.krea.ai/",
+      "https://www.hedra.com/",
+      "https://lumalabs.ai/"
+    ],
+    "inventoryOperation": "list_browser_targets",
+    "inventoryEvidenceId": "ev_8cba701fe126132f1d86354e8f84723af28a128fc92409b8b0c490e21f573146",
+    "inventoryFile": "CREATIVE_INTENT_rea-inventory.json",
+    "observedTargets": [
+      {
+        "url": "https://www.krea.ai/",
+        "title": "Privacy error",
+        "targetId": "B1508CB902EAB264CB36AE909339EC62",
+        "classification": "browser Privacy error; not product UI evidence"
+      },
+      {
+        "url": "https://www.hedra.com/",
+        "title": "Privacy error",
+        "targetId": "C5FBEB6189E40D235B722D5EE095630C",
+        "classification": "browser Privacy error; not product UI evidence"
+      },
+      {
+        "url": "https://lumalabs.ai/",
+        "title": "Privacy error",
+        "targetId": "D1960DCE340CA66B4B8EC3604E874099",
+        "classification": "browser Privacy error; not product UI evidence"
+      }
+    ],
+    "bundleCommands": [
+      "npm exec --offline --cache /tmp/rea-npm-cache --yes --package rea-agents@6.5.0 -- rea analyze-web-bundle http://127.0.0.1:9229 B1508CB902EAB264CB36AE909339EC62 --format json",
+      "npm exec --offline --cache /tmp/rea-npm-cache --yes --package rea-agents@6.5.0 -- rea analyze-web-bundle http://127.0.0.1:9229 C5FBEB6189E40D235B722D5EE095630C --format json",
+      "npm exec --offline --cache /tmp/rea-npm-cache --yes --package rea-agents@6.5.0 -- rea analyze-web-bundle http://127.0.0.1:9229 D1960DCE340CA66B4B8EC3604E874099 --format json"
+    ],
+    "bundleResults": [
+      {
+        "error": "Browser observation failed",
+        "code": "target_unavailable",
+        "category": "unavailable",
+        "message": "Analysis could not complete. Run `rea doctor`, then try again.",
+        "retryable": false,
+        "remediation": {
+          "action": "Analysis could not complete. Run `rea doctor`, then try again."
+        },
+        "details": {
+          "operation": "analyze_web_bundle",
+          "reason": "target_not_allowed"
+        }
+      },
+      {
+        "error": "Browser observation failed",
+        "code": "target_unavailable",
+        "category": "unavailable",
+        "message": "Analysis could not complete. Run `rea doctor`, then try again.",
+        "retryable": false,
+        "remediation": {
+          "action": "Analysis could not complete. Run `rea doctor`, then try again."
+        },
+        "details": {
+          "operation": "analyze_web_bundle",
+          "reason": "target_not_allowed"
+        }
+      },
+      {
+        "error": "Browser observation failed",
+        "code": "target_unavailable",
+        "category": "unavailable",
+        "message": "Analysis could not complete. Run `rea doctor`, then try again.",
+        "retryable": false,
+        "remediation": {
+          "action": "Analysis could not complete. Run `rea doctor`, then try again."
+        },
+        "details": {
+          "operation": "analyze_web_bundle",
+          "reason": "target_not_allowed"
+        }
+      }
+    ],
+    "applicationBehaviorVerified": false,
+    "TLSBypassUsed": false
+  }
+}

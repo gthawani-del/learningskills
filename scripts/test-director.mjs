@@ -38,3 +38,11 @@ await import('../apps/director/tests/planning-consent.test.mjs');
 await import('../apps/director/tests/planning-api.test.mjs');
 
 await import('../apps/director/tests/planning-cloud.test.mjs');
+
+await import('../apps/director/tests/creative-brief.test.mjs');
+
+await import('../apps/director/tests/creative-brief-api.test.mjs');
+
+await import('../apps/director/tests/creative-brief-cloud.test.mjs');
+
+await import('../apps/director/tests/creative-brief-integration.test.mjs');

@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-18",
+  "baselineCommit": "4fa45492aa44eb31bbde94505b216ca9fa40e6f8",
+  "automated": {
+    "command": "npm test",
+    "passed": 251,
+    "failed": 0,
+    "logSha256": "096bfd8f88e6b11dd7d3446115b1101c66c43e4760e31697a0f80c932156c9af"
+  },
+  "syntax": "npm run check passed",
+  "productionBuild": "npm run build passed; production Node handler imported without provider calls",
+  "localDeviceBrowser": {
+    "scope": "actual local device draft UI, not live Supabase or paid model output",
+    "passed": [
+      "free interpretation before story",
+      "explicit inferred unknown labels",
+      "max three clarifying questions",
+      "targeted correction",
+      "assumptions approval",
+      "inferred labels retained",
+      "stale source approval blocked",
+      "reinterpret and reapprove",
+      "device persistence",
+      "390px viewport review"
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "physicalMobileTested": false
+  },
+  "localSavedProposalBrowser": {
+    "scope": "Actual local browser/API/durable file store with server-side simulated planning provider, no intercepted browser requests or paid calls",
+    "passed": [
+      "Free brief interpretation and correction",
+      "Explicit brief approval",
+      "Allowance does not submit",
+      "Single explicit AI interpretation submission",
+      "Known response survives reload",
+      "Polling restores proposal and settles usage",
+      "Proposal does not autoapply",
+      "Readable proposal review",
+      "Explicit apply retains approved tone",
+      "Applied proposal needs new approval",
+      "Saved intent survives reload"
+    ],
+    "providerCalls": {
+      "simulatedSubmits": 1,
+      "simulatedPolls": 1,
+      "realPaidCalls": 0
+    },
+    "consoleErrors": [],
+    "httpErrors": [],
+    "physicalMobileTested": false
+  },
+  "sqlProof": {
+    "groupsPassed": 17,
+    "file": "CREATIVE_INTENT_SQL_2026-10-18.json",
+    "crossSessionRacesTested": false
+  },
+  "nativeSupabase": {
+    "consents": 0,
+    "rlsEnabled": true,
+    "briefColumn": true,
+    "reservations": 0,
+    "latestMigration": "20261018035212_director_structured_brief_planning",
+    "generationPaused": true,
+    "anonCannotExecute": true,
+    "serviceCanExecute": true,
+    "activeOpenAIModels": 0,
+    "interpretOperation": true,
+    "authenticatedCannotExecute": true
+  },
+  "securityAdvisor": {
+    "lints": []
+  },
+  "competitorResearch": "CREATIVE_INTENT_REA_2026-10-18.json",
+  "releaseLimitations": [
+    "No paid model/film generation performed",
+    "Zero active OpenAI routes; generation paused",
+    "Deployed account/browser tests deferred by user",
+    "Physical mobile device testing outstanding",
+    "REA product UI/bundle observation blocked by browser Privacy error targets",
+    "No two-attempt quality or full department execution validated"
+  ]
+}
