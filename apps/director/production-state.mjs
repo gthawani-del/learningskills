@@ -1,3 +1,4 @@
+import {recordDependencies} from './production-records.mjs';
 import {hash} from './domain.mjs';
 // A deterministic review graph, not a generation authorization or a claim of media quality.
 export function productionState(project,assets,approvals){
@@ -13,6 +14,8 @@ export function productionState(project,assets,approvals){
  const specificationApproved=approved(shot.id,shot.version);if(!specificationApproved)holds.push('Review and approve this shot specification version.');if(!shot.description.trim())holds.push('Shot direction is missing.');
  nodes.push({id:shot.id,kind:'shot',version:shot.version,contentHash:hash(shot),dependencies,specificationApproved,readyForRouteReview:holds.length===0,holds,mediaAcceptance:'not_established'});
  }
+ const library=recordDependencies(project);for(const record of project.production?.records||[]){const review=library.records.find(r=>r.recordId===record.id);nodes.push({id:'record:'+record.id,kind:record.type,version:record.currentVersion,specificationApproved:approved('record:'+record.id,record.currentVersion),dependencies:review.dependencies.map(d=>'record:'+d.recordId),holds:review.holds,mediaAcceptance:'not_established'});}
+ for(const shot of project.shots){const node=nodes.find(n=>n.id===shot.id),review=library.shots.find(s=>s.shotId===shot.id);node.dependencies.push(...(shot.productionBindings||[]).map(b=>'record:'+b.recordId));node.holds.push(...(review?.holds||[]));node.holds=[...new Set(node.holds)];node.readyForRouteReview=node.holds.length===0;}
  const order=project.shots.map(s=>s.id);
  return {projectId:project.id,projectVersion:project.version,nodes,shotOrder:order,adjacency:order.map((id,i)=>({shotId:id,previous:order[i-1]||null,next:order[i+1]||null})),generationAuthorized:false,scope:'Story and shot specification review only; route, budget, reference rights and generated-media review remain separate.'};
 }

@@ -51,3 +51,27 @@ test('edits to device snapshot produce a distinct copy; forged ownership and imp
  const s=await setup();const a=await s.controller.start(owner,body),edited=structuredClone(body);edited.project.title='A revised idea';edited.project.ownerId=other;edited.project.budget_micro_usd=999999;edited.project.importState={status:'ready'};
  const b=await s.controller.start(owner,edited);assert.notEqual(a.id,b.id);assert.equal(b.ownerId,owner);assert.equal(b.budget_micro_usd,undefined);assert.equal(b.importState.status,'awaiting_media');
 });
+test('drafts without library records retain their pre-library import identity',async()=>{
+ const s=await setup(),p=await s.controller.start(owner,body);
+ const legacy={title:p.title,premise:p.premise,format:p.format,duration:p.duration,language:p.language,direction:p.direction,stage:p.stage,story:p.story,shots:p.shots.map(({productionBindings,...shot})=>shot),notes:p.notes,assets:body.assets.map(({id,...a})=>({sourceId:id,...a,shotId:null})),links:[{shotId:'shot-1',clip:null,image:null}]};
+ assert.equal(p.importState.fingerprint,hash(legacy));assert.equal(p.id,stableImportId({owner,sourceId,fingerprint:hash(legacy)}));
+});
+test('library import preserves version history and shot bindings while rebinding every reference',async()=>{
+ const s=await setup(),request=structuredClone(body),recordId='cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+ request.assets[0].mime='image/png';request.assets[0].role='character_identity';
+ request.project.production={records:[{id:recordId,type:'character',name:'Mara revised',currentVersion:2,versions:[1,2].map(version=>({version,name:version===1?'Mara':'Mara revised',content:{description:version===1?'Station keeper':'Keeper in a red coat'},references:[{assetId,version:1}],dependencies:[],createdAt:'2026-10-17T00:00:00.000Z'}))}]};
+ request.project.shots[0].productionBindings=[{recordId,version:1}];
+ const pending=await s.controller.start(owner,request);assert.equal(pending.production.records.length,0);
+ await s.controller.upload(owner,pending.id,assetId,{bytes,mime:'image/png'});const done=await s.controller.complete(owner,pending.id);
+ const record=done.production.records[0],mapped=stableImportId({projectId:done.id,sourceId:assetId});
+ assert.equal(record.currentVersion,2);assert.equal(record.versions[0].name,'Mara');assert.equal(record.versions[1].name,'Mara revised');
+ assert.ok(record.versions.every(v=>v.references[0].assetId===mapped));assert.deepEqual(done.shots[0].productionBindings,[{recordId,version:1}]);
+ assert.equal(request.project.production.records[0].versions[0].references[0].assetId,assetId);assert.equal(s.store.state.approvals.length,0);
+ assert.deepEqual((await s.controller.complete(owner,done.id)).production,done.production);
+});
+test('invalid library archives fail before creating a cloud copy',async()=>{
+ const s=await setup(),request=structuredClone(body);request.project.production={records:[{id:'invalid',currentVersion:1,versions:[]}]};
+ await assert.rejects(()=>s.controller.start(owner,request));assert.equal(s.store.state.projects.length,0);
+ request.project.production={records:[]};request.project.shots[0].productionBindings=[{recordId:'cccccccc-cccc-4ccc-8ccc-cccccccccccc',version:1}];
+ await assert.rejects(()=>s.controller.start(owner,request),/binding/);assert.equal(s.store.state.projects.length,0);
+});

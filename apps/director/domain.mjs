@@ -11,7 +11,7 @@ export function text(value,name,max=10000){if(typeof value!=='string'||value.len
 export function newProject(body,owner){
  const title=text(body.title||'Untitled film','title',200).trim();if(!title)fail(400,'A title is required.');
  if(!['short_film','music_video','advertisement'].includes(body.format||'short_film'))fail(400,'Invalid project format.');
- return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],createdAt:new Date().toISOString()};
+ return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],production:{records:[]},createdAt:new Date().toISOString()};
 }
 export function patchProject(previous,body){
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
@@ -27,7 +27,10 @@ export function patchProject(previous,body){
  if(body.shots!==undefined){if(!Array.isArray(body.shots)||body.shots.length>200)fail(400,'Invalid shot list.');const ids=new Set();
  next.shots=body.shots.map(s=>{if(!s||typeof s!=='object')fail(400,'Invalid shot.');const id=text(s.id,'shot ID',100);if(!id||ids.has(id))fail(400,'Shot IDs must be unique.');ids.add(id);
  const duration=Number(s.duration);if(!Number.isFinite(duration)||duration<=0||duration>900)fail(400,'Invalid shot duration.');
- const current=previous.shots.find(x=>x.id===id);const data={id,title:text(s.title||'Untitled shot','shot title',200),description:text(s.description||'','shot direction',12000),duration,framing:text(s.framing||'medium','framing',100),camera:text(s.camera||'static','camera',200),constraints:text(s.constraints||'','constraints',12000),clipAssetId:s.clipAssetId||null,referenceAssetId:s.referenceAssetId||null,sceneId:text(s.sceneId||'','scene ID',100),dialogue:text(s.dialogue||'','dialogue',5000),continuity:text(s.continuity||'','continuity',12000)};
+ const current=previous.shots.find(x=>x.id===id);const bindings=s.productionBindings??current?.productionBindings??[];
+ if(!Array.isArray(bindings)||bindings.length>100||new Set(bindings.map(b=>b?.recordId)).size!==bindings.length)fail(400,'Invalid production bindings.');
+ const productionBindings=bindings.map(b=>{const record=next.production?.records?.find(r=>r.id===b?.recordId);if(!record||!Number.isSafeInteger(b.version)||!record.versions.some(v=>v.version===b.version))fail(400,'A production binding is unavailable.');return {recordId:b.recordId,version:b.version};}).sort((a,b)=>a.recordId.localeCompare(b.recordId));
+ const data={productionBindings,id,title:text(s.title||'Untitled shot','shot title',200),description:text(s.description||'','shot direction',12000),duration,framing:text(s.framing||'medium','framing',100),camera:text(s.camera||'static','camera',200),constraints:text(s.constraints||'','constraints',12000),clipAssetId:s.clipAssetId||null,referenceAssetId:s.referenceAssetId||null,sceneId:text(s.sceneId||'','scene ID',100),dialogue:text(s.dialogue||'','dialogue',5000),continuity:text(s.continuity||'','continuity',12000)};
  const comparable=x=>{const {version,status,...content}=x;return content;};
  const dependencyChanged=current&&sceneChanged(previous,next,current.sceneId,data.sceneId);
  const changed=!current||hash(comparable(current))!==hash(data)||dependencyChanged;return {...data,version:current?current.version+(changed?1:0):1,status:changed?'draft':current.status||'draft'};});}

@@ -1,6 +1,6 @@
 # Director Studio — Development Tracker
 
-Audited 17 October 2026. Baseline before this batch: `f7cc9f0`. This is an implementation ledger, not a replacement blueprint.
+Updated 18 October 2026. Baseline before the production-library batch: `0849404`. This is an implementation ledger, not a replacement blueprint.
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
@@ -20,7 +20,7 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 
 ## Current verification
 
-60 automated tests, syntax checks and production build pass. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Full production records and real Supabase evidence remain incomplete.
+77 automated tests, syntax checks and production build pass locally for the production-library batch. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
 
 Retries resend whole files; byte/chunk-resumable transport is not implemented. Scene edits preserve neighboring shot versions, but global story reapproval still holds their route readiness.
 
@@ -61,12 +61,12 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F014 | Script breakdown and production plan | 6 | partial | Structured scene/shot planning adapter only; no executed production breakdown or scheduling. |
 | F015 | Direct scene blocking and performance | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F016 | Plan camera, lighting and coverage | 6 | partial | Manual camera/framing controls and isolated craft validator; contextual Director orchestration not connected. |
-| F017 | Plan continuity and character knowledge | 6 | partial | Continuity text and scene links exist; continuity graph, observed state and generated-media checks missing. |
+| F017 | Plan continuity and character knowledge | 6 | partial | Versioned character/world library and explicit shot bindings implemented; observed generated-media continuity and intelligent planning remain missing. |
 | F018 | Create sound/music cue plan | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F019 | Translate/localize approved dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F020 | Interpret natural-language revision | 6 | partial | Scoped instruction/proposal envelope exists; no semantic interpretation or model execution. |
-| F021 | Approve creative version | 6 | partial | Story/shot specification approval and review graph implemented; cast, voice, takes and other approval categories incomplete. |
-| F022 | Invalidate dependent approvals on change | 6 | partial | Scene changes invalidate linked shots; brief changes require story review; character/voice/take/audio/edit dependencies and live validation remain incomplete. |
+| F021 | Approve creative version | 6 | partial | Story/shot and library-record approval APIs enforce current versions and dependency holds; record approval UI, media-quality categories and live account verification remain incomplete. |
+| F022 | Invalidate dependent approvals on change | 6 | partial | Character/voice/audio/take/edit record dependencies and selective shot invalidation implemented with local/API tests and database guard fixtures; live application/Supabase integration and media acceptance remain unverified. |
 | F023 | Decode song and inspect metadata | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F024 | Understand song mood, instrumentation and development | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F025 | Secondary audio-question/interpretation benchmark | 8 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -80,7 +80,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F033 | Generate initial casting/location/prop concepts | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F034 | Derive reference-preserving looks, angles and frames | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F035 | Review reference identity, wardrobe and composition | 7 | partial | Manual uploaded reference preview only; reviewed identity/composition evidence workflow missing. |
-| F036 | Manage character/world versions and use rights | 7 | partial | Asset role/scope/version and unverified rights marker only; character/world entities and consent lifecycle missing. |
+| F036 | Manage character/world versions and use rights | 7 | partial | Versioned character, voice, location, wardrobe and prop records with scoped references and history implemented; use-rights evidence and generated identity review remain incomplete. |
 | F037 | Create storyboard direction and shot contracts | 7 | partial | Versioned shots and deterministic review graph implemented; complete department production contracts/orchestration remain incomplete. |
 | F038 | Generate storyboard/keyframes from references | 7 | missing | No complete executable workflow found; implement and verify before activation. |
 | F039 | Approve/order shots and choose takes | 7 | partial | Shot specification approval and uploaded-media selection; take comparison, ordering and generated take review missing. |

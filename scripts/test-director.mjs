@@ -8,3 +8,5 @@ await import('../apps/director/tests/cloud-session.test.mjs');
 await import('../apps/director/tests/imports.test.mjs');
 await import('../apps/director/tests/production-state.test.mjs');
 await import('../apps/director/tests/media-storage.test.mjs');
+
+await import('../apps/director/tests/production-records.test.mjs');

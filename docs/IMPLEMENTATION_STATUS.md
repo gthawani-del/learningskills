@@ -1,3 +1,11 @@
+# Current production-library update — 18 October 2026
+
+The next release adds versioned production-library records, explicit shot bindings and dependency holds. **77 automated tests, syntax checks and the production build pass locally.** SQL migration `20261017235051` has been applied to Director Supabase; twelve guard fixtures pass, function execute grants remain service-only, and security advisor returns no findings. See [Production library acceptance](PRODUCTION_LIBRARY_ACCEPTANCE.md) for scope, evidence and rollback.
+
+Application release/browser evidence will be recorded after deployment. Live cloud-account integration, paid generation, quality pilots and hosted movie export remain incomplete. The initial audit is the only completed major milestone; tracked requirements remain 56 partial, 105 missing/unverified and 6 deferred, with zero fully production-accepted.
+
+---
+
 # Director Studio — Implementation Status
 
 Updated 17 October 2026 UTC. This record replaces the earlier foundation-only status. Specifications describe intended behavior; this file and the [Development Tracker](DEVELOPMENT_TRACKER.md) distinguish code, tests and production acceptance.
@@ -28,7 +36,7 @@ The active app is `apps/director/`, served through `api/index.mjs`. `apps/studio
 
 ## Database read-only verification in the previous batch
 
-Director Supabase project `ygyjqubrpqwfgbquwqeo`: `ACTIVE_HEALTHY`; 12 public Director tables returned, all RLS enabled; 20 model candidate rows; no projects or jobs returned by inventory. Security advisor returned no findings. These observations establish database state, not successful application login or cloud persistence. No schema, credential, policy or production configuration changed in this batch.
+Director Supabase project `ygyjqubrpqwfgbquwqeo`: `ACTIVE_HEALTHY`; 12 public Director tables returned, all RLS enabled; 20 model candidate rows; no projects or jobs returned by inventory. Security advisor returned no findings. These observations establish database state, not successful application login or cloud persistence. That earlier batch made no schema, credential, policy or production configuration changes; the newer guard migration is recorded above.
 
 ## Tests and limitations
 

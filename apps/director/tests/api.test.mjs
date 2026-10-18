@@ -73,3 +73,36 @@ test('pending imports reject ordinary edits and approvals while allowing complet
  assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'story',version:p.story.version,decision:'approved'})).status,409);
  assert.equal((await call(handler,`/api/projects/${p.id}/import-complete`,{})).status,200);
 });
+
+test('production library API persists record histories and invalidates only bound shot specifications',async t=>{
+ const {handler,env}=await setup(t);let p=(await call(handler,'/api/projects',{title:'Mara at the station'})).json.project;
+ let r=await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,story:{treatment:'Mara waits while the train leaves.',scenes:[{id:'station',description:'Dawn at a railway station.'}]},shots:[{id:'mara',description:'Mara waits.',sceneId:'station',duration:5},{id:'train',description:'The train leaves.',sceneId:'station',duration:5}]},{method:'PATCH'});assert.equal(r.status,200);p=r.json.project;
+ const uploaded=await call(handler,`/api/projects/${p.id}/assets`,{name:'portrait.png',mime:'image/png',role:'character_identity',scope:'project',base64:Buffer.from([137,80,78,71,13,10,26,10,0,0,0,0]).toString('base64')});assert.equal(uploaded.status,201);const reference=uploaded.json.asset;
+ const clip=await call(handler,`/api/projects/${p.id}/assets`,{name:'fixture.mp4',mime:'video/mp4',role:'shot_reference',scope:'shot',shotId:'mara',base64:Buffer.concat([Buffer.from([0,0,0,24]),Buffer.from('ftypisom'),Buffer.alloc(12)]).toString('base64')});assert.equal(clip.status,201);
+ r=await call(handler,`/api/projects/${p.id}/production-records`,{expectedVersion:p.version,type:'character',name:'Mara',content:{description:'Station keeper, practical raincoat.'},references:[{assetId:reference.id,version:1}]});assert.equal(r.status,200);p=r.json.project;const record=p.production.records[0],versionBeforeBinding=p.version;
+ const staleWrite=await call(handler,`/api/projects/${p.id}/production-records`,{expectedVersion:versionBeforeBinding-1,id:record.id,name:'Stale overwrite'});assert.equal(staleWrite.status,409);
+ r=await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,shots:p.shots.map(s=>s.id==='mara'?{...s,productionBindings:[{recordId:record.id,version:1}],referenceAssetId:reference.id,clipAssetId:clip.json.asset.id}:s)},{method:'PATCH'});assert.equal(r.status,200);p=r.json.project;
+ for(const [artifactId,version]of [['story',p.story.version],['record:'+record.id,1],...p.shots.map(s=>[s.id,s.version])])assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId,version,decision:'approved'})).status,201);
+ const previous=structuredClone(p),neighbor=structuredClone(p.shots[1]);
+ r=await call(handler,`/api/projects/${p.id}/production-records`,{expectedVersion:p.version,id:record.id,content:{description:'Station keeper, revised hairline and practical raincoat.'}});assert.equal(r.status,200);p=r.json.project;
+ assert.equal(p.production.records[0].currentVersion,2);assert.equal(p.production.records[0].versions.length,2);assert.deepEqual(p.production.records[0].versions[0],previous.production.records[0].versions[0]);
+ assert.equal(p.shots[0].version,previous.shots[0].version+1);assert.equal(p.shots[0].status,'draft');assert.equal(p.shots[0].clipAssetId,clip.json.asset.id);assert.equal(p.shots[0].referenceAssetId,reference.id);assert.deepEqual(p.shots[1],neighbor);
+ assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'mara',version:previous.shots[0].version,decision:'approved'})).status,409);
+ assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'record:'+record.id,version:1,decision:'approved'})).status,409);
+ assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'mara',version:p.shots[0].version,decision:'approved'})).status,409);
+ const state=await call(handler,`/api/projects/${p.id}/production-state`);assert.equal(state.status,200);assert.equal(state.json.production.generationAuthorized,false);assert.equal(state.json.production.nodes.find(n=>n.id==='mara').readyForRouteReview,false);assert.equal(state.json.production.nodes.find(n=>n.id==='train').specificationApproved,true);
+ const restored=await createHandler({env}),reopened=await call(restored,`/api/projects/${p.id}/production-records`);assert.equal(reopened.status,200);assert.deepEqual(reopened.json.production,p.production);assert.equal(reopened.json.dependencies.shots.find(s=>s.shotId==='mara').staleBindings.length,1);
+ r=await call(restored,`/api/projects/${p.id}`,{expectedVersion:p.version,shots:p.shots.map(s=>s.id==='mara'?{...s,productionBindings:[{recordId:record.id,version:2}]}:s)},{method:'PATCH'});assert.equal(r.status,200);p=r.json.project;
+ assert.equal((await call(restored,`/api/projects/${p.id}/approvals`,{artifactId:'mara',version:p.shots[0].version,decision:'approved'})).status,201);assert.deepEqual(p.shots[1],neighbor);
+});
+
+test('production library API rejects foreign references and bindings, wrong media and authority injections without changing state',async t=>{
+ const {handler}=await setup(t);const p=(await call(handler,'/api/projects',{title:'One project'})).json.project,other=(await call(handler,'/api/projects',{title:'Another project'})).json.project;
+ const file={name:'portrait.png',mime:'image/png',role:'character_identity',scope:'project',base64:Buffer.from([137,80,78,71,13,10,26,10,0,0,0,0]).toString('base64')};const uploaded=await call(handler,`/api/projects/${other.id}/assets`,file);assert.equal(uploaded.status,201);
+ const command={expectedVersion:p.version,type:'character',name:'Mara',content:{description:'Keeper'},references:[{assetId:uploaded.json.asset.id,version:1}]};assert.equal((await call(handler,`/api/projects/${p.id}/production-records`,command)).status,400);
+ assert.equal((await call(handler,`/api/projects/${p.id}/production-records`,{...command,references:[],accepted:true})).status,400);
+ const foreign=await call(handler,`/api/projects/${other.id}/production-records`,{...command,expectedVersion:other.version});assert.equal(foreign.status,200);const foreignId=foreign.json.project.production.records[0].id;
+ assert.equal((await call(handler,`/api/projects/${p.id}`,{expectedVersion:p.version,shots:[{id:'one',description:'Wait.',duration:5,productionBindings:[{recordId:foreignId,version:1}]}]},{method:'PATCH'})).status,400);
+ const own=await call(handler,`/api/projects/${p.id}/assets`,file);assert.equal(own.status,201);assert.equal((await call(handler,`/api/projects/${p.id}/production-records`,{...command,type:'voice',references:[{assetId:own.json.asset.id,version:1}]})).status,400);
+ const unchanged=(await call(handler,`/api/projects/${p.id}`)).json.project;assert.equal(unchanged.version,p.version);assert.equal(unchanged.production?.records?.length||0,0);assert.deepEqual(unchanged.shots,[]);
+});

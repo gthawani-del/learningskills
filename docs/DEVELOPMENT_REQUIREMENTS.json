@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-17",
-  "baselineCommit": "f7cc9f03856fc081d9e6bf745eb9e75e938914b6",
+  "updated": "2026-10-18",
+  "baselineCommit": "08494049f8070f72b4020522cd283d87a61b2b3e",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
   "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100–F105 remain explicit non-promises.",
   "requirements": [
@@ -316,13 +316,17 @@
       "status": "partial",
       "code": [
         "apps/director/domain.mjs",
-        "apps/director/providers.mjs"
+        "apps/director/providers.mjs",
+        "apps/director/production-records.mjs",
+        "apps/director/public/production-records-core.js"
       ],
       "tests": [
-        "apps/director/tests/providers.test.mjs"
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/api.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Continuity text and scene links exist; continuity graph, observed state and generated-media checks missing.",
+      "gap": "Versioned character/world library and explicit shot bindings implemented; observed generated-media continuity and intelligent planning remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F017",
       "dependencies": [
         "versioned-project-records",
@@ -391,14 +395,17 @@
       "code": [
         "apps/director/store.mjs",
         "apps/director/domain.mjs",
-        "apps/director/production-state.mjs"
+        "apps/director/production-state.mjs",
+        "apps/director/production-records.mjs",
+        "apps/director/public/production-records-core.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/production-state.test.mjs"
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/production-records.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Story/shot specification approval and review graph implemented; cast, voice, takes and other approval categories incomplete.",
+      "gap": "Story/shot and library-record approval APIs enforce current versions and dependency holds; record approval UI, media-quality categories and live account verification remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -415,14 +422,17 @@
         "apps/director/domain.mjs",
         "database/director-project-persistence.sql",
         "apps/director/production-state.mjs",
-        "apps/director/public/revision-impact.js"
+        "apps/director/public/revision-impact.js",
+        "apps/director/production-records.mjs",
+        "apps/director/public/production-records-core.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/production-state.test.mjs"
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/production-records.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Scene changes invalidate linked shots; brief changes require story review; character/voice/take/audio/edit dependencies and live validation remain incomplete.",
+      "gap": "Character/voice/audio/take/edit record dependencies and selective shot invalidation implemented with local/API tests and database guard fixtures; live application/Supabase integration and media acceptance remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -649,13 +659,16 @@
       "status": "partial",
       "code": [
         "apps/director/api.mjs",
-        "database/director-foundation.sql"
+        "database/director-foundation.sql",
+        "apps/director/production-records.mjs",
+        "apps/director/public/production-records-core.js"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/production-records.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Asset role/scope/version and unverified rights marker only; character/world entities and consent lifecycle missing.",
+      "gap": "Versioned character, voice, location, wardrobe and prop records with scoped references and history implemented; use-rights evidence and generated identity review remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F036",
       "dependencies": [
         "versioned-project-records",
@@ -2624,10 +2637,16 @@
       "area": "Realism acceptance",
       "step": 7,
       "status": "missing",
-      "code": [],
-      "tests": [],
+      "code": [
+        "apps/director/production-records.mjs",
+        "apps/director/public/production-records-core.js"
+      ],
+      "tests": [
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/api.test.mjs"
+      ],
       "verification": "not-verified",
-      "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
+      "gap": "Versioned reference bindings and transitive dependency holds tested locally; real voice/identity generations and quality review remain unverified.",
       "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",

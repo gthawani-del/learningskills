@@ -1,3 +1,4 @@
+import {applyProductionRecord,recordDependencies} from './production-records.mjs';
 import {productionState} from './production-state.mjs';
 import {createImportController} from './imports.mjs';
 import {createMediaStorage} from './media-storage.mjs';
@@ -94,6 +95,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const plan=await providers.planFilm({brief:project.premise+'\nDirection: '+project.direction+'\nLanguage: '+project.language,durationSeconds:project.duration,authorized:true});
  const next=patchProject(project,{story:{treatment:plan.treatment,scenes:plan.scenes},shots:plan.shots.map(s=>({id:s.id,title:s.description.slice(0,70),description:s.description,duration:s.durationSeconds,camera:s.camera,dialogue:s.dialogue,continuity:s.continuity,sceneId:s.sceneId,framing:'medium'})),title:plan.title});
  return reply(200,{project:await store.save(next,project.version)});}
+ if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
+ if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
  if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id))});
  if(action==='approvals'&&req.method==='POST'){
  if(!['approved','rejected','revoked'].includes(body.decision)||!Number.isSafeInteger(body.version))fail(400,'Invalid approval decision.');return reply(201,{approval:await store.approve(project,body,user.id)});}
