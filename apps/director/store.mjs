@@ -18,8 +18,8 @@ export class LocalStore {
  async approve(project,body,owner){return this.serial(()=>{
  const current=this.state.projects.find(p=>p.id===project.id&&p.ownerId===owner);if(!current)fail(404,'Project not found.');
  const a=snapshots(current).find(a=>a.logical_key===body.artifactId&&a.version===body.version);if(!a)fail(409,'That artifact version is no longer current.');
- const graph=recordDependencies(current);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(holds?.length)fail(409,'Update the linked production versions before approval.');
- if(a.kind==='story'&&!a.content.treatment.trim())fail(400,'Write a treatment before approving it.');if(a.kind==='shot'&&!a.content.description.trim())fail(400,'Write the shot direction before approval.');
+ const graph=recordDependencies(current);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(body.decision==='approved'&&holds?.length)fail(409,'Update the linked production versions before approval.');
+ if(body.decision==='approved'&&a.kind==='story'&&!a.content.treatment.trim())fail(400,'Write a treatment before approving it.');if(body.decision==='approved'&&a.kind==='shot'&&!a.content.description.trim())fail(400,'Write the shot direction before approval.');
  const approval={id:randomUUID(),projectId:current.id,artifactId:body.artifactId,version:body.version,decision:body.decision,actorId:owner,createdAt:new Date().toISOString()};this.state.approvals.push(approval);return approval;
  });}
 
@@ -47,8 +47,8 @@ export class SupabaseStore {
  if(kind==='audit'){return this.request('/rest/v1/director_audit_events',{method:'POST',body:{project_id:value.projectId,actor_id:value.actorId,event_type:value.type,details:value.details}});}
  fail(503,'This record requires a verified route and quote.');}
  async approve(project,body,owner){const a=snapshots(project).find(a=>a.logical_key===body.artifactId&&a.version===body.version);if(!a)fail(409,'That artifact version is no longer current.');
- const graph=recordDependencies(project);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(holds?.length)fail(409,'Update the linked production versions before approval.');
- if(a.kind==='story'&&!a.content.treatment.trim()||a.kind==='shot'&&!a.content.description.trim())fail(400,'Complete the artifact before approving it.');
+ const graph=recordDependencies(project);const holds=a.logical_key.startsWith('record:')?graph.records.find(r=>'record:'+r.recordId===a.logical_key)?.holds:graph.shots.find(s=>s.shotId===a.logical_key)?.holds;if(body.decision==='approved'&&holds?.length)fail(409,'Update the linked production versions before approval.');
+ if(body.decision==='approved'&&(a.kind==='story'&&!a.content.treatment.trim()||a.kind==='shot'&&!a.content.description.trim()))fail(400,'Complete the artifact before approving it.');
  const rows=await this.request(`/rest/v1/director_artifacts?project_id=eq.${project.id}&logical_key=eq.${encodeURIComponent(a.logical_key)}&version=eq.${a.version}`);if(!rows.length)fail(409,'Save this version before approval.');
  return this.request('/rest/v1/director_approvals',{method:'POST',body:{project_id:project.id,artifact_id:rows[0].id,actor_id:owner,decision:body.decision}});}
  async registry(){return (await this.request('/rest/v1/director_models?order=id')).map(m=>({...m,purpose:m.capabilities.purpose,description:m.capabilities.description}));}

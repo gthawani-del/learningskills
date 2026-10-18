@@ -33,3 +33,20 @@ test('normalizing legacy shot fields advances immutable artifact version before 
 test('malformed scenes are rejected as client errors rather than unclassified server failures',()=>{
  for(const scene of [null,[],1])assert.throws(()=>patchProject(film(),{story:{treatment:'Valid treatment',scenes:[scene]}}),e=>e.status===400);
 });
+
+test('bound library records require current creative approval; revocation holds shots without changing versions or media',async()=>{
+ const {applyProductionRecord}=await import('../production-records.mjs');let p=applyProductionRecord(film(),{expectedVersion:2,type:'character',name:'Mara',content:{description:'Station keeper.'}},[]);const record=p.production.records[0];
+ p.shots[0].productionBindings=[{recordId:record.id,version:1}];p.shots[0].clipAssetId='retained-clip';const assets=[{id:'retained-clip',mime:'video/mp4',version:1}],before=structuredClone(p),base=approvals(p),approval={artifactId:'record:'+record.id,version:1,decision:'approved'};
+ let g=productionState(p,assets,base);assert.equal(g.nodes.find(n=>n.id==='a').specificationApproved,true);assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,false);assert.ok(g.nodes.find(n=>n.id==='record:'+record.id).holds.some(h=>h.includes('approval required')));assert.equal(g.nodes.find(n=>n.id==='b').readyForRouteReview,true);
+ g=productionState(p,assets,[...base,approval]);assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,true);assert.deepEqual(g.nodes.find(n=>n.id==='record:'+record.id).holds,[]);assert.equal(g.generationAuthorized,false);
+ g=productionState(p,assets,[...base,approval,{...approval,decision:'revoked'}]);assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,false);assert.equal(g.nodes.find(n=>n.id==='record:'+record.id).specificationApproved,false);assert.equal(g.nodes.find(n=>n.id==='b').readyForRouteReview,true);assert.deepEqual(p,before);
+});
+
+test('unapproved transitive voice dependencies hold an otherwise approved take and its bound shot',async()=>{
+ const {applyProductionRecord}=await import('../production-records.mjs');let p=film();const add=command=>{p=applyProductionRecord(p,{expectedVersion:p.version,...command},[]);return p.production.records.at(-1);};
+ const voice=add({type:'voice',name:'Mara voice',content:{performance:'Restrained'}}),audio=add({type:'audio',name:'Dialogue',content:{script:'Wait.'},dependencies:[{recordId:voice.id,version:1}]}),take=add({type:'take',name:'Waiting take',content:{description:'Mara speaks.'},dependencies:[{recordId:audio.id,version:1}]});
+ p.shots[0].productionBindings=[{recordId:take.id,version:1}];const before=structuredClone(p),recordApproval=r=>({artifactId:'record:'+r.id,version:1,decision:'approved'}),base=[...approvals(p),recordApproval(audio),recordApproval(take)];
+ let g=productionState(p,[],base);assert.equal(g.nodes.find(n=>n.id==='record:'+take.id).specificationApproved,true);assert.ok(g.nodes.find(n=>n.id==='record:'+take.id).holds.some(h=>h.includes(voice.id)));assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,false);assert.equal(g.nodes.find(n=>n.id==='b').readyForRouteReview,true);
+ g=productionState(p,[],[...base,recordApproval(voice)]);assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,true);assert.deepEqual(g.nodes.find(n=>n.id==='record:'+take.id).holds,[]);assert.equal(g.generationAuthorized,false);
+ g=productionState(p,[],[...base,recordApproval(voice),{...recordApproval(voice),decision:'revoked'}]);assert.equal(g.nodes.find(n=>n.id==='a').readyForRouteReview,false);assert.deepEqual(p,before);
+});

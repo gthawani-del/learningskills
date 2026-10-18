@@ -106,3 +106,20 @@ test('production library API rejects foreign references and bindings, wrong medi
  const own=await call(handler,`/api/projects/${p.id}/assets`,file);assert.equal(own.status,201);assert.equal((await call(handler,`/api/projects/${p.id}/production-records`,{...command,type:'voice',references:[{assetId:own.json.asset.id,version:1}]})).status,400);
  const unchanged=(await call(handler,`/api/projects/${p.id}`)).json.project;assert.equal(unchanged.version,p.version);assert.equal(unchanged.production?.records?.length||0,0);assert.deepEqual(unchanged.shots,[]);
 });
+
+test('a current dependent record can be revoked while stale dependency holds still prevent approval',async t=>{
+ const {handler}=await setup(t);let p=(await call(handler,'/api/projects',{title:'Revoke held dialogue'})).json.project;
+ const record=async body=>{const r=await call(handler,`/api/projects/${p.id}/production-records`,{expectedVersion:p.version,...body});assert.equal(r.status,200);p=r.json.project;return p.production.records.at(-1);};
+ const mediaBytes=Buffer.concat([Buffer.from('RIFF'),Buffer.alloc(4),Buffer.from('WAVE'),Buffer.alloc(12)]),uploaded=await call(handler,`/api/projects/${p.id}/assets`,{name:'line.wav',mime:'audio/wav',role:'dialogue',scope:'project',base64:mediaBytes.toString('base64')});assert.equal(uploaded.status,201);
+ const voice=await record({type:'voice',name:'Keeper voice',content:{language:'English',performance:'Quiet'}});
+ const audio=await record({type:'audio',name:'Keeper line',content:{script:'Wait for the train.'},references:[{assetId:uploaded.json.asset.id,version:1}],dependencies:[{recordId:voice.id,version:1}]});
+ assert.equal((await call(handler,`/api/projects/${p.id}/approvals`,{artifactId:'record:'+audio.id,version:1,decision:'approved'})).status,201);
+ await record({id:voice.id,content:{language:'English',performance:'Urgent'}});
+ const before=structuredClone((await call(handler,`/api/projects/${p.id}`)).json.project),approvalPath=`/api/projects/${p.id}/approvals`,decision={artifactId:'record:'+audio.id,version:1};
+ assert.equal((await call(handler,approvalPath,{...decision,decision:'approved'})).status,409);
+ assert.equal((await call(handler,approvalPath,{...decision,decision:'revoked'})).status,201);
+ assert.deepEqual((await call(handler,`/api/projects/${p.id}/assets`)).json.assets[0],uploaded.json.asset);assert.deepEqual((await call(handler,`/api/projects/${p.id}/assets/${uploaded.json.asset.id}/content`)).data,mediaBytes);
+ const events=(await call(handler,approvalPath)).json.approvals.filter(a=>a.artifactId===decision.artifactId&&a.version===1);assert.equal(events.at(-1).decision,'revoked');assert.equal(events.at(-2).decision,'approved');
+ const after=(await call(handler,`/api/projects/${p.id}`)).json.project;assert.deepEqual(after,before);assert.equal(after.production.records.find(r=>r.id===audio.id).currentVersion,1);
+ const graph=(await call(handler,`/api/projects/${p.id}/production-state`)).json.production;assert.equal(graph.nodes.find(n=>n.id===decision.artifactId).specificationApproved,false);assert.ok(graph.nodes.find(n=>n.id===decision.artifactId).holds.length);assert.equal(graph.generationAuthorized,false);
+});

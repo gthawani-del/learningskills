@@ -20,7 +20,7 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 
 ## Current verification
 
-77 automated tests, syntax checks and production build pass locally for the production-library batch. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
+80 automated tests, syntax checks and production build pass locally for the creative-review update. The prior library release 539b65b passed live public-site library and v2 workspace browser checks. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
 
 Retries resend whole files; byte/chunk-resumable transport is not implemented. Scene edits preserve neighboring shot versions, but global story reapproval still holds their route readiness.
 
@@ -65,8 +65,8 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F018 | Create sound/music cue plan | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F019 | Translate/localize approved dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F020 | Interpret natural-language revision | 6 | partial | Scoped instruction/proposal envelope exists; no semantic interpretation or model execution. |
-| F021 | Approve creative version | 6 | partial | Story/shot and library-record approval APIs enforce current versions and dependency holds; record approval UI, media-quality categories and live account verification remain incomplete. |
-| F022 | Invalidate dependent approvals on change | 6 | partial | Character/voice/audio/take/edit record dependencies and selective shot invalidation implemented with local/API tests and database guard fixtures; live application/Supabase integration and media acceptance remain unverified. |
+| F021 | Approve creative version | 6 | partial | Creative approval/history UI and APIs enforce current record/shot versions; transitive creative approvals govern review readiness. Atomic dispatch enforcement, media-quality acceptance and live account verification remain incomplete. |
+| F022 | Invalidate dependent approvals on change | 6 | partial | Library revision and approval revocation propagate selective review holds; local/API tests pass. Atomic database enforcement of recursive approvals and live media acceptance remain incomplete. |
 | F023 | Decode song and inspect metadata | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F024 | Understand song mood, instrumentation and development | 8 | missing | No complete executable workflow found; implement and verify before activation. |
 | F025 | Secondary audio-question/interpretation benchmark | 8 | missing | No complete executable workflow found; implement and verify before activation. |

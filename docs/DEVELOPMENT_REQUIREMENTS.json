@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-18",
-  "baselineCommit": "08494049f8070f72b4020522cd283d87a61b2b3e",
+  "baselineCommit": "539b65b56cabbc21467062c22ca9553da029a384",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
   "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100–F105 remain explicit non-promises.",
   "requirements": [
@@ -405,7 +405,7 @@
         "apps/director/tests/production-records.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Story/shot and library-record approval APIs enforce current versions and dependency holds; record approval UI, media-quality categories and live account verification remain incomplete.",
+      "gap": "Creative approval/history UI and APIs enforce current record/shot versions; transitive creative approvals govern review readiness. Atomic dispatch enforcement, media-quality acceptance and live account verification remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -432,7 +432,7 @@
         "apps/director/tests/production-records.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Character/voice/audio/take/edit record dependencies and selective shot invalidation implemented with local/API tests and database guard fixtures; live application/Supabase integration and media acceptance remain unverified.",
+      "gap": "Library revision and approval revocation propagate selective review holds; local/API tests pass. Atomic database enforcement of recursive approvals and live media acceptance remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",

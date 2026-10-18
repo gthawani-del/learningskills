@@ -14,8 +14,19 @@ export function productionState(project,assets,approvals){
  const specificationApproved=approved(shot.id,shot.version);if(!specificationApproved)holds.push('Review and approve this shot specification version.');if(!shot.description.trim())holds.push('Shot direction is missing.');
  nodes.push({id:shot.id,kind:'shot',version:shot.version,contentHash:hash(shot),dependencies,specificationApproved,readyForRouteReview:holds.length===0,holds,mediaAcceptance:'not_established'});
  }
- const library=recordDependencies(project);for(const record of project.production?.records||[]){const review=library.records.find(r=>r.recordId===record.id);nodes.push({id:'record:'+record.id,kind:record.type,version:record.currentVersion,specificationApproved:approved('record:'+record.id,record.currentVersion),dependencies:review.dependencies.map(d=>'record:'+d.recordId),holds:review.holds,mediaAcceptance:'not_established'});}
- for(const shot of project.shots){const node=nodes.find(n=>n.id===shot.id),review=library.shots.find(s=>s.shotId===shot.id);node.dependencies.push(...(shot.productionBindings||[]).map(b=>'record:'+b.recordId));node.holds.push(...(review?.holds||[]));node.holds=[...new Set(node.holds)];node.readyForRouteReview=node.holds.length===0;}
+ const library=recordDependencies(project),records=project.production?.records||[],byId=new Map(records.map(r=>[r.id,r])),approvalCache=new Map();
+ const approvalHolds=(id,path=new Set())=>{
+  if(approvalCache.has(id))return approvalCache.get(id);
+  const record=byId.get(id);if(!record)return ['A linked production record is missing.'];
+  if(path.has(id))return ['Production dependency cycle requires review.'];
+  const nextPath=new Set(path);nextPath.add(id);
+  const holds=approved('record:'+id,record.currentVersion)?[]:[`Current production record approval required: ${id} v${record.currentVersion}.`];
+  const snapshot=record.versions.find(v=>v.version===record.currentVersion);
+  for(const dependency of snapshot?.dependencies||[])holds.push(...approvalHolds(dependency.recordId,nextPath));
+  const result=[...new Set(holds)];approvalCache.set(id,result);return result;
+ };
+ for(const record of records){const review=library.records.find(r=>r.recordId===record.id);nodes.push({id:'record:'+record.id,kind:record.type,version:record.currentVersion,specificationApproved:approved('record:'+record.id,record.currentVersion),dependencies:review.dependencies.map(d=>'record:'+d.recordId),holds:[...new Set([...review.holds,...approvalHolds(record.id)])],mediaAcceptance:'not_established'});}
+ for(const shot of project.shots){const node=nodes.find(n=>n.id===shot.id),review=library.shots.find(s=>s.shotId===shot.id);node.dependencies.push(...(shot.productionBindings||[]).map(b=>'record:'+b.recordId));node.holds.push(...(review?.holds||[]));for(const binding of shot.productionBindings||[])node.holds.push(...approvalHolds(binding.recordId));node.holds=[...new Set(node.holds)];node.readyForRouteReview=node.holds.length===0;}
  const order=project.shots.map(s=>s.id);
- return {projectId:project.id,projectVersion:project.version,nodes,shotOrder:order,adjacency:order.map((id,i)=>({shotId:id,previous:order[i-1]||null,next:order[i+1]||null})),generationAuthorized:false,scope:'Story and shot specification review only; route, budget, reference rights and generated-media review remain separate.'};
+ return {projectId:project.id,projectVersion:project.version,nodes,shotOrder:order,adjacency:order.map((id,i)=>({shotId:id,previous:order[i-1]||null,next:order[i+1]||null})),generationAuthorized:false,scope:'Story, shot and production-library specification review only; route, budget, reference rights and generated-media review remain separate.'};
 }

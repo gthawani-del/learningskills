@@ -1,3 +1,11 @@
+# Production review workflow — 18 October 2026
+
+The versioned library release `539b65b` deployed successfully and passed public-site library and v2 workspace browser checks, with no page/console/HTTP errors. The next scoped update adds visible history and creative approval/revocation controls plus transitive creative-review holds. **80 automated tests, syntax checks and production build pass.** See [Production review acceptance](PRODUCTION_REVIEW_ACCEPTANCE.md) for evidence and remaining atomic dispatch prerequisites.
+
+Real cloud-account verification, generation and hosted export remain unfinished. No physical mobile-device verification is claimed.
+
+---
+
 # Current production-library update — 18 October 2026
 
 The next release adds versioned production-library records, explicit shot bindings and dependency holds. **77 automated tests, syntax checks and the production build pass locally.** SQL migration `20261017235051` has been applied to Director Supabase; twelve guard fixtures pass, function execute grants remain service-only, and security advisor returns no findings. See [Production library acceptance](PRODUCTION_LIBRARY_ACCEPTANCE.md) for scope, evidence and rollback.

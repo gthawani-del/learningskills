@@ -16,19 +16,62 @@ const version = record => current(record).version ?? record.currentVersion ?? re
 const title = record => record.name || current(record).name || 'Untitled';
 const option = (value, label, selected = false) => `<option value="${esc(value)}"${selected ? ' selected' : ''}>${esc(label)}</option>`;
 
-export function renderProductionLibrary(project, assets = []) {
+const versionLinks = (item, list, assets) => {
+  const references = (item.references || []).map(ref => {
+    const asset = assets.find(a => a.id === ref.assetId);
+    return `${asset?.name || asset?.filename || 'Unavailable reference'} · v${ref.version}`;
+  });
+  const dependencies = (item.dependencies || []).map(dep => {
+    const record = list.find(r => r.id === dep.recordId);
+    const snapshot = record?.versions?.find(v => v.version === dep.version);
+    return `${snapshot?.name || (record && title(record)) || 'Unavailable library record'} · v${dep.version}`;
+  });
+  return `<p class="small">References: ${esc(references.join('; ') || 'None')}</p><p class="small">Related records: ${esc(dependencies.join('; ') || 'None')}</p>`;
+};
+
+export function renderProductionLibrary(project, assets = [], review = {approvals: [], dependencies: null}) {
   const list = records(project);
   return `<section class="panel"><h2>Cast &amp; world library</h2><p class="muted small">Planning and reference records keep creative choices together. Saving a version does not generate media or approve production.</p>${list.length ? list.map(record => {
     const item = current(record);
-    const refs = (item.references || []).map(ref => {
-      const asset = assets.find(a => a.id === ref.assetId);
-      return `${asset?.name || asset?.filename || 'Unavailable reference'} · v${ref.version}`;
-    });
-    return `<article><div class="row"><h3>${esc(title(record))}</h3><button type="button" data-edit-record="${esc(record.id)}">Edit version</button></div><p class="muted small">${esc(label(record.type))} · Version ${esc(version(record))}</p><p>${esc(item.content?.description || 'No description yet.')}</p>${refs.length ? `<p class="small">References: ${esc(refs.join('; '))}</p>` : ''}</article>`;
+    const check = review?.dependencies?.records?.find(r => r.recordId === record.id && r.version === version(record));
+    const holds = check?.holds || [];
+    const latest = (review?.approvals || []).filter(a => a.artifactId === 'record:' + record.id && a.version === version(record)).at(-1);
+    const approved = latest?.decision === 'approved';
+    const state = approved ? 'Creative version approved' : latest?.decision === 'revoked' ? 'Creative approval revoked' : latest?.decision === 'rejected' ? 'Creative version needs revision' : 'Creative version awaiting review';
+    const history = (record.versions || []).filter(v => v.version !== version(record)).slice().reverse();
+    return `<article><div class="row"><h3>${esc(title(record))}</h3><button type="button" data-edit-record="${esc(record.id)}">Edit version</button></div><p class="muted small">${esc(label(record.type))} · Version ${esc(version(record))}</p><p>${esc(item.content?.description || 'No description yet.')}</p>${versionLinks(item, list, assets)}<p class="small" data-creative-status>${esc(state)} · v${esc(version(record))}</p>${!check ? '<p class="muted small">Dependency review has not been checked for this version.</p>' : holds.length ? `<p class="small">Review held: ${esc(holds.join(' '))}</p>` : '<p class="muted small">Linked versions are current. Related records need their own creative review.</p>'}<div class="actions"><button type="button" data-review-record="${esc(record.id)}" data-review-decision="approved" data-review-held="${!check || holds.length ? 'true' : 'false'}" data-review-version="${esc(version(record))}"${!check || holds.length || approved ? ' disabled' : ''}>Approve creative version</button><button type="button" data-review-record="${esc(record.id)}" data-review-decision="revoked" data-review-version="${esc(version(record))}"${approved ? '' : ' disabled'}>Revoke creative approval</button></div><p class="muted small">Creative approval covers this planning version only. Rights, media quality and permission to generate require separate review.</p><p class="small" data-review-status role="status" aria-live="polite"></p><details><summary>Version history · ${history.length} earlier ${history.length === 1 ? 'version' : 'versions'}</summary>${history.length ? history.map(snapshot => `<section><h4>Version ${esc(snapshot.version)} · ${esc(snapshot.name || title(record))}</h4><p>${esc(snapshot.content?.description || 'No description recorded.')}</p>${versionLinks(snapshot, list, assets)}</section>`).join('') : '<p class="muted small">Earlier saved versions will appear here.</p>'}</details></article>`;
   }).join('') : '<p class="muted">Add your first character, voice, location or other production reference below.</p>'}</section><form id="production-record-form" class="panel"><h2 data-record-heading>Add a library record</h2><p class="muted small">Audio and take entries organize existing files and creative direction. They do not create generated or approved output.</p><input type="hidden" name="recordId" value=""><div class="row"><label>Type<select name="type">${TYPES.map(type => option(type, label(type))).join('')}</select></label><label>Name<input name="name" required maxlength="200"></label></div><label>Description<textarea name="description"></textarea></label><div class="row"><label>Language<input name="language"></label><label>Performance<input name="performance"></label></div><label>Script<textarea name="script"></textarea></label><label>Reference assets<select name="referenceIds" multiple>${referenceOptions(assets, 'character')}</select></label><label>Related library records<select name="dependencyIds" multiple>${list.map(r => option(r.id, `${title(r)} · v${version(r)}`)).join('')}</select></label><p class="muted small">Choose any references and related records that guide this version. Use Ctrl or Command to select more than one.</p><div class="actions"><button type="submit" class="primary">Save new version</button><button type="button" data-new-record>Start another record</button></div><p data-record-status class="small" role="status" aria-live="polite"></p></form>`;
 }
 
-export function bindProductionLibrary(root, {project, assets = [], onSave}) {
+export function bindProductionLibrary(root, {project, assets = [], onSave, onReview}) {
+  root.querySelectorAll('[data-review-record]').forEach(button => {
+    if (typeof onReview !== 'function') { button.disabled = true; return; }
+    button.onclick = async () => {
+      if (button.disabled) return;
+      const record = records(project).find(r => r.id === button.dataset.reviewRecord);
+      const selectedVersion = Number(button.dataset.reviewVersion);
+      const decision = button.dataset.reviewDecision;
+      if (!record || selectedVersion !== version(record) || !['approved', 'revoked'].includes(decision)) return;
+      const article = button.closest('article');
+      const buttons = Array.from(article.querySelectorAll('[data-review-record]'));
+      const disabled = buttons.map(b => b.disabled);
+      const status = article.querySelector('[data-review-status]');
+      buttons.forEach(b => { b.disabled = true; });
+      status.textContent = 'Saving creative review…';
+      let saved = false;
+      try {
+        await onReview({recordId: record.id, version: selectedVersion, decision, expectedVersion: project.version});
+        article.querySelector('[data-creative-status]').textContent = `${decision === 'approved' ? 'Creative version approved' : 'Creative approval revoked'} · v${selectedVersion}`;
+        status.textContent = 'Creative review saved.';
+        buttons.forEach(b => { b.disabled = b.dataset.reviewDecision === 'revoked' ? decision !== 'approved' : decision === 'approved' || b.dataset.reviewHeld === 'true'; });
+        saved = true;
+      } catch (error) {
+        status.textContent = error?.message || 'The creative review could not be saved. Try again.';
+      } finally {
+        if (!saved) buttons.forEach((b, i) => { b.disabled = disabled[i]; });
+      }
+    };
+  });
   const form = root.querySelector('#production-record-form');
   if (!form) return;
   const list = records(project);
