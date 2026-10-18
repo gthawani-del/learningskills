@@ -480,3 +480,13 @@ Every user must see creation-level cost before authorizing any billable planning
 
 Show scope/settings, quantity and billing unit, customer estimate and maximum authorization, fees/credit conversion, quote freshness, reused/included items and stage/project totals. Unknown prices block paid submission. During work separate reserved, estimated, spent and unknown amounts; after reconciliation display the actual customer receipt and credits/refunds. Re-estimate and obtain consent for increased scope or spend. Each item is owner-scoped and accessible on mobile/desktop; provider cost/margin remains backoffice data. Economical/Balanced/Premium choices must explain applicable trade-offs without silently lowering approved quality or changing an explicitly selected route. This requirement is not implemented merely because a read-only estimate API exists.
 
+## Briefing density and prefilled proposals — user correction, 18 October 2026
+
+The default briefing must present a compact proposal for review rather than a sixteen-field questionnaire. Reuse the supplied idea, project settings, references and reviewed preferences. Show existing or honestly labelled proposed values; ask only for consequential missing information. Optional omissions are deferred to their relevant production stage and must not trigger a generic creative fallback.
+
+Use the main canvas for the proposal and composer. In the Brief stage, stage navigation remains visible where space permits and project settings open in an optional drawer; remove the permanently empty inspector and placeholder cover. Production/edit layouts remain governed by the existing v2 specification.
+
+Present readable content and compact settings; reveal one prefilled editor at a time. Put source/provenance and department handoffs in optional disclosures. Advanced creators can add one chosen detail without opening a wall of empty inputs. AI-result review is read-only; applying it creates an unapproved version. Approve direction and Continue to story are unavailable during an unsaved edit. Preserve input after a failed save and keep unsaved edits scoped to their project during client-side navigation.
+
+The free path carries the actual idea and known decisions; it is not a substitute for a validated creative model. Inferred suggestions retain their provenance after approval. Do not invent cast, voice, brand, unsupported claims, budget, permissions or media analysis to make a summary appear complete. Financial authorization and actual production prerequisites remain separate.
+

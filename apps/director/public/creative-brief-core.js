@@ -90,14 +90,33 @@ export function interpretBrief(project,approvals=[]) {
  }
  return snapshot((project.creativeBrief?.currentVersion||0)+1,briefInputSignature(project),fields,'rule',dateFor(project));
 }
+// A reviewable starting point assembled from supplied text and project settings.
+// This helper neither interprets hidden intent nor calls a language model.
+export function suggestBrief(project,approvals=[]) {
+ const proposed=interpretBrief(project,approvals),existing=currentBrief(project),baseline=approvedBaseline(project,approvals);
+ const fresh=existing?.inputSignature===briefInputSignature(project);
+ if(fresh)for(const key of CREATIVE_BRIEF_FIELDS)if(existing.fields[key].source==='model'&&!['format','duration','language'].includes(key)&&(!baseline||baseline.fields[key].status==='unknown'))proposed.fields[key]=clone(existing.fields[key]);
+ const canSuggest=key=>proposed.fields[key].status==='unknown'&&proposed.fields[key].source==='rule';
+ const premise=typeof project.premise==='string'?project.premise.trim():'';
+ if(premise&&canSuggest('purpose')){
+  const labels={advertisement:'Develop an advertisement around the supplied idea',music_video:'Develop a music-video concept around the supplied idea',short_film:'Develop a short film around the supplied idea'};
+  const prefix=(labels[project.format]||'Develop a film around the supplied idea')+': ';
+  const room=2000-prefix.length;
+  const excerpt=premise.length>room?premise.slice(0,room-1)+'…':premise;
+  proposed.fields.purpose={value:prefix+excerpt,status:'inferred',source:'rule',evidence:['Reversible planning suggestion based on the selected format and supplied premise; not an interpretation of unstated intent.']};
+ }
+ const direction=typeof project.direction==='string'?project.direction.trim():'';
+ if(direction&&canSuggest('visualStyle'))proposed.fields.visualStyle={value:direction.length>2000?direction.slice(0,1999)+'…':direction,status:'inferred',source:'rule',evidence:['Supplied direction offered as a starting look suggestion; it may include instructions beyond visual style.']};
+ return snapshot(proposed.version,proposed.inputSignature,completeFields(proposed.fields),'rule',proposed.createdAt);
+}
 export function applyBriefCommand(project,command,approvals=[]) {
  keys(command,['expectedVersion','action','changes','proposal']);
  if(!Number.isSafeInteger(project.version)||project.version<1||command.expectedVersion!==project.version)fail(409,'The project changed. Reopen it before updating the brief.');
- if(!['interpret','update','apply_proposal'].includes(command.action))fail(400,'Unknown creative brief action.');
+ if(!['interpret','suggest','update','apply_proposal'].includes(command.action))fail(400,'Unknown creative brief action.');
  const archive=normalizeBriefArchive(project.creativeBrief,project);
  const working=clone(project);
- let proposed=interpretBrief(working,approvals);
- if(command.action==='interpret'&&(command.changes!==undefined||command.proposal!==undefined)||command.action==='update'&&command.proposal!==undefined||command.action==='apply_proposal'&&command.changes!==undefined)fail(400,'This brief action contains unrelated fields.');
+ let proposed=command.action==='suggest'?suggestBrief(working,approvals):interpretBrief(working,approvals);
+ if(['interpret','suggest'].includes(command.action)&&(command.changes!==undefined||command.proposal!==undefined)||command.action==='update'&&command.proposal!==undefined||command.action==='apply_proposal'&&command.changes!==undefined)fail(400,'This brief action contains unrelated fields.');
  if(command.action==='interpret'&&currentBrief(project)?.inputSignature===briefInputSignature(project))return clone(project);
  if(command.action==='update'){
   keys(command.changes,CREATIVE_BRIEF_FIELDS);if(!Object.keys(command.changes).length)fail(400,'Choose at least one brief field to update.');

@@ -108,7 +108,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='brief'&&req.method==='GET')return reply(200,{briefContext:briefPlanningContext(project,await store.records('approvals',id))});
  if((action==='brief'||action==='brief/apply-proposal')&&req.method==='POST'){
   const applying=action==='brief/apply-proposal',allowed=applying?['expectedVersion','callId']:['expectedVersion','action','changes'];
-  if(Object.keys(body).some(k=>!allowed.includes(k))||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1||(!applying&&!['interpret','update'].includes(body.action)))fail(400,'Supply a current project version and a supported creative brief edit.');
+  if(Object.keys(body).some(k=>!allowed.includes(k))||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1||(!applying&&!['interpret','suggest','update'].includes(body.action)))fail(400,'Supply a current project version and a supported creative brief edit.');
   if(body.expectedVersion!==project.version)fail(409,'This project changed. Reopen it before reviewing the brief.');
   const approvals=await store.records('approvals',id);let command=body;
   if(applying){

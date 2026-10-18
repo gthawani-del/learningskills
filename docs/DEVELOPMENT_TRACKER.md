@@ -30,6 +30,12 @@ Every user must see itemized creation costs before authorization, reserved/pendi
 
 [Competitor review](CREATIVE_INTENT_COMPETITOR_REVIEW_2026-10-18.md): fresh official Luma, Hedra and Krea guides inform reference roles and preserved constraints. Fresh REA inventory succeeded but listed Privacy error pages; product UI and bundle checks were blocked. No internal Theory of Mind architecture is asserted.
 
+## Briefing UX correction — 18 October 2026
+
+User feedback supersedes the earlier sixteen-field modal and two-column form. The Brief stage now shows a compact prefilled proposal on the main canvas, with one editor on demand and an optional project-settings drawer. Known look/tone values remain visible; optional unknowns are deferred rather than turned into required fields or generic creative fallbacks. Read-only AI review shows actual changes that survive protected-choice rules. Unsaved edits cannot be approved; scoped drafts and failed-save input are preserved during client navigation.
+
+[Current evidence](evidence/COMPACT_BRIEF_UX_CHECKS_2026-10-18.json): 258 automated tests and production build pass. Actual local device, v2 workspace and simulated-provider browser flows pass without console/HTTP errors. Controlled storage failures/delays are labelled fixtures. No new migration or real paid call; physical mobile, deployed accounts and live creative-quality gates remain outstanding. No requirement is upgraded to full production acceptance.
+
 ## Current batch and dependencies
 
 - Audit: complete as an initial baseline; refine each row while implementing. Broad section coverage is not line-by-line certification.
@@ -77,7 +83,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F007 | Search project and media library | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F008 | Upload and finalize source media | 2 | partial | Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing. |
 | F009 | Preview or download private media | 2 | partial | Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing. |
-| F010 | Interpret brief and ask necessary questions | 6 | partial | Versioned explicit/inferred/unknown brief, max-three questions, manual corrections, optional capped AI proposals, approval and exact-context guards implemented. Free path conservatively preserves known settings, not arbitrary natural-language understanding. Real interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified. |
+| F010 | Interpret brief and ask necessary questions | 6 | partial | Compact proposal reuses the actual idea/settings and reviewed choices with optional one-field edits; missing optional details do not require a questionnaire. Bounded AI interpretation supports read-only actual deltas. Real LLM interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F012 | Develop treatment and story arc | 6 | partial | Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow. |
 | F013 | Write screenplay and dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |

@@ -25,15 +25,17 @@ Budget direction is descriptive creative scope. It is not an authorization, cust
 ## User flow
 
 1. Enter the idea and project settings. Reviewing and editing are free.
-2. Open **Review creative brief** or continue toward Story. The free path carries known settings and prior choices into an editable review, leaving unparsed intentions unknown. It is deliberately conservative; it is not an LLM interpretation of the whole idea.
-3. Inspect explicit, inferred and unknown labels, up to three unanswered questions, and the production handoffs. Enter targeted corrections as needed.
-4. Optionally open **AI interpretation & limits**. A reviewed, enabled model and a separate scoped planning allowance are required. Recording the allowance does not submit a call.
+2. The main workspace shows a compact starting proposal with the supplied idea, format, runtime, language and any known creative direction. The free `suggest` path anchors the purpose to the actual idea and retains known decisions. It does not claim an LLM interpretation or invent production facts.
+3. Review the filled proposal. Open one prefilled editor only when a correction is needed. Additional details, provenance and department handoffs stay in optional disclosures; missing optional fields do not become a questionnaire or a generic creative fallback. Project settings use a separate drawer rather than occupying an empty permanent column.
+4. Optionally explore AI interpretation through the planning controls. A reviewed, enabled model and a separate scoped planning allowance are required. Recording the allowance does not submit a call.
 5. Explicitly start **Interpret brief with AI**, then check the saved call. Reload and status polling reuse the original response identity.
 6. Review the human-readable proposal. An explicit apply action creates an unapproved brief version and preserves protected choices. It does not start media generation or replace a story.
-7. Choose **Approve brief and assumptions**. Optional unknowns may remain visible, with explicit acknowledgement. Approval is distinct from financial consent.
+7. Choose **Approve direction**, then **Continue to story**. The approval accepts visible suggestions and deferred choices; optional unknowns remain internally recorded. Approval is distinct from financial consent. Unsaved inline edits block approval and continuation until saved or cancelled.
 8. Continue to Story. Paid initial/revision planning requires a fresh, approved structured brief once the project has one.
 
-The reviewer uses a desktop grid, a single column on smaller viewports, a sticky close/header and a collapsed handoff list. A viewport check is not physical mobile-device verification.
+The briefing keeps stage navigation and the main canvas, with one default composer and no default brief-field textareas. A single editor opens on demand; advanced users can add a specific optional detail. The separate AI-result review is read-only and applies into a new unapproved brief version. A viewport check is not physical mobile-device verification.
+
+User correction, 18 October 2026: the earlier sixteen-field modal and then its two-column version exposed internal structure and demanded too much information. This compact proposal supersedes those layouts. A labelled suggestion must reuse the actual request or a known setting; it must not fabricate a character, voice, brand, claim, budget or reference merely to fill a field. Material missing production prerequisites remain unresolved for their relevant stage.
 
 ## Hybrid execution
 
@@ -71,7 +73,7 @@ Each handoff identifies its inputs and planning task. “Ready for planning” m
 | Route under `/api/projects/:id` | Behavior |
 | --- | --- |
 | `GET /brief` | Read the current interpretation, questions, approval and staleness status. |
-| `POST /brief` | Owned, version-checked `interpret` or targeted `update`; client-supplied proposals and authority fields are rejected. |
+| `POST /brief` | Owned, version-checked `suggest`, `interpret` or targeted `update`; client-supplied proposals and authority fields are rejected. |
 | `POST /brief/apply-proposal` | Apply a validated saved `interpret_brief` result by call ID after exact-context checks. |
 | `GET /planning-calls/:callId` | Retrieve an owned saved result without dispatch. Internal request/profile snapshots remain private. |
 | `POST /approvals` | Existing review route with artifact `brief`, exact version and explicit assumptions acknowledgement. |
@@ -85,13 +87,15 @@ Migration `20261018035212_director_structured_brief_planning` was applied to the
 
 Seventeen isolated PostgreSQL/WASM proof groups pass. They exercise the actual SQL as `service_role`, including stale application hashes, unchanged simulated revision attacks, currentness, revocation and rollback. This is a single-connection proof, not a true concurrent-session race test. Live checks confirmed service-only new functions, RLS retained, zero active OpenAI models, zero planning calls/consents and generation paused. The security advisor returned no findings.
 
-Automated, build and browser evidence is recorded in [the checks JSON](evidence/CREATIVE_INTENT_CHECKS_2026-10-18.json). Local browser checks cover device persistence and an actual local API/file-store workflow with a server-side simulated provider. They do not intercept browser requests, call a real paid provider or establish live Supabase account isolation.
+The initial release evidence is recorded in [the original checks JSON](evidence/CREATIVE_INTENT_CHECKS_2026-10-18.json). The subsequent compact UX correction passes 258 tests/build and three local browser flows; its current evidence is recorded in [the compact UX checks](evidence/COMPACT_BRIEF_UX_CHECKS_2026-10-18.json). Local browser checks cover device persistence and an actual local API/file-store workflow with a server-side simulated provider. They do not intercept browser requests, call a real paid provider or establish live Supabase account isolation.
 
 ## Remaining gates and next work
 
 Live paid interpretation stays disabled pending a reviewed model/profile and an authorized controlled run. Validate useful question selection, faithful intent interpretation, multilingual briefs and creative preference preservation on representative real requests. The conservative free path and simulated responses do not establish those quality results.
 
 Treatment, script, department breakdown, actual casting/look/voice auditions, generated storyboards and timed animatics remain upcoming work. Attachment content analysis, cross-project preference memory, comprehensive deadline/control fields and full contextual repair orchestration are not implemented by this brief reviewer. The two-attempt quality target remains unproven.
+
+The compact editor retains project-scoped unsaved text during client-side navigation, blocks approval while an editor is open and disables controls during a pending write. Failed saves retain the visible input. This is not a claim that unsaved editor text survives a full page reload.
 
 Deployed account/browser checks remain deferred by the user's instruction. Physical mobile testing is outstanding. No current authenticated competitor workflow or internal Theory of Mind architecture was verified.
 

@@ -202,10 +202,11 @@
         "apps/director/tests/creative-brief-api.test.mjs",
         "apps/director/tests/creative-brief-cloud.test.mjs",
         "apps/director/tests/creative-brief-integration.test.mjs",
-        "apps/director/tests/creative-brief-browser.py"
+        "apps/director/tests/creative-brief-browser.py",
+        "apps/director/tests/compact-proposal-browser.py"
       ],
       "verification": "local-browser-api-and-isolated-sql; live-paid-quality-unverified",
-      "gap": "Versioned explicit/inferred/unknown brief, max-three questions, manual corrections, optional capped AI proposals, approval and exact-context guards implemented. Free path conservatively preserves known settings, not arbitrary natural-language understanding. Real interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified.",
+      "gap": "Compact proposal reuses the actual idea/settings and reviewed choices with optional one-field edits; missing optional details do not require a questionnaire. Bounded AI interpretation supports read-only actual deltas. Real LLM interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F010",
       "dependencies": [
         "versioned-project-records",
@@ -1959,7 +1960,8 @@
         "apps/director/public/app.js"
       ],
       "tests": [
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/creative-brief-browser.py"
       ],
       "verification": "local-or-viewport-only",
       "gap": "Entry uses no model selection; physical device usability untested.",
@@ -1984,7 +1986,7 @@
         "apps/director/tests/migration-browser.py"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Device persistence and interrupted local-demo migration verified; real authenticated cloud restore remains unverified.",
+      "gap": "Saved device drafts restore; inline unsaved edits remain scoped in memory across client navigation/projects and after controlled save failures. Full reload recovery of unsaved editor text and authenticated cloud restoration remain unverified.",
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
       "dependencies": [
         "production-domain-flows"
@@ -3837,12 +3839,12 @@
   ],
   "sourceHashes": {
     "FUNCTIONALITY_ENDPOINT_MATRIX.csv": "0e30d8a5de1146e0a0fae26e9885165ed5750579b36457771f523fa12e9e988d",
-    "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md": "1b94b57ad3dfb1cfae19f1495aeaf9513444486832ebe49e8f5c625cc34cdf96",
+    "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md": "0317e32bebb1216ea90aad2febc42169035c4c37154227afd79c293faea996af",
     "REALISM_INTELLIGENCE_LAYER.md": "52eaadf19e4b6b08de1e6bbb94b5d0325f89b2672fc9e90aa46584bfd352df37",
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529",
     "FILM_STUDIO_BLUEPRINT.md": "52bbfe2ae5b69745dd4b23e730144e18a2ba94a0e820635c8aac60ae97945be0",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
     "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "1f24cdef08dc1358948b5a979c576d2224f6a4ef181881ec262a4cd1673e5099"
   },
-  "currentBatch": "Step6 structured brief / creative intent implemented: 251 automated tests, build, local device and simulated-provider browser checks;17 isolated SQL proof groups. Migration20261018035212 applied; securityadvisor0. REA listed Privacy error targets; competitor comparison uses fresh official guides. No live paid quality or deployed account/mobile-device acceptance."
+  "currentBatch": "Compact prefilled briefing UX correction:258 tests/build pass; actual local device, v2 workspace and simulated-provider delta-review browsers pass. Optionalsettingsdrawer, one editor, no16fieldquestionnaire, protectedapproval/recovery. No new DBmigration, paidcalls or production acceptance."
 }

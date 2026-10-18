@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-18",
+  "baselineCommit": "59667677137a531a959771bc01c2cb79ffd6dcec",
+  "scope": "Briefing UX correction: compact prefilled proposal, one editor at a time, optional settings drawer and compact AI deltas",
+  "automated": {
+    "passed": 258,
+    "failed": 0,
+    "command": "npm test",
+    "logSha256": "4bb571190213c8416748b18e0fbf4637c94dcbe36aa736665566dcf42e7d22ff"
+  },
+  "syntax": "npm run check passed",
+  "productionBuild": "npm run build passed",
+  "browserReports": {
+    "creative-brief-browser-results.json": {
+      "scope": "actual local device draft UI, not live Supabase or paid model output",
+      "passed": [
+        "compact inline proposal",
+        "prefilled purpose premise runtime language",
+        "original settings collapsed",
+        "one default composer textarea",
+        "choices disclosure without empty-field wall",
+        "one prefilled field editor",
+        "cancel restores content and focus",
+        "unsaved edit survives stage navigation and stays scoped when switching projects",
+        "approval and field switching blocked during edits",
+        "pending write controls disabled",
+        "targeted correction preserves unrelated settings",
+        "controlled IndexedDB failure preserves input",
+        "explicit approve and continue",
+        "source edit requires renewed approval",
+        "device persistence",
+        "390px viewport review"
+      ],
+      "fixtureChecks": [
+        "Controlled one-time IndexedDB write failure; not an observed infrastructure outage",
+        "Controlled IndexedDB completion delay for pending-control checks"
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "postRequests": [],
+      "physicalMobileTested": false
+    },
+    "v2-workspace-results.json": {
+      "url": "http://127.0.0.1:3498",
+      "passed": [
+        "brief editing",
+        "story version and approval",
+        "shot editing",
+        "image preview and alternate image selection",
+        "video playback pause seek",
+        "draft and media reload persistence",
+        "direction notes and saved-project picker",
+        "truthful cloud gate",
+        "draft JSON download",
+        "390px viewport drawers and overflow"
+      ],
+      "pageErrors": [],
+      "console": [],
+      "httpErrors": [],
+      "physicalMobileTested": false
+    },
+    "compact-proposal-browser-results.json": {
+      "scope": "Real local browser/API with in-memory store and server-side simulated planning provider; no browser request interception",
+      "passed": [
+        "explicit allowance without automatic submission",
+        "one saved interpretation call survives reload",
+        "read-only compact delta review",
+        "unknown fields omitted",
+        "protected purpose and tone omitted from proposed changes",
+        "explicit apply returns to inline review",
+        "new known look visible in main proposal",
+        "applied result remains unapproved",
+        "story and approved choices preserved",
+        "single simulated call with usage accounting"
+      ],
+      "realPaidCalls": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "physicalMobileTested": false
+    }
+  },
+  "review": {
+    "unsavedEditCannotApproveOldValue": "verified through code review and browser interaction",
+    "reviewDoesNotPersistSuggestions": "code reviewed; saves occur only on explicit save/approval",
+    "noEmptySixteenFieldForm": "verified in default flow and read-only AI proposal review",
+    "knownLookAndToneVisible": "AI proposal browser verifies applied look in main review"
+  },
+  "evidenceLevels": {
+    "designReview": "inspected actual desktop/mobile Chromium screenshots",
+    "interaction": "actual local browser interactions; failure and pending-write cases use explicitly controlled IndexedDB fixtures",
+    "userStudy": "not performed"
+  },
+  "databaseMigration": "none in this UX batch; existing brief/currentness controls retained",
+  "realPaidCalls": 0,
+  "deployedAccountTests": "deferred by user",
+  "physicalMobileTested": false,
+  "limits": [
+    "Free suggestions are bounded reuse of supplied idea/settings, not live LLM interpretation quality",
+    "No full film, casting, voice or storyboard generation demonstrated",
+    "Optional production facts remain unresolved until relevant workflow",
+    "Unsaved inline edit retention is scoped in-memory during client navigation, not a claim of reload/remote recovery"
+  ]
+}

@@ -12,10 +12,10 @@ with sync_playwright() as p:
  page=c.new_page(); page.set_default_timeout(12000); errors=[]; console=[]; failed=[]; page.on('console',lambda m: console.append({'type':m.type,'text':m.text}) if m.type in ['error','warning'] else None); page.on('response',lambda r: failed.append({'status':r.status,'url':r.url}) if r.status>=400 else None); page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(base); page.locator('#premise').fill('A station keeper finds a letter from tomorrow.'); page.locator('#start-form button[type=submit]').click()
  expect(page.locator('.workspace.briefing')).to_be_visible()
- page.locator('#brief-form input[name=title]').fill('Tomorrow’s Letter'); page.locator('#brief-form button[type=submit]').click()
+ page.locator('#brief-project-settings').click(); page.locator('.brief-details>summary').click(); page.locator('#brief-form input[name=title]').fill('Tomorrow’s Letter'); page.locator('#brief-form button[type=submit]').click()
  expect(page.locator('.film-brief-summary h2')).to_have_text('Tomorrow’s Letter')
  page.screenshot(path=str(out/'v2-brief-desktop.png'),full_page=True)
- page.locator('#prepare-story').click(); expect(page.locator('#story-form')).to_be_visible()
+ page.locator('#approve-direction').click(); page.locator('#continue-direction').click(); expect(page.locator('#story-form')).to_be_visible()
  page.locator('[name=treatment]').fill('A keeper opens a letter, rejects its warning, and chooses to wait for the last train.')
  page.locator('[name=scenes]').fill('INT. STATION — NIGHT: the letter arrives.\nEXT. PLATFORM — DAWN: the keeper waits.')
  page.locator('#story-form button[type=submit]').click(); page.locator('#approve-story').click()
@@ -55,7 +55,7 @@ with sync_playwright() as p:
  assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'horizontal overflow'
  page.locator('#mobile-director').click(); expect(page.locator('#director.open')).to_be_visible(); page.locator('#close-director').click()
  page.locator('#mobile-project').click(); expect(page.locator('#rail.open')).to_be_visible(); page.locator('.stage-switch summary').click(); page.locator('[data-stage=brief]').click()
- page.locator('#mobile-director').click(); expect(page.locator('#brief-form')).to_be_visible()
+ expect(page.locator('#compact-brief')).to_be_visible(); assert page.locator('textarea:visible').count()<=1; page.locator('#mobile-director').click(); page.locator('.brief-details>summary').click(); expect(page.locator('#brief-form')).to_be_visible()
  page.screenshot(path=str(out/'v2-brief-mobile-viewport.png'),full_page=True)
  assert not errors, errors
  assert not console, console
