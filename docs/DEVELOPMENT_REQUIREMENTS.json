@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-18",
-  "baselineCommit": "539b65b56cabbc21467062c22ca9553da029a384",
+  "baselineCommit": "fdd178443c8bb592c10afbf0eefe922e0cdc80a5",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
   "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100–F105 remain explicit non-promises.",
   "requirements": [
@@ -1342,11 +1342,21 @@
       "requirement": "Pause scope or request cancellation",
       "area": "Execution and financial foundation",
       "step": 5,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "status": "partial",
+      "code": [
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
+      ],
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Global new-generation pause and per-model disable implemented with atomic database guards; tenant scopes, provider cancellation and live paid-request verification remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F075",
       "dependencies": [
         "versioned-project-records",
@@ -1426,13 +1436,20 @@
       "step": 4,
       "status": "partial",
       "code": [
-        "apps/director/api.mjs"
+        "apps/director/api.mjs",
+        "apps/director/operations.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Static administrator allowlist only; staff roles and case-bound media grants missing.",
+      "verification": "local-and-database-fixtures",
+      "gap": "Server-configured owner/operator/reviewer/support permissions tested; invitation-based staff lifecycle, MFA/step-up and case-bound private-media grants remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F080",
       "dependencies": [
         "cloud-connection"
@@ -1498,11 +1515,20 @@
       "status": "partial",
       "code": [
         "apps/director/public/admin.js",
-        "database/director-registry-seed.sql"
+        "database/director-registry-seed.sql",
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
       ],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Read-only seeded candidates and schema evidence; schema import/diff workflow absent.",
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Registry purpose/evidence inspection, internal use notes and model disable controls implemented; endpoint/schema import, diff, evaluation and publishing remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F084",
       "dependencies": [
         "cloud-connection"
@@ -1618,11 +1644,21 @@
       "requirement": "Tenant/provider kill switches",
       "area": "Admin and founder operations",
       "step": 4,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "status": "partial",
+      "code": [
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
+      ],
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Audited global pause and model disable with fail-closed dispatch guards implemented; tenant/render-specific kill switches and live provider concurrency proof remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F092",
       "dependencies": [
         "cloud-connection"
@@ -1681,11 +1717,19 @@
       "status": "partial",
       "code": [
         "database/director-foundation.sql",
-        "apps/director/store.mjs"
+        "apps/director/store.mjs",
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "database/20261018002640_director_operational_controls.sql"
       ],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Audit event foundation only; audited admin commands/export and emergency review missing.",
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Atomic operational audit with before/after metadata and idempotent command identities implemented; audit export, retention/archive policy and break-glass review remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F096",
       "dependencies": [
         "cloud-connection"
@@ -2833,11 +2877,21 @@
       "requirement": "Admin endpoint pause → New submissions stop; ongoing jobs can still be reconciled and retrieved",
       "area": "Admin acceptance",
       "step": 4,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Complete operational scenario, authorization and audit evidence missing.",
+      "status": "partial",
+      "code": [
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
+      ],
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Global pause, model disable and continued existing-request polling tested locally; SQL paused-insert proof passes. Live paid-provider and concurrent-session verification remain unrun.",
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
@@ -2918,11 +2972,21 @@
       "requirement": "Duplicate callbacks or commands → Balances, artifacts and state transitions are not applied twice",
       "area": "Admin acceptance",
       "step": 4,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Complete operational scenario, authorization and audit evidence missing.",
+      "status": "partial",
+      "code": [
+        "apps/director/operations.mjs",
+        "apps/director/api.mjs",
+        "apps/director/store.mjs",
+        "database/20261018002640_director_operational_controls.sql"
+      ],
+      "tests": [
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/admin-browser.py",
+        "database/checks/operational-controls-rollback.sql"
+      ],
+      "verification": "local-and-database-fixtures",
+      "gap": "Duplicate operational commands and stale-revision conflicts tested via local/API/browser recovery and rollback SQL proofs; financial/callback idempotency remains incomplete.",
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",

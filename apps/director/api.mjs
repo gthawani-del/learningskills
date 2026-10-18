@@ -1,3 +1,4 @@
+import {staffRole,staffPermissions,adminCommand} from './operations.mjs';
 import {applyProductionRecord,recordDependencies} from './production-records.mjs';
 import {productionState} from './production-state.mjs';
 import {createImportController} from './imports.mjs';
@@ -36,7 +37,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const providers=providedProviders||createProviderClients({env,fetcher});
  const loginAttempts=new Map();
  const jobs=store&&!demo?createJobController({store,providers}):null;
- const isAdmin=user=>(env.DIRECTOR_ADMIN_IDS||'').split(',').map(x=>x.trim()).includes(user?.id);
+ const isAdmin=user=>!!staffRole(user?.id,env);
  // Remains closed until planning has its own verified quote and durable reservation.
  const planning=false;
  const mediaStorage=createMediaStorage({env,fetcher,demo});
@@ -53,7 +54,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  return async(req,res,path,body={})=>{
  const reply=(status,value,headers={})=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store',...headers});res.end(JSON.stringify(value));};
  const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
- if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
+ if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
  if(path==='/api/auth/login'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
  if(typeof body.email!=='string'||body.email.length>254||typeof body.password!=='string'||body.password.length>1024)fail(400,'Enter an email and password.');
@@ -77,9 +78,13 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(req.method==='POST')return reply(201,{project:await store.create(newProject(body,user.id))});}
  if(path==='/api/jobs'&&req.method==='GET'){const projects=await store.list(user.id);const jobs=(await Promise.all(projects.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{jobs});}
  if(path.startsWith('/api/admin/')){
- if(!isAdmin(user))fail(403,'Administrator access is required.');
- if(path==='/api/admin/registry'&&req.method==='GET')return reply(200,{models:demo?[]:await store.registry()});
- if(path==='/api/admin/overview'&&req.method==='GET'){const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'administrator-owned projects',projects:ps.length,jobs,productionEnabled:false});}
+ const role=staffRole(user.id,env),permissions=staffPermissions(role);if(!role)fail(403,'Administrator access is required.');
+ const permit=permission=>{if(!permissions.includes(permission))fail(403,'Your staff role cannot access this operation.');};
+ if(path==='/api/admin/control'&&req.method==='GET'){permit('controls.read');return reply(200,{role,permissions,control:await store.generationControl(),generationEnabled:false});}
+ if(path==='/api/admin/audit'&&req.method==='GET'){permit('audit.read');return reply(200,{commands:await store.operationalAudit(),scope:'operational commands',limit:100});}
+ if(path==='/api/admin/commands'&&req.method==='POST'){const request=adminCommand(body,user.id,role);return reply(200,await store.operationalCommand(request));}
+ if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');return reply(200,{models:await store.registry()});}
+ if(path==='/api/admin/overview'&&req.method==='GET'){permit('jobs.read');const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'staff-owned projects only',projects:ps.length,jobs,productionEnabled:false});}
  fail(404,'Operation not found.');}
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);

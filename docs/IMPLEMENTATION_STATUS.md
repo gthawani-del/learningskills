@@ -1,3 +1,11 @@
+# Operational controls — 18 October 2026
+
+Staff permissions, atomic audited pause/model-disable/use-note commands and a backoffice Controls/Audit UI are implemented. **88 automated tests and the production build pass.** Local browser recovery and narrow-layout checks pass. Director database migration `20261018002640` and rollback guard fixtures pass; security advisor reports no findings. See [Operational controls acceptance](OPERATIONAL_CONTROLS_ACCEPTANCE.md).
+
+Tracker: 60 partial, 101 missing/unverified, 6 deferred, zero fully production-accepted. Step 4 advanced; Vercel-dependent cloud tests are deferred by user instruction. Generation activation, spending/commercial controls, hosted export and quality pilots remain unfinished.
+
+---
+
 # Production review workflow — 18 October 2026
 
 The versioned library release `539b65b` deployed successfully and passed public-site library and v2 workspace browser checks, with no page/console/HTTP errors. The next scoped update adds visible history and creative approval/revocation controls plus transitive creative-review holds. **80 automated tests, syntax checks and production build pass.** See [Production review acceptance](PRODUCTION_REVIEW_ACCEPTANCE.md) for evidence and remaining atomic dispatch prerequisites.

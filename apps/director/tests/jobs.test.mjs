@@ -11,6 +11,7 @@ function setup({ throws = false, eligible = true, claimRejection = null } = {}) 
   let submits = 0;
   const queries = [];
   const store = {
+    async generationControl() { return { generationPaused: false, revision: 0 }; },
     async readJob(actor, project, id) { if (actor !== 'owner' || project !== 'p' || id !== 'j') throw new Error('not owner'); return structuredClone(job); },
     async readProposal() { return structuredClone(proposal); }, async readModel() { return structuredClone(model); },
     async claimJob() { if (claimRejection) throw new Error(claimRejection); if (job.status !== 'reserved') return null; job.status = 'submitted'; return structuredClone(job); },
@@ -21,7 +22,7 @@ function setup({ throws = false, eligible = true, claimRejection = null } = {}) 
     async submitFalJob(arg) { submits++; assert.equal(arg.authorized, true); if (throws) throw new Error('timeout'); return { requestId: 'request-1' }; },
     async getFalJob(arg) { queries.push(arg); return arg.result ? { video: { url: 'https://cdn.example/result.mp4' } } : { status: 'COMPLETED' }; },
   };
-  return { controller: createJobController({ store, providers }), audits, queries, get submits() { return submits; }, get job() { return job; }, proposal, model, providers };
+  return { controller: createJobController({ store, providers }), store, audits, queries, get submits() { return submits; }, get job() { return job; }, proposal, model, providers };
 }
 const scope = { actorId: 'owner', projectId: 'p', jobId: 'j' };
 test('concurrent dispatch claims one reserved job and submits only once', async () => {
@@ -76,4 +77,37 @@ test('poll transport failures preserve spending hold and durable request', async
   state.providers.getFalJob = async () => { throw new Error('network'); };
   const job = await state.controller.poll(scope);
   assert.equal(job.status, 'submitted'); assert.equal(job.provider_request_id, 'request-1'); assert.equal(job.charge_state, 'held');
+});
+
+test('paused generation blocks dispatch and preserves its reserved spending hold', async () => {
+  const state = setup();
+  state.store.generationControl = async () => ({ generationPaused: true, revision: 1 });
+  await assert.rejects(state.controller.dispatch(scope), error => error.status === 409 && /paused/.test(error.message));
+  assert.equal(state.submits, 0);
+  assert.equal(state.job.status, 'reserved');
+  assert.equal(state.job.charge_state, 'held');
+  assert.equal(state.job.reserved_micro_usd, 100);
+});
+test('missing failed or malformed generation control cannot submit or claim', async () => {
+  for (const control of [undefined, async () => { throw new Error('control offline'); }, async () => null, async () => ({ generationPaused: false }), async () => ({ generationPaused: false, revision: 0.5 }), async () => ({ generationPaused: 'false', revision: 1 }), async () => ({ generationPaused: false, revision: Number.MAX_SAFE_INTEGER + 1 })]) {
+    const state = setup();
+    state.store.generationControl = control;
+    let claims = 0;
+    const claim = state.store.claimJob;
+    state.store.claimJob = (...args) => { claims++; return claim(...args); };
+    await assert.rejects(state.controller.dispatch(scope), error => error.status === 503);
+    assert.equal(claims, 0); assert.equal(state.submits, 0);
+    assert.equal(state.job.status, 'reserved'); assert.equal(state.job.charge_state, 'held');
+  }
+});
+test('pausing new generation still allows polling and observing an existing request', async () => {
+  const state = setup();
+  await state.controller.dispatch(scope);
+  state.store.generationControl = async () => ({ generationPaused: true, revision: 2 });
+  const observed = await state.controller.dispatch(scope);
+  assert.equal(observed.status, 'submitted');
+  const completed = await state.controller.poll(scope);
+  assert.equal(completed.status, 'completed');
+  assert.equal(completed.charge_state, 'held');
+  assert.equal(state.submits, 1); assert.equal(state.queries.length, 2);
 });

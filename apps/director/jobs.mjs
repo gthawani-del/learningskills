@@ -25,6 +25,14 @@ export function createJobController({ store, providers }) {
       const { job, proposal, model } = await contract(actorId, projectId, jobId);
       // Repeated dispatch requests are observations, never a new provider call.
       if (job.status !== 'reserved') return job;
+      // Missing, unreadable or malformed operational controls must never enable
+      // a new billable submission. Existing request inspection stays available.
+      if (typeof store.generationControl !== 'function') fail(503, 'Generation control unavailable.');
+      let control;
+      try { control = await store.generationControl(); }
+      catch { fail(503, 'Generation control unavailable.'); }
+      if (!control || typeof control.generationPaused !== 'boolean' || !Number.isSafeInteger(control.revision) || control.revision < 0) fail(503, 'Generation control invalid.');
+      if (control.generationPaused !== false) fail(409, 'Generation is paused.');
       if (hash(proposal.payload) !== proposal.payload_hash) fail(409, 'Reserved payload content hash mismatch.');
       if (job.charge_state !== 'held' || !(Number(job.reserved_micro_usd) > 0)) fail(409, 'A held spending reservation is required.');
       if (model.active !== true || model.execution_tested !== true || model.quality_validated !== true || model.price_version !== proposal.price_version) fail(409, 'Model route is not eligible.');

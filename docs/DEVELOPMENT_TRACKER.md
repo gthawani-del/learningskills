@@ -1,10 +1,10 @@
 # Director Studio — Development Tracker
 
-Updated 18 October 2026. Baseline before the production-library batch: `0849404`. This is an implementation ledger, not a replacement blueprint.
+Updated 18 October 2026. Baseline before the operational-controls batch: `fdd1784`. This is an implementation ledger, not a replacement blueprint.
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
-Status: 56 partial, 105 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+Status: 60 partial, 101 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
 
 Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
 
@@ -13,14 +13,15 @@ Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_R
 - Audit: complete as an initial baseline; refine each row while implementing. Broad section coverage is not line-by-line certification.
 - Cloud sessions: refresh rotation/current-browser logout and adapter/client tests deployed in the previous batch; live Supabase verification still blocked by deployment configuration.
 - Device-to-cloud migration: retry-safe checksummed project/media import, note preservation and reference rebinding implemented. Interrupted-upload recovery passes through the real local demo API/browser. Device source remains intact; device approvals are not imported. Real Supabase integration pending.
-- Vercel: connection authorization pending. Do not print or recover service keys through SQL.
+- Vercel-dependent cloud tests deferred by user instruction. Continue other modules; do not print or recover service keys through SQL.
+- Operations: role-scoped audited pause/model-disable/notes controls implemented. Database pause guards and rollback fixtures pass; local backoffice browser checks cover interrupted-response recovery. Staff lifecycle/MFA, tenant controls and commercial operations remain incomplete.
 - Media/AI: routes remain inactive; no paid call, quality result or two-attempt success is established.
 - Export: local FFmpeg proof only; no hosted worker selected.
 - UI: deployed v2 layout and browser-device editing flow; physical mobile tests outstanding.
 
 ## Current verification
 
-80 automated tests, syntax checks and production build pass locally for the creative-review update. The prior library release 539b65b passed live public-site library and v2 workspace browser checks. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
+88 automated tests, syntax checks and production build pass locally for the operational-controls update. The prior library release 539b65b passed live public-site library and v2 workspace browser checks. New migration browser recovery test passes against the local demo API. Scene/brief dependency tests cover selective invalidation and preservation of neighboring shot versions/media. Typed library history, scoped references, transitive dependency holds, selective invalidation and import preservation are implemented and tested locally. Twelve SQL currentness fixtures pass on Director Supabase, with service-only execute privileges and no security-advisor findings. Live application/Supabase integration and media-quality acceptance remain incomplete.
 
 Retries resend whole files; byte/chunk-resumable transport is not implemented. Scene edits preserve neighboring shot versions, but global story reapproval still holds their route readiness.
 
@@ -119,16 +120,16 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F072 | Submit approved fal operation | 5 | partial | Mock-tested dispatch; no active profile or paid execution. |
 | F073 | Reconcile status and retrieve results | 5 | partial | Mock-tested reconciliation; durable private ingestion of completed outputs incomplete. |
 | F074 | Handle provider callback safely | 5 | missing | No complete executable workflow found; implement and verify before activation. |
-| F075 | Pause scope or request cancellation | 5 | missing | No complete executable workflow found; implement and verify before activation. |
+| F075 | Pause scope or request cancellation | 5 | partial | Global new-generation pause and per-model disable implemented with atomic database guards; tenant scopes, provider cancellation and live paid-request verification remain incomplete. |
 | F076 | Durable queue leases and restart recovery | 5 | partial | Atomic claim and uncertain-state hold exist; durable scheduling, leases/restart recovery and worker operations missing. |
 | F077 | Checkout and subscription entitlements | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F078 | Payment callbacks, refunds and reconciliation | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F079 | Notify user of review/export/blocker | 11 | missing | No complete executable workflow found; implement and verify before activation. |
-| F080 | Staff access and case-bound media grants | 4 | partial | Static administrator allowlist only; staff roles and case-bound media grants missing. |
+| F080 | Staff access and case-bound media grants | 4 | partial | Server-configured owner/operator/reviewer/support permissions tested; invitation-based staff lifecycle, MFA/step-up and case-bound private-media grants remain missing. |
 | F081 | Production trace and blocker search | 4 | partial | Read-only own-project admin overview only; workspace operational trace/search absent. |
 | F082 | Unknown-job and dead-letter triage | 4 | partial | Unknown submission held in job controller; operator reconciliation/dead-letter UI absent. |
 | F083 | Restore missing completed output | 11 | missing | No complete executable workflow found; implement and verify before activation. |
-| F084 | Endpoint/schema import and capability inspection | 4 | partial | Read-only seeded candidates and schema evidence; schema import/diff workflow absent. |
+| F084 | Endpoint/schema import and capability inspection | 4 | partial | Registry purpose/evidence inspection, internal use notes and model disable controls implemented; endpoint/schema import, diff, evaluation and publishing remain incomplete. |
 | F085 | Model and sequence policy publishing | 4 | missing | No complete executable workflow found; implement and verify before activation. |
 | F086 | Skill/knowledge release management | 4 | missing | No complete executable workflow found; implement and verify before activation. |
 | F087 | Benchmark and regression execution | 11 | missing | No complete executable workflow found; implement and verify before activation. |
@@ -136,11 +137,11 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F089 | Customer support and remediation | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F090 | Cost, credits and provider reconciliation | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F091 | Issue goodwill credits or refunds | 11 | missing | No complete executable workflow found; implement and verify before activation. |
-| F092 | Tenant/provider kill switches | 4 | missing | No complete executable workflow found; implement and verify before activation. |
+| F092 | Tenant/provider kill switches | 4 | partial | Audited global pause and model disable with fail-closed dispatch guards implemented; tenant/render-specific kill switches and live provider concurrency proof remain incomplete. |
 | F093 | Incident management and alert triage | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F094 | Backups and restore rehearsal | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F095 | Rights, consent and retention/deletion | 11 | missing | No complete executable workflow found; implement and verify before activation. |
-| F096 | Audit export and emergency access review | 4 | partial | Audit event foundation only; audited admin commands/export and emergency review missing. |
+| F096 | Audit export and emergency access review | 4 | partial | Atomic operational audit with before/after metadata and idempotent command identities implemented; audit export, retention/archive policy and break-glass review remain incomplete. |
 | F097 | Founder completion and unit economics | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F098 | Product experiment governance | 11 | missing | No complete executable workflow found; implement and verify before activation. |
 | F099 | Voice identity misuse or consent withdrawal | 11 | missing | No complete executable workflow found; implement and verify before activation. |
