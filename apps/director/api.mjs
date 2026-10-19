@@ -1,4 +1,6 @@
 import {createStoryboardProductionController} from './storyboard-production.mjs';
+import {animaticContext,saveAnimatic} from './public/animatic-core.js';
+import {storyboardProductionContext} from './public/storyboard-production-core.js';
 import {createReferenceController} from './reference-production.mjs';
 import {createPlanningController} from './planning.mjs';
 import {changeDepartmentPlans} from './department-plans.mjs';
@@ -213,6 +215,12 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const quote=createCostQuote({project,artifactId:body.artifactId,artifactVersion:body.artifactVersion,task:body.task,requirements,intent:body.intent,model,input:body.input,now});
  if(body.requestId!==undefined){const saved=await store.persistCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,expectedVersion:body.expectedVersion,requestFingerprint,quote,input:body.input});return reply(201,{quote:saved,saved:true});}
  return reply(200,{quote});
+ }
+ if(action==='animatic'&&['GET','POST'].includes(req.method)){
+ const [assets,approvals,referenceCandidates,candidates]=await Promise.all([store.records('assets',id),store.records('approvals',id),store.referenceCandidates(user.id,id),store.storyboardCandidates(user.id,id)]);
+ const frames=storyboardProductionContext(project,approvals,{assets,referenceCandidates,candidates});
+ if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames)});
+ const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames)});
  }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}

@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {animaticContext,saveAnimatic,frameAt} from '../public/animatic-core.js';
+import {animaticFixture,call} from './animatic-fixture-server.mjs';
+function unit(){const assetId=randomUUID(),id=randomUUID(),project={id,ownerId:randomUUID(),version:1,shots:[],production:{records:[]},storyboardHandoff:{sequences:[{version:1,shots:[{shotId:'one'}]}]}},frame={shotId:'one',selectionApproved:true,selection:{specVersion:1,version:1,assetId,assetVersion:1},contract:{document:{durationSeconds:2}},output:{aspectRatio:'16:9'}};return {project,frames:{shots:[frame],holds:[]},assets:[{id:assetId,projectId:id,version:1,mime:'image/png'}],command:{expectedVersion:1,fps:24,frameCounts:[48],acknowledgeTiming:true}};}
+test('animatic timing pins exact approved frames into existing immutable edit versions',()=>{const f=unit(),p=saveAnimatic(f.project,f.command,f.frames,f.assets),c=animaticContext(p,f.frames);assert(c.canPlay&&c.saved&&c.silent);assert.equal(c.totalFrames,48);assert.equal(c.productionAuthorized,false);assert.equal(f.project.production.records.length,0);assert.equal(c.frames[0].frameSelectionVersion,1);});
+test('revocation, changed selection and sequence order hold saved timing without removing history',()=>{const f=unit(),p=saveAnimatic(f.project,f.command,f.frames,f.assets),before=structuredClone(p);for(const mutate of [()=>f.frames.shots[0].selectionApproved=false,()=>f.frames.shots[0].selection.version=2,()=>p.storyboardHandoff.sequences[0].version=2]){mutate();assert.equal(animaticContext(p,f.frames).canPlay,false);}assert.deepEqual(p.production,before.production);});
+test('changed inputs require explicit refresh and create a new timing version',()=>{const f=unit(),p=saveAnimatic(f.project,f.command,f.frames,f.assets);f.frames.shots[0].selection.version=2;const command={...f.command,expectedVersion:p.version};assert.throws(()=>saveAnimatic(p,command,f.frames,f.assets),/Explicitly refresh/);const next=saveAnimatic(p,{...command,refresh:true},f.frames,f.assets);assert.equal(next.production.records[0].versions.length,2);assert.equal(animaticContext(next,f.frames).timingBasis,'estimated');});
+test('timing and command bounds reject fractional frames, foreign assets and fabricated authority',()=>{const f=unit();for(const extra of [{frameCounts:[1.2]},{frameCounts:[]},{fps:23},{acknowledgeTiming:false},{approved:true},{assetId:randomUUID()}])assert.throws(()=>saveAnimatic(f.project,{...f.command,...extra},f.frames,f.assets));assert.throws(()=>saveAnimatic(f.project,{...f.command,expectedVersion:0},f.frames,f.assets),/changed/);assert.throws(()=>saveAnimatic(f.project,f.command,f.frames,[]),/Reference/);});
+test('malformed generic edit content fails closed and frame boundaries are exact',()=>{const f=unit(),p=saveAnimatic(f.project,f.command,f.frames,f.assets);p.production.records[0].versions[0].content.frames='not frames';assert.equal(animaticContext(p,f.frames).canPlay,false);assert.equal(frameAt([{frameCount:24},{frameCount:48}],23).index,0);assert.equal(frameAt([{frameCount:24},{frameCount:48}],24).index,1);assert.equal(frameAt([{frameCount:24},{frameCount:48}],72).index,1);});
+test('mixed native aspects hold rather than silently crop a frame',()=>{const f=unit();f.project.storyboardHandoff.sequences[0].shots.push({shotId:'two'});f.frames.shots.push({...f.frames.shots[0],shotId:'two',output:{aspectRatio:'9:16'}});assert.match(animaticContext(f.project,f.frames).holds.join(' '),/aspect/);});
+test('actual animatic API saves/reloads existing edit records and rejects unauthenticated or foreign access',async t=>{
+ const dir=await mkdtemp(join(tmpdir(),'director-animatic-'));t.after(()=>rm(dir,{recursive:true,force:true}));const f=await animaticFixture({file:join(dir,'state.json')});
+ for(const token of [null,'foreign-fixture-session'])assert.equal((await call(f.handler,f.base+'/animatic',undefined,token)).status,token?404:401);
+ let r=await call(f.handler,f.base+'/animatic');assert.equal(r.status,200);assert(r.data.animatic.canPlay);const counts=r.data.animatic.frames.map(()=>24);
+ assert.equal((await call(f.handler,f.base+'/animatic',{expectedVersion:f.project.version,fps:24,frameCounts:counts})).status,400);
+ const before=structuredClone(f.project),spend=f.counters().submits;let saved=await f.post('/animatic',{expectedVersion:f.project.version,fps:24,frameCounts:counts,acknowledgeTiming:true});
+ assert.equal(saved.animatic.totalFrames,48);assert.deepEqual(saved.project.storyboardProduction,before.storyboardProduction);assert.deepEqual(saved.project.shots,before.shots);assert.equal(f.counters().submits,spend);
+ r=await call(f.handler,f.base+'/animatic');assert.equal(r.data.animatic.version,1);assert(r.data.animatic.canPlay);
+ assert.equal((await call(f.handler,f.base+'/animatic',{expectedVersion:before.version,fps:24,frameCounts:counts,acknowledgeTiming:true})).status,409);
+ const selection=before.storyboardProduction.selections[0];await f.post('/approvals',{expectedVersion:saved.project.version,artifactId:'storyboard_frame:'+selection.shotId,version:selection.version,decision:'revoked'});
+ r=await call(f.handler,f.base+'/animatic');assert.equal(r.data.animatic.canPlay,false);assert.equal(r.data.animatic.version,1);assert.equal(f.counters().submits,spend);
+});

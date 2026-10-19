@@ -6,7 +6,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {once} from 'node:events';
 
 const root=resolve(import.meta.dirname,'..');
-export const browsers=['creative-brief-browser','v2-workspace','mobile-footer-browser','compact-proposal-browser','registry-browser','writing-browser','planning-ui-browser','department-browser','department-revision-browser','storyboard-browser','reference-browser','storyboard-production-browser'];
+export const browsers=['creative-brief-browser','v2-workspace','mobile-footer-browser','compact-proposal-browser','registry-browser','writing-browser','planning-ui-browser','department-browser','department-revision-browser','storyboard-browser','reference-browser','storyboard-production-browser','animatic-browser'];
 const sharedUI=/public\/(app\.js|.*\.css|index\.html|api-client\.js|device-drafts\.js)$/;
 async function nodeTests(){const source=await readFile(resolve(root,'scripts/test-director.mjs'),'utf8');return [...source.matchAll(/import\(['"]([^'"]+\.test\.mjs)['"]\)/g)].map(m=>relative(root,resolve(root,'scripts',m[1])));}
 async function imports(path,seen=new Set()){

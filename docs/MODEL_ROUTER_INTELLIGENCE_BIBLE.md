@@ -1,10 +1,16 @@
 # Model Router Intelligence Bible
 
-Revision 9 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 10 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
 This bible separates the decision specification and historical candidate research from the implemented contracts recorded in the current advancement sections below. The original research did not execute paid models or validate creative outputs; documentation updates do not activate candidates or certify production quality. Official documentation, a valid schema, implemented request handling, a connected account and a finished film are different evidence levels.
+
+## Silent timed storyboard draft — 19 October 2026
+
+The first animatic increment uses exact currently approved storyboard-frame selections in sequence order. A browser-native silent timing preview supports frame-based holds, play/pause, seek and explicit timing revisions. Saved drafts reuse versioned edit records and private image delivery; no provider call or new database schema is involved. Exact selection/source/sequence changes hold stale drafts without deleting earlier versions. Refresh is explicit.
+
+This is partial F040 implementation: estimates and user timing choices are labelled separately from measured song/dialogue timing. Silent draft playback does not approve moving footage, voice, audio, rights or final production. Audio-master alignment, sound mixing, rendered animatic export, audiovisual approval and final motion-generation gates remain outstanding. The existing edit-record limits apply; unsupported sizes/aspects fail explicitly rather than cropping or truncating.
 
 Realism-specific production rules, original prompt templates, voice and character direction, evidence gates and the two-attempt policy are specified in the [Realism Intelligence Layer](REALISM_INTELLIGENCE_LAYER.md), incorporated here by reference. This companion is a planning specification; its media quality remains unvalidated.
 
@@ -84,7 +90,7 @@ The supported Seedream edit frame configurations are 16:9 at 1536×864, 9:16 at 
 
 Frame histories/selections are independent of shot-contract versions and do not overwrite flat shot references, clip IDs or timeline selections. A reordered sequence or neighboring contract change requires renewed whole-plan approval; after that review, an unchanged own contract/source/reference/frame can remain usable without regeneration. Its recorded old sequence version is audit context, not a demand to rebuild every image. Known completed/unknown jobs retain their frozen output/accounting recovery after source changes or model retirement; stale results cannot become new current selections merely because they were imported successfully.
 
-F038 advances the guarded frame-lifecycle subset and F039 adds explicit still-frame selection/review; neither establishes real paid provider quality or moving-take acceptance. F040 playable timed animatics remains missing. [Storyboard Production Knowledge](STORYBOARD_PRODUCTION_KNOWLEDGE.md) supplies source-grounded craft, pictured-versus-temporal evidence, role limits, exact aspects/costs and reuse rules. The [acceptance record](STORYBOARD_PRODUCTION_ACCEPTANCE.md) records actual workflow/native checks and unrun paid-quality, account and device tests.
+F038 advances the guarded frame-lifecycle subset and F039 adds explicit still-frame selection/review; neither establishes real paid provider quality or moving-take acceptance. At this frame-production milestone F040 playable timed animatics remained missing; the later silent timing draft described above advances F040 to partial, with audio/rendered export still outstanding. [Storyboard Production Knowledge](STORYBOARD_PRODUCTION_KNOWLEDGE.md) supplies source-grounded craft, pictured-versus-temporal evidence, role limits, exact aspects/costs and reuse rules. The [acceptance record](STORYBOARD_PRODUCTION_ACCEPTANCE.md) records actual workflow/native checks and unrun paid-quality, account and device tests.
 
 ## Script entry and originality — user clarification, 19 October 2026
 

@@ -1,0 +1,374 @@
+{
+  "date": "2026-10-19",
+  "scope": "Existing QA orchestration, actual local browser/API/private synthetic-image preview; not paid media, account or physical-device acceptance",
+  "qaSetup": {
+    "pullRequest": "https://github.com/gthawani-del/learningskills/pull/2",
+    "mergeCommit": "80350e7c848503b6c8b9c28b4ab66034b69332a0",
+    "successfulActionsRun": "https://github.com/gthawani-del/learningskills/actions/runs/39275749984",
+    "localAutomatedPassed": 700,
+    "initialActionsFailure": "Existing uploaded H.264 video playback did not advance with downloaded Chromium; selecting hosted runner Chrome passed the unchanged test."
+  },
+  "combinedLocalAutomated": {
+    "passed": 707,
+    "failed": 0,
+    "skipped": 0,
+    "newAnimaticCases": 7
+  },
+  "fastQA": {
+    "mode": "fast",
+    "changed": [
+      "apps/director/public/animatic-core.js"
+    ],
+    "selected": {
+      "tests": [
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs"
+      ],
+      "browsers": [
+        "animatic-browser"
+      ],
+      "sql": false,
+      "reason": "Existing checks selected from module imports and affected browser surfaces."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.38,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 59.41,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.49,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.27,
+        "log": "test-results/qa/animatic-browser.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "fullQA": {
+    "mode": "full",
+    "changed": [],
+    "selected": {
+      "tests": [
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs"
+      ],
+      "browsers": [
+        "creative-brief-browser",
+        "v2-workspace",
+        "mobile-footer-browser",
+        "compact-proposal-browser",
+        "registry-browser",
+        "writing-browser",
+        "planning-ui-browser",
+        "department-browser",
+        "department-revision-browser",
+        "storyboard-browser",
+        "reference-browser",
+        "storyboard-production-browser",
+        "animatic-browser"
+      ],
+      "sql": true,
+      "reason": "Full release checks."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.38,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 79.53,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.47,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 3.91,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 5.2,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 9.26,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.66,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 3.69,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 5.76,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.3,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5.01,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 5.71,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 5.68,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 7.39,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 7.19,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.16,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 31.37,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "isolatedSQL": {
+    "sqlSha256": "b47ca7b6fe4282d2092a2f49ccfbd81e87f3cd110552e613980db020289ad61b",
+    "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+    "passed": [
+      "all twenty additive migrations install; private bucket, inactive seed models and generation pause preserved",
+      "approved handoff and exact independently approved identity/look/location selections produce a source-bound frame direction; pictured-character acknowledgment is required",
+      "specialized save enforces owner, version, captured latest review and archive-only changes; stale-read review race and generic save cannot bypass it",
+      "typed current/source/reference versions fail closed against malformed strings and fractions",
+      "native quote parity prices one output plus additional distinct inputs using exact integer tariff arithmetic; route, quantity, aspect, snapshot and signed owned input order are enforced",
+      "portrait 864\u00d71536 and square 1024\u00d71024 use native output configurations instead of implicit cropping",
+      "changed reference selection holds prior direction; explicit refresh retains all role pins while same identity/look asset is deduplicated and charged once",
+      "sequence reorder and neighboring contract edits hold frames until whole-plan review; unchanged own source/ref specification becomes reusable after review without regeneration",
+      "native reviewed-profile publication eligibility covers both reference image endpoints, reference look and complete-priced storyboard frames while preserving all three older endpoint/task pairs",
+      "explicit project cap and separate authorization reuse existing reserve/claim accounting; pause and revoked input review hold new dispatch while exact known reservation replay is preserved",
+      "completed frame imports retain exact historical aspect and frozen job endpoint after model retirement/pause; receipts replay and stored pixels/provenance identities are immutable",
+      "candidate storage, human selection and acknowledged frame review remain separate; selected frame is never a generation target, settlement/recovery and explicit diagnosed correction remain available",
+      "fresh explicit quote/authorization and diagnosed correction permit only attempt two; unknown prior charge and the hard two-attempt limit hold new work",
+      "all new native functions are service-only SECURITY INVOKER with empty search_path and candidate receipts remain append-only",
+      "rollback removes every synthetic project, candidate, spending record and active model"
+    ],
+    "productionApplied": false,
+    "limitations": [
+      "Sequential stale-read simulations do not prove actual concurrent-session scheduling.",
+      "Synthetic image metadata/output receipts; actual PNG bytes, private transfer and browser UI checked separately.",
+      "No paid model, quality, invoice, mobile-device or native latency verification."
+    ]
+  },
+  "animaticBrowser": {
+    "scope": "Actual local HTTP APIs/private stored PNGs and Chromium, with synthetic server-side fal fixtures",
+    "passed": [
+      "saved frame-accurate silent playback advances to the second actual private image and stops at the last frame",
+      "seeking, explicit timing versions, unsaved-edit guard, reload and preserved source decisions",
+      "390px editor controls clear footer and pass hit checks; no horizontal overflow",
+      "revoked exact frame review holds saved preview without deleting history"
+    ],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "mobileGeometry": {
+      "overflow": false,
+      "footerTop": 786,
+      "buttons": [
+        {
+          "text": "Save timing",
+          "bottom": 428.015625,
+          "hit": true
+        },
+        {
+          "text": "Cancel",
+          "bottom": 428.015625,
+          "hit": true
+        }
+      ]
+    },
+    "realPaidCalls": 0,
+    "physicalMobileTested": false,
+    "deployedWebsiteTested": false,
+    "audioAligned": false,
+    "finishedMovieExportTested": false
+  },
+  "finalFollowup": "After full local QA, clamp playback position on refreshed timing. Relevant actual browser, syntax and production build rerun passed; final PR full CI must pass before merge.",
+  "screenshots": [
+    {
+      "path": "test-results/animatic-desktop.png",
+      "sha256": "da5176281b5eaaddf157bcff6139a21e3b421ff1dc97247f13f17d93f66308e0",
+      "syntheticImages": true,
+      "desktopChromiumViewport": true
+    },
+    {
+      "path": "test-results/animatic-mobile-timing.png",
+      "sha256": "a6c44840b10c06aac51a50a539a9b33ae9e0f424beb1afb6ece8e8822e781955",
+      "syntheticImages": true,
+      "desktopChromiumViewport": true
+    }
+  ],
+  "agentsSpawned": 0,
+  "newProductionDependencies": 0,
+  "databaseMigrationsApplied": 0,
+  "securitySettingsChanged": false,
+  "paidProviderCalls": 0,
+  "deployedAccountTested": false,
+  "physicalMobileTested": false,
+  "limitations": [
+    "Silent browser preview, not an encoded movie or measured audio alignment.",
+    "Existing edit-record bounds and manual timing review apply.",
+    "Audiovisual review, sound, rendered animatic export and final motion gates remain incomplete.",
+    "Current production project API remains503 until its Supabase server settings are verified.",
+    "Hosted rollback rehearsal and required-check branch protection remain pending administrator access."
+  ]
+}

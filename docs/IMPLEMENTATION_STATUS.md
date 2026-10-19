@@ -1,3 +1,13 @@
+# Engineering QA and silent timed storyboard draft — 19 October 2026
+
+Shared affected/full QA commands reuse existing Node tests, Playwright fixtures and SQL proof. Automatic PR/main Actions was verified on QA setup PR #2 and merged as 80350e7c848503b6c8b9c28b4ab66034b69332a0. The approved [release procedure](ENGINEERING_RELEASE.md) records minimal agent handoffs, exact-commit live verification and compatible application rollback. No security settings or new database schema were changed.
+
+The first animatic increment provides silent timed playback of exact approved private storyboard frames, scrubbing, focused integer timing edits and saved edit-record versions. Stale/revoked frame or sequence inputs hold preview; explicit refresh preserves history. Seven new automated cases and four actual local browser groups pass; combined release checks are in [acceptance](ANIMATIC_DRAFT_ACCEPTANCE.md). Browser viewport results do not establish physical-device compatibility or real model quality.
+
+Current totals: 71 partial, 90 missing/unverified, six deferred and zero fully production-accepted. Audio-master alignment, sound, rendered animatic export, audiovisual approval and final motion gates remain subsequent work. Production public/TLS access succeeds but projects return a Supabase server-configuration503; the historical preview redirects to Vercel Authentication. Real accounts, hosted rollback rehearsal, paid output/billing and physical devices remain unverified. Historical sections below retain their original limits.
+
+---
+
 # Storyboard frame production — 19 October 2026
 
 The second Step 7 increment binds exact approved identity, look and location images to individual shot contracts and implements real frame-job orchestration, private dimension-checked PNG import, explicit candidate selection and separate human frame approval. Compact prefilled editing confirms the pictured cast and native wide/portrait/square aspect. Source/reference changes hold stale reuse while retaining all media and histories. Estimates include additional distinct input images and use the existing shared spending limits, explicit authorization and two-attempt controls.
