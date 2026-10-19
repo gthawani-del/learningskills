@@ -1,6 +1,6 @@
 import {randomUUID} from 'node:crypto';
 import {fail} from './domain.mjs';
-const permissions={owner:['controls.read','audit.read','registry.read','jobs.read','controls.pause','registry.disable','registry.notes'],operator:['controls.read','audit.read','registry.read','jobs.read','controls.pause','registry.disable'],reviewer:['controls.read','registry.read','jobs.read'],support:['controls.read','jobs.read']};
+const permissions={owner:['controls.read','audit.read','registry.read','registry.manage','registry.publish','jobs.read','controls.pause','registry.disable','registry.notes'],operator:['controls.read','audit.read','registry.read','jobs.read','controls.pause','registry.disable'],reviewer:['controls.read','registry.read','jobs.read'],support:['controls.read','jobs.read']};
 export function staffRole(userId,env){if(!userId)return null;for(const [key,role]of [['DIRECTOR_ADMIN_IDS','owner'],['DIRECTOR_OPERATOR_IDS','operator'],['DIRECTOR_REVIEWER_IDS','reviewer'],['DIRECTOR_SUPPORT_IDS','support']])if((env[key]||'').split(',').map(x=>x.trim()).filter(Boolean).includes(userId))return role;return null;}
 export const staffPermissions=role=>[...(permissions[role]||[])];
 export function adminCommand(body,actorId,role){
@@ -18,6 +18,7 @@ export function adminCommand(body,actorId,role){
 export const defaultControl=()=>({revision:1,generationPaused:true,reason:'Production generation is disabled pending validation.',updatedAt:new Date().toISOString()});
 export function applyAdminCommand(state,request){
  const control=state.operationalControl;if(!control||!Number.isSafeInteger(control.revision))fail(503,'Operational controls are unavailable. Generation remains held.');
+ if((state.registryCommands||[]).some(c=>c.requestId===request.requestId))fail(409,'This request identity belongs to a registry command.');
  const previous=(state.adminCommands||[]).find(c=>c.requestId===request.requestId);
  if(previous){if(JSON.stringify(previous.request)!==JSON.stringify(request))fail(409,'This request identity belongs to a different command.');return {control:structuredClone(previous.after.control),command:structuredClone(previous),replayed:true};}
  if(request.expectedRevision!==control.revision)fail(409,'Operational settings changed. Refresh before issuing a new command.');

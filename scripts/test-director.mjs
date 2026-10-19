@@ -52,3 +52,11 @@ await import('../apps/director/tests/writing-provider.test.mjs');
 await import('../apps/director/tests/writing-api.test.mjs');
 await import('../apps/director/tests/writing-integration.test.mjs');
 await import('../apps/director/tests/writing-cloud.test.mjs');
+
+await import('../apps/director/tests/model-registry.test.mjs');
+
+await import('../apps/director/tests/registry-api.test.mjs');
+await import('../apps/director/tests/planning-registry-routing.test.mjs');
+
+await import('../apps/director/tests/registry-cloud.test.mjs');
+

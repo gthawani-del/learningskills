@@ -1,3 +1,4 @@
+import {reviewedPlanningFixture} from './planning-fixture-profile.mjs';
 // Offline provider simulation only; this fixture never contacts a model endpoint.
 import {LocalStore} from '../store.mjs';
 import {newProject} from '../domain.mjs';
@@ -5,7 +6,7 @@ import {planningSchemaHash} from '../planning-profile.mjs';
 import {createServer} from '../server.mjs';
 
 const store=await new LocalStore().init(),endpoint='https://api.openai.com/v1/responses',version='synthetic-planning-model',expiresAt=new Date(Date.now()+3600000).toISOString();
-store.state.models=[{id:'O-local',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'v1',background:true,providerRetentionAcknowledged:true,contextWindowTokens:1000,maxOutputTokens:100,maxRequestBytes:100000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:1000,type:'context-window-upper-bound',tokenizerVersion:'synthetic-context',sourceUrl:'https://example.test/tokens',expiresAt}}},schema_evidence:{verified:true,version:'s1',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.test/schema',expiresAt},price_version:'p1',price_evidence:{verified:true,version:'p1',model:version,currency:'USD',sourceUrl:'https://example.test/price',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}}];
+store.state.models=[reviewedPlanningFixture({id:'O-local',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'v1',background:true,providerRetentionAcknowledged:true,contextWindowTokens:1000,maxOutputTokens:100,maxRequestBytes:100000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:1000,type:'context-window-upper-bound',tokenizerVersion:'synthetic-context',sourceUrl:'https://example.test/tokens',expiresAt}}},schema_evidence:{verified:true,version:'s1',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.test/schema',expiresAt},price_version:'p1',price_evidence:{verified:true,version:'p1',model:version,currency:'USD',sourceUrl:'https://example.test/price',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}})];
 store.state.operationalControl.generationPaused=false;
 const project=newProject({title:'Compact proposal proof',premise:'An Indian cooking oil brand wants a warm family cooking advertisement.',format:'advertisement'},'demo-user');await store.create(project);
 let submits=0,polls=0;

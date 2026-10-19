@@ -1,4 +1,5 @@
 import {createPlanningController} from './planning.mjs';
+import {modelRegistryCommand} from './model-registry.mjs';
 import {changeScreenplay} from './screenplay.mjs';
 import {screenplayContext} from './public/screenplay-core.js';
 import {createPlanningProvider} from './planning-provider.mjs';
@@ -96,7 +97,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(path==='/api/admin/control'&&req.method==='GET'){permit('controls.read');return reply(200,{role,permissions,control:await store.generationControl(),generationEnabled:false});}
  if(path==='/api/admin/audit'&&req.method==='GET'){permit('audit.read');return reply(200,{commands:await store.operationalAudit(),scope:'operational commands',limit:100});}
  if(path==='/api/admin/commands'&&req.method==='POST'){const request=adminCommand(body,user.id,role);return reply(200,await store.operationalCommand(request));}
- if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');return reply(200,{models:await store.registry()});}
+ if(path==='/api/admin/registry/commands'&&req.method==='POST'){const request=modelRegistryCommand(body,user.id,role);return reply(200,await store.registryCommand(request));}
+ if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value});}
  if(path==='/api/admin/overview'&&req.method==='GET'){permit('jobs.read');const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'staff-owned projects only',projects:ps.length,jobs,productionEnabled:false});}
  fail(404,'Operation not found.');}
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
@@ -132,10 +134,11 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
   if(!uuid.test(planningRead[1]))fail(400,'Invalid planning call identity.');
   const saved=await store.readPlanningCall(user.id,id,planningRead[1]);return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null});
  }
- if(action==='planning'&&req.method==='GET')return reply(200,await planningController.summary(user.id,id));
+ const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script))?$/);
+ if(planningSummary&&req.method==='GET')return reply(200,await planningController.summary(user.id,id,planningSummary[1]||'interpret_brief'));
  const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
  if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
- const allowed=planningPoll?(planningPoll[2]==='poll'?['requestId']:['requestId','expectedVersion']):consentRevoke?['requestId','expectedVersion','reason']:action==='planning-consents'?['requestId','expectedVersion','maxMicroUsd','finishReserveMicroUsd','maxCalls']:['requestId','expectedVersion','consentId','operation'];
+ const allowed=planningPoll?(planningPoll[2]==='poll'?['requestId']:['requestId','expectedVersion']):consentRevoke?['requestId','expectedVersion','reason']:action==='planning-consents'?['requestId','expectedVersion','maxMicroUsd','finishReserveMicroUsd','maxCalls','operation','expectedModelId','expectedProfileFingerprint']:['requestId','expectedVersion','consentId','operation'];
  if(Object.keys(body).some(k=>!allowed.includes(k))||!uuid.test(body.requestId||'')||(!planningPoll||planningPoll[2]!=='poll')&&(!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1))fail(400,'Supply a request identity, project version and supported planning fields.');
  const c={...body,actorId:user.id,projectId:id};
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}

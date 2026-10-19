@@ -46,15 +46,16 @@ try:
                 page.locator('#approve-direction').click()
             page.locator('#continue-direction').click()
             expect(page.locator('#screenplay-workspace')).to_be_visible()
-        def planning_limit():
+        def planning_limit(operation='write_script'):
             page.locator('#write-script').click()
+            page.locator('#planning-operation').select_option(operation)
             form = page.locator('#planning-consent-form')
             expect(form).to_be_visible()
             form.locator('[name=max]').fill('0.005')
             form.locator('[name=finish]').fill('0.0005')
             form.locator('[name=calls]').fill('3')
             form.locator('button[type=submit]').click()
-            expect(page.locator('[data-operation=write_script]').last).to_be_visible()
+            expect(page.locator('[data-planning-call][data-operation="' + operation + '"]').last).to_be_visible()
         def review_completed(operation):
             page.locator('[data-poll-planning]').last.click()
             call = [c for c in planning()['calls'] if c['operation'] == operation][-1]
@@ -121,7 +122,7 @@ try:
         expect(form).not_to_be_visible()
         assert screenplay()['revisionRequest']['sceneIds'] == ['platform']
         assert len(planning()['calls']) == 1
-        planning_limit()
+        planning_limit('revise_script')
         page.locator('[data-operation=revise_script]:enabled').last.click()
         expect(page.locator('[data-poll-planning]')).to_be_visible()
         review_completed('revise_script')

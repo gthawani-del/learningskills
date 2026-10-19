@@ -3,6 +3,7 @@ import {hash,fail} from './domain.mjs';
 export {planningScope} from './planning-policy.mjs';
 const digest = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
 const positive = x => Number.isSafeInteger(x) && x > 0;
+const planningOperations=['initial_plan','revise_plan','interpret_brief','write_script','revise_script'];
 const uuid = x => typeof x === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(x);
 function time(now) {const n=now instanceof Date?now.getTime():typeof now==='number'?now:typeof now==='string'?Date.parse(now):NaN;if(!Number.isSafeInteger(n)||Math.abs(n)>8.64e15)fail(400,'A valid operation time is required.');return n;}
 function context(state,c,operation,extra) {
@@ -22,20 +23,26 @@ function reservationFor(state,c){const row=(state.planningReservations||[]).find
 // All transitions require a caller-held lock plus one durable atomic commit.
 // These records express generation cost consent, never a billing balance.
 export function grantPlanningConsent(state,c,{profile,scope,now}){
- const op='grant_planning';const ctx=context(state,c,op,['maxMicroUsd','finishReserveMicroUsd','maxCalls','expiresAt']);if(ctx.previous)return structuredClone(ctx.previous.result);
- const n=trusted(profile,scope,now),finish=c.finishReserveMicroUsd;
+ const op='grant_planning';const ctx=context(state,c,op,['maxMicroUsd','finishReserveMicroUsd','maxCalls','expiresAt','operation','expectedModelId','expectedProfileFingerprint']);if(ctx.previous)return structuredClone(ctx.previous.result);
+ const n=trusted(profile,scope,now),finish=c.finishReserveMicroUsd,operation=c.operation===undefined?'interpret_brief':c.operation;
+ if(!planningOperations.includes(operation))fail(400,'Choose a supported planning operation.');
+ if(c.expectedModelId!==undefined||c.expectedProfileFingerprint!==undefined){
+  if(typeof c.expectedModelId!=='string'||!c.expectedModelId.trim()||c.expectedModelId.length>500||!digest(c.expectedProfileFingerprint))fail(400,'Supply both the displayed model identity and reviewed profile fingerprint.');
+  if(c.expectedModelId!==profile.modelId||c.expectedProfileFingerprint!==profile.fingerprint)fail(409,'The displayed planning model or reviewed profile changed. Refresh its estimate before approving a limit.');
+ }
  if((state.planningReservations||[]).some(r=>r.projectId===c.projectId&&(r.status==='unknown'||r.status==='held'&&r.submitClaimed)))fail(409,'Reconcile the earlier planning submission before granting another cost allowance.');
  if(!positive(c.maxMicroUsd)||!Number.isSafeInteger(finish)||finish<0||finish>=c.maxMicroUsd||!positive(c.maxCalls)||c.maxCalls>10||profile.maxCallMicroUsd>c.maxMicroUsd-finish)fail(400,'The planning cap must cover a call and protected finishing amount; allow 1–10 calls.');
  const expiry=c.expiresAt===undefined?Math.min(n+86400000,Date.parse(profile.expiresAt)):Date.parse(c.expiresAt);
  if(!Number.isFinite(expiry)||expiry<=n||expiry>Date.parse(profile.expiresAt)||expiry>n+86400000)fail(400,'Consent must expire within one day and the trusted profile lifetime.');
- const grant={id:randomUUID(),projectId:c.projectId,actorId:c.actorId,briefScopeHash:scope.briefScopeHash,approvedDecisionDigest:scope.approvedDecisionDigest,approvalOrdinal:scope.approvalOrdinal,profileFingerprint:profile.fingerprint,modelId:profile.modelId,modelVersion:profile.modelVersion,priceVersion:profile.priceVersion,maxCallMicroUsd:profile.maxCallMicroUsd,maxMicroUsd:c.maxMicroUsd,finishReserveMicroUsd:finish,maxCalls:c.maxCalls,status:'active',createdAt:new Date(n).toISOString(),expiresAt:new Date(expiry).toISOString(),generationAuthorized:false};
+ const grant={id:randomUUID(),operation,projectId:c.projectId,actorId:c.actorId,briefScopeHash:scope.briefScopeHash,approvedDecisionDigest:scope.approvedDecisionDigest,approvalOrdinal:scope.approvalOrdinal,profileFingerprint:profile.fingerprint,modelId:profile.modelId,modelVersion:profile.modelVersion,priceVersion:profile.priceVersion,maxCallMicroUsd:profile.maxCallMicroUsd,maxMicroUsd:c.maxMicroUsd,finishReserveMicroUsd:finish,maxCalls:c.maxCalls,status:'active',createdAt:new Date(n).toISOString(),expiresAt:new Date(expiry).toISOString(),generationAuthorized:false};
  (state.planningConsents||=[]).push(grant);return remember(state,c,op,ctx.fingerprint,grant);
 }
 export function reservePlanningCall(state,c,{profile,scope,now}){
  const op='reserve_planning';const ctx=context(state,c,op,['consentId','operation','requestHash','quotedMicroUsd']);if(ctx.previous)return structuredClone(ctx.previous.result);
  const n=trusted(profile,scope,now),grant=consentFor(state,c);
+ if(grant.operation!==undefined&&grant.operation!==null&&grant.operation!==c.operation)fail(409,'This planning allowance is limited to its approved operation.');
  if(grant.status!=='active'||Date.parse(grant.expiresAt)<=n||grant.briefScopeHash!==scope.briefScopeHash||grant.approvedDecisionDigest!==scope.approvedDecisionDigest||grant.approvalOrdinal!==scope.approvalOrdinal||grant.profileFingerprint!==profile.fingerprint||grant.modelId!==profile.modelId||grant.modelVersion!==profile.modelVersion||grant.priceVersion!==profile.priceVersion||grant.maxCallMicroUsd!==profile.maxCallMicroUsd)fail(409,'Planning scope or trusted model pricing changed. A new consent is required.');
- if(!['initial_plan','revise_plan','interpret_brief','write_script','revise_script'].includes(c.operation)||!digest(c.requestHash)||!positive(c.quotedMicroUsd)||c.quotedMicroUsd>profile.maxCallMicroUsd)fail(400,'A bounded creative planning operation and exact request are required.');
+ if(!planningOperations.includes(c.operation)||!digest(c.requestHash)||!positive(c.quotedMicroUsd)||c.quotedMicroUsd>profile.maxCallMicroUsd)fail(400,'A bounded creative planning operation and exact request are required.');
  const rows=(state.planningReservations||[]).filter(r=>r.consentId===grant.id);
  if((state.planningReservations||[]).some(r=>r.projectId===c.projectId&&(r.status==='unknown'||r.status==='held'&&r.submitClaimed)))fail(409,'An earlier planning submission needs reconciliation. Automatic replacement is blocked.');
  const counted=rows.filter(r=>r.status!=='released');const committed=counted.reduce((sum,r)=>sum+BigInt(r.status==='completed'?r.actualMicroUsd:Math.max(r.quotedMicroUsd,r.actualMicroUsd||0)),0n);
@@ -46,6 +53,7 @@ export function reservePlanningCall(state,c,{profile,scope,now}){
 export function claimPlanningCall(state,c,{profile,scope,now}){
  const op='claim_planning';const ctx=context(state,c,op,['reservationId']);if(ctx.previous)return {claimed:false,reservation:structuredClone(ctx.previous.result.reservation)};
  const row=reservationFor(state,c),n=trusted(profile,scope,now),grant=(state.planningConsents||[]).find(g=>g.id===row.consentId);
+ if(grant?.operation!==undefined&&grant.operation!==null&&grant.operation!==row.operation)fail(409,'The saved call does not match its approved planning operation.');
  if((state.planningReservations||[]).some(other=>other.id!==row.id&&other.projectId===c.projectId&&(other.status==='unknown'||other.status==='held'&&other.submitClaimed)))fail(409,'Reconcile the earlier planning submission before claiming another call.');
  if(row.status!=='held'||row.submitClaimed||grant?.status!=='active'||Date.parse(row.expiresAt)<=n||grant.briefScopeHash!==scope.briefScopeHash||grant.approvedDecisionDigest!==scope.approvedDecisionDigest||grant.approvalOrdinal!==scope.approvalOrdinal||grant.profileFingerprint!==profile.fingerprint||grant.modelId!==profile.modelId||grant.modelVersion!==profile.modelVersion||grant.priceVersion!==profile.priceVersion||grant.maxCallMicroUsd!==profile.maxCallMicroUsd)fail(409,'This planning call cannot be submitted again.');
  Object.assign(row,{submitClaimed:true,claimedAt:new Date(n).toISOString()});return remember(state,c,op,ctx.fingerprint,{claimed:true,reservation:row});

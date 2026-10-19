@@ -8,6 +8,10 @@ This bible is a decision specification, not a deployed model router. No paid mod
 
 Realism-specific production rules, original prompt templates, voice and character direction, evidence gates and the two-attempt policy are specified in the [Realism Intelligence Layer](REALISM_INTELLIGENCE_LAYER.md), incorporated here by reference. This companion is a planning specification; its media quality remains unvalidated.
 
+## Current provider configuration contract — 19 October 2026
+
+The current user instruction applies uniformly to OpenAI and fal: Vercel stores server-only provider keys; the admin/Supabase registry stores reviewed models, task bindings, capabilities, prices and evidence; the router selects a suitable reviewed route using task, quality, cost and project constraints. A deployment-wide OpenAI model name is no longer used. See [Model Registry Architecture](MODEL_REGISTRY_ARCHITECTURE.md) for the implemented draft/publication lifecycle, exact task coverage, scoped authorizations and remaining adapter limits. Historical endpoint candidates below are research records, not activated routes.
+
 ## Script entry and originality — user clarification, 19 October 2026
 
 The primary writing path is approved user brief → LLM treatment and screenplay → deterministic checks → user review → department planning. No script upload is required. Uploaded scripts are an optional alternative: preserve the supplied original and perform only requested editing or adaptation. Ask a focused question only if that intended use is unclear.

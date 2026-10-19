@@ -1,0 +1,24 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "only server-derived owner role can edit; unknown identity/activation/provider/endpoint fields rejected",
+    "registry and prior operational command request identities reject collisions in both directions with full rollback",
+    "immutable draft save preserves serving state and pause; exact response-lost replay succeeds, altered replay and stale revision/version reject",
+    "publication requires current exact bound execution/quality evidence, coverage, profile hash and explicit acknowledgement; creates immutable serving release without resuming generation",
+    "new draft cannot alter active model; publishing refuses a serving profile changed since draft creation",
+    "displayed model/profile identity binds operation-scoped consent; unresolved planning reservation prevents replacement of serving model",
+    "cross-operation reservation rejected; same-operation claim and settlement work; after settlement publication succeeds while saved response recovery remains available",
+    "existing consent cannot reserve after a reviewed publication changes its exact saved registry snapshot",
+    "new omitted-operation grants default to interpretation; pre-migration NULL-operation grants retain legacy multi-operation behavior",
+    "fal publication independently rejects an unsupported task on a supported endpoint",
+    "actual approved/quoted/budgeted media reservation blocks publication while reserved/submitted/running/unknown or completed with an unsettled charge",
+    "draft/release/command evidence stays append-only with RLS and service-only RPC permissions",
+    "transaction rollback removes synthetic publications, models, grants and audit history"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "single-connection sequential proof; true concurrent-session locking remains untested",
+    "publication uses owner-reviewed evidence attestations and trusted server canonical profile hashes, not live provider execution",
+    "installation itself does not activate any native model or resume generation"
+  ]
+}

@@ -1,3 +1,4 @@
+import {reviewedPlanningFixture} from './planning-fixture-profile.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildPlanningRequest, quotePlanningBound, calculatePlanningCost, createPlanningProvider, validatePlanningResult } from '../planning-provider.mjs';
@@ -135,7 +136,7 @@ test('film preparation requires current approved structured brief and hashes bou
  const {preparePlanningRequest,planningCreativeContext,planningSchemaHash}=await import('../planning-profile.mjs');
  const {briefInputSignature}=await import('../public/creative-brief-core.js');
  const endpoint='https://api.openai.com/v1/responses',version='configured-story-model';
- const model={id:'O-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'v1',background:true,providerRetentionAcknowledged:true,contextWindowTokens:1000,maxOutputTokens:100,maxRequestBytes:100000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:1000,type:'context-window-upper-bound',tokenizerVersion:'context-test',sourceUrl:'https://example.com/tokens',expiresAt:'2099-01-01T00:00:00Z'}}},schema_evidence:{verified:true,version:'s1',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.com/schema',expiresAt:'2099-01-01T00:00:00Z'},price_version:'price-v1',price_evidence:{...pricing(),expiresAt:'2099-01-01T00:00:00Z'}};
+ const model=reviewedPlanningFixture({id:'O-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'v1',background:true,providerRetentionAcknowledged:true,contextWindowTokens:1000,maxOutputTokens:100,maxRequestBytes:100000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:1000,type:'context-window-upper-bound',tokenizerVersion:'context-test',sourceUrl:'https://example.com/tokens',expiresAt:'2099-01-01T00:00:00Z'}}},schema_evidence:{verified:true,version:'s1',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.com/schema',expiresAt:'2099-01-01T00:00:00Z'},price_version:'price-v1',price_evidence:{...pricing(),expiresAt:'2099-01-01T00:00:00Z'}});
  const project={id:'project',premise:'A rain scene.',direction:'Quiet.',language:'English',format:'short_film',duration:5,story:{treatment:'',scenes:[]}};
  assert.equal(preparePlanningRequest(project,model,'initial_plan',now).request.operation,'initial_plan');
  project.creativeBrief={currentVersion:1,versions:[{version:1,inputSignature:briefInputSignature(project),fields:{},departmentPlan:[],questions:[]}]};

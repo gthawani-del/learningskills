@@ -37,8 +37,8 @@ async function approveBrief(f) {
   const suggestion = await call(f.handler, base(f) + '/brief', { expectedVersion: f.p.version, action: 'suggest' }); success(suggestion); f.p = suggestion.json.project;
   success(await call(f.handler, base(f) + '/approvals', { artifactId: 'brief', version: f.p.creativeBrief.currentVersion, decision: 'approved', acknowledgeAssumptions: true }));
 }
-async function grant(f) {
-  const response = await call(f.handler, base(f) + '/planning-consents', { requestId: randomUUID(), expectedVersion: f.p.version, maxMicroUsd: 5000, finishReserveMicroUsd: 500, maxCalls: 3 }); success(response); return response.json.consent;
+async function grant(f, operation = 'write_script') {
+  const response = await call(f.handler, base(f) + '/planning-consents', { requestId: randomUUID(), expectedVersion: f.p.version, operation, maxMicroUsd: 5000, finishReserveMicroUsd: 500, maxCalls: 3 }); success(response); return response.json.consent;
 }
 async function start(f, consent, operation = 'write_script') {
   const body = { requestId: randomUUID(), expectedVersion: f.p.version, consentId: consent.id, operation };
@@ -61,7 +61,8 @@ test('approved idea writes a saved screenplay proposal without uploaded sources 
 });
 
 test('screenplay writing requires approved current brief and never obtains authorization from client flags', async t => {
-  const f = await fixture(t), consent = await grant(f);
+  const f = await fixture(t), consent = await grant(f, 'interpret_brief');
+  const quote = await call(f.handler, base(f) + '/planning/write_script'); success(quote); assert.equal(quote.json.availability.enabled, false);
   const blocked = await start(f, consent); assert.equal(blocked.response.status, 409); assert.equal(f.submitted(), 0);
   for (const extra of [{ screenplay: screenplayDocument }, { approved: true }, { originality: { status: 'clear' } }, { actorId: 'forged' }, { providerResponseId: 'resp_forged' }]) {
     const response = await call(f.handler, base(f) + '/screenplay/apply-proposal', { expectedVersion: f.p.version, callId: randomUUID(), ...extra }); assert.equal(response.status, 400);
@@ -146,7 +147,7 @@ test('saved scene revision scope preserves unrelated screenplay and approved dec
   success(await call(f.handler, base(f) + '/approvals', { expectedVersion: f.p.version, artifactId: 'screenplay', version: initialContext.currentVersion, decision: 'approved', acknowledgeLimitedCoverage: true }));
   const revision = await call(f.handler, base(f) + '/screenplay', { expectedVersion: f.p.version, action: 'set_revision', revisionRequest: { instruction: 'Have Rafi help with the noticeboard in the opening scene.', sceneIds: ['platform'] } }); success(revision); f.p = revision.json.project;
   assert.deepEqual(revision.json.screenplayContext.revisionRequest.sceneIds, ['platform']); assert.equal(f.submitted(), 1);
-  const consent = await grant(f), { response } = await start(f, consent, 'revise_script'); success(response); assert.deepEqual(response.json.call.result.screenplay, revisedScreenplayDocument); assert.equal(f.submitted(), 2);
+  const consent = await grant(f, 'revise_script'), { response } = await start(f, consent, 'revise_script'); success(response); assert.deepEqual(response.json.call.result.screenplay, revisedScreenplayDocument); assert.equal(f.submitted(), 2);
   const beforeApply = (await call(f.handler, base(f) + '/screenplay')).json.screenplayContext; assert.equal(beforeApply.currentVersion, 1); assert.equal(beforeApply.approved, true);
   const applied = await apply(f, response.json.call.id); success(applied); const context = applied.json.screenplayContext;
   assert.equal(context.currentVersion, 2); assert.equal(context.approved, false); assert.equal(context.revisionRequest, null); assert.deepEqual(context.screenplay.document.scenes[1], screenplayDocument.scenes[1]); assert.deepEqual(context.screenplay.document.characters, screenplayDocument.characters); assert.deepEqual(f.p.screenplay.versions.slice(0, 1), initialArchive.versions); assert.notEqual(context.screenplay.document.scenes[0].action, screenplayDocument.scenes[0].action);

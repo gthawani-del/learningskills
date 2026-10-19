@@ -1,5 +1,6 @@
 import {validateTariff} from './tariffs.mjs';
 import { validateRoutingIntent, evaluateRoutingIntent } from './routing-intent.mjs';
+import {FAL_ENDPOINTS} from './providers.mjs';
 // Deterministic registry filtering only. Eligibility is not permission to spend.
 const requirementKeys = new Set(['modality', 'inputModes', 'aspectRatio', 'resolution', 'durationSeconds', 'language', 'identityReferences', 'lipSync']);
 const nonempty = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 200;
@@ -38,6 +39,19 @@ function priceHolds(model, now) {
   if (!timestamp(price.expiresAt) || Date.parse(price.expiresAt) <= now) holds.push('price_expired_or_missing');
   return holds;
 }
+export function publishedReviewHolds(model,task,now=Date.now()){
+  if(!model||typeof model!=='object')return ['review_model_unavailable'];
+  if(model.capabilities?.reviewEvidence===undefined)return []; // Historical fixtures are not newly published registry profiles.
+  const time=now instanceof Date?now.getTime():typeof now==='string'?Date.parse(now):now;
+  if(!Number.isFinite(time))return ['review_evaluation_time_invalid'];
+  const tasks=task===undefined?model.capabilities?.tasks:[task];
+  const holds=[];
+  for(const kind of ['execution','quality']){
+    const review=model.capabilities.reviewEvidence?.[kind];
+    if(!review||review.modelId!==model.id||review.provider!==model.provider||review.endpoint!==model.endpoint||review.modelVersion!==(model.model_version??model.version)||!nonempty(review.version)||!https(review.sourceUrl)||!timestamp(review.evaluatedAt)||Date.parse(review.evaluatedAt)>time||!timestamp(review.expiresAt)||Date.parse(review.expiresAt)<=time||Date.parse(review.evaluatedAt)>=Date.parse(review.expiresAt)||!safePositive(review.sampleCount)||!strings(review.tasks)||!strings(tasks)||!tasks.length||tasks.some(expected=>!review.tasks.includes(expected)))holds.push(`${kind}_review_missing_expired_or_mismatched`);
+  }
+  return holds;
+}
 export function selectRoutes({ task, requirements = {}, models, intent, now = new Date() } = {}) {
   if (!nonempty(task)) invalid('Explicit task required.');
   requirementsValid(requirements);
@@ -50,12 +64,16 @@ export function selectRoutes({ task, requirements = {}, models, intent, now = ne
     if (!model || typeof model !== 'object' || !nonempty(model.id) || !nonempty(model.provider) || !nonempty(model.endpoint) || seen.has(model.id)) invalid('Registry model identity invalid or duplicated.');
     seen.add(model.id);
     const holds = [];
+    if(model.provider==='openai')holds.push('structured_planning_route_required');
+    else if(model.provider!=='fal')holds.push('provider_adapter_unavailable');
+    else if(!FAL_ENDPOINTS.includes(model.endpoint))holds.push('fal_provider_adapter_unavailable');
     if (!nonempty(model.model_version ?? model.version)) holds.push('model_version_missing');
     const cap = model.capabilities;
     const capabilities = cap && typeof cap === 'object' && !Array.isArray(cap) ? cap : {};
     const priority = capabilities.priority ?? 0;
     if (!Number.isInteger(priority) || priority < 0 || priority > 1000) holds.push('priority_invalid');
     for (const key of ['active', 'execution_tested', 'quality_validated']) if (model[key] !== true) holds.push(`${key}_required`);
+    holds.push(...publishedReviewHolds(model,task,time));
     if (!strings(capabilities.tasks) || !capabilities.tasks.includes(task)) holds.push('task_not_declared');
     const schema = model.schema_evidence;
     if (!schema || schema.verified !== true || !nonempty(schema.version) || !https(schema.sourceUrl) || !/^[a-f0-9]{64}$/.test(schema.inputSchemaHash || '')) holds.push('schema_evidence_unverified');

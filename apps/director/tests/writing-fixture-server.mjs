@@ -1,6 +1,7 @@
 // Real local HTTP/API/store fixture. All model responses are deterministic simulations.
 // This module does not contact OpenAI, fal, Supabase or any paid endpoint.
 import { fileURLToPath } from 'node:url';
+import {reviewedPlanningFixture} from './planning-fixture-profile.mjs';
 import { LocalStore } from '../store.mjs';
 import { newProject } from '../domain.mjs';
 import { planningSchemaHash } from '../planning-profile.mjs';
@@ -33,13 +34,13 @@ export const revisedScreenplayDocument = {
 export const suppliedScriptText = 'INT. KITCHEN — MORNING\n\nAsha opens a tin of tea.\n\nASHA\nThe rain has finally stopped.\n\nShe sets two cups beside the window.\n';
 export function syntheticPlanningModel() {
   const endpoint = 'https://api.openai.com/v1/responses', version = 'synthetic-writing-model', expiresAt = '2099-01-01T00:00:00Z';
-  return { id: 'O-writing-local', provider: 'openai', endpoint, model_version: version, active: true, execution_tested: true, quality_validated: true,
+  return reviewedPlanningFixture({ id: 'O-writing-local', provider: 'openai', endpoint, model_version: version, active: true, execution_tested: true, quality_validated: true,
     capabilities: { planning: { enabled: true, version: 'v1', background: true, providerRetentionAcknowledged: true, contextWindowTokens: 1000, maxOutputTokens: 100, maxRequestBytes: 100000,
       tokenBoundEvidence: { verified: true, model: version, contextWindowTokens: 1000, type: 'context-window-upper-bound', tokenizerVersion: 'synthetic-context', sourceUrl: 'https://example.test/tokens', expiresAt } } },
     schema_evidence: { verified: true, version: 's-writing-test', endpoint, modelVersion: version, inputSchemaHash: planningSchemaHash, sourceUrl: 'https://example.test/schema', expiresAt },
     price_version: 'p-writing-test', price_evidence: { verified: true, version: 'p-writing-test', model: version, currency: 'USD', sourceUrl: 'https://example.test/price', expiresAt,
       input: { numeratorMicroUsd: 1, denominatorTokens: 1 }, cachedInput: { numeratorMicroUsd: 0, denominatorTokens: 1 }, output: { numeratorMicroUsd: 2, denominatorTokens: 1 } },
-  };
+  });
 }
 export function simulatedWritingResult(responseId, request, { malformed = false } = {}) {
   const input = JSON.parse(request.body.input), operation = request.body.metadata?.operation || input.operation;

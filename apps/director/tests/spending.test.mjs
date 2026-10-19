@@ -6,7 +6,7 @@ import {createCostQuote} from '../cost-quotes.mjs';
 import {persistQuote, authorizeSpending, revokeSpending} from '../spending.mjs';
 function fixture() {
  const now='2026-10-18T12:00:00.000Z',project=newProject({title:'Costs'},'owner');
- const model={id:'M17',provider:'fal',endpoint:'test/image',version:'v1',active:true,execution_tested:true,quality_validated:true,capabilities:{tasks:['image_edit']},schema_evidence:{verified:true,version:'s1',sourceUrl:'https://example.test/schema',endpoint:'test/image',modelVersion:'v1',inputSchemaHash:'a'.repeat(64),expiresAt:'2026-10-18T13:00:00.000Z'},price_version:'p1',price_evidence:{verified:true,configurationVerified:true,configuration:{},version:'p1',currency:'USD',unit:'request',unitMicroUsd:100,rounding:'ceil',expiresAt:'2026-10-18T13:00:00.000Z',sourceUrl:'https://example.test/price'}};
+ const model={id:'M17',provider:'fal',endpoint:'bytedance/seedream/v5/pro/edit',version:'v1',active:true,execution_tested:true,quality_validated:true,capabilities:{tasks:['image_edit']},schema_evidence:{verified:true,version:'s1',sourceUrl:'https://example.test/schema',endpoint:'bytedance/seedream/v5/pro/edit',modelVersion:'v1',inputSchemaHash:'a'.repeat(64),expiresAt:'2026-10-18T13:00:00.000Z'},price_version:'p1',price_evidence:{verified:true,configurationVerified:true,configuration:{},version:'p1',currency:'USD',unit:'request',unitMicroUsd:100,rounding:'ceil',expiresAt:'2026-10-18T13:00:00.000Z',sourceUrl:'https://example.test/price'}};
  const input={prompt:'Private creative text'};
  const quote=createCostQuote({project,artifactId:'story',artifactVersion:1,task:'image_edit',requirements:{},model,input,now});
  const state={projects:[project]};

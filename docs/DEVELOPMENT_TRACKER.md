@@ -4,7 +4,7 @@ Updated 19 October 2026. Baseline before the routing/quote batch: `76960d5`. Thi
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
-Status: 64 partial, 97 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+Status: 65 partial, 96 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
 
 Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
 
@@ -203,3 +203,9 @@ See the JSON/CSV rows C01–C32, R01–R18 and A01–A12. An existing test path 
 ## Scope and release discipline
 
 No competitor backend parity or realism is inferred from UI references. Follow the approved v2 handoff. Batch deployment changes; repeat affected live checks after release. Keep accepted assets and explicit spending authorization separate from creative approval.
+
+## Reviewed provider registry — 19 October 2026
+
+[Architecture](MODEL_REGISTRY_ARCHITECTURE.md) and [acceptance](MODEL_REGISTRY_ACCEPTANCE.md): both OpenAI and fal now use server credentials plus owner-reviewed registry drafts/publications and task-specific routing. OpenAI environment model selection is removed. Exact operation/model/fingerprint expectations, safe retries, immutable history and unsettled-work publication guards are implemented. Supported execution adapters remain explicit; saving an endpoint draft does not make it runnable.
+
+360 automated tests/build and eight local browser scenarios pass, with actual APIs versus intercepted fixtures distinguished and controlled recovery errors labelled. Thirteen isolated SQL groups pass; migration `20261019102343` is installed with service-only permissions/RLS and a clean security advisor. No paid calls, key changes or native model activation. F085 advances to partial; no full production acceptance. Vercel/account testing stays deferred; physical devices, live quality/billing, additional adapters and sequence-policy management remain outstanding.

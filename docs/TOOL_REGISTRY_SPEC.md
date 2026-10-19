@@ -1,3 +1,5 @@
+> Current implementation extension, 19 October 2026: [Model Registry Architecture](MODEL_REGISTRY_ARCHITECTURE.md) documents implemented drafts, reviewed publication, provider configuration, routing and remaining coverage limits. The original draft below remains a historical design input.
+
 > Historical planning input. Current consolidated model/tool decisions and pricing are in [Model Router Intelligence Bible](MODEL_ROUTER_INTELLIGENCE_BIBLE.md).
 
 # Film Studio Tool Registry and Routing Specification Review Draft

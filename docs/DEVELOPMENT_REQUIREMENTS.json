@@ -1329,7 +1329,11 @@
         "apps/director/quote-input.mjs",
         "apps/director/api.mjs",
         "apps/director/routing-intent.mjs",
-        "apps/director/tariffs.mjs"
+        "apps/director/tariffs.mjs",
+        "apps/director/model-registry.mjs",
+        "apps/director/registry-store.mjs",
+        "apps/director/planning-router.mjs",
+        "database/director-registry-management.sql"
       ],
       "tests": [
         "apps/director/tests/model-router.test.mjs",
@@ -1337,10 +1341,16 @@
         "apps/director/tests/routing-task-catalog.test.mjs",
         "apps/director/tests/routing-api.test.mjs",
         "apps/director/tests/routing-intent.test.mjs",
-        "apps/director/tests/tariffs.test.mjs"
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-browser.py",
+        "database/checks/registry-management-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Evidence-ranked explicit job intent and scalar/composite quotes implemented, including reviewed dynamic task bindings. Complete multi-department sequence budgets, current live tariff metering, real evaluated profiles and production quality validation remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Reviewed task/operation routing, exact quotes and pinned allowances implemented; complete sequence quotes, live prices/billing and real quality benchmarks remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F070",
       "dependencies": [
         "versioned-project-records",
@@ -1625,16 +1635,26 @@
         "apps/director/operations.mjs",
         "apps/director/api.mjs",
         "apps/director/store.mjs",
-        "database/20261018002640_director_operational_controls.sql"
+        "database/20261018002640_director_operational_controls.sql",
+        "apps/director/model-registry.mjs",
+        "apps/director/registry-store.mjs",
+        "apps/director/planning-router.mjs",
+        "database/director-registry-management.sql"
       ],
       "tests": [
         "apps/director/tests/operations.test.mjs",
         "apps/director/tests/jobs.test.mjs",
         "apps/director/tests/admin-browser.py",
-        "database/checks/operational-controls-rollback.sql"
+        "database/checks/operational-controls-rollback.sql",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-browser.py",
+        "database/checks/registry-management-pglite.mjs"
       ],
-      "verification": "local-and-database-fixtures",
-      "gap": "Registry purpose/evidence inspection, internal use notes and model disable controls implemented; endpoint/schema import, diff, evaluation and publishing remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Owner-only versioned profile drafts, evidence inspection and reviewed publication implemented; automated catalog/schema import, benchmark execution and additional provider adapters remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F084",
       "dependencies": [
         "cloud-connection"
@@ -1645,11 +1665,23 @@
       "requirement": "Model and sequence policy publishing",
       "area": "Admin and founder operations",
       "step": 4,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "status": "partial",
+      "code": [
+        "apps/director/model-registry.mjs",
+        "apps/director/registry-store.mjs",
+        "apps/director/planning-router.mjs",
+        "database/director-registry-management.sql"
+      ],
+      "tests": [
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-browser.py",
+        "database/checks/registry-management-pglite.mjs"
+      ],
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Reviewed model draft publication, immutable releases, stale-baseline and unsettled-work guards implemented; sequence-policy publication, controlled rollback/canary management and live model quality remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F085",
       "dependencies": [
         "cloud-connection"
@@ -3871,10 +3903,10 @@
     "FUNCTIONALITY_ENDPOINT_MATRIX.csv": "0e30d8a5de1146e0a0fae26e9885165ed5750579b36457771f523fa12e9e988d",
     "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md": "1cb4fccc1164a73d847c948219bbda8d082649c3e0b6192c98271db9fa73e6a7",
     "REALISM_INTELLIGENCE_LAYER.md": "52eaadf19e4b6b08de1e6bbb94b5d0325f89b2672fc9e90aa46584bfd352df37",
-    "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529",
+    "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "3818a6103e0ec3f10ac9940b3db63b325d112d3836e23a65f2e81fee40dcc445"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "7202f8ab4e1f17c09eec0e1b732fd7967901f7cd0d006b318b067839b3d29cc9"
   },
-  "currentBatch": "Screenplay writing and project-source originality: 318 tests/build pass; real local normal/recovery and four regression browser runs pass with server-side simulated providers. Nine isolated SQL groups; native migration 20261019093706 applied and metadata/security checks pass. No paid calls or active OpenAI profiles. Real quality, wider corpus, physical devices and deferred deployed-account tests remain outstanding."
+  "currentBatch": "Reviewed OpenAI/fal registry: 360 tests, syntax/build and eight local browser scenarios pass; actual local APIs, intercepted fixtures and injected recovery errors distinguished. Thirteen isolated SQL groups pass; native migration 20261019102343, service-only/RLS and security advisor verified. No paid calls, key changes or active native models. F085 advances to partial; real quality/billing, extra adapters, sequence management, physical devices and deferred deployed-account checks remain outstanding."
 }

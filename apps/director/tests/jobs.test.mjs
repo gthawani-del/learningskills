@@ -39,6 +39,14 @@ test('timeout creates uncertain charge and subsequent dispatch never resubmits',
   assert.equal(state.submits, 1); assert.equal(state.queries.length, 0);
   assert.ok(state.audits.some(a => a.type === 'job_submission_uncertain'));
 });
+test('published model review expiry holds dispatch before claim while existing request polling remains available', async () => {
+  const state=setup();state.model.model_version='reviewed-v1';state.model.capabilities={tasks:['reference_video']};
+  const evidence={modelId:state.model.id,provider:'fal',endpoint:state.model.endpoint,modelVersion:'reviewed-v1',version:'execution-v1',sourceUrl:'https://example.test/review',evaluatedAt:'2026-01-01T00:00:00Z',expiresAt:'2099-01-01T00:00:00Z',sampleCount:2,tasks:['reference_video'],operations:[]};
+  state.model.capabilities.reviewEvidence={execution:structuredClone(evidence),quality:{...evidence,expiresAt:'2000-01-01T00:00:00Z'}};
+  await assert.rejects(state.controller.dispatch(scope),error=>error.status===409&&/review expired or changed/.test(error.message));assert.equal(state.submits,0);assert.equal(state.job.status,'reserved');assert.equal(state.job.charge_state,'held');
+  state.model.capabilities.reviewEvidence.quality.expiresAt=evidence.expiresAt;await state.controller.dispatch(scope);assert.equal(state.submits,1);
+  state.model.capabilities.reviewEvidence.quality.expiresAt='2000-01-01T00:00:00Z';const completed=await state.controller.poll(scope);assert.equal(completed.status,'completed');assert.equal(state.submits,1);assert.equal(state.queries.length,2);
+});
 test('ineligible routes, modified contracts and expired quotes fail before submission', async () => {
   const disabled = setup({ eligible: false }); await assert.rejects(disabled.controller.dispatch(scope), /not eligible/); assert.equal(disabled.submits, 0);
   const tampered = setup(); tampered.proposal.payload_hash = 'different'; await assert.rejects(tampered.controller.dispatch(scope), /mismatch/); assert.equal(tampered.submits, 0);

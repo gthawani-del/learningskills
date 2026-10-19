@@ -5,19 +5,39 @@ import {briefProposalSchema,briefProposalInstruction} from './brief-proposal.mjs
 import {briefPlanningContext,briefInputSignature} from './public/creative-brief-core.js';
 import {screenplayPlanningContext} from './public/screenplay-core.js';
 import {screenplayProposalSchema,screenplayPlanningInstruction} from './screenplay-proposal.mjs';
+import {planningOperationTask} from './routing-task-catalog.mjs';
 import {PLANNING_VERSION,filmPlanningInstruction,buildPlanningRequest,quotePlanningBound,calculatePlanningCost} from './planning-provider.mjs';
 export const planningSchemaHash=hash({version:PLANNING_VERSION,planSchema,filmPlanningInstruction,briefProposalSchema,briefProposalInstruction,screenplayProposalSchema,screenplayPlanningInstruction});
 const positive=n=>Number.isSafeInteger(n)&&n>0;
 const source=s=>{try{const u=new URL(s);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
-export function planningProfile(model,now=Date.now()){
+const instant=now=>now instanceof Date?now.getTime():typeof now==='string'?Date.parse(now):now;
+const labels=value=>Array.isArray(value)&&value.length>0&&value.length<=50&&new Set(value).size===value.length&&value.every(x=>typeof x==='string'&&x.trim()&&x.length<=200);
+const reviewBound=(evidence,model,now)=>evidence&&evidence.modelId===model.id&&evidence.provider===model.provider&&evidence.endpoint===model.endpoint&&evidence.modelVersion===model.model_version&&typeof evidence.version==='string'&&evidence.version.trim()&&source(evidence.sourceUrl)&&Number.isFinite(Date.parse(evidence.evaluatedAt))&&Date.parse(evidence.evaluatedAt)<=now&&Date.parse(evidence.expiresAt)>now&&Date.parse(evidence.evaluatedAt)<Date.parse(evidence.expiresAt);
+export function planningOperationEvidence(model,operation,now=Date.now()){
+ const time=instant(now),task=planningOperationTask(operation),c=model?.capabilities?.planning;
+ if(!Number.isFinite(time)||!task||!labels(c?.operations)||c.operations.some(op=>!planningOperationTask(op))||!c.operations.includes(operation)||!labels(model?.capabilities?.tasks)||!model.capabilities.tasks.includes(task))fail(409,'The registry model does not declare this planning operation and task.');
+ const bindings=Array.isArray(c.operationBindings)?c.operationBindings.filter(binding=>binding?.operation===operation):[];
+ if(bindings.length!==1||bindings[0].reviewed!==true||!reviewBound(bindings[0],model,time))fail(409,'A fresh model-bound planning operation review is required.');
+ const evidence={};
+ for(const kind of ['execution','quality']){
+  const review=model.capabilities.reviewEvidence?.[kind];
+  if(!reviewBound(review,model,time)||!positive(review.sampleCount)||!labels(review.tasks)||!review.tasks.includes(task)||!labels(review.operations)||!review.operations.includes(operation))fail(409,'Fresh model-bound execution and quality evidence must cover this planning task and operation.');
+  evidence[kind]=review;
+ }
+ return {operation,task,binding:bindings[0],...evidence};
+}
+export function planningProfile(model,now=Date.now(),operation){
  const time=now instanceof Date?now.getTime():typeof now==='string'?Date.parse(now):now,c=model?.capabilities?.planning,s=model?.schema_evidence,p=model?.price_evidence,t=c?.tokenBoundEvidence;
  if(!model||model.provider!=='openai'||model.endpoint!=='https://api.openai.com/v1/responses'||![model.active,model.execution_tested,model.quality_validated,c?.enabled,c?.background,c?.providerRetentionAcknowledged,s?.verified].every(x=>x===true))fail(409,'A reviewed planning model and background-data policy are required.');
  if(typeof model.model_version!=='string'||!c.version||s.endpoint!==model.endpoint||s.modelVersion!==model.model_version||s.inputSchemaHash!==planningSchemaHash||!s.version||!source(s.sourceUrl)||!(Date.parse(s.expiresAt)>time))fail(409,'The planning schema or model evidence is unavailable or expired.');
  if(!positive(c.contextWindowTokens)||!positive(c.maxOutputTokens)||c.maxOutputTokens>100000||c.maxOutputTokens>c.contextWindowTokens||!positive(c.maxRequestBytes)||c.maxRequestBytes>200000||t?.verified!==true||t.type!=='context-window-upper-bound'||t.model!==model.model_version||t.contextWindowTokens!==c.contextWindowTokens||!t.tokenizerVersion||!source(t.sourceUrl)||!(Date.parse(t.expiresAt)>time))fail(409,'Verified planning token bounds are required.');
  if(p?.version!==model.price_version)fail(409,'Planning prices have changed.');
+ if(!labels(c.operations)||c.operations.some(op=>!planningOperationTask(op)))fail(409,'Reviewed planning operation declarations are required.');
+ const operationEvidence=c.operations.map(op=>planningOperationEvidence(model,op,time));
+ if(operation!==undefined)planningOperationEvidence(model,operation,time);
  const cost=calculatePlanningCost({pricing:p,model:model.model_version,inputTokens:c.contextWindowTokens,outputTokens:c.maxOutputTokens,now:time});
  if(!positive(cost.totalMicroUsd))fail(409,'A positive bounded planning reservation is required.');
- return {fingerprint:hash(model),expiresAt:new Date(Math.min(Date.parse(s.expiresAt),Date.parse(p.expiresAt),Date.parse(t.expiresAt))).toISOString(),maxCallMicroUsd:cost.totalMicroUsd,modelId:model.id,modelVersion:model.model_version,priceVersion:model.price_version};
+ return {fingerprint:hash(model),expiresAt:new Date(Math.min(Date.parse(s.expiresAt),Date.parse(p.expiresAt),Date.parse(t.expiresAt),...operationEvidence.flatMap(e=>[e.binding,e.execution,e.quality].map(review=>Date.parse(review.expiresAt))))).toISOString(),maxCallMicroUsd:cost.totalMicroUsd,modelId:model.id,modelVersion:model.model_version,priceVersion:model.price_version};
 }
 export function planningCreativeContext(project,approvals=[],operation='initial_plan'){
  const creative=briefPlanningContext(project,approvals);
@@ -41,7 +61,7 @@ export function planningCreativeContext(project,approvals=[],operation='initial_
  return context;
 }
 export function preparePlanningRequest(project,model,operation='initial_plan',now=Date.now(),approvals=[]){
- const profile=planningProfile(model,now),c=model.capabilities.planning;
+ const profile=planningProfile(model,now,operation),c=model.capabilities.planning;
  const creative=briefPlanningContext(project,approvals);
  if(operation!=='interpret_brief'&&project.creativeBrief&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before film planning.');
  if(['write_script','revise_script'].includes(operation)&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before screenplay writing.');

@@ -40,7 +40,7 @@ export const localPlanningMethods={
 };
 export const cloudPlanningMethods={
  async replayPlanningDecision(operation,c){await this.get(c.projectId,c.actorId);const rows=await this.request(`/rest/v1/director_planning_commands?project_id=eq.${c.projectId}&request_id=eq.${c.requestId}`);if(!rows.length)return null;const {actorId,projectId,requestId,expectedVersion,...body}=c;if(rows[0].command!==operation||hash(rows[0].request)!==hash({actorId,expectedVersion,body}))fail(409,'This request identity belongs to another planning decision.');return rows[0].response;},
- async planningModels(){return this.request('/rest/v1/director_models?provider=eq.openai&order=id');},
+ async planningModels(){return this.request('/rest/v1/director_models?order=id');},
  async planningSummary(actorId,projectId){await this.get(projectId,actorId);const result=await this.request(`/rest/v1/rpc/director_planning_summary`,{method:'POST',body:{p_actor_id:actorId,p_project_id:projectId}});return {...result,calls:(result.calls||[]).map(visiblePlanningCall)};},
  async replayPlanningCall(c){await this.get(c.projectId,c.actorId);return this.request('/rest/v1/rpc/director_planning_replay',{method:'POST',body:{p_actor_id:c.actorId,p_project_id:c.projectId,p_request_id:c.requestId,p_request_fingerprint:hash(c)}});},
  async planningCommand(command,c,options={}){

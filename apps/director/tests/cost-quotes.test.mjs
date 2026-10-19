@@ -5,7 +5,7 @@ import {createCostQuote} from '../cost-quotes.mjs';
 const now = '2026-10-18T12:00:00.000Z';
 function fixture(unit='second') {
  const project = newProject({title:'Quote'},'owner');
- const model = {id:'M17',provider:'fal',capabilities:{tasks:['image_edit']},endpoint:'verified/media',version:'route-v1',active:true,execution_tested:true,quality_validated:true,schema_evidence:{verified:true,version:'schema-v1',sourceUrl:'https://example.test/schema',endpoint:'verified/media',modelVersion:'route-v1',inputSchemaHash:'a'.repeat(64),expiresAt:'2026-10-18T12:10:00.000Z'},price_version:'price-v1',price_evidence:{verified:true,configurationVerified:true,configuration:{},version:'price-v1',currency:'USD',unit,unitMicroUsd:125,rounding:'ceil',expiresAt:'2026-10-18T12:10:00.000Z',sourceUrl:'https://example.test/pricing'}};
+ const model = {id:'M17',provider:'fal',capabilities:{tasks:['image_edit']},endpoint:'bytedance/seedream/v5/pro/edit',version:'route-v1',active:true,execution_tested:true,quality_validated:true,schema_evidence:{verified:true,version:'schema-v1',sourceUrl:'https://example.test/schema',endpoint:'bytedance/seedream/v5/pro/edit',modelVersion:'route-v1',inputSchemaHash:'a'.repeat(64),expiresAt:'2026-10-18T12:10:00.000Z'},price_version:'price-v1',price_evidence:{verified:true,configurationVerified:true,configuration:{},version:'price-v1',currency:'USD',unit,unitMicroUsd:125,rounding:'ceil',expiresAt:'2026-10-18T12:10:00.000Z',sourceUrl:'https://example.test/pricing'}};
  return {task:'image_edit',requirements:{},project,artifactId:'story',artifactVersion:1,model,input:{duration:1.2},now};
 }
 test('second quotes round up and bind artifact, payload, route and evidence without permission',()=>{

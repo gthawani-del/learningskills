@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-19",
+  "project": "Director",
+  "projectId": "ygyjqubrpqwfgbquwqeo",
+  "scope": "Native migration installation and read-only metadata/security verification, not customer account integration",
+  "migration": "20261019102343_director_registry_management",
+  "migrationSha256": "687b4029ae971225f1af37565533f9faf7582366342353a0c916412790970043",
+  "rls": {
+    "director_registry_drafts": true,
+    "director_registry_releases": true,
+    "director_registry_commands": true
+  },
+  "commandRpc": {
+    "securityDefiner": false,
+    "anonExecute": false,
+    "authenticatedExecute": false,
+    "serviceExecute": true
+  },
+  "operationColumn": true,
+  "drafts": 0,
+  "releases": 0,
+  "activeOpenAIModels": 0,
+  "activeFalModels": 0,
+  "planningReservations": 0,
+  "generationPaused": true,
+  "securityAdvisories": [],
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "customerAccountsTested": false
+}

@@ -101,24 +101,8 @@ export function createProviderClients({ fetcher = globalThis.fetch, env = proces
     return `https://queue.fal.run/${endpoint.split('/').slice(0, 2).join('/')}/requests/${requestId}${suffix}`;
   }
   return {
-    async planFilm({ brief, references = [], durationSeconds = 60, authorized = false }) {
-      auth(authorized, 'OPENAI_API_KEY');
-      if (!env.OPENAI_STORY_MODEL) fail('OPENAI_STORY_MODEL is not configured');
-      if (typeof brief !== 'string' || !brief.trim() || brief.length > 20000) fail('Brief required (maximum 20000 characters)');
-      if (!Number.isFinite(durationSeconds) || durationSeconds <= 0 || durationSeconds > 600) fail('Invalid duration');
-      if (!Array.isArray(references) || references.length > 12 || JSON.stringify(references).length > 20000) fail('Invalid reference descriptions');
-      const result = await request('https://api.openai.com/v1/responses', { method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: env.OPENAI_STORY_MODEL, instructions: instruction, input: JSON.stringify({ brief, references, durationSeconds }), max_output_tokens: 10000, text: { format: { type: 'json_schema', name: 'film_plan', strict: true, schema: planSchema } } }) });
-      if (result.status !== 'completed') fail('Planning did not complete');
-      const output = result.output?.flatMap(item => item.content || []).filter(c => c.type === 'output_text').map(c => c.text).join('');
-      if (!output) fail('Provider returned no screenplay');
-      let plan; try { plan = JSON.parse(output); } catch { fail('Provider returned invalid plan JSON'); }
-      validate(planSchema, plan);
-      validateFilmPlan(plan);
-      const sceneIds = plan.scenes.map(s => s.id);
-      if (new Set(sceneIds).size !== sceneIds.length || new Set(plan.shots.map(s => s.id)).size !== plan.shots.length) fail('Duplicate scene or shot IDs');
-      if (plan.shots.some(s => !sceneIds.includes(s.sceneId) || s.durationSeconds <= 0 || s.durationSeconds > 15 || !s.description.trim())) fail('Invalid shot contract');
-      if (Math.abs(plan.shots.reduce((n, s) => n + s.durationSeconds, 0) - durationSeconds) > 0.05) fail('Plan duration does not match brief');
-      return plan;
+    async planFilm() {
+      fail('Legacy planning is retired. Use the reviewed registry route, scoped authorization and durable planning reservation.');
     },
     async submitFalJob({ endpoint, input, authorized = false }) {
       auth(authorized, 'FAL_API_KEY');

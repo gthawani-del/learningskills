@@ -1,3 +1,13 @@
+# Reviewed OpenAI and fal registry — 19 October 2026
+
+Both providers now follow the requested architecture: Vercel holds server-only keys; owner-managed registry drafts/publications hold reviewed models, tasks, capabilities, prices and evidence; routers select suitable eligible models. OpenAI no longer depends on a deployment-wide model name. Planning estimates/allowances bind the exact operation, model and profile; automatic paid switching is blocked.
+
+**360 automated tests, syntax and production build pass.** Actual local registry, writing and briefing/workspace regressions pass; controlled writing recovery and mocked planning UI checks pass with labelled injected failures. Thirteen isolated SQL proof groups pass. Director migration `20261019102343` is applied, service-only privileges/RLS verified and security advisor clean. Zero active models and generation paused; no paid call or provider-key change. See [Model Registry Acceptance](MODEL_REGISTRY_ACCEPTANCE.md).
+
+Tracker: 65 partial, 96 missing/unverified, 6 deferred, zero fully production-accepted. Broader department workflows, full media production/export, model-quality pilots, real billing and deferred deployed/account/physical-device checks remain outstanding. Historical sections below retain their original evidence limits.
+
+---
+
 # Hybrid planning authorization — 18 October 2026
 
 Step 6 point 1 implemented: deterministic manual/rule policy, scoped multi-call planning consent, model-bound token-cost ceilings, durable reserve/claim-once background requests, known-ID polling, usage/unknown/overrun accounting and unstarted-call recovery. Costs → Planning limits records consent separately from submission. Returned plans remain proposals and do not overwrite approved story content.

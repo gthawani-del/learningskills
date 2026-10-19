@@ -5,7 +5,7 @@ import { validateRoutingIntent } from '../routing-intent.mjs';
 const now = '2026-10-18T12:00:00Z';
 const expiry = '2026-10-19T12:00:00Z';
 function candidate(id, scores = { realism: 80, motion: 80 }, priority = 1) {
-  const endpoint = 'reviewed/' + id;
+  const endpoint = 'minimax/h3-max/reference-to-video';
   return { id, provider: 'fal', endpoint, model_version: 'v1', price_version: 'p1', active: true, execution_tested: true, quality_validated: true,
     capabilities: { tasks: ['reference_video'], priority },
     schema_evidence: { verified: true, version: 's1', sourceUrl: 'https://fal.ai/schema', inputSchemaHash: 'a'.repeat(64), endpoint, modelVersion: 'v1', expiresAt: expiry },

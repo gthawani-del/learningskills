@@ -32,6 +32,11 @@ export const candidateEndpointManifest = Object.freeze({
 const source = 'database/director-registry-seed.sql; database/director-registry-roles.sql; docs/FUNCTIONALITY_ENDPOINT_MATRIX.csv';
 const task = (id, label, candidateModelIds) => Object.freeze({ id, label, candidateModelIds: Object.freeze(candidateModelIds), source });
 export const routingTasks = Object.freeze([
+  task('brief_interpretation', 'Interpret a user request into a creative brief', []),
+  task('film_planning', 'Prepare a reviewed film and shot plan', []),
+  task('film_plan_revision', 'Propose a scoped film-plan revision', []),
+  task('screenplay_writing', 'Write a structured screenplay from an approved brief', []),
+  task('screenplay_revision', 'Revise the current screenplay within its saved scope', []),
   task('story_reasoning', 'Story, screenplay and filmmaking reasoning', ['M01']),
   task('audio_analysis', 'Audio interpretation', ['M02', 'M05']),
   task('song_analysis', 'Song mood, instrumentation and development analysis', ['M05', 'M02']),
@@ -53,6 +58,15 @@ export const routingTasks = Object.freeze([
   task('speech_synthesis', 'Directed speech with approved voice', ['M19']),
   task('lip_sync_repair', 'Lip-sync correction against approved audio', ['M20']),
 ]);
+
+// Planning operation identity is a product contract, not a provider/model pin.
+export const planningOperationTasks = Object.freeze({
+  interpret_brief: 'brief_interpretation', initial_plan: 'film_planning',
+  revise_plan: 'film_plan_revision', write_script: 'screenplay_writing', revise_script: 'screenplay_revision',
+});
+export function planningOperationTask(operation) {
+  return typeof operation === 'string' && Object.hasOwn(planningOperationTasks, operation) ? planningOperationTasks[operation] : null;
+}
 
 export function knownRoutingTask(id) {
   return typeof id === 'string' ? routingTasks.find(entry => entry.id === id) ?? null : null;

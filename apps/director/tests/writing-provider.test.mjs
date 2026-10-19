@@ -6,6 +6,7 @@ import { preparePlanningRequest, planningSchemaHash, planningCreativeContext } f
 import { planningScope, decidePlanningPath } from '../planning-policy.mjs';
 import { applyBriefCommand } from '../public/creative-brief-core.js';
 import { applyScreenplayCommand, screenplayPlanningContext } from '../public/screenplay-core.js';
+import {reviewedPlanningFixture} from './planning-fixture-profile.mjs';
 
 const now = '2026-10-19T00:00:00.000Z';
 const blocked = error => error.status === 409;
@@ -22,7 +23,7 @@ function project() {
 const approvals = p => [{id:'brief_approval',artifactId:'brief',version:p.creativeBrief.currentVersion,decision:'approved',ordinal:1}];
 function profile() {
   const endpoint='https://api.openai.com/v1/responses',version='writing-test-model',expiresAt='2099-01-01T00:00:00.000Z';
-  return {id:'O-writing-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'writing-test',background:true,providerRetentionAcknowledged:true,contextWindowTokens:10000,maxOutputTokens:2000,maxRequestBytes:200000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:10000,type:'context-window-upper-bound',tokenizerVersion:'reviewed-window',sourceUrl:'https://example.com/tokens',expiresAt}}},schema_evidence:{verified:true,version:'writing-schema',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.com/schema',expiresAt},price_version:'writing-price',price_evidence:{verified:true,version:'writing-price',model:version,currency:'USD',sourceUrl:'https://example.com/pricing',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}};
+  return reviewedPlanningFixture({id:'O-writing-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'writing-test',background:true,providerRetentionAcknowledged:true,contextWindowTokens:10000,maxOutputTokens:2000,maxRequestBytes:200000,tokenBoundEvidence:{verified:true,model:version,contextWindowTokens:10000,type:'context-window-upper-bound',tokenizerVersion:'reviewed-window',sourceUrl:'https://example.com/tokens',expiresAt}}},schema_evidence:{verified:true,version:'writing-schema',endpoint,modelVersion:version,inputSchemaHash:planningSchemaHash,sourceUrl:'https://example.com/schema',expiresAt},price_version:'writing-price',price_evidence:{verified:true,version:'writing-price',model:version,currency:'USD',sourceUrl:'https://example.com/pricing',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}});
 }
 const prepare = (p,operation='write_script',m=profile(),a=approvals(p)) => preparePlanningRequest(p,m,operation,now,a);
 function currentProject() {

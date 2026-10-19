@@ -1,5 +1,6 @@
 import { validateFalInput } from './providers.mjs';
 import { hash } from './domain.mjs';
+import { publishedReviewHolds } from './model-router.mjs';
 
 function fail(status, message) { throw Object.assign(new Error(message), { status }); }
 const inFlight = ['submitted', 'running'];
@@ -37,6 +38,7 @@ export function createJobController({ store, providers }) {
       if (job.charge_state !== 'held' || !(Number(job.reserved_micro_usd) > 0)) fail(409, 'A held spending reservation is required.');
       if (model.active !== true || model.execution_tested !== true || model.quality_validated !== true || model.price_version !== proposal.price_version) fail(409, 'Model route is not eligible.');
       if (!Number.isFinite(Date.parse(proposal.quote_expires_at)) || Date.parse(proposal.quote_expires_at) <= Date.now()) fail(409, 'Quote has expired.');
+      if (publishedReviewHolds(model).length) fail(409, 'The published model execution or quality review expired or changed. Reconcile this reservation before any new submission.');
       validateFalInput(model.endpoint, proposal.payload);
       // The database claim revalidates current artifacts, approvals and spending
       // authorization under locks; rejection must happen before any provider call.
