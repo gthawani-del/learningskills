@@ -46,3 +46,9 @@ await import('../apps/director/tests/creative-brief-api.test.mjs');
 await import('../apps/director/tests/creative-brief-cloud.test.mjs');
 
 await import('../apps/director/tests/creative-brief-integration.test.mjs');
+await import('../apps/director/tests/screenplay.test.mjs');
+await import('../apps/director/tests/originality.test.mjs');
+await import('../apps/director/tests/writing-provider.test.mjs');
+await import('../apps/director/tests/writing-api.test.mjs');
+await import('../apps/director/tests/writing-integration.test.mjs');
+await import('../apps/director/tests/writing-cloud.test.mjs');

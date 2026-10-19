@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-10-19",
+  "project": "Director",
+  "projectRef": "ygyjqubrpqwfgbquwqeo",
+  "migration": [
+    {
+      "name": "director_screenplay_planning",
+      "version": "20261019093706"
+    }
+  ],
+  "functions": [
+    {
+      "name": "director_approve_screenplay",
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_current_screenplay_approved",
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_guard_planning_screenplay",
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_guard_screenplay_approval",
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_screenplay_report_valid",
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    }
+  ],
+  "rowSecurity": [
+    {
+      "table": "director_approvals",
+      "enabled": true
+    },
+    {
+      "table": "director_planning_consents",
+      "enabled": true
+    },
+    {
+      "table": "director_planning_reservations",
+      "enabled": true
+    }
+  ],
+  "activeOpenAiModels": 0,
+  "generationPaused": true,
+  "planningReservations": 0,
+  "emptySnapshotRejected": true,
+  "emptyReportRejected": true,
+  "securityAdvisor": {
+    "lints": []
+  },
+  "limits": [
+    "Metadata, grants, RLS and pure-helper checks only; deployed account/browser integration remains deferred.",
+    "No paid model call or generation activation."
+  ]
+}

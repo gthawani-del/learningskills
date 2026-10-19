@@ -105,7 +105,7 @@ const briefFields=['purpose','audience','audienceResponse','platform','aspectRat
 function briefRequest(context={inputSignature:'input-signature',structuredBrief:null,status:'needs_review',approved:false}){return buildPlanningRequest({brief:'A quiet realistic rain scene.',refs:[],duration:5,model:'configured-story-model',maxOutputTokens:1000,operation:'interpret_brief',context});}
 function briefProposal(){return{inputSignature:'input-signature',fields:Object.fromEntries(briefFields.map(key=>[key,{value:null,status:'unknown',source:'model',evidence:[]}]))};}
 test('interpret brief uses separate strict schema operation and hashed saved context',()=>{
- const req=briefRequest();assert.equal(req.version,'director-planning-v2');assert.equal(req.operation,'interpret_brief');assert.equal(req.body.text.format.name,'creative_brief_proposal');
+ const req=briefRequest();assert.equal(req.version,'director-planning-v3');assert.equal(req.operation,'interpret_brief');assert.equal(req.body.text.format.name,'creative_brief_proposal');
  assert.equal(req.body.text.format.schema.additionalProperties,false);assert.deepEqual(req.body.text.format.schema.properties.fields.required,briefFields);
  assert.notEqual(req.requestHash,briefRequest({inputSignature:'changed',approved:false}).requestHash);
  assert.deepEqual(validatePlanningResult(briefProposal(),req),briefProposal());

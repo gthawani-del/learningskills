@@ -4,7 +4,7 @@ Updated 19 October 2026. Baseline before the routing/quote batch: `76960d5`. Thi
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
-Status: 62 partial, 99 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+Status: 64 partial, 97 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
 
 Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
 
@@ -44,7 +44,13 @@ The fixed bottom navigation covered the composer note by 17–32 pixels at narro
 
 ## User clarification: LLM writing is the default — 19 October 2026
 
-Most users should describe their idea and have the LLM write the treatment and script from the approved brief. Uploading a script is optional, never a prerequisite. Preserve uploaded originals and distinguish requested use, editing and adaptation. Track LLM-generated, user-supplied and mixed provenance without treating upload as proof of ownership. Both paths require the planned deterministic, version-bound originality/source-use checks; generated output is checked against permitted sources even with no uploaded reference. The LLM cannot approve its own originality. See the Bible's script entry/originality clarification and the blueprint user journey. Requirements recorded only: writing, the comparison corpus/scanner and approval gate remain unimplemented; no completion count changes.
+Most users should describe their idea and have the LLM write the treatment and script from the approved brief. Uploading a script is optional, never a prerequisite. Preserve uploaded originals and distinguish requested use, editing and adaptation. Track LLM-generated, user-supplied and mixed provenance without treating upload as proof of ownership. Both paths require the planned deterministic, version-bound originality/source-use checks; generated output is checked against permitted sources even with no uploaded reference. The LLM cannot approve its own originality. See the Bible's script entry/originality clarification and the blueprint user journey. The subsequent writing batch implements proposals, versions and project-source comparison; wider comparison coverage and real writing quality remain unverified. See the writing acceptance record and current statuses below.
+
+## Screenplay writing and deterministic source review — 19 October 2026
+
+[Acceptance record](WRITING_WORKFLOW_ACCEPTANCE.md) and [checks](evidence/WRITING_WORKFLOW_CHECKS_2026-10-19.json): the default approved-brief-to-screenplay proposal path, optional exact UTF-8 source preservation, versioned review/application, scoped revisions, current-source gates and readable Story UI are implemented. Deterministic originality checks cover only the project's supplied text; no-source scripts show unavailable comparison coverage, not originality clearance. Incomplete reviews hold approval. F006 and F013 move from missing to partial; no requirement becomes fully production-accepted.
+
+318 automated tests, syntax checks and production build pass. Actual local Chromium writing and controlled navigation-failure recovery pass; brief, v2 editing/media playback/draft export, footer and brief-proposal browser regressions pass. Normal runs have zero console/HTTP errors; the recovery fixture records its one deliberate 503 separately. Nine isolated PostgreSQL proof groups pass. Migration `20261019093706` is applied; service-only privileges, RLS, empty-input rejection and a clean security advisor are verified. Live planning remains disabled, generation paused, and no paid call occurred. Physical devices, deployed accounts, real writing/language quality and wider comparison coverage remain unverified.
 
 ## Current batch and dependencies
 
@@ -89,21 +95,21 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F003 | Recover account and end session | 2 | partial | Current-session logout implemented; password recovery/reset and live revocation verification missing. |
 | F004 | Create or reopen project | 2 | partial | Create/reopen plus retry-safe import implemented; real authenticated Supabase cross-browser verification pending. |
 | F005 | Autosave and resolve concurrent edits | 2 | partial | Optimistic saves exist; full autosave UX, conflict merge/recovery and live database concurrency verification missing. |
-| F006 | Import script/project | 2 | missing | No complete executable workflow found; implement and verify before activation. |
+| F006 | Import script/project | 2 | partial | Optional UTF-8 TXT/Markdown scripts preserve original text, use declarations and immutable working versions; device import preserves sources while stripping approval/review authority. PDF/DOCX, semantic screenplay parsing and deployed-account import remain unverified. |
 | F007 | Search project and media library | 2 | missing | No complete executable workflow found; implement and verify before activation. |
 | F008 | Upload and finalize source media | 2 | partial | Checksummed retry-safe whole-file migration and metadata recovery implemented for files up to 2 MB; signed/resumable large-media uploads and live storage verification missing. |
 | F009 | Preview or download private media | 2 | partial | Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing. |
 | F010 | Interpret brief and ask necessary questions | 6 | partial | Compact proposal reuses the actual idea/settings and reviewed choices with optional one-field edits; missing optional details do not require a questionnaire. Bounded AI interpretation supports read-only actual deltas. Real LLM interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F012 | Develop treatment and story arc | 6 | partial | Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow. |
-| F013 | Write screenplay and dialogue | 6 | missing | Default LLM writing from the approved brief; optional uploaded-script use/edit/adaptation with originals preserved. Implement versioned writing/review and deterministic originality/source-use checks for both paths; corpus, scanner, gate and live writing quality remain unverified. |
+| F013 | Write screenplay and dialogue | 6 | partial | Default LLM screenplay proposals, optional preserved uploads, versioned review/application, scoped revisions and project-source originality gates implemented. Real OpenAI writing/language quality, wider permitted comparison corpus and deployed-account/browser acceptance remain unverified; production profiles disabled. |
 | F014 | Script breakdown and production plan | 6 | partial | Structured scene/shot planning adapter only; no executed production breakdown or scheduling. |
 | F015 | Direct scene blocking and performance | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F016 | Plan camera, lighting and coverage | 6 | partial | Manual camera/framing controls and isolated craft validator; contextual Director orchestration not connected. |
 | F017 | Plan continuity and character knowledge | 6 | partial | Versioned character/world library and explicit shot bindings implemented; observed generated-media continuity and intelligent planning remain missing. |
 | F018 | Create sound/music cue plan | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F019 | Translate/localize approved dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
-| F020 | Interpret natural-language revision | 6 | partial | Scoped instruction/proposal envelope exists; no semantic interpretation or model execution. |
+| F020 | Interpret natural-language revision | 6 | partial | Saved screenplay revision instructions and explicit scene scope bind paid requests; code rejects changes to untargeted scenes/characters, and reviewed application preserves history. Real semantic interpretation/repair quality and complete departmental revision orchestration remain unverified. |
 | F021 | Approve creative version | 6 | partial | Creative approval/history UI and APIs enforce current record/shot versions; transitive creative approvals govern review readiness. Atomic dispatch enforcement, media-quality acceptance and live account verification remain incomplete. |
 | F022 | Invalidate dependent approvals on change | 6 | partial | Library revision and approval revocation propagate selective review holds; local/API tests pass. Atomic database enforcement of recursive approvals and live media acceptance remain incomplete. |
 | F023 | Decode song and inspect metadata | 8 | missing | No complete executable workflow found; implement and verify before activation. |

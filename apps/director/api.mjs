@@ -1,4 +1,6 @@
 import {createPlanningController} from './planning.mjs';
+import {changeScreenplay} from './screenplay.mjs';
+import {screenplayContext} from './public/screenplay-core.js';
 import {createPlanningProvider} from './planning-provider.mjs';
 import {visiblePlanningCall} from './planning-store.mjs';
 import {applyBriefCommand,briefPlanningContext} from './public/creative-brief-core.js';
@@ -105,6 +107,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
+ if(action==='screenplay'&&req.method==='GET')return reply(200,{screenplayContext:screenplayContext(project,await store.records('approvals',id))});
+ if((action==='screenplay'||action==='screenplay/apply-proposal')&&req.method==='POST')return reply(200,await changeScreenplay({project,body,actorId:user.id,store,applying:action==='screenplay/apply-proposal'}));
  if(action==='brief'&&req.method==='GET')return reply(200,{briefContext:briefPlanningContext(project,await store.records('approvals',id))});
  if((action==='brief'||action==='brief/apply-proposal')&&req.method==='POST'){
   const applying=action==='brief/apply-proposal',allowed=applying?['expectedVersion','callId']:['expectedVersion','action','changes'];
@@ -137,7 +141,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
  if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
  if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
- if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
  return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
  }
  if(action==='plan'&&req.method==='POST'){
@@ -207,7 +211,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='generate'&&req.method==='POST')fail(409,'Generation is held: no model profile has passed execution and quality validation. A verified quote and budget authorization are required.');
  if(action==='export'&&req.method==='POST'){
  if(!demo||env.DIRECTOR_LOCAL_RENDER!=='1')fail(503,'Hosted sound-preserving export is not configured. Accepted assets remain available.');
- const approvals=await store.records('approvals',id);if(!project.shots.length||project.shots.some(s=>{const last=approvals.filter(a=>a.artifactId===s.id&&a.version===s.version).at(-1);return last?.decision!=='approved';}))fail(409,'Approve each current shot version before export.');
+ const approvals=await store.records('approvals',id);const script=screenplayContext(project,approvals);if(project.screenplay&&!script.approved)fail(409,'Review and approve the current screenplay and its source comparison before export.');if(!project.shots.length||project.shots.some(s=>{const last=approvals.filter(a=>a.artifactId===s.id&&a.version===s.version).at(-1);return last?.decision!=='approved';}))fail(409,'Approve each current shot version before export.');
  const {renderFilm}=await import('./render.mjs');const bytes=await renderFilm({project,assets:await store.records('assets',id),assetDir:env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets'});
  res.writeHead(200,{'Content-Type':'video/mp4','Content-Disposition':'attachment; filename="director-film.mp4"','Cache-Control':'no-store'});return res.end(bytes);}
 

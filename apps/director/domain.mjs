@@ -1,5 +1,6 @@
 import {sceneChanged,briefChanged} from './public/revision-impact.js';
 import {briefArtifact} from './public/creative-brief-core.js';
+import {screenplayArtifact} from './public/screenplay-core.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -15,6 +16,8 @@ export function newProject(body,owner){
  return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',briefExplicitFields:['premise',...(body.format?['format']:[])],stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],production:{records:[]},createdAt:new Date().toISOString()};
 }
 export function patchProject(previous,body){
+ if(Object.hasOwn(body,'screenplay'))fail(400,'Use the screenplay editor to change scripts, sources or review records.');
+ if(previous.screenplay?.currentVersion&&body.story!==undefined)fail(409,'Edit the current screenplay to update its treatment and scenes.');
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
  const next=structuredClone(previous);
  for(const key of ['title','premise','direction','language'])if(body[key]!==undefined)next[key]=text(body[key],key,key==='title'?200:10000);
@@ -43,6 +46,7 @@ export function patchProject(previous,body){
 }
 export function artifacts(project){return [
  ...(briefArtifact(project)?[briefArtifact(project)]:[]),
+ ...(screenplayArtifact(project)?[screenplayArtifact(project)]:[]),
  {logical_key:'story',kind:'story',version:project.story.version,content:project.story},
  ...project.shots.map(s=>({logical_key:s.id,kind:'shot',version:s.version,content:s}))
 ].map(a=>({...a,content_hash:hash(a.content)}));}

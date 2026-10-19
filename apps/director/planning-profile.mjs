@@ -3,8 +3,10 @@ import {recordArtifacts} from './production-records.mjs';
 import {planSchema} from './providers.mjs';
 import {briefProposalSchema,briefProposalInstruction} from './brief-proposal.mjs';
 import {briefPlanningContext,briefInputSignature} from './public/creative-brief-core.js';
+import {screenplayPlanningContext} from './public/screenplay-core.js';
+import {screenplayProposalSchema,screenplayPlanningInstruction} from './screenplay-proposal.mjs';
 import {PLANNING_VERSION,filmPlanningInstruction,buildPlanningRequest,quotePlanningBound,calculatePlanningCost} from './planning-provider.mjs';
-export const planningSchemaHash=hash({version:PLANNING_VERSION,planSchema,filmPlanningInstruction,briefProposalSchema,briefProposalInstruction});
+export const planningSchemaHash=hash({version:PLANNING_VERSION,planSchema,filmPlanningInstruction,briefProposalSchema,briefProposalInstruction,screenplayProposalSchema,screenplayPlanningInstruction});
 const positive=n=>Number.isSafeInteger(n)&&n>0;
 const source=s=>{try{const u=new URL(s);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
 export function planningProfile(model,now=Date.now()){
@@ -17,7 +19,7 @@ export function planningProfile(model,now=Date.now()){
  if(!positive(cost.totalMicroUsd))fail(409,'A positive bounded planning reservation is required.');
  return {fingerprint:hash(model),expiresAt:new Date(Math.min(Date.parse(s.expiresAt),Date.parse(p.expiresAt),Date.parse(t.expiresAt))).toISOString(),maxCallMicroUsd:cost.totalMicroUsd,modelId:model.id,modelVersion:model.model_version,priceVersion:model.price_version};
 }
-export function planningCreativeContext(project,approvals=[]){
+export function planningCreativeContext(project,approvals=[],operation='initial_plan'){
  const creative=briefPlanningContext(project,approvals);
  const decisions=approvals.map((a,index)=>({artifactId:a.artifactId??null,version:a.version??null,decision:a.decision??null,ordinal:Number.isSafeInteger(a.ordinal)&&a.ordinal>0?a.ordinal:index+1,id:a.id??null}));
  // Sort explicit ledger ordinals, falling back to the stable saved array order.
@@ -32,8 +34,9 @@ export function planningCreativeContext(project,approvals=[]){
  }
  for(const id of project.referenceIds??[])if(typeof id==='string'&&id)references.set(`${id}@`,{assetId:id});
  const context={inputSignature:briefInputSignature(project),structuredBrief:creative.brief,status:creative.status,approved:creative.approved,departmentPlan:creative.departmentPlan,questions:creative.questions,approvedDecisionDigest:hash(decisions),approvedArtifacts,referenceIds:[...references.values()].sort((a,b)=>a.assetId.localeCompare(b.assetId)||(a.version??0)-(b.version??0))};
+ if(['write_script','revise_script'].includes(operation))context.screenplay=screenplayPlanningContext(project);
  const serialized=JSON.stringify(context);
- if(serialized.length>30000)fail(409,'Approved creative decisions exceed the reviewed planning context limit; no approved constraints were truncated.');
+ if(serialized.length>(context.screenplay?180000:30000))fail(409,'Approved creative decisions and script sources exceed the reviewed planning context limit; no approved constraints or source text were truncated.');
  if(/data:(?:image|audio|video)\//i.test(serialized))fail(409,'Planning creative context cannot contain embedded media bytes.');
  return context;
 }
@@ -41,7 +44,8 @@ export function preparePlanningRequest(project,model,operation='initial_plan',no
  const profile=planningProfile(model,now),c=model.capabilities.planning;
  const creative=briefPlanningContext(project,approvals);
  if(operation!=='interpret_brief'&&project.creativeBrief&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before film planning.');
- const context=planningCreativeContext(project,approvals);
+ if(['write_script','revise_script'].includes(operation)&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before screenplay writing.');
+ const context=planningCreativeContext(project,approvals,operation);
  const brief=JSON.stringify({premise:project.premise,direction:project.direction,language:project.language,format:project.format,operation,...(operation==='revise_plan'?{existingStory:project.story}:{} )});
  const request=buildPlanningRequest({brief,duration:project.duration,model:model.model_version,maxOutputTokens:c.maxOutputTokens,operation,context});
  if(Buffer.byteLength(JSON.stringify(request.body),'utf8')>c.maxRequestBytes)fail(409,'This planning request exceeds the reviewed input limit. Shorten the brief before continuing.');

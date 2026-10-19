@@ -1,0 +1,548 @@
+{
+  "checkedAt": "2026-10-19",
+  "baselineCommit": "1fcd2da7ebf23507164cd70bf35b9aece107ddf5",
+  "automated": {
+    "tests": 318,
+    "passed": 318,
+    "failed": 0,
+    "syntaxCheck": "passed",
+    "productionBuild": "passed"
+  },
+  "browsers": {
+    "writing": {
+      "scope": "Actual local HTTP APIs, LocalStore and Chromium interactions; server-side simulated OpenAI responses; no browser request interception",
+      "passed": [
+        "Original writing is the default; neither viewing the workspace nor approving a limit starts a model call",
+        "Saved queued call survives reload; review is read-only; explicit apply creates an unapproved version with model-call provenance and accounted simulated usage",
+        "Coverage limitations are visible and explicit acknowledgement is required before script approval",
+        "Unsaved screenplay field text survives in-app stage navigation; its selector remains locked and cancel leaves saved script unchanged",
+        "Saved targeted revision is free until explicitly run; applying changes the selected scene, preserves other scene and characters, retains history and requires renewed approval",
+        "390px Chromium viewport renders screenplay without horizontal overflow; this is not physical mobile verification",
+        "Optional .txt upload preserves exact UTF-8 BOM, leading newline, CRLF source text and declared provenance, never calls a model, exposes deterministic matches and requires passage-use explanations before approval; source and review survive reload",
+        "Briefing composer, note and footer remain separated across five desktop-emulated mobile viewport sizes"
+      ],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "controlledStageFailure": false,
+      "expectedInjectedConsoleErrors": [],
+      "expectedInjectedHttpErrors": [],
+      "mobileScriptGeometry": {
+        "width": 390,
+        "height": 844,
+        "workspaceLeft": 17,
+        "workspaceRight": 373,
+        "approvalTop": 686.609375,
+        "approvalBottom": 738.609375,
+        "overflow": false
+      },
+      "footerGeometry": [
+        {
+          "width": 390,
+          "height": 880,
+          "composer": {
+            "top": 647.8125,
+            "bottom": 782
+          },
+          "note": {
+            "top": 782,
+            "bottom": 803
+          },
+          "footer": {
+            "top": 815,
+            "bottom": 880
+          },
+          "overflow": false
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "composer": {
+            "top": 611.8125,
+            "bottom": 746
+          },
+          "note": {
+            "top": 746,
+            "bottom": 767
+          },
+          "footer": {
+            "top": 779,
+            "bottom": 844
+          },
+          "overflow": false
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "composer": {
+            "top": 579.8125,
+            "bottom": 714
+          },
+          "note": {
+            "top": 714,
+            "bottom": 735
+          },
+          "footer": {
+            "top": 747,
+            "bottom": 812
+          },
+          "overflow": false
+        },
+        {
+          "width": 360,
+          "height": 640,
+          "composer": {
+            "top": 407.8125,
+            "bottom": 542
+          },
+          "note": {
+            "top": 542,
+            "bottom": 563
+          },
+          "footer": {
+            "top": 575,
+            "bottom": 640
+          },
+          "overflow": false
+        },
+        {
+          "width": 390,
+          "height": 520,
+          "composer": {
+            "top": 287.8125,
+            "bottom": 422
+          },
+          "note": {
+            "top": 422,
+            "bottom": 443
+          },
+          "footer": {
+            "top": 455,
+            "bottom": 520
+          },
+          "overflow": false
+        }
+      ],
+      "realPaidCalls": 0,
+      "simulatedWritingCalls": 2,
+      "physicalMobileTested": false,
+      "deployedWebsiteTested": false,
+      "limitations": [
+        "No real OpenAI writing or quality evaluation",
+        "No external originality corpus",
+        "No physical phone or virtual keyboard testing",
+        "No Supabase account or deployed-site tests"
+      ]
+    },
+    "recovery": {
+      "scope": "Actual local HTTP APIs, LocalStore and Chromium interactions; server-side simulated OpenAI responses; no browser request interception",
+      "passed": [
+        "Original writing is the default; neither viewing the workspace nor approving a limit starts a model call",
+        "Controlled store failure after successful script apply closes the proposal, retains saved script once and recovers through manual Story navigation without a paid retry",
+        "Saved queued call survives reload; review is read-only; explicit apply creates an unapproved version with model-call provenance and accounted simulated usage",
+        "Coverage limitations are visible and explicit acknowledgement is required before script approval",
+        "Unsaved screenplay field text survives in-app stage navigation; its selector remains locked and cancel leaves saved script unchanged",
+        "Saved targeted revision is free until explicitly run; applying changes the selected scene, preserves other scene and characters, retains history and requires renewed approval",
+        "390px Chromium viewport renders screenplay without horizontal overflow; this is not physical mobile verification",
+        "Optional .txt upload preserves exact UTF-8 BOM, leading newline, CRLF source text and declared provenance, never calls a model, exposes deterministic matches and requires passage-use explanations before approval; source and review survive reload",
+        "Briefing composer, note and footer remain separated across five desktop-emulated mobile viewport sizes"
+      ],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "controlledStageFailure": true,
+      "expectedInjectedConsoleErrors": [
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "expectedInjectedHttpErrors": [
+        {
+          "status": 503,
+          "url": "http://127.0.0.1:37649/api/projects/856f1dff-79e6-420b-be5a-df6cd317fae4"
+        }
+      ],
+      "mobileScriptGeometry": {
+        "width": 390,
+        "height": 844,
+        "workspaceLeft": 17,
+        "workspaceRight": 373,
+        "approvalTop": 686.609375,
+        "approvalBottom": 738.609375,
+        "overflow": false
+      },
+      "footerGeometry": [
+        {
+          "width": 390,
+          "height": 880,
+          "composer": {
+            "top": 647.8125,
+            "bottom": 782
+          },
+          "note": {
+            "top": 782,
+            "bottom": 803
+          },
+          "footer": {
+            "top": 815,
+            "bottom": 880
+          },
+          "overflow": false
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "composer": {
+            "top": 611.8125,
+            "bottom": 746
+          },
+          "note": {
+            "top": 746,
+            "bottom": 767
+          },
+          "footer": {
+            "top": 779,
+            "bottom": 844
+          },
+          "overflow": false
+        },
+        {
+          "width": 375,
+          "height": 812,
+          "composer": {
+            "top": 579.8125,
+            "bottom": 714
+          },
+          "note": {
+            "top": 714,
+            "bottom": 735
+          },
+          "footer": {
+            "top": 747,
+            "bottom": 812
+          },
+          "overflow": false
+        },
+        {
+          "width": 360,
+          "height": 640,
+          "composer": {
+            "top": 407.8125,
+            "bottom": 542
+          },
+          "note": {
+            "top": 542,
+            "bottom": 563
+          },
+          "footer": {
+            "top": 575,
+            "bottom": 640
+          },
+          "overflow": false
+        },
+        {
+          "width": 390,
+          "height": 520,
+          "composer": {
+            "top": 287.8125,
+            "bottom": 422
+          },
+          "note": {
+            "top": 422,
+            "bottom": 443
+          },
+          "footer": {
+            "top": 455,
+            "bottom": 520
+          },
+          "overflow": false
+        }
+      ],
+      "realPaidCalls": 0,
+      "simulatedWritingCalls": 2,
+      "physicalMobileTested": false,
+      "deployedWebsiteTested": false,
+      "limitations": [
+        "No real OpenAI writing or quality evaluation",
+        "No external originality corpus",
+        "No physical phone or virtual keyboard testing",
+        "No Supabase account or deployed-site tests"
+      ]
+    },
+    "brief": {
+      "scope": "actual local device draft UI, not live Supabase or paid model output",
+      "passed": [
+        "compact inline proposal",
+        "prefilled purpose premise runtime language",
+        "original settings collapsed",
+        "one default composer textarea",
+        "choices disclosure without empty-field wall",
+        "one prefilled field editor",
+        "cancel restores content and focus",
+        "unsaved edit survives stage navigation and stays scoped when switching projects",
+        "approval and field switching blocked during edits",
+        "pending write controls disabled",
+        "targeted correction preserves unrelated settings",
+        "controlled IndexedDB failure preserves input",
+        "explicit approve and continue",
+        "source edit requires renewed approval",
+        "device persistence",
+        "390px viewport review"
+      ],
+      "fixtureChecks": [
+        "Controlled one-time IndexedDB write failure; not an observed infrastructure outage",
+        "Controlled IndexedDB completion delay for pending-control checks"
+      ],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": [],
+      "postRequests": [],
+      "physicalMobileTested": false
+    },
+    "workspace": {
+      "url": "http://127.0.0.1:35175",
+      "passed": [
+        "brief editing",
+        "story version and approval",
+        "shot editing",
+        "image preview and alternate image selection",
+        "video playback pause seek",
+        "draft and media reload persistence",
+        "direction notes and saved-project picker",
+        "truthful cloud gate",
+        "draft JSON download",
+        "390px viewport drawers and overflow"
+      ],
+      "pageErrors": [],
+      "console": [],
+      "httpErrors": [],
+      "physicalMobileTested": false
+    },
+    "footer": {
+      "scope": "actual local Chromium viewport geometry and controls",
+      "geometry": [
+        {
+          "viewport": {
+            "width": 390,
+            "height": 880
+          },
+          "composer": {
+            "top": 606.8125,
+            "bottom": 741,
+            "left": 17,
+            "right": 373,
+            "height": 134.1875
+          },
+          "note": {
+            "top": 741,
+            "bottom": 762,
+            "left": 17,
+            "right": 373,
+            "height": 21
+          },
+          "footer": {
+            "top": 774,
+            "bottom": 839,
+            "left": 0,
+            "right": 390,
+            "height": 65
+          },
+          "transcript": {
+            "top": 218.5625,
+            "bottom": 597.8125,
+            "left": 17,
+            "right": 373,
+            "height": 379.25
+          },
+          "overflow": false
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "composer": {
+            "top": 570.8125,
+            "bottom": 705,
+            "left": 17,
+            "right": 373,
+            "height": 134.1875
+          },
+          "note": {
+            "top": 705,
+            "bottom": 726,
+            "left": 17,
+            "right": 373,
+            "height": 21
+          },
+          "footer": {
+            "top": 738,
+            "bottom": 803,
+            "left": 0,
+            "right": 390,
+            "height": 65
+          },
+          "transcript": {
+            "top": 218.5625,
+            "bottom": 561.8125,
+            "left": 17,
+            "right": 373,
+            "height": 343.25
+          },
+          "overflow": false
+        },
+        {
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "composer": {
+            "top": 538.8125,
+            "bottom": 673,
+            "left": 17,
+            "right": 358,
+            "height": 134.1875
+          },
+          "note": {
+            "top": 673,
+            "bottom": 694,
+            "left": 17,
+            "right": 358,
+            "height": 21
+          },
+          "footer": {
+            "top": 706,
+            "bottom": 771,
+            "left": 0,
+            "right": 375,
+            "height": 65
+          },
+          "transcript": {
+            "top": 277.5625,
+            "bottom": 529.8125,
+            "left": 17,
+            "right": 358,
+            "height": 252.25
+          },
+          "overflow": false
+        },
+        {
+          "viewport": {
+            "width": 360,
+            "height": 640
+          },
+          "composer": {
+            "top": 366.8125,
+            "bottom": 501,
+            "left": 17,
+            "right": 343,
+            "height": 134.1875
+          },
+          "note": {
+            "top": 501,
+            "bottom": 522,
+            "left": 17,
+            "right": 343,
+            "height": 21
+          },
+          "footer": {
+            "top": 534,
+            "bottom": 599,
+            "left": 0,
+            "right": 360,
+            "height": 65
+          },
+          "transcript": {
+            "top": 277.5625,
+            "bottom": 357.8125,
+            "left": 17,
+            "right": 343,
+            "height": 80.25
+          },
+          "overflow": false
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 520
+          },
+          "composer": {
+            "top": 246.8125,
+            "bottom": 381,
+            "left": 17,
+            "right": 373,
+            "height": 134.1875
+          },
+          "note": {
+            "top": 381,
+            "bottom": 402,
+            "left": 17,
+            "right": 373,
+            "height": 21
+          },
+          "footer": {
+            "top": 414,
+            "bottom": 479,
+            "left": 0,
+            "right": 390,
+            "height": 65
+          },
+          "transcript": {
+            "top": 218.5625,
+            "bottom": 237.8125,
+            "left": 17,
+            "right": 373,
+            "height": 19.25
+          },
+          "overflow": false
+        }
+      ],
+      "noFeedbackGeometry": {
+        "noteBottom": 803,
+        "footerTop": 815,
+        "footerBottom": 880,
+        "viewportHeight": 880
+      },
+      "consoleErrors": [],
+      "httpErrors": [],
+      "physicalMobileTested": false,
+      "captureOnly": false
+    },
+    "briefProposal": {
+      "scope": "Real local browser/API with in-memory store and server-side simulated planning provider; no browser request interception",
+      "passed": [
+        "explicit allowance without automatic submission",
+        "one saved interpretation call survives reload",
+        "read-only compact delta review",
+        "unknown fields omitted",
+        "protected purpose and tone omitted from proposed changes",
+        "explicit apply returns to inline review",
+        "new known look visible in main proposal",
+        "applied result remains unapproved",
+        "story and approved choices preserved",
+        "single simulated call with usage accounting"
+      ],
+      "realPaidCalls": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "physicalMobileTested": false
+    }
+  },
+  "isolatedPostgres": {
+    "proof": "database/checks/screenplay-planning-pglite.mjs",
+    "passedGroups": 9,
+    "trueConcurrentSessionsTested": false
+  },
+  "nativeDatabaseEvidence": "WRITING_NATIVE_DATABASE_CHECKS_2026-10-19.json",
+  "screenshots": [
+    "test-results/writing-proposal-desktop.png",
+    "test-results/writing-script-mobile-viewport.png",
+    "test-results/writing-supplied-script-desktop.png"
+  ],
+  "realPaidCalls": 0,
+  "activeProductionOpenAiModels": 0,
+  "generationPaused": true,
+  "limitations": [
+    "Provider responses in browser/API tests are simulated; actual OpenAI script quality is unverified.",
+    "Originality comparison uses project sources only; no external corpus, translated copying or semantic/plot clearance.",
+    "Deployed-site/account tests remain deferred; physical mobile devices and actual mobile keyboards untested.",
+    "The optional separate legacy demo browser driver was not executed in this batch after tool setup stalled; the v2 workspace/device, brief, media preview and export-gate regressions passed.",
+    "Supabase function/trigger docs were reviewed; changelog retrieval failed at execution setup and is not claimed verified."
+  ]
+}

@@ -490,3 +490,11 @@ Present readable content and compact settings; reveal one prefilled editor at a 
 
 The free path carries the actual idea and known decisions; it is not a substitute for a validated creative model. Inferred suggestions retain their provenance after approval. Do not invent cast, voice, brand, unsupported claims, budget, permissions or media analysis to make a summary appear complete. Financial authorization and actual production prerequisites remain separate.
 
+# Screenplay workflow implementation — 19 October 2026
+
+The Story stage defaults to writing with AI from the approved brief. No uploaded script is required. Show a readable screenplay with title, logline, treatment, characters, scene action, attributed dialogue and estimated timings. Open one focused editor on demand. Keep optional supplied scripts in a disclosure; preserve valid UTF-8 original text separately, including BOM, initial newline and line endings. Uploaded-original previews are read-only; working-copy edits preserve the source.
+
+Paid writing and revision run only through an explicit reviewed planning allowance and call. Show a saved proposal read-only before applying it as an unapproved version. Preserve untargeted scenes and approved choices through deterministic checks. Prevent approval with unsaved edits, preserve typed text on failed saves and client navigation, and bind asynchronous writes to their original project. If application succeeds but opening Story fails, show the saved result and navigation recovery rather than another Apply action.
+
+Show actual originality coverage, findings and explicit limited-coverage acknowledgement. Current comparison is project text sources only; no-source scripts show coverage unavailable. External scripts, short quotations, translation and semantic/plot similarity remain outside established coverage. A declaration of permitted use is not independently verified ownership. Mobile viewport checks remain distinct from physical-device and keyboard testing. See [writing acceptance](../WRITING_WORKFLOW_ACCEPTANCE.md) and its evidence limits.
+

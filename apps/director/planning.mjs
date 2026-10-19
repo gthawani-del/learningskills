@@ -26,9 +26,9 @@ export function createPlanningController({store,provider,env,now=()=>new Date()}
   }
   let actualMicroUsd;
   try{if(snapshot.usage)actualMicroUsd=calculatePlanningCost({pricing:current.profileSnapshot.price_evidence,model:current.profileSnapshot.model_version,...snapshot.usage,now:Date.parse(current.reservation.createdAt)}).totalMicroUsd;}catch{}
-  const proposal=snapshot.briefProposal??snapshot.plan;
-  if(proposal)try{validatePlanningResult(proposal,current.request);}catch{snapshot={...snapshot,plan:undefined,briefProposal:undefined,planError:'The proposed result did not meet the saved creative request requirements.'};}
-  const result={providerStatus:snapshot.status,...(snapshot.plan?{plan:snapshot.plan}:{}),...(snapshot.briefProposal?{briefProposal:snapshot.briefProposal}:{}),...(snapshot.planError?{planError:snapshot.planError}:{}),...(snapshot.usageError?{usageError:snapshot.usageError}:{}),...(snapshot.error?{error:snapshot.error}:{})};
+  const proposal=snapshot.briefProposal??snapshot.screenplay??snapshot.plan;
+  if(proposal)try{validatePlanningResult(proposal,current.request);}catch{snapshot={...snapshot,plan:undefined,briefProposal:undefined,screenplay:undefined,planError:'The proposed result did not meet the saved creative request requirements.'};}
+  const result={providerStatus:snapshot.status,...(snapshot.plan?{plan:snapshot.plan}:{}),...(snapshot.briefProposal?{briefProposal:snapshot.briefProposal}:{}),...(snapshot.screenplay?{screenplay:snapshot.screenplay}:{}),...(snapshot.planError?{planError:snapshot.planError}:{}),...(snapshot.usageError?{usageError:snapshot.usageError}:{}),...(snapshot.error?{error:snapshot.error}:{})};
   const project=await store.get(projectId,actorId);
   await store.planningCommand('settle_planning',{actorId,projectId,requestId:randomUUID(),expectedVersion:project.version,reservationId:call.id,outcome:actualMicroUsd===undefined?'unknown':'completed',...(actualMicroUsd===undefined?{}:{actualMicroUsd,resultHash:hash(result)})},{usage:snapshot.usage,result,providerResponseId:snapshot.id});
   return store.readPlanningCall(actorId,projectId,call.id);
@@ -58,7 +58,7 @@ export function createPlanningController({store,provider,env,now=()=>new Date()}
   async start(c){
    const replay=await store.replayPlanningCall(c);if(replay?.reservation.submitClaimed||replay&&replay.reservation.status!=='held')return replay;
    await enabled();const ctx=await context(c.actorId,c.projectId,c.operation);
-   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan','interpret_brief']}});
+   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan','interpret_brief','write_script','revise_script']}});
    if(policy.path!=='llm')fail(409,'This operation does not require a new creative planning call.');
    const call=replay?.reservation||await store.planningCommand('reserve_planning',{...c,requestHash:ctx.request.requestHash,quotedMicroUsd:ctx.quote.totalMicroUsd},{...ctx,apiRequest:c});
    return dispatch(c,call,ctx);

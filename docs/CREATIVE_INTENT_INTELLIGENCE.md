@@ -93,7 +93,7 @@ The initial release evidence is recorded in [the original checks JSON](evidence/
 
 Live paid interpretation stays disabled pending a reviewed model/profile and an authorized controlled run. Validate useful question selection, faithful intent interpretation, multilingual briefs and creative preference preservation on representative real requests. The conservative free path and simulated responses do not establish those quality results.
 
-Treatment, script, department breakdown, actual casting/look/voice auditions, generated storyboards and timed animatics remain upcoming work. Attachment content analysis, cross-project preference memory, comprehensive deadline/control fields and full contextual repair orchestration are not implemented by this brief reviewer. The two-attempt quality target remains unproven.
+The subsequent [writing implementation](WRITING_WORKFLOW_ACCEPTANCE.md) adds structured screenplay proposals, review/application, versioned script editing and deterministic project-source originality checks. Real treatment/script quality, department breakdown, actual casting/look/voice auditions, generated storyboards and timed animatics remain upcoming work. General attachment content analysis, cross-project preference memory, comprehensive deadline/control fields and full contextual repair orchestration are not implemented by this brief reviewer. The two-attempt quality target remains unproven.
 
 The compact editor retains project-scoped unsaved text during client-side navigation, blocks approval while an editor is open and disables controls during a pending write. Failed saves retain the visible input. This is not a claim that unsaved editor text survives a full page reload.
 

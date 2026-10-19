@@ -1,6 +1,6 @@
 # Model Router Intelligence Bible
 
-Revision 3 • As of 19 October 2026 UTC • Review draft
+Revision 4 • As of 19 October 2026 UTC • Review draft
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
@@ -12,7 +12,9 @@ Realism-specific production rules, original prompt templates, voice and characte
 
 The primary writing path is approved user brief → LLM treatment and screenplay → deterministic checks → user review → department planning. No script upload is required. Uploaded scripts are an optional alternative: preserve the supplied original and perform only requested editing or adaptation. Ask a focused question only if that intended use is unclear.
 
-Record LLM-generated, user-supplied and mixed provenance per version. User-supplied does not prove ownership. Both generated and supplied scripts require the planned originality/source-use gate before downstream production approval. Generated scripts need comparison against permitted sources even without uploaded references; an instruction to write originally or a model's self-assessment is not a check. Reports must bind exact script, corpus and policy versions, show coverage and unresolved findings, and become stale after relevant changes. Do not index other customers' private scripts in a shared corpus. No match detected within coverage is not universal originality certification. Semantic, translated and plot-level similarity remain limited and can require review. This records requirements only; the scanner, corpus and gate are not implemented by this update.
+Record LLM-generated, user-supplied and mixed provenance per version. User-supplied does not prove ownership. Both generated and supplied scripts require the originality/source-use gate before downstream production approval. Generated scripts need comparison against permitted sources even without uploaded references; an instruction to write originally or a model's self-assessment is not a check. Reports must bind exact script, corpus and policy versions, show coverage and unresolved findings, and become stale after relevant changes. Do not index other customers' private scripts in a shared corpus. No match detected within coverage is not universal originality certification. Semantic, translated and plot-level similarity remain limited and can require review.
+
+The [writing acceptance record](WRITING_WORKFLOW_ACCEPTANCE.md) distinguishes the current implementation: versioned screenplay proposals, explicit application/review, code-enforced targeted revisions and deterministic comparison against the project's supplied text sources. No external screenplay corpus is connected; scripts with no supplied sources report comparison coverage unavailable and require an explicit limited-coverage acknowledgement. This does not fulfil wider external plagiarism detection, real model writing-quality validation or all department planning.
 
 ## Runtime routing/spending advancement — 18 October 2026
 
@@ -687,12 +689,12 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F013 Write screenplay and dialogue
 
-- **Application operation, proposed:** `POST /api/projects/:id/scripts`.
+- **Application operation:** `GET/POST /api/projects/:id/screenplay`; saved proposal application at `POST /api/projects/:id/screenplay/apply-proposal`; paid `write_script`/`revise_script` through the scoped planning-call endpoints.
 - **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
 - **Input → output:** approved brief; treatment; cast; language; runtime; optional supplied script → versioned scene/action/dialogue script; LLM writing is the default and upload is optional.
-- **Acceptance/limits:** Timing must later use measured audio; language quality test; deterministic version-bound originality/source-use checks for generated and supplied scripts with explicit comparison coverage and unresolved findings; no model self-clearance or universal originality claim.
+- **Acceptance/limits:** Scene timing is an estimate pending measured audio. Versioned scripts, provenance, explicit proposal review/application and deterministic targeted revision preservation are implemented. Originality checks currently compare this project's supplied sources only, with explicit limited/unavailable coverage and unresolved findings; no model self-clearance or universal originality claim. Real writing/language quality remains unvalidated.
 - **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
+- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Reviewed production OpenAI profile and controlled writing-quality evaluation, wider permitted comparison corpus and deployed-account acceptance pending. Schema/behavior tests and simulated proposals do not establish creative quality.
 - **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
@@ -1651,13 +1653,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
 ```json
 {
   "document": "Model Router Intelligence Bible",
-  "revision": 3,
+  "revision": 4,
   "as_of": "2026-10-19 UTC",
   "status": "planning; no deployed router or approved production defaults",
   "provider_policy": {
     "fal": "agreed foundation; deployed credential execution untested",
     "supabase": "Director metadata access previously verified; application integration unimplemented",
-    "openai_direct": "user reports API access; proposed primary writing route, not connected/tested",
+    "openai_direct": "Scoped screenplay adapter implemented; production model not activated; paid execution and creative quality untested",
     "openrouter_via_fal": "optional downstream intermediary; no direct account/key assumed; explicit approval needed"
   },
   "fal_candidates": [
@@ -2767,22 +2769,28 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F013",
       "category": "Story and filmmaking intelligence",
       "functionality": "Write screenplay and dialogue",
-      "application_operation": "POST /api/projects/:id/scripts",
+      "application_operation": "POST /api/projects/:id/screenplay",
       "execution_reference": "O01",
       "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
+      "execution_type": "direct OpenAI API",
       "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
       "required_input": "approved brief; treatment; cast; language; runtime; optional supplied script",
       "expected_output": "versioned scene/action/dialogue script; LLM writing is the default and upload is optional",
-      "limits_and_quality_rule": "Timing must later use measured audio; language quality test; deterministic version-bound originality/source-use checks for generated and supplied scripts with explicit comparison coverage and unresolved findings; no model self-clearance or universal originality claim",
+      "limits_and_quality_rule": "Versioned script proposals, explicit application/review and deterministic targeted revisions implemented. Scene timings are estimates pending measured audio. Originality checks cover project supplied sources only, with explicit limited/unavailable coverage; no self-clearance or universal originality claim. Real writing/language quality unvalidated.",
       "prerequisite": "Authorized saved project/version",
       "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production OpenAI profile, controlled writing-quality evaluation, wider permitted comparison corpus and deployed-account acceptance pending",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved",
+      "proposal_application_operation": "POST /api/projects/:id/screenplay/apply-proposal",
+      "planning_operations": [
+        "write_script",
+        "revise_script"
+      ],
+      "implementation_status": "implemented and locally tested with simulated provider; production model disabled"
     },
     {
       "id": "F014",

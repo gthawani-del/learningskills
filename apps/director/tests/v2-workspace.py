@@ -15,7 +15,7 @@ with sync_playwright() as p:
  page.locator('#brief-project-settings').click(); page.locator('.brief-details>summary').click(); page.locator('#brief-form input[name=title]').fill('Tomorrow’s Letter'); page.locator('#brief-form button[type=submit]').click()
  expect(page.locator('.film-brief-summary h2')).to_have_text('Tomorrow’s Letter')
  page.screenshot(path=str(out/'v2-brief-desktop.png'),full_page=True)
- page.locator('#approve-direction').click(); page.locator('#continue-direction').click(); expect(page.locator('#story-form')).to_be_visible()
+ page.locator('#approve-direction').click(); page.locator('#continue-direction').click(); expect(page.locator('#screenplay-workspace')).to_be_visible(); page.locator('.legacy-story>summary').click(); expect(page.locator('#story-form')).to_be_visible()
  page.locator('[name=treatment]').fill('A keeper opens a letter, rejects its warning, and chooses to wait for the last train.')
  page.locator('[name=scenes]').fill('INT. STATION — NIGHT: the letter arrives.\nEXT. PLATFORM — DAWN: the keeper waits.')
  page.locator('#story-form button[type=submit]').click(); page.locator('#approve-story').click()

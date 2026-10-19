@@ -1,0 +1,20 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no provider/native transport",
+  "passed": [
+    "current script artifact recognized; unapproved brief and unresolved source findings hold approval",
+    "direct approval lacks evidence; explicit acknowledgement, ownership, revision and exact archive checked under project lock",
+    "scan input independently bound to exact script text/source collection; complete declared-use review passes with limited coverage",
+    "saving a requested revision preserves current approved script until a replacement is applied",
+    "later review removing a use declaration holds downstream production without changing script version",
+    "source-stale screenplay cannot be approved; revocation remains possible while stale",
+    "write_script v3 reserves/claims once; exact source archive change fences reserve/claim despite unchanged revision/hash; known-ID recovery and settlement survive edit",
+    "new functions are security invoker with empty search path and no browser execute; functional transitions run as service_role",
+    "full rollback removes synthetic projects, approvals and reservations"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "sequential single-connection proof; true concurrent-session lock races remain untested",
+    "fuzzy source matching remains trusted service code; SQL independently binds its exact input and declared-use dispositions",
+    "project source comparison is not global plagiarism detection or legal clearance"
+  ]
+}

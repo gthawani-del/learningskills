@@ -1,4 +1,5 @@
 import {sceneChanged,briefChanged} from './revision-impact.js';
+import {applyScreenplayProjectCommand} from './screenplay-project.js';
 // Explicit browser-only drafts. These records never grant cloud access or authorize spending.
 let database;
 function db(){return database??=new Promise((resolve,reject)=>{const r=indexedDB.open('director-device-drafts',1);r.onupgradeneeded=()=>{r.result.createObjectStore('projects',{keyPath:'id'});r.result.createObjectStore('assets',{keyPath:'id'});};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(Error('Device storage is unavailable.'));});}
@@ -17,5 +18,6 @@ export function draftRevision(previous,fields){const next=structuredClone(previo
  if(briefChanged(previous,next)&&next.story.version===previous.story.version)next.story={...next.story,version:previous.story.version+1};
  next.version=previous.version+1;return next;}
 export async function patchDevice(previous,fields){return saveDevice(draftRevision(previous,fields),previous.version);}
+export async function commandScreenplayDevice(previous,command){const next=applyScreenplayProjectCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}
 export async function addDeviceAsset(project,file,metadata){const d=await db();const asset={id:crypto.randomUUID(),projectId:project.id,name:file.name,mime:file.type||(file.name.endsWith('.md')?'text/markdown':'application/octet-stream'),size:file.size,version:1,...metadata,blob:file};return new Promise((resolve,reject)=>{const tx=d.transaction('assets','readwrite');tx.objectStore('assets').put(asset);tx.oncomplete=()=>resolve(asset);tx.onabort=tx.onerror=()=>reject(Error('Could not store this file on your device.'));});}
 export async function deviceAssets(projectId){return (await all('assets')).filter(a=>a.projectId===projectId);}
