@@ -33,6 +33,26 @@ try:
    page.locator('#mobile-project').click();expect(page.locator('#rail.open')).to_be_visible();page.locator('#rail [data-stage=brief]').click();expect(page.locator('#rail.open')).not_to_be_visible();page.locator('#mobile-director').click();expect(page.locator('#director.open')).to_be_visible();page.locator('#close-director').click();expect(page.locator('#director.open')).not_to_be_visible();page.locator('#continue-direction').click();expect(page.locator('#screenplay-workspace')).to_be_visible()
    page.locator('#mobile-project').click();page.locator('#rail [data-stage=brief]').click()
    page.set_viewport_size({'width':1440,'height':1000});page.reload();expect(page.locator('.workspace')).to_be_visible();assert not page.locator('.mobile-tools').is_visible()
+   # A music panel makes the brief taller than the desktop viewport. Normal clicks
+   # must scroll its approval into view without the composer intercepting them.
+   for width,height in [(1440,1000),(1100,800),(390,844)]:
+    music=browser.new_page(viewport={'width':width,'height':height})
+    music.set_default_timeout(6000);music.goto(url)
+    music.locator('#premise').fill('A singer finds a letter in an empty theatre.')
+    music.get_by_role('button',name='Music video',exact=True).click()
+    music.locator('#start-form button[type=submit]').click()
+    music.locator('[data-edit-brief-field=purpose]').first.click()
+    music.locator('#compact-field-editor [name=value]').fill('A solitary singer and documentary theatre B-roll.')
+    music.locator('#compact-field-editor button[type=submit]').click()
+    expect(music.locator('#compact-field-editor')).not_to_be_visible()
+    expect(music.locator('#compact-brief')).to_contain_text('solitary singer')
+    music.reload();expect(music.locator('#compact-brief')).to_contain_text('solitary singer')
+    music.locator('#approve-direction').click()
+    expect(music.locator('#continue-direction')).to_be_visible()
+    music.screenshot(path=str(out/f'music-brief-approval-{width}.png'),full_page=True)
+    music.locator('#continue-direction').click()
+    expect(music.locator('#screenplay-workspace')).to_be_visible()
+    music.close()
    assert not errors,errors;assert not http,http
   result={'scope':'actual local Chromium viewport geometry and controls','geometry':geometry,'noFeedbackGeometry':clean,'consoleErrors':errors,'httpErrors':http,'physicalMobileTested':False,'captureOnly':os.environ.get('DIRECTOR_FOOTER_CAPTURE_ONLY')=='1'}
   (out/('mobile-footer-before.json' if result['captureOnly'] else 'mobile-footer-results.json')).write_text(json.dumps(result,indent=2));print(json.dumps(result));browser.close()
