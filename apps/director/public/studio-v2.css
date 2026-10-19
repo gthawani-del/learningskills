@@ -19,3 +19,18 @@
 .production-state small{display:block;margin-top:8px;font-size:11px;color:#a4afbd}.audio-lane .lane-track{font-size:11px;min-height:22px;display:flex;align-items:center;padding:3px 8px}.shot-details-bar{padding:0 18px 18px;font-size:11px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.reference-list .asset-item{display:flex;gap:6px;align-items:center}.reference-list .asset-item>span:last-child{min-width:0;overflow-wrap:anywhere}
 
 .shot-sequence-heading{flex:1;margin:0}
+
+/* Mobile briefing reserves separate rows for content, composing and navigation. */
+@media(max-width:999px){
+ body:has(.workspace.briefing){display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+ body:has(.workspace.briefing)>.top,
+ body:has(.workspace.briefing)>#notice{flex:0 0 auto}
+ body:has(.workspace.briefing)>#main{flex:1;min-height:0;overflow:hidden}
+ body .workspace.briefing{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;height:100%;min-height:0;overflow:hidden}
+ body .workspace.briefing>.brief-conversation{grid-row:1;height:auto;min-height:0;overflow:hidden;padding-bottom:12px}
+ body .workspace.briefing .brief-transcript{flex:1 1 0;min-height:0;overflow:auto;padding-bottom:12px;overscroll-behavior:contain}
+ body .workspace.briefing>.brief-conversation>.composer{flex:0 0 auto;margin-bottom:0}
+ body .workspace.briefing>.brief-conversation>.composer-note{flex:0 0 auto;padding:6px 3px 0;line-height:1.5}
+ body .workspace.briefing>.mobile-tools{grid-row:2;position:static;inset:auto;width:100%;margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));flex-wrap:wrap;border-top:1px solid #dce2e8;background:#fafaf8;pointer-events:auto}
+ body:has(.workspace.briefing)>#toast:not(:empty){position:static;flex:0 0 auto;transform:none;width:auto;max-width:none;border-radius:0;box-shadow:none}
+}

@@ -1,0 +1,251 @@
+{
+  "date": "2026-10-19",
+  "baselineCommit": "042cf57a808c3d3274bdd4c21f85dc2bb9ce67d6",
+  "scope": "Mobile briefing footer overlap only",
+  "before": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 880
+      },
+      "noteOverlapsNavigationPx": 17
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "noteOverlapsNavigationPx": 17
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "noteOverlapsNavigationPx": 32
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 640
+      },
+      "noteOverlapsNavigationPx": 32
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 520
+      },
+      "noteOverlapsNavigationPx": 17
+    }
+  ],
+  "after": {
+    "scope": "actual local Chromium viewport geometry and controls",
+    "geometry": [
+      {
+        "viewport": {
+          "width": 390,
+          "height": 880
+        },
+        "composer": {
+          "top": 606.8125,
+          "bottom": 741,
+          "left": 17,
+          "right": 373,
+          "height": 134.1875
+        },
+        "note": {
+          "top": 741,
+          "bottom": 762,
+          "left": 17,
+          "right": 373,
+          "height": 21
+        },
+        "footer": {
+          "top": 774,
+          "bottom": 839,
+          "left": 0,
+          "right": 390,
+          "height": 65
+        },
+        "transcript": {
+          "top": 218.5625,
+          "bottom": 597.8125,
+          "left": 17,
+          "right": 373,
+          "height": 379.25
+        },
+        "overflow": false
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "composer": {
+          "top": 570.8125,
+          "bottom": 705,
+          "left": 17,
+          "right": 373,
+          "height": 134.1875
+        },
+        "note": {
+          "top": 705,
+          "bottom": 726,
+          "left": 17,
+          "right": 373,
+          "height": 21
+        },
+        "footer": {
+          "top": 738,
+          "bottom": 803,
+          "left": 0,
+          "right": 390,
+          "height": 65
+        },
+        "transcript": {
+          "top": 218.5625,
+          "bottom": 561.8125,
+          "left": 17,
+          "right": 373,
+          "height": 343.25
+        },
+        "overflow": false
+      },
+      {
+        "viewport": {
+          "width": 375,
+          "height": 812
+        },
+        "composer": {
+          "top": 538.8125,
+          "bottom": 673,
+          "left": 17,
+          "right": 358,
+          "height": 134.1875
+        },
+        "note": {
+          "top": 673,
+          "bottom": 694,
+          "left": 17,
+          "right": 358,
+          "height": 21
+        },
+        "footer": {
+          "top": 706,
+          "bottom": 771,
+          "left": 0,
+          "right": 375,
+          "height": 65
+        },
+        "transcript": {
+          "top": 277.5625,
+          "bottom": 529.8125,
+          "left": 17,
+          "right": 358,
+          "height": 252.25
+        },
+        "overflow": false
+      },
+      {
+        "viewport": {
+          "width": 360,
+          "height": 640
+        },
+        "composer": {
+          "top": 366.8125,
+          "bottom": 501,
+          "left": 17,
+          "right": 343,
+          "height": 134.1875
+        },
+        "note": {
+          "top": 501,
+          "bottom": 522,
+          "left": 17,
+          "right": 343,
+          "height": 21
+        },
+        "footer": {
+          "top": 534,
+          "bottom": 599,
+          "left": 0,
+          "right": 360,
+          "height": 65
+        },
+        "transcript": {
+          "top": 277.5625,
+          "bottom": 357.8125,
+          "left": 17,
+          "right": 343,
+          "height": 80.25
+        },
+        "overflow": false
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 520
+        },
+        "composer": {
+          "top": 246.8125,
+          "bottom": 381,
+          "left": 17,
+          "right": 373,
+          "height": 134.1875
+        },
+        "note": {
+          "top": 381,
+          "bottom": 402,
+          "left": 17,
+          "right": 373,
+          "height": 21
+        },
+        "footer": {
+          "top": 414,
+          "bottom": 479,
+          "left": 0,
+          "right": 390,
+          "height": 65
+        },
+        "transcript": {
+          "top": 218.5625,
+          "bottom": 237.8125,
+          "left": 17,
+          "right": 373,
+          "height": 19.25
+        },
+        "overflow": false
+      }
+    ],
+    "noFeedbackGeometry": {
+      "noteBottom": 803,
+      "footerTop": 815,
+      "footerBottom": 880,
+      "viewportHeight": 880
+    },
+    "consoleErrors": [],
+    "httpErrors": [],
+    "physicalMobileTested": false,
+    "captureOnly": false
+  },
+  "checks": [
+    "Composer, note and navigation occupy separate nonoverlapping rows",
+    "Note remains clear with and without a visible status message",
+    "Composer send saves a device note",
+    "Project stages and film brief drawers open and close",
+    "Continue to Story remains available through transcript scrolling",
+    "Desktop mobile-tools visibility unchanged"
+  ],
+  "automatedTests": {
+    "passed": 258,
+    "failed": 0,
+    "command": "npm test"
+  },
+  "productionBuild": "npm run build passed",
+  "syntax": "npm run check passed",
+  "limitations": [
+    "Chromium viewport emulation only; physical phones and actual on-screen keyboards not verified",
+    "No deployed account, paid provider or media generation test performed for this CSS fix"
+  ]
+}

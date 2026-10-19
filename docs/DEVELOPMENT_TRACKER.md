@@ -1,6 +1,6 @@
 # Director Studio — Development Tracker
 
-Updated 18 October 2026. Baseline before the routing/quote batch: `76960d5`. This is an implementation ledger, not a replacement blueprint.
+Updated 19 October 2026. Baseline before the routing/quote batch: `76960d5`. This is an implementation ledger, not a replacement blueprint.
 
 Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
 
@@ -35,6 +35,12 @@ Every user must see itemized creation costs before authorization, reserved/pendi
 User feedback supersedes the earlier sixteen-field modal and two-column form. The Brief stage now shows a compact prefilled proposal on the main canvas, with one editor on demand and an optional project-settings drawer. Known look/tone values remain visible; optional unknowns are deferred rather than turned into required fields or generic creative fallbacks. Read-only AI review shows actual changes that survive protected-choice rules. Unsaved edits cannot be approved; scoped drafts and failed-save input are preserved during client navigation.
 
 [Current evidence](evidence/COMPACT_BRIEF_UX_CHECKS_2026-10-18.json): 258 automated tests and production build pass. Actual local device, v2 workspace and simulated-provider browser flows pass without console/HTTP errors. Controlled storage failures/delays are labelled fixtures. No new migration or real paid call; physical mobile, deployed accounts and live creative-quality gates remain outstanding. No requirement is upgraded to full production acceptance.
+
+## Mobile briefing footer fix — 19 October 2026
+
+The fixed bottom navigation covered the composer note by 17–32 pixels at narrow widths. Mobile briefing now reserves its own navigation row, keeps the composer and note in flow, and scrolls the brief independently. Transient status messages also receive space. The fix is limited to mobile briefing; desktop and production layouts retain their existing behavior.
+
+[Evidence](evidence/MOBILE_FOOTER_FIX_2026-10-19.json): actual local Chromium geometry and interactions pass at 390×880, 390×844, 375×812, 360×640 and 390×520, with zero console/HTTP errors; 258 tests and the production build pass. Physical mobile devices and actual on-screen keyboards remain unverified.
 
 ## Current batch and dependencies
 
