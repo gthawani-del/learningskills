@@ -72,7 +72,7 @@ function bindWorkspace(){
 if(state.project.format==='music_video'&&['brief','storyboard'].includes(stage())){
  const host=document.createElement('section');host.className='panel music-video-workspace';host.id='music-video-workspace';
  (stage()==='brief'?$('.brief-transcript'):$('.canvas')).prepend(host);
- mountMusicVideo(host,{project:state.project,assets:state.assets,canStart:()=>frameNavigationAllowed(true)&&!animaticHasUnsaved(),save:async command=>{
+ mountMusicVideo(host,{project:state.project,assets:state.assets,getProject:()=>state.project,canStart:()=>frameNavigationAllowed(true)&&!animaticHasUnsaved(),save:async command=>{
   if(local()){const previous=state.project.version,next=saveMusicVideo(state.project,command,state.assets);return next.version===previous?state.project:await saveDevice(next,previous);}
   return projectFrom(await api(`/api/projects/${state.project.id}/music-video`,{method:'POST',body:command}));
  },onSaved:project=>{state.project=project;render();toast('Song plan saved. No generation or lip-sync approval granted.');}});

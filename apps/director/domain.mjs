@@ -30,6 +30,7 @@ export function patchProject(previous,body){
  const next=structuredClone(previous);
  for(const key of ['title','premise','direction','language'])if(body[key]!==undefined)next[key]=text(body[key],key,key==='title'?200:10000);
  if(!next.title.trim())fail(400,'A title is required.');
+ if(body.format!==undefined){if(!['short_film','music_video','advertisement'].includes(body.format))fail(400,'Invalid project format.');next.format=body.format;}
  if(body.stage!==undefined){if(!stages.includes(body.stage))fail(400,'Invalid film stage.');next.stage=body.stage;}
  if(body.duration!==undefined){if(!Number.isFinite(body.duration)||body.duration<1||body.duration>3600)fail(400,'Runtime must be between 1 and 3600 seconds.');next.duration=body.duration;}
  if(body.story!==undefined){const s=body.story;if(!s||!Array.isArray(s.scenes)||s.scenes.length>200)fail(400,'Invalid scene list.');

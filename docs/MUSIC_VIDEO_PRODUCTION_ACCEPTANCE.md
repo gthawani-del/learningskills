@@ -37,3 +37,7 @@ Rollback: use the existing release procedure to revert this feature's commit or 
 ## Playback regression found during release checks
 
 The first broad run exposed a timing-sensitive silent-preview failure. A deliberately stale first animation callback reproduced a negative playhead (`Invalid playhead frame`). Clamping the derived frame to zero fixed the reproduction. The existing silent animatic browser scenario now injects that timing condition and verifies actual advancement, seeking and natural completion; original-audio WAV/MP3 regressions remain separate. This is a one-expression playback fix, not a new player or testing framework.
+
+## Red-team follow-up
+
+See `MUSIC_VIDEO_RED_TEAM_REVIEW_2026-10-19.md`. Its follow-up binds the existing animatic to the exact song-plan version, original audio, selected excerpt and integer-frame timing. Independent proportional fitting and detached timing editing are disabled for that bound preview. This supersedes the first-checkpoint limitation that music timing and animatic timing were disconnected. Automatic song analysis, generated singing proof and final-film export remain separate unfinished work.

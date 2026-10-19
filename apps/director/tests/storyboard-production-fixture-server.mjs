@@ -22,8 +22,8 @@ export function syntheticStoryboardFrameModel() {
   return model;
 }
 
-export async function storyboardProductionFixture({ file, prepared = false, approveSpec = false, shareIdentityLookAsset = false, submitThrows = false, pollThrows = false, downloadFailures = 0, outputBytes = null, malformedOutput = false, terminalStatus = 'COMPLETED' } = {}) {
-  const f = await referenceFixture({ file }), { store, storage } = f; let p = f.project;
+export async function storyboardProductionFixture({ projectSettings = {}, file, prepared = false, approveSpec = false, shareIdentityLookAsset = false, submitThrows = false, pollThrows = false, downloadFailures = 0, outputBytes = null, malformedOutput = false, terminalStatus = 'COMPLETED' } = {}) {
+  const f = await referenceFixture({ projectSettings, file }), { store, storage } = f; let p = f.project;
   async function referenceFacts() { return { assets: await store.records('assets', p.id), candidates: await store.referenceCandidates(p.ownerId, p.id) }; }
   async function refCommand(action, fields = {}) {
     const approvals = await store.records('approvals', p.id), next = applyReferenceProductionCommand(p, { expectedVersion: p.version, action, ...fields }, approvals, await referenceFacts());
