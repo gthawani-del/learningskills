@@ -4,6 +4,8 @@ The approved engineering improvements reuse the existing test infrastructure. `n
 
 QA setup PR [#2](https://github.com/gthawani-del/learningskills/pull/2) passed 700 local automated cases, build, twelve existing browser scripts and fifteen SQL proof groups. Its first hosted run exposed H.264 playback failure with the downloaded Chromium build. Selecting the hosted runner's existing Chrome made the unchanged playback assertion and full CI pass in [run 39275749984](https://github.com/gthawani-del/learningskills/actions/runs/39275749984). The setup merged as `80350e7c848503b6c8b9c28b4ab66034b69332a0`. Branch protection has not been changed; an administrator can make the `qa` check required. No agents were spawned for this work.
 
+The subsequent [original-audio increment](ANIMATIC_AUDIO_ACCEPTANCE.md) adds linked WAV/MP3 preview. The silent-only scope and counts below are the historical first-increment evidence.
+
 ## First timed storyboard increment
 
 The Storyboard stage now has a compact silent timing preview. It consumes the exact currently selected and approved private PNG for every shot, in the approved sequence order. Play/pause, scrubbing, integer frame counts and one-shot-at-a-time timing edits work without provider calls. Suggested durations come from shot contracts; explicit preparation records them as estimates. A manually saved timing version is a declared human timing choice, not measured song or dialogue alignment. Shot labels use readable titles.

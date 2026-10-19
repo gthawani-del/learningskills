@@ -1,0 +1,462 @@
+{
+  "date": "2026-10-19",
+  "baselineCommit": "d40e402ed024d36837609f4510a30dd33573ee1e",
+  "scope": "Existing original WAV/MP3 linked to approved private storyboard frames; local APIs and native browser decoding, synthetic tone/image fixtures; no provider/media quality proof",
+  "automated": {
+    "tests": 715,
+    "pass": 715,
+    "fail": 0,
+    "skipped": 0
+  },
+  "fastQA": {
+    "mode": "fast",
+    "changed": [
+      "apps/director/public/animatic-core.js",
+      "apps/director/public/animatic-player.js"
+    ],
+    "selected": {
+      "tests": [
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs"
+      ],
+      "browsers": [
+        "animatic-browser",
+        "animatic-audio-browser",
+        "animatic-audio-mp3-browser"
+      ],
+      "sql": false,
+      "reason": "Conservative fallback for tooling or an unclassified dependency."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.37,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 106.21,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.51,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.33,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.88,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 8.32,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "fullQA": {
+    "mode": "full",
+    "changed": [],
+    "selected": {
+      "tests": [
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs"
+      ],
+      "browsers": [
+        "creative-brief-browser",
+        "v2-workspace",
+        "mobile-footer-browser",
+        "compact-proposal-browser",
+        "registry-browser",
+        "writing-browser",
+        "planning-ui-browser",
+        "department-browser",
+        "department-revision-browser",
+        "storyboard-browser",
+        "reference-browser",
+        "storyboard-production-browser",
+        "animatic-browser",
+        "animatic-audio-browser",
+        "animatic-audio-mp3-browser"
+      ],
+      "sql": true,
+      "reason": "Full release checks."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.37,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 86.84,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.54,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 4.21,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 5.1,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 9.27,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.7,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 3.49,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 5.58,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.27,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 5.67,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 6.27,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 7.29,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 7.01,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 5.9,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.44,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 6.61,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 30.18,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "wavBrowser": {
+    "scope": "Actual local APIs/private original WAV, Chromium audio decoding and playback clock; synthetic image-generation fixtures",
+    "passed": [
+      "explicit original-audio binding and decoded-duration mismatch hold",
+      "proportional integer timing fit, audio-clock playback, seeking and complete natural audio end",
+      "immediate edit controls, saved source pins and timing survive reload; stage navigation stops detached audio",
+      "390px source controls clear footer; explicit unlink retains original audio bytes and prior versions"
+    ],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "audioFormat": "wav",
+    "decodedDurationSeconds": 3,
+    "audioClockSample": {
+      "audio": 0.260709,
+      "frame": 6
+    },
+    "mobileGeometry": {
+      "overflow": false,
+      "footerTop": 786,
+      "buttons": [
+        {
+          "bottom": 629.96875,
+          "hit": true
+        },
+        {
+          "bottom": 635.96875,
+          "hit": true
+        }
+      ]
+    },
+    "realPaidCalls": 0,
+    "physicalMobileTested": false,
+    "deployedWebsiteTested": false,
+    "automaticBeatOrLyricAnalysis": false,
+    "serverDurationVerified": false
+  },
+  "mp3Browser": {
+    "scope": "Actual local APIs/private original MP3, Chromium audio decoding and playback clock; synthetic image-generation fixtures",
+    "passed": [
+      "explicit original-audio binding and decoded-duration mismatch hold",
+      "proportional integer timing fit, audio-clock playback, seeking and complete natural audio end",
+      "immediate edit controls, saved source pins and timing survive reload; stage navigation stops detached audio",
+      "390px source controls clear footer; explicit unlink retains original audio bytes and prior versions"
+    ],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "audioFormat": "mp3",
+    "decodedDurationSeconds": 3.168,
+    "audioClockSample": {
+      "audio": 0.262042,
+      "frame": 6
+    },
+    "mobileGeometry": {
+      "overflow": false,
+      "footerTop": 786,
+      "buttons": [
+        {
+          "bottom": 629.96875,
+          "hit": true
+        },
+        {
+          "bottom": 635.96875,
+          "hit": true
+        }
+      ]
+    },
+    "realPaidCalls": 0,
+    "physicalMobileTested": false,
+    "deployedWebsiteTested": false,
+    "automaticBeatOrLyricAnalysis": false,
+    "serverDurationVerified": false
+  },
+  "sourceSha256": {
+    "apps/director/api.mjs": "8dbd0aafc10939d3061ef3dfc64a5552e221af97478c2e771bd442ffac96ea37",
+    "apps/director/public/animatic-core.js": "0ca8b517d8a291f6cc2f2e457fb7fdc9c1d5d8b5e414eb8e1a124498f3caad66",
+    "apps/director/public/animatic-player.js": "fc532d0c88f159b6e93ccf0888bad49c3c07abef338ca319453e61e2f3263149",
+    "apps/director/public/app.js": "454a3c0448ab138157059e6ace540d1b74105a206914472b95c72f35b458d3a5",
+    "apps/director/tests/animatic-audio.test.mjs": "205c05689e435330f8449ff0d542c4378e74f87b10aa42239e8023d995317f22",
+    "apps/director/tests/animatic-audio-browser.py": "1166d6b0c62ec7d9d916abdf1fc9ba6f135c86879f71fce8d5199363b2060f0c",
+    "apps/director/tests/animatic-fixture-server.mjs": "602273914d7e4543630d6b473bf0c4c5e7228fa34aa15d2773d5301f8aeacc88",
+    "scripts/qa-director.mjs": "251043240abbcfd02c03f9f2fd6cae4f841ff2d43f47ff642208338a6080bee9",
+    "scripts/test-director.mjs": "d74df579bc7ce273238671a92df340658e1a9d25742e698dd6b6544fdcd04f07"
+  },
+  "screenshotSha256": {
+    "animatic-audio-desktop.png": "04a9b5e2dee6334448fc8f71b131f4bf6077add01c22c02c3911e310c07e974b",
+    "animatic-audio-mp3-mobile.png": "c76825e070ff5bf81e81dc865df15c221f9b5b2f516a68b2df7d124bca3f712b",
+    "animatic-audio-mobile.png": "ae04f211bcd7562991d9786af6ab8a8a75162db6270205f9174a526fdef24235",
+    "animatic-audio-mp3-desktop.png": "ede34488f7c627e0da5658cde7a8048769588b6888c162ee540c2d3c5d35f087"
+  },
+  "regressionFixed": "Existing private audio delivery lacked byte-range responses; Chromium reported seekable [0,0] and reset seek destination to zero. Authenticated single-range delivery passed strict seek destination for WAV and MP3.",
+  "paidProviderCalls": 0,
+  "newDependencies": 0,
+  "newDatabaseMigrations": 0,
+  "newAgentsSpawned": 0,
+  "securitySettingsChanged": false,
+  "physicalMobileTested": false,
+  "deployedAccountTested": false,
+  "knownLimits": [
+    "Browser duration is preview metadata, not authoritative backend/beat/lyric analysis.",
+    "Current 2 MB upload limit remains. Storage fetches the full owned object for range requests.",
+    "No audio replacement, automatic trimming/looping/stretching, sound mixing or audiovisual approval.",
+    "No encoded animatic export or final motion-production gate.",
+    "Live account integration remains blocked by production runtime configuration; no security settings changed.",
+    "Physical devices, real media/model quality and a hosted rollback rehearsal remain unverified."
+  ],
+  "rollbackCommit": "d40e402ed024d36837609f4510a30dd33573ee1e"
+}

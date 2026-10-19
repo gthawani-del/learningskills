@@ -6,7 +6,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {once} from 'node:events';
 
 const root=resolve(import.meta.dirname,'..');
-export const browsers=['creative-brief-browser','v2-workspace','mobile-footer-browser','compact-proposal-browser','registry-browser','writing-browser','planning-ui-browser','department-browser','department-revision-browser','storyboard-browser','reference-browser','storyboard-production-browser','animatic-browser'];
+export const browsers=['creative-brief-browser','v2-workspace','mobile-footer-browser','compact-proposal-browser','registry-browser','writing-browser','planning-ui-browser','department-browser','department-revision-browser','storyboard-browser','reference-browser','storyboard-production-browser','animatic-browser','animatic-audio-browser','animatic-audio-mp3-browser'];
 const sharedUI=/public\/(app\.js|.*\.css|index\.html|api-client\.js|device-drafts\.js)$/;
 async function nodeTests(){const source=await readFile(resolve(root,'scripts/test-director.mjs'),'utf8');return [...source.matchAll(/import\(['"]([^'"]+\.test\.mjs)['"]\)/g)].map(m=>relative(root,resolve(root,'scripts',m[1])));}
 async function imports(path,seen=new Set()){
@@ -26,7 +26,7 @@ export async function selectChecks(changed){
  const chosen=new Set();
  for(const p of behavioral){
   if(tooling||sharedUI.test(p)||/^(api\/|apps\/director\/(api|server|store|domain|spending|production-state)\.)/.test(p)){for(const b of browsers)chosen.add(b);continue;}
-  const rules=[[/creative-brief/,['creative-brief-browser','compact-proposal-browser']],[/screenplay|writing|originality/,['writing-browser']],[/department-revision/,['department-revision-browser']],[/department/,['department-browser','department-revision-browser']],[/reference/,['reference-browser','storyboard-production-browser']],[/storyboard-handoff/,['storyboard-browser','storyboard-production-browser']],[/storyboard-production|storyboard-frame|storyboard-pricing/,['storyboard-production-browser']],[/registry/,['registry-browser']],[/planning/,['planning-ui-browser']],[/animatic/,['animatic-browser']]];
+  const rules=[[/creative-brief/,['creative-brief-browser','compact-proposal-browser']],[/screenplay|writing|originality/,['writing-browser']],[/department-revision/,['department-revision-browser']],[/department/,['department-browser','department-revision-browser']],[/reference/,['reference-browser','storyboard-production-browser']],[/storyboard-handoff/,['storyboard-browser','storyboard-production-browser']],[/storyboard-production|storyboard-frame|storyboard-pricing/,['storyboard-production-browser']],[/registry/,['registry-browser']],[/planning/,['planning-ui-browser']],[/animatic/,['animatic-browser','animatic-audio-browser','animatic-audio-mp3-browser']]];
   for(const[pattern,names]of rules)if(pattern.test(p))for(const name of names)if(browsers.includes(name))chosen.add(name);
   if(p.endsWith('.py')){const name=p.split('/').at(-1).slice(0,-3);if(browsers.includes(name))chosen.add(name);}
  }
@@ -63,7 +63,7 @@ export async function main(args=process.argv.slice(2)){
    await access(env.DIRECTOR_CHROMIUM_PATH);execFileSync('ffmpeg',['-version'],{stdio:'ignore'});execFileSync('ffprobe',['-version'],{stdio:'ignore'});
    const {createServer}=await import('../apps/director/server.mjs');server=await createServer({env:{NODE_ENV:'test'}});server.listen(0,'127.0.0.1');await once(server,'listening');
    env.DIRECTOR_TEST_URL=`http://127.0.0.1:${server.address().port}`;
-   for(const name of selected.browsers)await run(name,python,[`apps/director/tests/${name}.py`],name==='writing-browser'?{DIRECTOR_WRITING_STAGE_FAILURE:'1'}:{});
+   for(const name of selected.browsers)await run(name,python,[`apps/director/tests/${name==='animatic-audio-mp3-browser'?'animatic-audio-browser':name}.py`],name==='writing-browser'?{DIRECTOR_WRITING_STAGE_FAILURE:'1'}:name==='animatic-audio-mp3-browser'?{DIRECTOR_ANIMATIC_AUDIO_FORMAT:'mp3'}:{});
   }
   if(selected.sql){env.PGLITE_PACKAGE=fileURLToPath(import.meta.resolve('@electric-sql/pglite'));await run('sql-proof',process.execPath,['database/checks/storyboard-production-pglite.mjs'],{PROOF_OUTPUT:resolve(out,'sql-proof.json')});}
  }catch(error){failed=error;console.error(error.message);}finally{
