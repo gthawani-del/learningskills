@@ -219,8 +219,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='animatic'&&['GET','POST'].includes(req.method)){
  const [assets,approvals,referenceCandidates,candidates]=await Promise.all([store.records('assets',id),store.records('approvals',id),store.referenceCandidates(user.id,id),store.storyboardCandidates(user.id,id)]);
  const frames=storyboardProductionContext(project,approvals,{assets,referenceCandidates,candidates});
- if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames)});
- const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames)});
+ if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames,assets)});
+ const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
  }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
@@ -237,7 +237,18 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
  if(content&&req.method==='GET'){const asset=(await store.records('assets',id)).find(a=>a.id===content[1]);if(!asset)fail(404,'Reference not found.');let bytes;
  bytes=await mediaStorage.get(asset.storageKey,{bucket:asset.bucket||'director-media'});
- res.writeHead(200,{'Content-Type':asset.mime.startsWith('image/')||asset.mime.startsWith('video/')||asset.mime.startsWith('audio/')?asset.mime:'application/octet-stream','Content-Disposition':`attachment; filename="reference-${asset.id}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(bytes);}
+ const headers={'Content-Type':asset.mime.startsWith('image/')||asset.mime.startsWith('video/')||asset.mime.startsWith('audio/')?asset.mime:'application/octet-stream','Content-Disposition':`attachment; filename="reference-${asset.id}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'};
+ if(asset.mime.startsWith('audio/')){
+  headers['Accept-Ranges']='bytes';headers['Content-Length']=bytes.length;
+  const range=req.headers.range;
+  if(range!==undefined){
+   const match=typeof range==='string'&&range.match(/^bytes=(\d*)-(\d*)$/);let start,end;
+   if(match&&(match[1]||match[2])){if(match[1]){start=Number(match[1]);end=match[2]?Number(match[2]):bytes.length-1;}else{const suffix=Number(match[2]);if(Number.isSafeInteger(suffix)&&suffix>0){start=Math.max(0,bytes.length-suffix);end=bytes.length-1;}}}
+   if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||start>=bytes.length||end<start){res.writeHead(416,{...headers,'Content-Range':`bytes */${bytes.length}`,'Content-Length':0});return res.end();}
+   end=Math.min(end,bytes.length-1);res.writeHead(206,{...headers,'Content-Range':`bytes ${start}-${end}/${bytes.length}`,'Content-Length':end-start+1});return res.end(bytes.subarray(start,end+1));
+  }
+ }
+ res.writeHead(200,headers);return res.end(bytes);}
  if(action==='proposals'&&req.method==='POST'){const proposal=proposalFor(project,body,await store.records('assets',id));await store.add('audit',{id:randomUUID(),projectId:id,actorId:user.id,type:'direction_prepared',details:proposal});return reply(201,{proposal});}
  if(action==='jobs'&&req.method==='GET')return reply(200,{jobs:await store.records('jobs',id)});
  const jobMatch=action?.match(/^jobs\/([0-9a-f-]+)(?:\/(dispatch|poll))?$/);

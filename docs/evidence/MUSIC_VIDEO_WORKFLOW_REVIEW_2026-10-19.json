@@ -1,0 +1,22 @@
+{
+  "scope": "Actual local customer UI/device draft; no uploaded song, provider generation or cloud account",
+  "format": "music_video",
+  "briefText": "YOUR DIRECTION\nSuggested\n\nDevelop a music-video concept around the supplied idea: Create a 2 minute Hinglish music video from my song, combining a singing artist with narrative B-roll. Preserve the original vocals.\n\nMusic video\n60 seconds\nEnglish\nEdit direction\nAdd tone\nChoices & assumptions\nProduction handoffs\nApprove direction\n\nApproval includes the visible suggestions and deferred choices. It does not start a paid call.",
+  "stageNavigation": "01\nBrief\n02\nStory\n03\nCast & World\n04\nStoryboard\n05\nProduction\n06\nEdit & Review\n07\nExport",
+  "storyboardText": "Create a film\nDevice draft\n01\nBrief\n02\nStory\n03\nCast & World\n04\nStoryboard\n05\nProduction\n06\nEdit & Review\n07\nExport\nCAST & WORLD Open library\n\nNo references yet\n\nPROJECT REFERENCES\n+ Add reference\nStoryboard\n\nCreate a 2 minute Hinglish music video from my song, combining a\n\nDevice draft\nStoryboard handoff\n\nPrepare shot contracts from your approved script and department plans.\n\nAI planning & proposals\n\nReview the written shot plan, then prepare and approve each frame direction before creating real storyboard images. Use the silent timing preview above; audio synchronization and moving footage follow later.\n\nApprove the current direction, script and all department plans before preparing this handoff.\n\nReview direction\nReview script\nReview department plans\nPrepare shot contracts\nFree \u00b7 no model call or media generation\nReadiness notes \u00b7 5\nShot sequence\n+ Add shot\n\n0 shots \u00b7 0 seconds planned\n\nPlan the visual story\n\nAdd your first shot to define its action, framing and duration.\n\nCreative Director\nProject direction\nView activity\nDefine the action, framing and duration of each shot. Keep the story readable before committing to production.\nCurrent selection\n\nWhole project\n\nDirection stays on this device.\nMessage the Director\n\uff0b\n/ Skills\n@ References\nMic\nSend \u2191\n\nNotes and references stay on this device.",
+  "scriptErrors": [],
+  "physicalMobileTested": false,
+  "deployedWebsiteTested": false,
+  "date": "2026-10-19",
+  "screenshots": {
+    "music-video-current-brief.png": "9141d2af20e91de635eff61c828aba24f32f9e55f535ef0cb706f9c53b1bc34f",
+    "music-video-current-storyboard.png": "9e53e507de48182c1bba669ddc73873162c8f506bcea7a2d8cfaec533b6f22bd",
+    "music-video-current-brief-mobile.png": "e84055acb21a902754de4bd083a120bf713582a78746af243d7953586701c79b"
+  },
+  "sourceSha256": {
+    "apps/director/public/creative-brief-core.js": "a054082f44312719bcd1f82eb86c8b36ef48f11cccfde48fd53db1e78d984536",
+    "apps/director/public/app.js": "454a3c0448ab138157059e6ace540d1b74105a206914472b95c72f35b458d3a5",
+    "apps/director/public/storyboard-handoff-core.js": "c8c27377054892ef57fbc9687bc1180abbbd04282bfc8502d8e9170be9cf1f53",
+    "apps/director/public/department-guidance.js": "ba7e946ffc49818e94f12192b199ede9902d95db3b2daa9d8606ce01be19fef8"
+  }
+}

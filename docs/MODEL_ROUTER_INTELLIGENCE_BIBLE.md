@@ -1,10 +1,22 @@
 # Model Router Intelligence Bible
 
-Revision 10 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 11 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
 This bible separates the decision specification and historical candidate research from the implemented contracts recorded in the current advancement sections below. The original research did not execute paid models or validate creative outputs; documentation updates do not activate candidates or certify production quality. Official documentation, a valid schema, implemented request handling, a connected account and a finished film are different evidence levels.
+
+## Music-video journey gap — 19 October 2026
+
+The [music-video workflow review](MUSIC_VIDEO_WORKFLOW_REVIEW.md) records an actual customer-flow check and the required song-first implementation order. The generic brief can contradict explicitly requested duration/language; department guidance is not an operational B-roll or lip-sync workflow. Partial still/animatic features do not complete song intelligence or a finished music video. Original master audio and selective visible-singing sync remain controlling rules.
+
+## Original-audio timed storyboard preview — 19 October 2026
+
+The next F040 increment links one existing project-scoped master-song/dialogue WAV or MP3 to an exact saved timing version. Audio choice and proportional duration fitting are explicit; nothing chooses a voice, regenerates sound, trims, loops or stretches the original. The private audio player supplies the playback clock and browser-decoded duration. Complete-duration coverage is required before playback, within one frame of rounding. This is preview metadata, not backend-verified song, lyric or beat analysis.
+
+Server-derived asset/version/checksum pins and existing owner/version checks preserve original files and earlier timing versions. Changed or missing sources hold playback. Single byte-range responses on the existing private audio-content route support seeking after the same access checks. No provider calls, new dependencies or database migration are required. The compact audio controls reuse the existing storyboard workspace.
+
+This remains partial F040: generated performances, sound mixing, deterministic rendered animatic files, audiovisual approval, final motion-production gates, deployed account acceptance and physical-device checks remain outstanding. See [audio-preview acceptance](ANIMATIC_AUDIO_ACCEPTANCE.md). The earlier silent-only section below records the first increment.
 
 ## Silent timed storyboard draft — 19 October 2026
 
@@ -3521,18 +3533,18 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F040",
       "category": "Cast, design and storyboard",
       "functionality": "Assemble timed animatic before motion production",
-      "application_operation": "POST /api/projects/:id/animatics",
+      "application_operation": "GET/POST /api/projects/:id/animatic",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Worker FFmpeg timeline composer",
+      "external_endpoint_or_tool": "Existing edit-record/private-media browser preview; worker render still planned",
       "execution_type": "application/service/worker",
-      "evidence": "P: proposed implementation contract",
-      "required_input": "approved frames; timing; rough authorized audio",
-      "expected_output": "playable animatic and render manifest",
-      "limits_and_quality_rule": "Labeled animatic; not generated moving film",
-      "prerequisite": "Approved plan; worker",
-      "billing_basis": "Service/compute/storage usage; quote/configuration pending",
+      "evidence": "Partial implementation: local HTTP/private-image/WAV/MP3 browser tests; no paid, hosted-account or physical-device acceptance",
+      "required_input": "Current approved frame sequence; integer timing; optional explicitly linked existing owned project WAV/MP3 original",
+      "expected_output": "Versioned silent/original-audio still preview; encoded file/render manifest remains planned",
+      "limits_and_quality_rule": "Exact frame/source/version/checksum bindings; complete browser-decoded audio duration; explicit proportional fit. No automatic beats/lyrics, trimming, looping, stretching, sound generation or final production approval.",
+      "prerequisite": "Current approved frame selections and ordered shot plan; linked source must decode with bounded duration for playback",
+      "billing_basis": "No model call for current draft preview; existing storage/hosting usage applies. Worker compute/storage quote remains pending.",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Worker deployment and render test pending",
+      "release_gate_or_blocker": "Backend analysis, rendered export, audiovisual approval/final-motion gates, hosted account/device/media-quality acceptance remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Worker FFmpeg timeline composer",

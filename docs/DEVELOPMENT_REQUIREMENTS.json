@@ -1205,10 +1205,12 @@
       ],
       "tests": [
         "apps/director/tests/animatic.test.mjs",
-        "apps/director/tests/animatic-browser.py"
+        "apps/director/tests/animatic-browser.py",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/animatic-audio-browser.py"
       ],
       "verification": "local-automated-and-browser; production-unverified",
-      "gap": "Playable silent draft timing uses exact approved private storyboard frames, ordered sequence pins, integer frame counts, explicit versioned edit-record saves, seeking, unsaved-edit protection and stale-input holds. Authoritative song/dialogue timing, audio alignment, rendered animatic export, audiovisual approval, native account integration and final-motion generation gates remain incomplete.",
+      "gap": "Silent and original-audio storyboard timing previews reuse exact approved frames and explicit versioned edits. Existing project WAV/MP3 sources bind by asset/version/checksum; browser-decoded complete duration, proportional integer fitting, audio-clock playback, private range seeking, reload, stage cleanup and source preservation pass locally. Backend song/dialogue/beat/lyric analysis, sound mixing, encoded animatic export, audiovisual approval, deployed-account acceptance and final motion gates remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F040",
       "dependencies": [
         "versioned-project-records",
@@ -4484,7 +4486,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "82033a104b4c97fedb223f7cce5374007f8657c29e65c94b1c932e9424cb53ca"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "8991ca33c828a77c5ad7347ed32d213fd166f1094030e228399986eb7d7462f9"
   },
-  "currentBatch": "Engineering QA setup adds shared affected/full commands, portable existing tools, automatic PR/main QA, recorded Vercel access diagnosis and a lightweight release/rollback runbook. QA PR #2 passed local 700 cases and all existing browser/SQL checks, then passed GitHub Actions and merged as 80350e7c848503b6c8b9c28b4ab66034b69332a0. Timed storyboard draft adds exact frame/sequence pins, silent browser playback, seeking, integer timing versions and revoked/stale-source holds using existing edit records/private media. Targeted animatic tests and actual local browser pass. Final combined release checks are recorded in ANIMATIC_DRAFT_ACCEPTANCE.md and evidence/ENGINEERING_QA_ANIMATIC_CHECKS_2026-10-19.json. F040 moves to partial: 71 partial, 90 missing/unverified, 6 deferred, zero fully production-accepted. No paid generation, security changes or new database migration. Song/dialogue alignment, audio, rendered animatic export, final motion gates, physical devices, real accounts, billing and model quality remain unverified. Production loads with valid executor TLS, but projects return configuration-related503; the historical preview redirects to Vercel Authentication. Access follow-up does not block local development."
+  "currentBatch": "Original-audio animatic preview extends the tested silent draft using existing edit records, private storage and QA. Explicit WAV/MP3 binding, complete-duration proportional fitting, audio-clock playback and seeking preserve exact sources/history; no provider call, new dependency or database migration. Evidence: ANIMATIC_AUDIO_ACCEPTANCE.md and evidence/ANIMATIC_AUDIO_CHECKS_2026-10-19.json. F040 stays partial; counts stay 71 partial, 90 missing/unverified, 6 deferred and zero fully production-accepted. Backend analysis, sound mixing, rendered animatic export, audiovisual/final-motion gates, real accounts and physical devices remain unverified. Music-video workflow audit records generic-brief duration/language conflicts and missing song-map/B-roll/lip-sync integration; see MUSIC_VIDEO_WORKFLOW_REVIEW.md. No implementation status is upgraded by that audit."
 }
