@@ -1,0 +1,308 @@
+{
+  "date": "2026-10-19",
+  "scope": "Native additive migration and read-only metadata/security checks; not real application account, provider, concurrency or latency acceptance",
+  "project": "Director",
+  "projectId": "ygyjqubrpqwfgbquwqeo",
+  "migrationSha256": "a252eabdda933a7da139c84485274f9a3b88a6baa7849cf972e10a1eadcdc30f",
+  "rls": {
+    "director_jobs": true,
+    "director_assets": true,
+    "director_reviews": true,
+    "director_projects": true,
+    "director_approvals": true,
+    "director_artifacts": true,
+    "director_proposals": true,
+    "director_quote_records": true,
+    "director_reference_candidates": true
+  },
+  "jobs": 0,
+  "bucket": {
+    "id": "director-reference-media",
+    "public": false,
+    "fileSizeLimit": 10485760,
+    "allowedMimeTypes": [
+      "image/png"
+    ]
+  },
+  "functions": [
+    {
+      "name": "director_approve_reference",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_artifact_is_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_authorize_quote",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_document_approval_ready",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_persist_quote",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_archive_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_asset_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_candidate_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_candidate_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_direction_approved",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_document_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_job_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_legacy_artifact_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_quote_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_review_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_selection_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_source_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reference_subject_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_register_reference_candidate",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reserve_reference_job",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_review_reference_job",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_save_reference_production",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_media_ready",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    }
+  ],
+  "migration": {
+    "name": "director_reference_production",
+    "version": "20261019132520"
+  },
+  "activeModels": 0,
+  "generationPaused": true,
+  "nativeCandidates": 0,
+  "planningReservations": 0,
+  "nativeReferenceArchives": 0,
+  "referenceEvidenceColumn": {
+    "type": "jsonb",
+    "nullable": "YES"
+  },
+  "candidateTablePrivileges": {
+    "anonSelect": false,
+    "serviceDelete": false,
+    "serviceInsert": true,
+    "serviceSelect": true,
+    "serviceUpdate": false,
+    "authenticatedSelect": false
+  },
+  "securityAdvisories": [],
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "customerAccountsTested": false,
+  "nativeLatencyTested": false
+}

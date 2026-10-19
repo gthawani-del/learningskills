@@ -1,3 +1,4 @@
+import {applyReferenceProductionCommand} from './reference-production-core.js';
 import {applyStoryboardHandoffCommand} from './storyboard-handoff-core.js';
 import {applyDepartmentCommand} from './department-plan-core.js';
 import {sceneChanged,briefChanged} from './revision-impact.js';
@@ -27,3 +28,5 @@ export async function deviceAssets(projectId){return (await all('assets')).filte
 export async function commandDepartmentsDevice(previous,command){const next=applyDepartmentCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}
 
 export async function commandStoryboardDevice(previous,command){const next=applyStoryboardHandoffCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}
+
+export async function commandReferenceDevice(previous,command){const next=applyReferenceProductionCommand(previous,command,previous.approvals||[],{assets:[],candidates:[]});return next.version===previous.version?previous:saveDevice(next,previous.version);}

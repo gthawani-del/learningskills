@@ -1,3 +1,4 @@
+import {createReferenceController} from './reference-production.mjs';
 import {createPlanningController} from './planning.mjs';
 import {changeDepartmentPlans} from './department-plans.mjs';
 import {changeStoryboardHandoff} from './storyboard-handoff.mjs';
@@ -48,18 +49,19 @@ export function validateUpload(body){
  if(body.mime&&body.mime!==mime&&!(mime==='video/mp4'&&body.mime==='video/quicktime'))fail(415,'File content does not match its declared type.');
  return {bytes,mime};
 }
-export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders,planningProvider:providedPlanningProvider}={}){
+export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders,planningProvider:providedPlanningProvider,storage:providedStorage}={}){
  const demo=env.DIRECTOR_DEMO==='1'&&env.NODE_ENV!=='production'&&!env.VERCEL;
  const connected=!!(env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY);
  const store=providedStore||(demo?await new LocalStore(env.DIRECTOR_DATA_FILE||'/tmp/director-studio/projects.json').init():connected?new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher}):null);
  const providers=providedProviders||createProviderClients({env,fetcher});
  const loginAttempts=new Map();
- const jobs=store&&!demo?createJobController({store,providers}):null;
+ const jobs=store&&(!demo||providedProviders)?createJobController({store,providers}):null;
  const isAdmin=user=>!!staffRole(user?.id,env);
  // Remains closed until planning has its own verified quote and durable reservation.
  const planning=false;
  const planningController=store?createPlanningController({store,provider:providedPlanningProvider||createPlanningProvider({env,fetcher}),env}):null;
- const mediaStorage=createMediaStorage({env,fetcher,demo});
+ const mediaStorage=providedStorage||createMediaStorage({env,fetcher,demo});
+ const referenceController=store?createReferenceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
  const clearSession=()=>[cookie('director_session','',0),cookie('director_refresh','',0,'/api')];
@@ -114,6 +116,17 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
+ if(action==='reference-production'&&req.method==='GET')return reply(200,await referenceController.summary(user.id,project));
+ if(action==='reference-production'&&req.method==='POST')return reply(200,await referenceController.change(user.id,project,body));
+ if(action==='reference-production/quotes'&&req.method==='POST')return reply(201,await referenceController.quote(user.id,project,body));
+ if(action==='reference-production/jobs'&&req.method==='POST')return reply(201,await referenceController.start(user.id,project,body));
+ if(action==='reference-production/import'&&req.method==='POST')return reply(200,await referenceController.importOutput(user.id,project,body));
+ if(action==='reference-production/reviews'&&req.method==='POST')return reply(200,await referenceController.review(user.id,project,body));
+ if(action==='spending-budget'&&req.method==='POST'){
+  const allowed=['requestId','expectedVersion','budgetMicroUsd','finishReserveMicroUsd'];
+  if(Object.keys(body).some(k=>!allowed.includes(k))||!uuid.test(body.requestId||'')||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1||!Number.isSafeInteger(body.budgetMicroUsd)||body.budgetMicroUsd<0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||body.finishReserveMicroUsd>body.budgetMicroUsd)fail(400,'Supply a current project version and explicit integer USD project cap and protected reserve.');
+  const result=await store.setProjectSpendingBudget({actorId:user.id,projectId:id,...body});return reply(200,{projectBudget:result.projectBudget||result});
+ }
  if(action==='screenplay'&&req.method==='GET')return reply(200,{screenplayContext:screenplayContext(project,await store.records('approvals',id))});
  if(action==='department-plans'&&req.method==='GET')return reply(200,{departmentContext:departmentPlanningContext(project,await store.records('approvals',id))});
  if(action==='storyboard-handoff'&&req.method==='GET')return reply(200,{storyboardContext:storyboardHandoffContext(project,await store.records('approvals',id))});
@@ -180,6 +193,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const allowed=action==='routes'?['task','requirements','intent']:['task','requirements','intent','requestId','expectedVersion','modelId','artifactId','artifactVersion','input'];
  if(Object.keys(body).some(k=>!allowed.includes(k)))fail(400,'Unsupported routing or quote field.');
  if(!knownRoutingTask(body.task))fail(400,'Choose a known production task.');
+ if(action==='quotes'&&['reference_image','reference_look'].includes(body.task))fail(400,'Use reference production to quote a reviewed direction; raw client image prompts are not accepted.');
  const requestFingerprint=hash(body);
  if(action==='quotes'&&body.requestId!==undefined){if(!uuid.test(body.requestId))fail(400,'Use a valid quote request UUID.');if(typeof store.replayCostQuote!=='function')fail(503,'Saved spending controls are not configured.');const previous=await store.replayCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,requestFingerprint});if(previous)return reply(200,{quote:previous,saved:true});}
  const models=taskCandidates(body.task,await store.registry()),now=new Date();
@@ -194,7 +208,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
- if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id))});
+ if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id),project.referenceProduction?await store.referenceCandidates(user.id,id):[])});
  if(action==='approvals'&&req.method==='POST'){
  if(!['approved','rejected','revoked'].includes(body.decision)||!Number.isSafeInteger(body.version))fail(400,'Invalid approval decision.');return reply(201,{approval:await store.approve(project,body,user.id)});}
  if(action==='approvals'&&req.method==='GET')return reply(200,{approvals:await store.records('approvals',id)});
@@ -202,13 +216,11 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='assets'&&req.method==='POST'){
  const {bytes,mime}=validateUpload(body);if(body.scope==='shot'&&!project.shots.some(s=>s.id===body.shotId))fail(400,'Select a valid shot for this reference.');
  const assetId=randomUUID(),storageKey=`${user.id}/${id}/${assetId}`;
- if(demo){const dir=env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets';await mkdir(dir,{recursive:true});await writeFile(join(dir,assetId),bytes,{mode:0o600});}
- else {const response=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/director-media/${storageKey}`,{method:'POST',headers:{apikey:env.SUPABASE_SERVICE_ROLE_KEY,Authorization:`Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,'Content-Type':mime,'x-upsert':'false'},body:bytes,signal:AbortSignal.timeout(30000)});if(!response.ok)fail(502,'Private upload failed. Retry without losing your draft.');}
+ await mediaStorage.putIfAbsent(storageKey,bytes,mime,hash(bytes.toString('base64')));
  const asset=await store.add('assets',{id:assetId,projectId:id,name:body.name,mime,role:body.role,scope:body.scope,shotId:body.shotId||null,version:1,storageKey,size:bytes.length,checksum:hash(bytes.toString('base64'))});const {storageKey:unused,...visible}=asset;return reply(201,{asset:{...visible,url:`/api/projects/${id}/assets/${assetId}/content`}});}
  const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
  if(content&&req.method==='GET'){const asset=(await store.records('assets',id)).find(a=>a.id===content[1]);if(!asset)fail(404,'Reference not found.');let bytes;
- if(demo)bytes=await readFile(join(env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets',asset.id));
- else {const response=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/authenticated/director-media/${asset.storageKey}`,{headers:{apikey:env.SUPABASE_SERVICE_ROLE_KEY,Authorization:`Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`},signal:AbortSignal.timeout(30000)});if(!response.ok)fail(502,'Reference retrieval failed.');bytes=Buffer.from(await response.arrayBuffer());}
+ bytes=await mediaStorage.get(asset.storageKey,{bucket:asset.bucket||'director-media'});
  res.writeHead(200,{'Content-Type':asset.mime.startsWith('image/')||asset.mime.startsWith('video/')||asset.mime.startsWith('audio/')?asset.mime:'application/octet-stream','Content-Disposition':`attachment; filename="reference-${asset.id}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(bytes);}
  if(action==='proposals'&&req.method==='POST'){const proposal=proposalFor(project,body,await store.records('assets',id));await store.add('audit',{id:randomUUID(),projectId:id,actorId:user.id,type:'direction_prepared',details:proposal});return reply(201,{proposal});}
  if(action==='jobs'&&req.method==='GET')return reply(200,{jobs:await store.records('jobs',id)});

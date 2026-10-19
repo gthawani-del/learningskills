@@ -40,6 +40,8 @@ export const routingTasks = Object.freeze([
   task('department_planning', 'Coordinate filmmaking departments from an approved brief and screenplay', []),
   task('department_revision', 'Revise only explicitly selected filmmaking departments', []),
   task('storyboard_planning', 'Prepare source-bound storyboard shot contracts and timing estimates', []),
+  task('reference_image', 'Create an initial character identity or location reference image', []),
+  task('reference_look', 'Create a character look using its approved identity reference', ['M09']),
   task('story_reasoning', 'Story, screenplay and filmmaking reasoning', ['M01']),
   task('audio_analysis', 'Audio interpretation', ['M02', 'M05']),
   task('song_analysis', 'Song mood, instrumentation and development analysis', ['M05', 'M02']),

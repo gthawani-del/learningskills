@@ -2,6 +2,7 @@ import {hash, artifacts, fail} from './domain.mjs';
 import {calculateTariff} from './tariffs.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {recordArtifacts} from './production-records.mjs';
+import {currentReferenceBrief} from './public/reference-production-core.js';
 
 const MAX_UNITS = 1_000_000;
 const forbidden = new Set(['cost','price','budget','authorization','authorized','generationauthorized','estimate','quote','quoteid','approved','accepted','approval','spend','billing','currency','unitmicrousd','totalmicrousd','priceevidence','priceversion','expectedversion','ownerid','projectid','inputprice','clientbudget','generationauthorization','maxcost','estimatedcost','estimatedcostmicrousd','amountmicrousd','reservedmicrousd','pricing','canexpense','canauthorize','authorizationid','budgetusd','budgetmicrousd','costusd','costmicrousd','priceusd','pricemicrousd','usageevidence','usagebound','usagebounds','tokenusage','actualtokens']);
@@ -99,5 +100,14 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     createdAt: new Date(time).toISOString(), expiresAt: new Date(Math.min(time + ttlMs, priceExpiry, schemaExpiry, intentExpiry)).toISOString(),
     generationAuthorized: false, estimateOnly: true
   };
+  if(artifact.kind==='reference_brief'){
+    const subjectId=artifactId.slice('reference_brief:'.length),snapshot=currentReferenceBrief(project,subjectId);
+    const source=project.referenceProduction?.sources.find(s=>s.version===snapshot?.sourceVersion);
+    if(!snapshot||!source||!['reference_image','reference_look'].includes(task)||typeof input.prompt!=='string'||!input.prompt.trim())fail(409,'Reference generation requires its source-bound direction, task and prompt.');
+    const subject=project.referenceProduction.subjects.find(s=>s.id===subjectId);
+    if((subject.kind==='character_look')!==(task==='reference_look'))fail(409,'Reference look generation must use its identity-conditioned task.');
+    quote.referenceBinding={subjectId,subjectVersion:snapshot.version,sourceVersion:snapshot.sourceVersion,inputSignature:source.inputSignature,document:structuredClone(snapshot.document),identityBinding:structuredClone(snapshot.identityBinding),prompt:input.prompt};
+  }
+  if(artifact.kind==='reference_selection')fail(409,'A selected reference is review evidence and cannot be used as a generation specification.');
   return {id: hash(quote), ...quote};
 }

@@ -74,3 +74,10 @@ await import('../apps/director/tests/storyboard-provider.test.mjs');
 await import('../apps/director/tests/storyboard-handoff.test.mjs');
 await import('../apps/director/tests/storyboard-handoff-cloud.test.mjs');
 
+await import('../apps/director/tests/reference-api.test.mjs');
+await import('../apps/director/tests/reference-integration.test.mjs');
+await import('../apps/director/tests/reference-provider.test.mjs');
+await import('../apps/director/tests/reference-production.test.mjs');
+await import('../apps/director/tests/reference-cloud.test.mjs');
+await import('../apps/director/tests/reference-images.test.mjs');
+

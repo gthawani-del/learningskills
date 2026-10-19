@@ -8,13 +8,13 @@ const inFlight = ['submitted', 'running'];
 // Only trusted server store methods may implement this interface. The database
 // reservation transaction owns authorization, budget and attempt-limit checks.
 export function createJobController({ store, providers }) {
-  async function contract(actorId, projectId, jobId) {
+  async function contract(actorId, projectId, jobId, recovering = false) {
     if (!actorId || !projectId || !jobId) fail(400, 'Job identity required.');
     const job = await store.readJob(actorId, projectId, jobId);
     if (!job || job.project_id !== projectId) fail(404, 'Job unavailable.');
     const proposal = await store.readProposal(projectId, job.proposal_id);
     if (!proposal || proposal.project_id !== projectId || proposal.payload_hash !== job.payload_hash) fail(409, 'Reserved job contract mismatch.');
-    const model = await store.readModel(proposal.model_id);
+    const model = recovering && proposal.model_snapshot ? proposal.model_snapshot : await store.readModel(proposal.model_id);
     if (!model || model.provider !== 'fal') fail(409, 'Unsupported provider route.');
     return { job, proposal, model };
   }
@@ -60,7 +60,7 @@ export function createJobController({ store, providers }) {
       }
     },
     async poll({ actorId, projectId, jobId }) {
-      const { job, model } = await contract(actorId, projectId, jobId);
+      const { job, model } = await contract(actorId, projectId, jobId, true);
       if (![...inFlight, 'unknown'].includes(job.status) || !job.provider_request_id) return job;
       // Eligibility may be revoked after submission. Existing request inspection
       // remains permitted; it incurs no replacement generation.

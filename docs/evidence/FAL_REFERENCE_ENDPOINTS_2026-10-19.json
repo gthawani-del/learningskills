@@ -1,0 +1,608 @@
+{
+  "version": "director-reference-endpoint-evidence-v1",
+  "observedAt": "2026-10-19",
+  "purpose": "Read-only public endpoint/input/output and price discovery. This file permits bounded adapter validation only; it does not enable a model, establish output quality, authorize spend or verify actual invoice charges.",
+  "sources": [
+    {
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro",
+      "observation": "Pricing section explicitly gives 1024x1024 at $0.03; first output megapixel $0.03 then additional input/output megapixels $0.015 rounded up."
+    },
+    {
+      "url": "https://fal.ai/models/fal-ai/flux-2/klein/9b",
+      "observation": "Pricing section says $0.006 per megapixel; no exact 1024x1024 rounding rule observed."
+    }
+  ],
+  "adapter": {
+    "imageSize": {
+      "width": 1024,
+      "height": 1024
+    },
+    "output_format": "png",
+    "sync_mode": false,
+    "enable_safety_checker": true,
+    "quantity": 1,
+    "qualityValidated": false,
+    "executionTested": false,
+    "paidCallsMade": 0,
+    "promptMaxUtf8Bytes": 100000,
+    "promptBoundProvenance": "Local reviewed adapter limit, not an asserted upstream model maximum; fail closed without source truncation."
+  },
+  "endpoints": [
+    {
+      "endpoint_id": "fal-ai/flux-2-pro",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2-pro",
+      "fetchedAt": "2026-10-19T13:01:18.233Z",
+      "schema": {
+        "input_schema": {
+          "required": [
+            "prompt"
+          ],
+          "x-fal-order-properties": [
+            "prompt",
+            "image_size",
+            "seed",
+            "safety_tolerance",
+            "enable_safety_checker",
+            "output_format",
+            "sync_mode"
+          ],
+          "properties": {
+            "enable_safety_checker": {
+              "default": true,
+              "description": "Whether to enable the safety checker. Disabling it requires account authorization; unauthorized requests are always checked.",
+              "title": "Enable Safety Checker",
+              "type": "boolean"
+            },
+            "safety_tolerance": {
+              "enum": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ],
+              "default": "2",
+              "description": "The safety tolerance level for the generated image. 1 being the most strict and 5 being the most permissive.",
+              "title": "Safety Tolerance",
+              "type": "string"
+            },
+            "sync_mode": {
+              "default": false,
+              "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+              "title": "Sync Mode",
+              "type": "boolean"
+            },
+            "output_format": {
+              "enum": [
+                "jpeg",
+                "png"
+              ],
+              "default": "jpeg",
+              "description": "The format of the generated image.",
+              "title": "Output Format",
+              "type": "string"
+            },
+            "seed": {
+              "description": "The seed to use for the generation.",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seed"
+            },
+            "image_size": {
+              "default": "landscape_4_3",
+              "description": "The size of the generated image.",
+              "anyOf": [
+                {
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ],
+                  "properties": {
+                    "width": {
+                      "maximum": 14142,
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The width of the generated image.",
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "maximum": 14142,
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The height of the generated image.",
+                      "title": "Height",
+                      "type": "integer"
+                    }
+                  },
+                  "title": "ImageSize",
+                  "type": "object"
+                },
+                {
+                  "enum": [
+                    "square_hd",
+                    "square",
+                    "portrait_4_3",
+                    "portrait_16_9",
+                    "landscape_4_3",
+                    "landscape_16_9"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "title": "Image Size",
+              "x-fal": {
+                "min_height": 256,
+                "max_area": 4194304,
+                "multiple_of": 16,
+                "max_width": 2560,
+                "min_width": 256,
+                "max_height": 2560
+              }
+            },
+            "prompt": {
+              "examples": [
+                "An intense close-up of knight's visor reflecting battle, sword raised, flames in background, chiaroscuro helmet shadows, hyper-detailed armor, square medieval, cinematic lighting"
+              ],
+              "description": "The prompt to generate an image from.",
+              "title": "Prompt",
+              "type": "string"
+            }
+          },
+          "title": "Flux2ProTextToImageInput",
+          "type": "object"
+        },
+        "output_schema": {
+          "required": [
+            "images",
+            "seed"
+          ],
+          "x-fal-order-properties": [
+            "images",
+            "seed"
+          ],
+          "properties": {
+            "images": {
+              "examples": [
+                [
+                  {
+                    "url": "https://storage.googleapis.com/falserverless/example_outputs/flux2_pro_t2i_output.png"
+                  }
+                ]
+              ],
+              "description": "The generated images.",
+              "items": {
+                "required": [
+                  "url"
+                ],
+                "x-fal-order-properties": [
+                  "url",
+                  "content_type",
+                  "file_name",
+                  "file_size",
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "width": {
+                    "description": "The width of the image",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Width"
+                  },
+                  "content_type": {
+                    "examples": [
+                      "image/png"
+                    ],
+                    "description": "The mime type of the file.",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Content Type"
+                  },
+                  "file_name": {
+                    "examples": [
+                      "z9RV14K95DvU.png"
+                    ],
+                    "description": "The name of the file. It will be auto-generated if not provided.",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "File Name"
+                  },
+                  "file_size": {
+                    "examples": [
+                      4404019
+                    ],
+                    "description": "The size of the file in bytes.",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "File Size"
+                  },
+                  "height": {
+                    "description": "The height of the image",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Height"
+                  },
+                  "url": {
+                    "description": "The URL where the file can be downloaded from.",
+                    "title": "Url",
+                    "type": "string"
+                  }
+                },
+                "title": "ImageFile",
+                "type": "object"
+              },
+              "title": "Images",
+              "type": "array"
+            },
+            "seed": {
+              "description": "The seed used for the generation.",
+              "title": "Seed",
+              "type": "integer"
+            }
+          },
+          "title": "Flux2ProOutput",
+          "type": "object"
+        }
+      },
+      "priceObservation": {
+        "endpoint_id": "fal-ai/flux-2-pro",
+        "unit_price": 0.03,
+        "unit": "processed megapixels",
+        "currency": "USD"
+      },
+      "configuredCandidate": {
+        "status": "not_approved",
+        "width": 1024,
+        "height": 1024,
+        "output_format": "png",
+        "quantity": 1,
+        "proposedUnit": "request",
+        "proposedUnitMicroUsd": 30000,
+        "explanation": "Official model page explicitly quotes $0.03 for 1024x1024. This is a fixed-request candidate, not a generic megapixel formula. Real output and account billing validation are pending."
+      }
+    },
+    {
+      "endpoint_id": "fal-ai/flux-2/klein/9b",
+      "sourceUrl": "https://fal.ai/models/fal-ai/flux-2/klein/9b",
+      "fetchedAt": "2026-10-19T13:01:17.894Z",
+      "schema": {
+        "input_schema": {
+          "properties": {
+            "output_format": {
+              "default": "png",
+              "title": "Output Format",
+              "type": "string",
+              "enum": [
+                "jpeg",
+                "png",
+                "webp"
+              ],
+              "description": "The format of the generated image."
+            },
+            "image_size": {
+              "default": "landscape_4_3",
+              "title": "Image Size",
+              "anyOf": [
+                {
+                  "properties": {
+                    "width": {
+                      "exclusiveMinimum": 0,
+                      "title": "Width",
+                      "type": "integer",
+                      "default": 512,
+                      "maximum": 14142,
+                      "description": "The width of the generated image."
+                    },
+                    "height": {
+                      "exclusiveMinimum": 0,
+                      "title": "Height",
+                      "type": "integer",
+                      "default": 512,
+                      "maximum": 14142,
+                      "description": "The height of the generated image."
+                    }
+                  },
+                  "title": "ImageSize",
+                  "type": "object",
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "square_hd",
+                    "square",
+                    "portrait_4_3",
+                    "portrait_16_9",
+                    "landscape_4_3",
+                    "landscape_16_9"
+                  ]
+                }
+              ],
+              "description": "The size of the image to generate."
+            },
+            "num_images": {
+              "default": 1,
+              "minimum": 1,
+              "type": "integer",
+              "title": "Number of Images",
+              "maximum": 4,
+              "description": "The number of images to generate."
+            },
+            "enable_safety_checker": {
+              "default": true,
+              "title": "Enable Safety Checker",
+              "type": "boolean",
+              "description": "If set to true, the safety checker will be enabled. Disabling it requires account authorization; unauthorized requests are always checked, and images flagged as unsafe are returned as black images."
+            },
+            "num_inference_steps": {
+              "default": 4,
+              "minimum": 4,
+              "type": "integer",
+              "title": "Number of Inference Steps",
+              "maximum": 8,
+              "description": "The number of inference steps to perform."
+            },
+            "seed": {
+              "title": "Seed",
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The seed to use for the generation. If not provided, a random seed will be used."
+            },
+            "sync_mode": {
+              "default": false,
+              "title": "Sync Mode",
+              "type": "boolean",
+              "description": "If `True`, the media will be returned as a data URI. Output is not stored when this is True."
+            },
+            "prompt": {
+              "title": "Prompt",
+              "type": "string",
+              "examples": [
+                "A bright, surreal scene on a vast white salt flat under a clear blue sky, featuring two fluffy white alpacas standing in the foreground. Behind them sits a sleek white supercar with its scissor doors open, creating a dramatic futuristic silhouette. The sunlight is strong and crisp, casting sharp shadows on the ground and giving the image a clean, high-contrast cinematic look. Minimalist composition, playful luxury vibe, ultra sharp detail, wide-angle perspective, high resolution."
+              ],
+              "description": "The prompt to generate an image from."
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "title": "Klein9BDistilledInput",
+          "type": "object",
+          "x-fal-order-properties": [
+            "prompt",
+            "seed",
+            "num_inference_steps",
+            "image_size",
+            "num_images",
+            "sync_mode",
+            "enable_safety_checker",
+            "output_format"
+          ]
+        },
+        "output_schema": {
+          "properties": {
+            "timings": {
+              "title": "Timings",
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              }
+            },
+            "prompt": {
+              "title": "Prompt",
+              "type": "string",
+              "description": "The prompt used for generating the image."
+            },
+            "seed": {
+              "title": "Seed",
+              "type": "integer",
+              "description": "\n            Seed of the generated Image. It will be the same value of the one passed in the\n            input or the randomly generated that was used in case none was passed.\n        "
+            },
+            "has_nsfw_concepts": {
+              "title": "Has Nsfw Concepts",
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              },
+              "description": "Whether the generated images contain NSFW concepts."
+            },
+            "images": {
+              "title": "Images",
+              "type": "array",
+              "items": {
+                "properties": {
+                  "file_name": {
+                    "title": "File Name",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "examples": [
+                      "z9RV14K95DvU.png"
+                    ],
+                    "description": "The name of the file. It will be auto-generated if not provided."
+                  },
+                  "width": {
+                    "title": "Width",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "The width of the image"
+                  },
+                  "content_type": {
+                    "title": "Content Type",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "examples": [
+                      "image/png"
+                    ],
+                    "description": "The mime type of the file."
+                  },
+                  "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "description": "The URL where the file can be downloaded from."
+                  },
+                  "file_size": {
+                    "title": "File Size",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "examples": [
+                      4404019
+                    ],
+                    "description": "The size of the file in bytes."
+                  },
+                  "height": {
+                    "title": "Height",
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "The height of the image"
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "title": "ImageFile",
+                "type": "object",
+                "x-fal-order-properties": [
+                  "url",
+                  "content_type",
+                  "file_name",
+                  "file_size",
+                  "width",
+                  "height"
+                ]
+              },
+              "examples": [
+                [
+                  {
+                    "url": "https://v3b.fal.media/files/b/0a8a6905/DuNRy1OODaGrlUGEfl9SX.png"
+                  }
+                ]
+              ],
+              "description": "The generated images"
+            }
+          },
+          "required": [
+            "images",
+            "timings",
+            "seed",
+            "has_nsfw_concepts",
+            "prompt"
+          ],
+          "title": "Klein9BDistilledT2IOutput",
+          "type": "object",
+          "x-fal-order-properties": [
+            "images",
+            "timings",
+            "seed",
+            "has_nsfw_concepts",
+            "prompt"
+          ]
+        }
+      },
+      "priceObservation": {
+        "endpoint_id": "fal-ai/flux-2/klein/9b",
+        "unit_price": 0.006,
+        "unit": "megapixels",
+        "currency": "USD"
+      },
+      "configuredCandidate": {
+        "status": "held_ambiguous_rounding",
+        "width": 1024,
+        "height": 1024,
+        "output_format": "png",
+        "quantity": 1,
+        "explanation": "Official model page reports $0.006 per megapixel but does not specify megapixel rounding for 1024x1024. Do not enable a tariff until exact configuration billing is reviewed."
+      }
+    }
+  ],
+  "existingLookAdapter": {
+    "endpoint_id": "bytedance/seedream/v5/pro/edit",
+    "schemaEvidence": "FAL_ENDPOINT_SCHEMAS.json",
+    "constraint": "One approved identity image privately signed by server; one 1024x1024 PNG output. Schema and price freshness are independently required in the model registry. No new price observation for this existing edit route is asserted here."
+  },
+  "excludedDiscovery": [
+    {
+      "endpoint_id": "bytedance/seedream/v5/pro/text-to-image",
+      "reason": "Additional text-to-image candidate not implemented in this bounded increment."
+    },
+    {
+      "endpoint_id": "google/nano-banana-2.1",
+      "reason": "Opaque pricing unit; no configured tariff or adapter admitted."
+    }
+  ]
+}

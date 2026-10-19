@@ -178,14 +178,21 @@
       "status": "partial",
       "code": [
         "apps/director/api.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-images.mjs",
+        "database/director-reference-production.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/reference-browser.py"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Owner-scoped proxy retrieval/device preview exist; large-media range streaming and live cross-account access tests missing.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Owner-scoped private retrieval now includes validated generated reference PNGs stored in the private reference bucket, alongside device/upload previews. Synthetic authenticated image/browser checks and native bucket metadata pass; large-media range streaming, true cross-account and deployed-account access remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F009",
       "dependencies": [
         "cloud-connection"
@@ -569,7 +576,15 @@
         "apps/director/public/storyboard-handoff-core.js",
         "apps/director/storyboard-handoff.mjs",
         "apps/director/storyboard-proposal.mjs",
-        "database/director-storyboard-handoff.sql"
+        "database/director-storyboard-handoff.sql",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -592,10 +607,17 @@
         "apps/director/tests/storyboard-integration.test.mjs",
         "apps/director/tests/storyboard-provider.test.mjs",
         "apps/director/tests/storyboard-browser.py",
-        "database/checks/storyboard-handoff-pglite.mjs"
+        "database/checks/storyboard-handoff-pglite.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Current-version department and storyboard planning approvals require exact approved source, fresh department dependencies and action-specific acknowledgement. A storyboard_sequence checkpoint atomically approves exact current shot_contract versions plus sequence; legacy/missing coverage/stale pins cannot bypass review. The all-seventeen production/spending gate remains separate. Actual media/rights acceptance and deployed-account concurrency remain unverified.",
+      "gap": "Current department/storyboard planning approvals retain exact source/dependency guards. Reference direction, explicit actual-candidate selection and separately acknowledged reference_selection approval now bind exact subject/source/asset/identity versions. Planning approval and image selection do not clear rights, authorize spending or approve future generated footage. Actual provider quality and deployed-account concurrency remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -626,7 +648,15 @@
         "apps/director/public/storyboard-handoff-core.js",
         "apps/director/storyboard-handoff.mjs",
         "apps/director/storyboard-proposal.mjs",
-        "database/director-storyboard-handoff.sql"
+        "database/director-storyboard-handoff.sql",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -647,10 +677,17 @@
         "apps/director/tests/storyboard-integration.test.mjs",
         "apps/director/tests/storyboard-provider.test.mjs",
         "apps/director/tests/storyboard-browser.py",
-        "database/checks/storyboard-handoff-pglite.mjs"
+        "database/checks/storyboard-handoff-pglite.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Declared department DAG pins derive transitive holds, while storyboard source baselines bind all seventeen versions and conservatively stale all contracts on source changes. A focused shot edit preserves neighboring histories/approvals but holds old sequence-version pins until explicit review. No content/media is silently deleted or regenerated. Semantic field/scene impact, complete future media dependencies and deployed concurrency remain unverified.",
+      "gap": "Department DAG holds and conservative all-seventeen source pins remain. Reference source changes hold earlier selections, and changed approved identity selections hold exactly bound look references without deleting images/history. Focused storyboard edits retain neighboring histories while sequence pins need review. Semantic field/scene impact, complete later media dependencies and real concurrency remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -822,11 +859,28 @@
       "requirement": "Generate initial casting/location/prop concepts",
       "area": "Cast, design and storyboard",
       "step": 7,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Reviewable casting/location/prop text requirements are implemented. Actual candidate generation, agreed quantities, selection UX, identity-master approval and end-to-end media review remain missing.",
+      "status": "partial",
+      "code": [
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js"
+      ],
+      "tests": [
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
+      ],
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Original/supplied identity and scene-location directions now support approved source-bound quotes, one-image jobs, private validated PNG import, owned upload candidates, explicit selection and separate image approval. No hidden casting variants or forced visible narrator. Full prop/SKU production, useful multi-candidate casting/reference packs, real model quality/costs and deployed accounts remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F033",
       "dependencies": [
         "versioned-project-records",
@@ -838,11 +892,28 @@
       "requirement": "Derive reference-preserving looks, angles and frames",
       "area": "Cast, design and storyboard",
       "step": 7,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Look-development requirements are planned separately from identity and voice. Actual approved-identity angles/expressions, wardrobe/grooming references, generation and reference-pack approval remain missing.",
+      "status": "partial",
+      "code": [
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js"
+      ],
+      "tests": [
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
+      ],
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Character looks now bind the exact approved selected identity subject/selection/asset versions, require provider-sharing consent for edit generation and support one-image private candidate import plus explicit selection/review. Source/identity changes hold earlier looks without deleting media. Complete angles/expressions/wardrobe packs, world-reference editing and real same-person/quality validation remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F034",
       "dependencies": [
         "versioned-project-records",
@@ -857,13 +928,27 @@
       "step": 7,
       "status": "partial",
       "code": [
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/api.mjs"
       ],
       "tests": [
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Versioned records exist; actual identity/look/wardrobe/composition approval and quality evidence must precede storyboard/final footage and remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Actual stored image candidates have source/asset/version guards, explicit criteria acknowledgement at selection and separate exact reference approval. This records human visual judgement; no automatic calibrated identity/anatomy/typography detector, rights clearance or real provider-quality acceptance is claimed. Generated-output quality and assisted-review calibration remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F035",
       "dependencies": [
         "versioned-project-records",
@@ -881,14 +966,28 @@
         "apps/director/api.mjs",
         "database/director-foundation.sql",
         "apps/director/production-records.mjs",
-        "apps/director/public/production-records-core.js"
+        "apps/director/public/production-records-core.js",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/public/app.js"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
-        "apps/director/tests/production-records.test.mjs"
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Versioned character, voice, location, wardrobe and prop records with scoped references and history implemented; use-rights evidence and generated identity review remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Independent source/identity/look/location histories, append-only selections, exact identity bindings, private output checksums and immutable owned candidate receipts are implemented alongside existing library records. Device imports retain creative histories without copying trusted candidate/approval authority. No automatic generic-record projection or storyboard selection occurs. Complete rights, retention and later media binding remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F036",
       "dependencies": [
         "versioned-project-records",
@@ -1310,13 +1409,18 @@
       "status": "partial",
       "code": [
         "apps/director/render.mjs",
-        "apps/director/api.mjs"
+        "apps/director/api.mjs",
+        "apps/director/reference-images.mjs",
+        "apps/director/reference-production.mjs"
       ],
       "tests": [
-        "apps/director/tests/render.test.mjs"
+        "apps/director/tests/render.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Local FFmpeg media probing and upload magic-byte checks; hosted ingest/production validation missing.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Local FFmpeg/upload checks now include bounded single-reference PNG download/decode, dimensions, checksum, MIME/role/provenance and private immutable storage validation. Reference workflow checks use synthetic images/providers; general hosted video/audio ingest, real-output technical quality, concurrency and production-wide validation remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F059",
       "dependencies": [
         "accepted-media",
@@ -1521,7 +1625,16 @@
         "apps/director/registry-store.mjs",
         "apps/director/planning-router.mjs",
         "database/director-registry-management.sql",
-        "apps/director/department-proposal.mjs"
+        "apps/director/department-proposal.mjs",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/public/app.js",
+        "apps/director/spending.mjs",
+        "apps/director/jobs.mjs"
       ],
       "tests": [
         "apps/director/tests/model-router.test.mjs",
@@ -1536,10 +1649,17 @@
         "apps/director/tests/planning-registry-routing.test.mjs",
         "apps/director/tests/registry-browser.py",
         "database/checks/registry-management-pglite.mjs",
-        "apps/director/tests/department-provider.test.mjs"
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Reviewed task/operation routing, exact quotes and pinned allowances include a separately reviewed department-planning operation; existing models do not inherit it. Complete sequence quotes, live prices/billing and real quality benchmarks remain unverified.",
+      "gap": "Reviewed reference_image/reference_look tasks now receive canonical server-built one-image quotes with exact source/direction/configuration bindings, alongside existing planning/media routing. Public fixed-size FLUX Pro price is candidate evidence; Klein rounding remains held. Complete sequence economics, current live billing/prices and real output-quality benchmarks remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F070",
       "dependencies": [
         "versioned-project-records",
@@ -1564,7 +1684,17 @@
         "apps/director/planning-provider.mjs",
         "apps/director/planning-consent.mjs",
         "apps/director/planning-store.mjs",
-        "apps/director/cost-quotes.mjs"
+        "apps/director/cost-quotes.mjs",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/providers.mjs",
+        "apps/director/public/app.js",
+        "apps/director/jobs.mjs",
+        "apps/director/quote-input.mjs",
+        "apps/director/routing-task-catalog.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
@@ -1575,10 +1705,17 @@
         "apps/director/tests/planning-api.test.mjs",
         "apps/director/tests/planning-consent.test.mjs",
         "apps/director/tests/planning-cloud.test.mjs",
-        "apps/director/tests/department-api.test.mjs"
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Media and hybrid-planning reservations protect finishing amounts, replay and unknown outcomes. Projects with department archives require all current department plans reviewed before new media spending; plan text cannot be a media-generation quote target. True cross-session races, deployed accounts, provider billing settlement and commercial accounting remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Existing atomic quote/authorization/reservation, project cap/finishing reserve, replay, unknown-outcome and two-attempt controls now cover reference work. Only exact approved reference-image tasks may precede storyboard approval; unrelated media retains its gates. Visible correction review is required before another same-work-unit attempt and does not auto-rewrite/repair. True cross-session concurrency, real provider billing and commercial accounting remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F071",
       "dependencies": [
         "versioned-project-records",
@@ -1593,14 +1730,31 @@
       "status": "partial",
       "code": [
         "apps/director/jobs.mjs",
-        "apps/director/providers.mjs"
+        "apps/director/providers.mjs",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js",
+        "apps/director/spending.mjs",
+        "apps/director/quote-input.mjs",
+        "apps/director/routing-task-catalog.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
-        "apps/director/tests/providers.test.mjs"
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Mock-tested dispatch; no active profile or paid execution.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Added bounded FLUX Pro/Klein text-origin reference and selected-identity Seedream look dispatch through existing reviewed route, quote, authorization, pause, immutable input and attempt guards. Synthetic provider tests pass; models remain inactive and no paid provider execution or real creative quality is established.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F072",
       "dependencies": [
         "versioned-project-records",
@@ -1615,13 +1769,30 @@
       "status": "partial",
       "code": [
         "apps/director/jobs.mjs",
-        "apps/director/providers.mjs"
+        "apps/director/providers.mjs",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql",
+        "apps/director/reference-input.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js",
+        "apps/director/spending.mjs",
+        "apps/director/quote-input.mjs",
+        "apps/director/routing-task-catalog.mjs"
       ],
       "tests": [
-        "apps/director/tests/jobs.test.mjs"
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-browser.py",
+        "database/checks/reference-production-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Mock-tested reconciliation; durable private ingestion of completed outputs incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Owned completed reference-image jobs now reconcile saved output evidence into validated private PNG assets and immutable candidate receipts. Replayed/interrupted imports recover the original stored object/job without paid regeneration; paused or stale creative state does not prevent known-output accounting/retrieval. General video/audio ingestion, live provider outcomes/invoices and durable worker operations remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F073",
       "dependencies": [
         "versioned-project-records",
@@ -1808,7 +1979,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "gap": "Narrow reference-image import recovery can restore an interrupted completed-job asset/receipt without regeneration. General missing-output restoration across expired/unavailable provider results, video/audio jobs, retention/deletion and operator recovery remains missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F083",
       "dependencies": [
         "domain-foundations"
@@ -2741,7 +2912,11 @@
         "apps/director/planning-consent.mjs",
         "apps/director/public/storyboard-handoff-core.js",
         "apps/director/storyboard-handoff.mjs",
-        "apps/director/storyboard-proposal.mjs"
+        "apps/director/storyboard-proposal.mjs",
+        "apps/director/public/reference-production-core.js",
+        "apps/director/reference-production.mjs",
+        "apps/director/reference-store.mjs",
+        "database/director-reference-production.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -2756,10 +2931,12 @@
         "apps/director/tests/storyboard-api.test.mjs",
         "apps/director/tests/storyboard-integration.test.mjs",
         "apps/director/tests/storyboard-provider.test.mjs",
-        "apps/director/tests/storyboard-browser.py"
+        "apps/director/tests/storyboard-browser.py",
+        "apps/director/tests/reference-browser.py",
+        "apps/director/tests/reference-api.test.mjs"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Department and storyboard checkpoints are planning-only. Storyboard approval atomically covers the current ordered sequence and exact contracts while preserving media IDs; it selects no actor, image, voice, frame or take and authorizes no spending. Actual storyboard frames, playable animatics, generated motion/voice review and final media approval remain incomplete.",
+      "gap": "Department/storyboard checkpoints remain planning-only. Reference production separately selects actual owned stored images and approves their exact source/identity-bound selections with human review acknowledgement; it does not clear rights or authorize spend. Actual storyboard frames, animatics, motion/voice review and final media approval remain incomplete.",
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
@@ -4121,7 +4298,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "b0e1c55eb1d4f429e3eb75240ce8d1d3ccf73fbe0c5d3aed5ccc734932ee1f79"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "1d354f7b28a194502f41ad720fde27ab756524702a021c787288576373a43f0d"
   },
-  "currentBatch": "Point 6 storyboard handoff: approved brief/script/all seventeen department plans feed typed shot contracts, independent histories, exact source-dialogue coverage, managed legacy-shot projection, missing-coverage-only preparation, focused edits/order review and an atomic planning-only sequence/contract checkpoint. Separate plan_storyboard/storyboard_planning v6 requires its own reviewed profile and cost allowance; exact known v3/v4/v5 recovery remains intact. 539 automated tests, syntax and production build pass. Five storyboard, five department and four department-revision browser groups plus seven earlier regression scripts pass locally; mobile viewport/footer/hit checks do not establish physical-device or keyboard verification. Final isolated SQL passes 20 standard groups, with a reproducible 21-group combined scale run against the same frozen SQL. Native migration 20261019124745_director_storyboard_handoff is applied; eighteen new and six replaced functions are service-only/security-invoker with empty search paths, six tables have RLS, both new columns exist and security advisories are empty. Zero active OpenAI/fal models, native storyboard archives or planning reservations; generation remains paused. No paid calls, provider-key inspection/change or customer-account tests. A 200-shot synthetic WASM bulk approval took 25.264 seconds versus the adapter 20-second timeout; native latency/concurrency and timeout recovery remain release limitations. Counts stay 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. F038 actual frames and F040 playable animatics remain missing; real model quality/costs, media, production pilots and deployed/physical-device checks are incomplete. See STORYBOARD_HANDOFF_ACCEPTANCE.md and evidence/STORYBOARD_HANDOFF_CHECKS_2026-10-19.json / STORYBOARD_HANDOFF_NATIVE_CHECKS_2026-10-19.json."
+  "currentBatch": "First Step 7 reference-production increment: source-grounded identity/look/location directions, exact approved selected-identity bindings for looks, owned upload candidates, canonical one-image quotes/jobs, validated private PNG ingestion, immutable provenance, explicit selection and separate human reference approval implemented. Existing project budgets/finishing reserves, authorizations, two-attempt boundaries and unknown-outcome recovery remain authoritative. A visible correction review gates another same-work-unit attempt but is not automatic prompt repair. No generic-record projection or automatic storyboard/media selection; imported creative histories carry no trusted candidate/approval authority. 618 automated tests, syntax and production build pass. Five reference-browser groups including consumed-quote permission guards, five department, four revision, five storyboard groups and seven earlier regression scripts pass locally; no physical-device/deployed-account claim. Twelve independent isolated SQL groups pass against SHA-256 a252eabdda933a7da139c84485274f9a3b88a6baa7849cf972e10a1eadcdc30f. Native migration 20261019132520_director_reference_production is applied: twenty-three functions (eighteen new/five replaced) are service-only/security-invoker with empty search paths, nine affected tables have RLS, reference_evidence is jsonb, candidates allow service SELECT/INSERT only and the reference bucket is private PNG-only with a 10 MiB limit. Security advisories are empty; zero active models, native reference candidates/archives, jobs or planning reservations and generation stays paused. No paid call, provider-key inspection/change, customer-account or native concurrency test. FLUX Pro public fixed-configuration $0.03 is candidate evidence only; Klein exact megapixel rounding remains held. F033/F034 advance missing to partial: counts now 69 partial, 92 missing/unverified, 6 deferred and zero fully production-accepted. Real output/identity/price quality, full prop/reference packs/rights, later media binding, actual storyboard frames/animatics, pilots and final films remain incomplete. See REFERENCE_PRODUCTION_ACCEPTANCE.md and evidence/REFERENCE_PRODUCTION_CHECKS_2026-10-19.json / REFERENCE_PRODUCTION_NATIVE_CHECKS_2026-10-19.json."
 }

@@ -1,3 +1,13 @@
+# Reference generation and selection — 19 October 2026
+
+The first Step 7 increment implements source-bound identity, identity-preserving look and location reference production: compact prefilled directions, separate direction approval, reviewed model/cost estimate, explicit project cap and authorization, durable image jobs, private decoded PNG import, candidate selection and exact-image human approval. Source and identity changes preserve prior images/history while holding stale reuse. Existing quotes, unknown-charge recovery and the two-attempt limit remain authoritative; a correction record gates another attempt without automatically rewriting prompts.
+
+**618 automated tests, syntax checks and the production build pass.** Five new local browser groups plus department/revision/storyboard and seven earlier regression scripts pass. Twelve independent isolated SQL groups pass. Director migration `20261019132520_director_reference_production` is installed; 18 new and five replaced functions retain service-only invoker permissions/empty search paths, nine affected tables retain RLS, the generated-reference PNG bucket is private and security advisor is clean. Generation stays paused; native models remain inactive. No paid calls or credential changes. See [Reference Production Acceptance](REFERENCE_PRODUCTION_ACCEPTANCE.md).
+
+F033/F034 advance to partial: totals are 69 partial, 92 missing/unverified, six deferred and zero fully production-accepted. Live paid output/price validation, deployed accounts, physical devices, native concurrency/latency and the two-attempt quality-success target remain unverified. Approved references are not yet assigned to storyboard shots or generic production records. Next: actual storyboard-frame production using reviewed reference selections and shot contracts; voice, animatics, footage and finished-film export remain subsequent work. Historical sections below retain their evidence limits.
+
+---
+
 # Storyboard shot-contract handoff — 19 October 2026
 
 Step 6 Point 6 is implemented: source-bound shot contracts, exact screenplay dialogue coverage, independent version histories, ordered sequence review and atomic planning-only whole-plan approval. Compact prefilled editing, legacy adoption, missing-coverage preparation and separate v6 AI planning preserve existing media and approved decisions. Actual storyboard pictures and playable animatics remain subsequent work.

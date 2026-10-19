@@ -1,0 +1,24 @@
+{
+  "sqlSha256": "a252eabdda933a7da139c84485274f9a3b88a6baa7849cf972e10a1eadcdc30f",
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "all prior SQL increments install with private PNG10MiB reference bucket, models inactive and generation paused",
+    "prepared source-bound identity and location directions can be reviewed before storyboard; unbound look remains held",
+    "owner/version/latest-approval locked reference save rejects generic archive mutation and a simulated approval-after-read race",
+    "source and subject history versions are independently contiguous/typed; malformed future history fails closed",
+    "owned uploaded candidate registration is immutable and replayable with canonical timestamps; referenced image identity cannot mutate, and foreign ownership/altered versions fail",
+    "selection is distinct from direction review and requires explicit image review; look binds the exact approved identity selection",
+    "reference gate permits only fixed single PNG image tasks with exact source/document/identity/prompt capture and signed owned identity path; wrong task/endpoint/quantity/binding holds",
+    "reference quotes, explicit project cap, separate authorization and existing two-attempt outbox reserve before storyboard; pause/source changes hold dispatch and exact known reservation replay remains available",
+    "known completed output imports exactly once using recorded quote endpoint after model retirement/pause; generated provenance cannot be relabeled, diagnosis is explicit and accounting remains available",
+    "unknown charges hold new reference attempts; explicit diagnosis permits only attempt two and the existing hard attempt limit remains enforced",
+    "all new helpers/RPCs/triggers are service-only SECURITY INVOKER with empty search_path; candidate rows remain append-only",
+    "rollback removes synthetic source projects, reviews, candidates, jobs and active fixture models"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "Sequential stale-read simulations do not verify true concurrent-session scheduling.",
+    "Synthetic stored-image metadata/output receipts only; actual PNG bytes, storage transfer and creative quality are verified separately.",
+    "No real model activation, invoice validation, provider generation, browser/mobile-device or native production latency claim."
+  ]
+}

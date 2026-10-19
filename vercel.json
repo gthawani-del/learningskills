@@ -1,1 +1,1 @@
-{"version":2,"builds":[{"src":"api/index.mjs","use":"@vercel/node","config":{"includeFiles":["apps/director/public/**","docs/evidence/FAL_ENDPOINT_SCHEMAS.json"]}}],"routes":[{"src":"/(.*)","dest":"/api/index.mjs"}]}
+{"version":2,"builds":[{"src":"api/index.mjs","use":"@vercel/node","config":{"includeFiles":["apps/director/public/**","docs/evidence/FAL_ENDPOINT_SCHEMAS.json","docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json"]}}],"routes":[{"src":"/(.*)","dest":"/api/index.mjs"}]}

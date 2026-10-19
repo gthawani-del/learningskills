@@ -4,6 +4,7 @@ import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
 import {departmentPlanningContext} from './public/department-plan-core.js';
 import {storyboardHandoffContext} from './public/storyboard-handoff-core.js';
+import {referenceProductionContext} from './public/reference-production-core.js';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const positive = n => Number.isSafeInteger(n) && n > 0;
@@ -67,7 +68,9 @@ export function authorizeSpending(state, command, {model, now}) {
  const record = (state.quotes || []).find(q => q.id === command.quoteId && q.projectId === project.id && q.actorId === command.actorId);
  if (!record) fail(404, 'Persisted quote not found.');
  if(project.departmentPlanning&&departmentPlanningContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).departments.some(unit=>!unit.approved))fail(409,'Review the current department plans before authorizing media production. Planning approval does not approve generated assets.');
- if(project.storyboardHandoff&&!storyboardHandoffContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).planningApproved)fail(409,'Review the current shot contracts and sequence before authorizing media production. This approval does not approve generated frames, voices or footage.');
+ const reference=record.quote.artifactId?.startsWith('reference_brief:')&&['reference_image','reference_look'].includes(record.quote.task);
+ if(reference){const subject=referenceProductionContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id),{assets:state.assets||[],candidates:state.referenceCandidates||[]}).subjects.find(s=>'reference_brief:'+s.id===record.quote.artifactId);if(!subject?.directionApproved||subject.sourceStale||subject.identityStale)fail(409,'Review the current reference direction and approved identity before authorizing this image.');}
+ if(!reference&&project.storyboardHandoff&&!storyboardHandoffContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).planningApproved)fail(409,'Review the current shot contracts and sequence before authorizing media production. This approval does not approve generated frames, voices or footage.');
  const time = checkQuote(project, record.quote, record.input, model, now);
  const finish = command.finishReserveMicroUsd;
  if (!positive(command.maxMicroUsd) || !Number.isSafeInteger(finish) || finish < 0 || finish > command.maxMicroUsd || !Number.isSafeInteger(record.quote.totalMicroUsd + finish) || command.maxMicroUsd < record.quote.totalMicroUsd + finish) fail(400, 'The generation cost cap must cover the quote and finish reserve in integer USD micro-units.');

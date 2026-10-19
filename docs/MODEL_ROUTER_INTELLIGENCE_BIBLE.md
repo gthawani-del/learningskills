@@ -1,6 +1,6 @@
 # Model Router Intelligence Bible
 
-Revision 7 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 8 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
@@ -53,6 +53,22 @@ Paid `plan_storyboard` maps to registry task `storyboard_planning` and the separ
 All 17 department versions are bound into each source baseline: changing any one conservatively marks every current contract source-stale, rather than claiming selective semantic impact on shots. A focused contract edit with unchanged source preserves neighboring histories/approvals and holds the old sequence pins. Legacy flat shots first require free adoption, preserving IDs/order/media and exact source lines. Missing scene mappings, ambiguous/changed dialogue or duplicate coverage hold adoption instead of discarding work; missing action, continuity or mandatory criteria hold approval. The current `storyboard_sequence` checkpoint atomically writes exact `shot_contract:<id>` and sequence decisions with a planning-only acknowledgement; direct individual contract approval cannot bypass whole-sequence review.
 
 F037 advances its existing partial implementation to enforceable planning contracts; F039 advances ordered plan review, not generated-take acceptance. F038 actual storyboard/keyframe generation and F040 actual playable animatics remain missing. This handoff creates no images, selects no identity/voice/media, performs no song listening/alignment, renders no animatic and proves no two-attempt or real filmmaking quality. [Storyboard Handoff Knowledge](STORYBOARD_HANDOFF_KNOWLEDGE.md) records the concrete craft rules, source-grounded scenarios and remaining production holds.
+
+## Step 7 first increment: image reference production — 19 October 2026
+
+The approved brief, source-current screenplay and all 17 fresh approved department plans now feed separate original/supplied identity, identity-preserving look and scene-location reference subjects. Stable IDs are `identity:<characterId>`, `look:<characterId>` and `location:<sceneId>` under `director-reference-production-v1`. Preparation creates source-grounded missing directions without overwriting earlier subjects/history. An identity row does not make an off-screen role visible or require a paid portrait. The approved project decides photographic versus stylized treatment; names, language and nationality do not imply appearance or accent.
+
+Reference directions include a production purpose, anchor, framing, must-preserve details and explicit acceptance-evidence/failure criteria. Direction approval, candidate generation or upload, actual stored-image selection and selection approval are separate. An uploaded image can be reviewed without a paid call, but upload does not establish permission or factual identity. A look binds the exact current approved selected identity subject/selection/asset versions and uses a reference-edit route; its wardrobe or style must not silently replace that person. All 17 department versions are conservatively bound into each source baseline. Changed sources/identity hold old selections while preserving their images and history.
+
+`GET/POST /api/projects/:id/reference-production` supports free preparation/edit/refresh/selection and server registration of an actual owned uploaded image. The server builds canonical input for `POST /api/projects/:id/reference-production/quotes`; a look requires explicit consent to share its selected private identity reference with the provider. `POST /api/projects/:id/reference-production/jobs` reuses the existing exact quote, spending authorization, reservation and job lifecycle. The narrow `reference_image`/`reference_look` exception permits reference work before storyboard approval; it cannot bypass unrelated video/audio/media gates. Current reviewed models, prices, execution/quality evidence and operational enablement are still required. Each explicit paid attempt requests one image, with the existing two-attempt work-unit boundary: there are no hidden three-candidate casting batches or second wallet.
+
+The bounded adapters request one 1024×1024 PNG: `fal-ai/flux-2-pro` or `fal-ai/flux-2/klein/9b` for text-origin identity/location candidates, and `bytedance/seedream/v5/pro/edit` for selected-identity looks. The [dated public schema/price evidence](evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json) is adapter evidence only; FLUX2 Pro’s public fixed-size example is $0.03 and Klein’s exact per-megapixel rounding remains unresolved. Current reviewed registry quotes, not these observations or skill defaults, govern spending.
+
+`POST /api/projects/:id/reference-production/reviews` records the actual job's visible correction reason before another attempt on the same work unit. This is not an automatic diagnosis, direction rewrite, repair or replacement call. Direction changes remain explicit reviewed versions with fresh matching financial context. The two-attempt bound is not proof of two-attempt creative success.
+
+`POST /api/projects/:id/reference-production/import` uses an owned completed job ID and saved output evidence, never a caller-supplied output URL. The supported generated result is validated and copied into private project storage with exact checksum/provenance before an immutable candidate receipt can exist. A failed download or import is recovered against the original job; it does not authorize a new generation. Selection binds an actual owned stored candidate and exact current direction/source; reference-selection approval requires an explicit acknowledgement that the image was inspected against the criteria. A successful API response, prompt or model self-assessment does not establish anatomy, same-person continuity, real-world authenticity or rights.
+
+The selected image is not automatically copied into generic production-library records or assigned to a storyboard/shot. Device imports retain creative history without copying trusted generated receipts, approvals or spending authority. Identity/look/world approval does not select a voice, clear permissions, create storyboard frames or authorize footage. F033/F034 cover only this first reference-production subset; independent props/SKUs, full reference-sheet/angle coverage, image-assisted quality calibration, actual provider-quality/cost pilots, storyboard frames, playable animatics and finished media remain separate work. [Reference Production Knowledge](REFERENCE_PRODUCTION_KNOWLEDGE.md) gives concrete craft rules, deterministic-versus-human acceptance and recovery limits. The [reference acceptance record](REFERENCE_PRODUCTION_ACCEPTANCE.md) distinguishes synthetic workflow and native metadata evidence from unrun paid quality, customer-account and physical-device checks.
 
 ## Script entry and originality — user clarification, 19 October 2026
 
@@ -950,43 +966,45 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F033 Generate initial casting/location/prop concepts
 
-- **Application operation, proposed:** `POST /api/projects/:id/concepts`.
-- **Execution binding:** `fal-ai/z-image/turbo` (M18). S: live fal schema inspected; no execution.
-- **Input → output:** prompt; image_size; image count → images; seed; output prompt.
-- **Acceptance/limits:** Text-only draft route; no identity-preserving reference input.
-- **Prerequisite:** Approved brief; bounded generation allowance. **Cost basis:** USD 0.005 / megapixels; observation only.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Application operation:** `GET/POST /api/projects/:id/reference-production; POST /api/projects/:id/reference-production/quotes; POST /api/projects/:id/reference-production/jobs; POST /api/projects/:id/reference-production/import`.
+- **Execution binding:** Reviewed registry-selected fal reference_image using fal-ai/flux-2-pro or fal-ai/flux-2/klein/9b, plus owned upload/private image storage and explicit human selection.
+- **Input → output:** Current approved brief and source-current screenplay; all seventeen fresh approved department versions; exact approved identity/location direction; actual owned upload or separately authorized one-image job → Private stored candidate image with immutable provenance, explicit selection and separately approved exact reference version.
+- **Acceptance/limits:** One image per explicit paid attempt; no hidden casting variants. Original identity and location directions use actual source IDs without demographic or on-screen visibility inference. Stored candidate, selected image and approved reference are distinct. Independent props/SKUs, full multi-view packs and real photographic/identity quality remain incomplete.
+- **Prerequisite:** Current approved source/departments and reference direction; current reviewed route/price and exact spending authorization for generation; actual owned stored image for selection. **Cost basis:** Free direction/upload registration/selection/review; generation uses current reviewed configuration-specific fal quote and existing exact authorization/reservation; storage/compute costs separate.
+- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Real paid output/identity/price validation, rights evidence, full prop/reference-pack coverage and deployed account/physical-device checks remain incomplete.
+- **Alternative:** Use an actual owned uploaded reference without a paid generation; historical M18 is not automatically activated.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F034 Derive reference-preserving looks, angles and frames
 
-- **Application operation, proposed:** `POST /api/assets/:id/reference-edits`.
-- **Execution binding:** `bytedance/seedream/v5/pro/edit` (M09). S: live fal schema inspected; no execution.
-- **Input → output:** prompt; image_urls → edited reference images.
-- **Acceptance/limits:** Max 10 references; enforce input count instead of silent truncation; identity not guaranteed.
-- **Prerequisite:** Approved master; reference permission. **Cost basis:** USD 0.0675 / units; observation only.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Application operation:** `POST /api/projects/:id/reference-production (update/refresh/select); POST /api/projects/:id/reference-production/quotes; POST /api/projects/:id/reference-production/jobs; POST /api/projects/:id/reference-production/import`.
+- **Execution binding:** Reviewed registry-selected fal reference_look adapter using bytedance/seedream/v5/pro/edit with exact approved selected private identity.
+- **Input → output:** Current approved source/departments and look direction; exact approved selected identity subject/selection/asset versions; explicit provider-sharing consent; reviewed quote/authorization → One private stored look candidate per explicit attempt, anchored to the selected identity, with explicit selection and separate approval.
+- **Acceptance/limits:** Look/wardrobe/grooming cannot silently replace identity. Changes bind only the current approved selected identity; source/identity changes hold earlier selections and preserve media/history. No inferred unseen physical facts, automatic identity certainty or complete angle/reference-pack guarantee.
+- **Prerequisite:** Current approved selected identity and current look direction; provider-sharing consent; exact reviewed image-edit route/cost authorization. **Cost basis:** Free direction/selection/review; paid single-output edit uses current reviewed configuration-specific quote and existing reservation/attempt controls.
+- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Real identity preservation, production-useful angle/expression/wardrobe-pack coverage, permissions and paid quality/cost validation remain incomplete.
+- **Alternative:** Review an actual owned uploaded look only under the exact current approved identity binding; no text-only face replacement fallback.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F035 Review reference identity, wardrobe and composition
 
-- **Application operation, proposed:** `POST /api/assets/:id/visual-review`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol; authorized image inputs` (O01). D: documented image input; account execution and review quality untested.
-- **Input → output:** image_urls; prompt; model=google/gemini-2.5-flash → structured findings and uncertainty.
-- **Acceptance/limits:** Assisted review; not identity proof or perfect likeness detection.
-- **Prerequisite:** Reference pack and explicit checklist. **Cost basis:** OpenAI input/image token accounting and output rates; image size/quality affects estimate.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Image-assisted review implementation/calibration pending; no biometric guarantee.
-- **Alternative:** M03 only if intermediary route is explicitly approved.
+- **Application operation:** `POST /api/projects/:id/reference-production (select); POST /api/projects/:id/approvals for reference_selection:<subjectId> with acknowledgeReferenceReview`.
+- **Execution binding:** Deterministic source/asset/version guards plus explicit human inspection of the actual private candidate.
+- **Input → output:** Actual owned stored image candidate; exact current approved direction/source; current selected identity binding for looks; explicit review acknowledgement → Version-bound selection event and separate approval or rejection, retaining earlier candidates/media/history.
+- **Acceptance/limits:** Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or all future continuity. Direction approval is not image approval. Model-assisted image review remains a separate unimplemented/calibration task.
+- **Prerequisite:** Current approved reference direction and actual candidate/asset receipt; current source/departments and identity where applicable. **Cost basis:** No model call for manual image selection/approval; private storage/compute separate; future assisted-review cost must receive its own reviewed route/authorization.
+- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Real visual-quality evaluations, image-assisted review/calibration, rights evidence and production-quality acceptance remain incomplete.
+- **Alternative:** Manual review is the current path; O01/M03 remain historical assisted-review candidates and confer no automatic route.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F036 Manage character/world versions and use rights
 
-- **Application operation, proposed:** `POST /api/world-elements`.
-- **Execution binding:** `Supabase Postgres plus private Storage`. D: documented dependency.
-- **Input → output:** identity/look/location/prop refs; rights records → versioned elements and approvals.
-- **Acceptance/limits:** Consent separate from creative approval; no cloning without permission.
-- **Prerequisite:** Membership; assets. **Cost basis:** Service/compute/storage usage; quote/configuration pending.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Application operation:** `GET/POST /api/projects/:id/reference-production; existing project production-record and private-asset APIs`.
+- **Execution binding:** Versioned reference archive, immutable owned candidates, private project storage and guarded Supabase persistence.
+- **Input → output:** Source-linked identity/look/location directions; owned stored assets/candidates; exact identity and selection versions; separately recorded permissions evidence → Preserved subject/selection history, private asset provenance, stale-source/identity holds and exact approvals.
+- **Acceptance/limits:** No automatic generic production-record projection or storyboard media selection. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence stays separate from creative selection; uploaded material is not automatically authorized.
+- **Prerequisite:** Authenticated project scope, current source/identity bindings, actual private assets and action-specific approval checks. **Cost basis:** Storage/compute usage separate from existing generation quote/reservation; free record/selection operations do not start provider calls.
+- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Complete use-rights evidence/retention/deletion, later storyboard/media binding and real account/quality validation remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F037 Create storyboard direction and shot contracts
@@ -3300,85 +3318,102 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F033",
       "category": "Cast, design and storyboard",
       "functionality": "Generate initial casting/location/prop concepts",
-      "application_operation": "POST /api/projects/:id/concepts",
-      "execution_reference": "M18",
-      "external_endpoint_or_tool": "fal-ai/z-image/turbo",
-      "execution_type": "fal model",
-      "evidence": "S: live fal schema inspected; no execution",
-      "required_input": "prompt; image_size; image count",
-      "expected_output": "images; seed; output prompt",
-      "limits_and_quality_rule": "Text-only draft route; no identity-preserving reference input",
-      "prerequisite": "Approved brief; bounded generation allowance",
-      "billing_basis": "USD 0.005 / megapixels; observation only",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "application_operation": "GET/POST /api/projects/:id/reference-production; POST /api/projects/:id/reference-production/quotes; POST /api/projects/:id/reference-production/jobs; POST /api/projects/:id/reference-production/import",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Reviewed registry-selected fal reference_image using fal-ai/flux-2-pro or fal-ai/flux-2/klein/9b, plus owned upload/private image storage and explicit human selection",
+      "execution_type": "application plus optional reviewed fal image generation",
+      "evidence": "Implemented first reference-production subset; schemas and synthetic workflow checks do not establish real provider output quality",
+      "required_input": "Current approved brief and source-current screenplay; all seventeen fresh approved department versions; exact approved identity/location direction; actual owned upload or separately authorized one-image job",
+      "expected_output": "Private stored candidate image with immutable provenance, explicit selection and separately approved exact reference version",
+      "limits_and_quality_rule": "One image per explicit paid attempt; no hidden casting variants. Original identity and location directions use actual source IDs without demographic or on-screen visibility inference. Stored candidate, selected image and approved reference are distinct. Independent props/SKUs, full multi-view packs and real photographic/identity quality remain incomplete.",
+      "prerequisite": "Current approved source/departments and reference direction; current reviewed route/price and exact spending authorization for generation; actual owned stored image for selection",
+      "billing_basis": "Free direction/upload registration/selection/review; generation uses current reviewed configuration-specific fal quote and existing exact authorization/reservation; storage/compute costs separate",
+      "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
+      "release_gate_or_blocker": "Real paid output/identity/price validation, rights evidence, full prop/reference-pack coverage and deployed account/physical-device checks remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "fal-ai/z-image/turbo",
-      "alternative_route": ""
+      "alternative_route": "Use an actual owned uploaded reference without a paid generation; historical M18 is not automatically activated",
+      "implementation_status": "Partial: identity/location candidate lifecycle and explicit image selection/review; full casting/prop production and real quality acceptance remain incomplete",
+      "historical_candidate_reference": "M18",
+      "reference_production_version": "director-reference-production-v1",
+      "retry_review_operation": "POST /api/projects/:id/reference-production/reviews",
+      "status_operation": "POST /api/projects/:id/jobs/:jobId/poll",
+      "explicit_attempt_quantity": 1
     },
     {
       "id": "F034",
       "category": "Cast, design and storyboard",
       "functionality": "Derive reference-preserving looks, angles and frames",
-      "application_operation": "POST /api/assets/:id/reference-edits",
-      "execution_reference": "M09",
-      "external_endpoint_or_tool": "bytedance/seedream/v5/pro/edit",
-      "execution_type": "fal model",
-      "evidence": "S: live fal schema inspected; no execution",
-      "required_input": "prompt; image_urls",
-      "expected_output": "edited reference images",
-      "limits_and_quality_rule": "Max 10 references; enforce input count instead of silent truncation; identity not guaranteed",
-      "prerequisite": "Approved master; reference permission",
-      "billing_basis": "USD 0.0675 / units; observation only",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "application_operation": "POST /api/projects/:id/reference-production (update/refresh/select); POST /api/projects/:id/reference-production/quotes; POST /api/projects/:id/reference-production/jobs; POST /api/projects/:id/reference-production/import",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Reviewed registry-selected fal reference_look adapter using bytedance/seedream/v5/pro/edit with exact approved selected private identity",
+      "execution_type": "application plus optional reviewed fal reference edit",
+      "evidence": "Implemented identity-bound look-production subset; real same-person preservation and multi-view quality remain unvalidated",
+      "required_input": "Current approved source/departments and look direction; exact approved selected identity subject/selection/asset versions; explicit provider-sharing consent; reviewed quote/authorization",
+      "expected_output": "One private stored look candidate per explicit attempt, anchored to the selected identity, with explicit selection and separate approval",
+      "limits_and_quality_rule": "Look/wardrobe/grooming cannot silently replace identity. Changes bind only the current approved selected identity; source/identity changes hold earlier selections and preserve media/history. No inferred unseen physical facts, automatic identity certainty or complete angle/reference-pack guarantee.",
+      "prerequisite": "Current approved selected identity and current look direction; provider-sharing consent; exact reviewed image-edit route/cost authorization",
+      "billing_basis": "Free direction/selection/review; paid single-output edit uses current reviewed configuration-specific quote and existing reservation/attempt controls",
+      "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
+      "release_gate_or_blocker": "Real identity preservation, production-useful angle/expression/wardrobe-pack coverage, permissions and paid quality/cost validation remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "bytedance/seedream/v5/pro/edit",
-      "alternative_route": ""
+      "alternative_route": "Review an actual owned uploaded look only under the exact current approved identity binding; no text-only face replacement fallback",
+      "implementation_status": "Partial: selected-identity-bound look candidate lifecycle and review; full multi-view production and real identity/quality acceptance incomplete",
+      "historical_candidate_reference": "M09",
+      "reference_production_version": "director-reference-production-v1",
+      "retry_review_operation": "POST /api/projects/:id/reference-production/reviews",
+      "status_operation": "POST /api/projects/:id/jobs/:jobId/poll",
+      "explicit_attempt_quantity": 1
     },
     {
       "id": "F035",
       "category": "Cast, design and storyboard",
       "functionality": "Review reference identity, wardrobe and composition",
-      "application_operation": "POST /api/assets/:id/visual-review",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol; authorized image inputs",
-      "execution_type": "fal model",
-      "evidence": "D: documented image input; account execution and review quality untested",
-      "required_input": "image_urls; prompt; model=google/gemini-2.5-flash",
-      "expected_output": "structured findings and uncertainty",
-      "limits_and_quality_rule": "Assisted review; not identity proof or perfect likeness detection",
-      "prerequisite": "Reference pack and explicit checklist",
-      "billing_basis": "OpenAI input/image token accounting and output rates; image size/quality affects estimate",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Image-assisted review implementation/calibration pending; no biometric guarantee",
+      "application_operation": "POST /api/projects/:id/reference-production (select); POST /api/projects/:id/approvals for reference_selection:<subjectId> with acknowledgeReferenceReview",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Deterministic source/asset/version guards plus explicit human inspection of the actual private candidate",
+      "execution_type": "application and human visual review",
+      "evidence": "Implemented exact candidate-selection/review workflow; no calibrated automatic visual or identity detector",
+      "required_input": "Actual owned stored image candidate; exact current approved direction/source; current selected identity binding for looks; explicit review acknowledgement",
+      "expected_output": "Version-bound selection event and separate approval or rejection, retaining earlier candidates/media/history",
+      "limits_and_quality_rule": "Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or all future continuity. Direction approval is not image approval. Model-assisted image review remains a separate unimplemented/calibration task.",
+      "prerequisite": "Current approved reference direction and actual candidate/asset receipt; current source/departments and identity where applicable",
+      "billing_basis": "No model call for manual image selection/approval; private storage/compute separate; future assisted-review cost must receive its own reviewed route/authorization",
+      "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
+      "release_gate_or_blocker": "Real visual-quality evaluations, image-assisted review/calibration, rights evidence and production-quality acceptance remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router/vision",
-      "alternative_route": "M03 only if intermediary route is explicitly approved"
+      "alternative_route": "Manual review is the current path; O01/M03 remain historical assisted-review candidates and confer no automatic route",
+      "implementation_status": "Partial: source/version-bound human reference review; real quality validation and calibrated assisted review incomplete",
+      "historical_candidate_reference": "O01",
+      "reference_production_version": "director-reference-production-v1"
     },
     {
       "id": "F036",
       "category": "Cast, design and storyboard",
       "functionality": "Manage character/world versions and use rights",
-      "application_operation": "POST /api/world-elements",
+      "application_operation": "GET/POST /api/projects/:id/reference-production; existing project production-record and private-asset APIs",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Supabase Postgres plus private Storage",
-      "execution_type": "application/service/worker",
-      "evidence": "D: documented dependency",
-      "required_input": "identity/look/location/prop refs; rights records",
-      "expected_output": "versioned elements and approvals",
-      "limits_and_quality_rule": "Consent separate from creative approval; no cloning without permission",
-      "prerequisite": "Membership; assets",
-      "billing_basis": "Service/compute/storage usage; quote/configuration pending",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "external_endpoint_or_tool": "Versioned reference archive, immutable owned candidates, private project storage and guarded Supabase persistence",
+      "execution_type": "application/service/storage",
+      "evidence": "Implemented reference-version/provenance and existing library controls; rights clearance and real media quality remain separate",
+      "required_input": "Source-linked identity/look/location directions; owned stored assets/candidates; exact identity and selection versions; separately recorded permissions evidence",
+      "expected_output": "Preserved subject/selection history, private asset provenance, stale-source/identity holds and exact approvals",
+      "limits_and_quality_rule": "No automatic generic production-record projection or storyboard media selection. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence stays separate from creative selection; uploaded material is not automatically authorized.",
+      "prerequisite": "Authenticated project scope, current source/identity bindings, actual private assets and action-specific approval checks",
+      "billing_basis": "Storage/compute usage separate from existing generation quote/reservation; free record/selection operations do not start provider calls",
+      "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
+      "release_gate_or_blocker": "Complete use-rights evidence/retention/deletion, later storyboard/media binding and real account/quality validation remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Supabase Postgres plus private Storage",
-      "alternative_route": ""
+      "alternative_route": "",
+      "implementation_status": "Partial: independent reference histories/private provenance and exact selection controls; comprehensive rights and downstream media acceptance incomplete",
+      "reference_production_version": "director-reference-production-v1"
     },
     {
       "id": "F037",

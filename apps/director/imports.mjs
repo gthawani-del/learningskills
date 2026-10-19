@@ -3,6 +3,7 @@ import {normalizeBriefArchive} from './public/creative-brief-core.js';
 import {normalizeScreenplayArchive,currentScreenplay} from './public/screenplay-core.js';
 import {normalizeDepartmentPlanningArchive} from './public/department-plan-core.js';
 import {normalizeStoryboardHandoffArchive,assertStoryboardShotProjection} from './public/storyboard-handoff-core.js';
+import {normalizeReferenceProductionArchive} from './public/reference-production-core.js';
 import {newProject,patchProject,hash,text,fail} from './domain.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const roles=new Set(['character_identity','wardrobe','location','visual_style','prop','shot_reference','master_song','dialogue','script','voice_reference','ambience']);
@@ -19,6 +20,7 @@ function normalize(body,owner){
  const screenplay=normalizeScreenplayArchive(source.screenplay,project,{stripReviews:true});if(screenplay){project.screenplay=screenplay;const current=currentScreenplay(project);if(current)project.story={treatment:current.document.treatment,scenes:current.document.scenes.map(s=>({id:s.id,description:s.heading})),version:project.story.version};}
  const departmentPlanning=normalizeDepartmentPlanningArchive(source.departmentPlanning,project);if(departmentPlanning)project.departmentPlanning=departmentPlanning;
  const storyboardHandoff=normalizeStoryboardHandoffArchive(source.storyboardHandoff,project);if(storyboardHandoff){project.storyboardHandoff=storyboardHandoff;project.shots=patchProject(project,{shots}).shots;assertStoryboardShotProjection(project);}
+ const referenceProduction=source.referenceProduction?normalizeReferenceProductionArchive(source.referenceProduction):null;if(referenceProduction)project.referenceProduction=referenceProduction;
  if(!Array.isArray(source.notes||[])||(source.notes||[]).length>200)fail(400,'Invalid direction notes.');
  project.notes=(source.notes||[]).map(n=>{if(!n||typeof n!=='object')fail(400,'Invalid direction note.');return {role:'You',text:text(n.text,'direction note',6000)};});
  const seen=new Set();const assets=body.assets.map(a=>{
@@ -34,6 +36,7 @@ function normalize(body,owner){
  if(screenplay)content.screenplay=screenplay;
  if(departmentPlanning)content.departmentPlanning=departmentPlanning;
  if(storyboardHandoff)content.storyboardHandoff=storyboardHandoff;
+ if(referenceProduction)content.referenceProduction=referenceProduction;
  const fingerprint=hash(content);project.id=stableImportId({owner,sourceId:body.sourceId,fingerprint});project.version=1;
  project.importState={sourceId:body.sourceId,fingerprint,status:'awaiting_media',assets,links,productionArchive};
  return project;

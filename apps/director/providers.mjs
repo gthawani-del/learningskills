@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs';
 
 // Frozen evidence supplies input validation, not a claim of production eligibility.
 const evidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_ENDPOINT_SCHEMAS.json', import.meta.url), 'utf8'));
-export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit']);
-const schemas = new Map(evidence.endpoints.filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
+const referenceEvidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json', import.meta.url), 'utf8'));
+export const REFERENCE_FAL_PROMPT_MAX_BYTES = 100000;
+export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit', 'fal-ai/flux-2-pro', 'fal-ai/flux-2/klein/9b']);
+const schemas = new Map([...evidence.endpoints,...referenceEvidence.endpoints].filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
 const fail = message => { throw new Error(message); };
 function validate(schema, value, path = 'input') {
   if (schema.anyOf) {
@@ -46,6 +48,16 @@ export function validateFalInput(endpoint, input) {
   }
   if (input.sync_mode === true) fail('Async jobs require sync_mode false');
   if (input.enable_safety_checker === false) fail('Safety checker must remain enabled');
+  if (endpoint === 'fal-ai/flux-2-pro' || endpoint === 'fal-ai/flux-2/klein/9b') {
+    // These additive adapters deliberately support one reviewed price configuration.
+    // Live schemas accept broader sizes/batches; those need their own tariff review.
+    if (![Object.prototype,null].includes(Object.getPrototypeOf(input)) || ['prompt','image_size','output_format','sync_mode','enable_safety_checker'].some(key => !Object.hasOwn(input,key))) fail('Reference image configuration must be explicit own JSON fields');
+    if (typeof input.prompt !== 'string' || !input.prompt.trim() || Buffer.byteLength(input.prompt,'utf8') > REFERENCE_FAL_PROMPT_MAX_BYTES) fail('Nonempty bounded reference image direction is required');
+    if (!input.image_size || typeof input.image_size !== 'object' || ![Object.prototype,null].includes(Object.getPrototypeOf(input.image_size)) || Object.keys(input.image_size).length !== 2 || !Object.hasOwn(input.image_size,'width') || !Object.hasOwn(input.image_size,'height') || input.image_size.width !== 1024 || input.image_size.height !== 1024) fail('Reference images require explicit 1024x1024 dimensions');
+    if (input.output_format !== 'png' || input.sync_mode !== false || input.enable_safety_checker !== true) fail('Reference images require async PNG with safety checking enabled');
+    if (endpoint === 'fal-ai/flux-2-pro' && input.safety_tolerance !== '2') fail('FLUX pro requires the reviewed safety tolerance');
+    if (endpoint === 'fal-ai/flux-2/klein/9b' && (input.num_images !== 1 || input.num_inference_steps !== 4)) fail('FLUX Klein requires one image at four reviewed inference steps');
+  }
   if (endpoint === 'bytedance/seedream/v5/pro/edit') {
     if (!input.image_urls.length || input.image_urls.length > 10) fail('Supply 1–10 reference images');
     if ((input.num_images ?? 1) !== 1) fail('One generation per authorized attempt');
