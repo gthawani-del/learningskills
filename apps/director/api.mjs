@@ -1,5 +1,6 @@
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic} from './public/animatic-core.js';
+import {musicVideoContext,saveMusicVideo} from './public/music-video-core.js';
 import {storyboardProductionContext} from './public/storyboard-production-core.js';
 import {createReferenceController} from './reference-production.mjs';
 import {createPlanningController} from './planning.mjs';
@@ -221,6 +222,12 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const frames=storyboardProductionContext(project,approvals,{assets,referenceCandidates,candidates});
  if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames,assets)});
  const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
+ }
+ if(action==='music-video'&&['GET','POST'].includes(req.method)){
+ const assets=await store.records('assets',id);
+ if(req.method==='GET')return reply(200,{musicVideo:musicVideoContext(project,assets)});
+ const next=saveMusicVideo(project,body,assets),saved=next.version===project.version?project:await store.save(next,project.version);
+ return reply(200,{project:saved,musicVideo:musicVideoContext(saved,assets)});
  }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}

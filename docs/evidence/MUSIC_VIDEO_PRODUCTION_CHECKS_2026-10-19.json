@@ -1,0 +1,303 @@
+{
+  "date": "2026-10-19",
+  "baseCommit": "a554cd37a284e2bca724e6e3f1cd0aa28e06ce6e",
+  "scope": "Song and shot planning through existing local APIs, device drafts, import remapping and private source playback; synthetic media fixtures",
+  "fullLocalQA": {
+    "mode": "full",
+    "changed": [],
+    "selected": {
+      "tests": [
+        "apps/director/tests/music-video.test.mjs",
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs"
+      ],
+      "browsers": [
+        "music-video-browser",
+        "creative-brief-browser",
+        "v2-workspace",
+        "mobile-footer-browser",
+        "compact-proposal-browser",
+        "registry-browser",
+        "writing-browser",
+        "planning-ui-browser",
+        "department-browser",
+        "department-revision-browser",
+        "storyboard-browser",
+        "reference-browser",
+        "storyboard-production-browser",
+        "animatic-browser",
+        "animatic-audio-browser",
+        "animatic-audio-mp3-browser"
+      ],
+      "sql": true,
+      "reason": "Full release checks."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.59,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 93.64,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.7,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 4.39,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 4.68,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 5.32,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 9.25,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.62,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 3.82,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 6.24,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.64,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5.28,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 5.66,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 5.75,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 8.2,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 8.34,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 7.42,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 7.57,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 6.99,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 31.45,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "automatedCases": 727,
+  "browserFlows": 16,
+  "additionalFinalMusicVideoBrowser": {
+    "passed": true,
+    "desktopViewport": true,
+    "mobileViewport": true,
+    "physicalMobileDevice": false,
+    "deviceDraftSongSaveAndReload": true,
+    "savedAcrossReload": true,
+    "sourceUnchanged": true,
+    "missingSingerHeld": true,
+    "mobileEditorGeometry": {
+      "overflow": false,
+      "footerTop": 786,
+      "buttons": [
+        {
+          "text": "Save timing & roles",
+          "bottom": 428.3125,
+          "hit": true
+        },
+        {
+          "text": "Cancel edits",
+          "bottom": 428.3125,
+          "hit": true
+        }
+      ]
+    },
+    "consoleErrors": [],
+    "httpErrors": [],
+    "paidGenerations": 0
+  },
+  "regression": {
+    "before": "First requestAnimationFrame callback preceding Play origin reproduced Invalid playhead frame.",
+    "after": "Clamp first playhead to zero; adversarial existing playback browser passes."
+  },
+  "sourceSha256": {
+    "apps/director/api.mjs": "feb218a4a7c769662b2a7bf0e6b18c62af83c63f1e9ba79010b92b90d1d6c2fa",
+    "apps/director/imports.mjs": "3109fdb9b62b8db8eb89b6aaef01f653879a761f35bcf6ae5775208897ea8868",
+    "apps/director/production-state.mjs": "881bafcac1a06598acd825a7d5347398fbb7c445d173e3fd75c5d5625e0fdfe0",
+    "apps/director/public/app.js": "4dadd0b9bd68478154d571e48f3e6f0bf19d199998701b276fcb74434f6c5f05",
+    "apps/director/public/animatic-player.js": "d19702571c2be2dbc715d11c86e9fe0a0aa77bb1a80d3095f1770c09f0e6cea8",
+    "apps/director/public/music-video-core.js": "98be80c2946e009a2a58be8a53086a113ad884cca079f83ff6fb574c2237f217",
+    "apps/director/public/music-video-workspace.js": "edccf5c74e5b90a1a690a411cce307e9f8eec1be555d003a5d4eb9d4910f826d",
+    "apps/director/public/studio-v2.css": "ab5aaa14afc49e8d770f99cb5b864cd6c68741e354644f0849bfe1bb5c9e0066",
+    "apps/director/server.mjs": "0ac87089e1771494a158bde28b99c3e7850e440dc411a3b3663436f32c1c60a6",
+    "apps/director/tests/animatic-browser.py": "0f63374e6bb4c573cd3e807756caa71761253f06e1ad211572542b3562f38c50",
+    "apps/director/tests/imports.test.mjs": "b6ab48140ff848e8e8340d440e5e9ee504afa162052c06c998ac6590af1a7ad9",
+    "apps/director/tests/music-video-browser.py": "f982ae94cd7942c114e87150930b987bf958580783669b00e54a73f17f4f4d36",
+    "apps/director/tests/music-video-fixture-server.mjs": "8e2973413c568bae118c190a7d02627698a143b86333e2276f3567ddaa263cdb",
+    "apps/director/tests/music-video.test.mjs": "28e28c67c4baa599400748c7fc1d2de31a10623d1f6179aab3d6b45dc938154b",
+    "scripts/qa-director.mjs": "55e0d73a3986c132c09fd0d311a82147388ca23d2eb51e064aee280b9330ad23",
+    "scripts/test-director.mjs": "fb079edb78d09364340195f56d6673799b5247bb3c61caaf7e811b844b49c21d",
+    "docs/MUSIC_VIDEO_PRODUCTION_ACCEPTANCE.md": "ec9f71e564c94cf0ea3f24654a79e5b8bb41b4fdb4c476c1e8fed4b53308bbd7"
+  },
+  "screenshotSha256": {
+    "music-video-song-desktop.png": "e8a4e6c41ce9f366d4886a2902caca4297d683b0e171d71296d21e98cea6e5f8",
+    "music-video-song-mobile.png": "a8674d673f0c2a7f17b7953de8a13ba2a34f925bccc703df7ee3b16fdb387806",
+    "music-video-song-mobile-editor.png": "e0f6af43c788e1c3bfbd98197f37d0ccd5e8384323cbf9d17bbe1c604a44d473"
+  },
+  "newDependencies": 0,
+  "newMigrations": 0,
+  "paidCalls": 0,
+  "newAgentsSpawned": 0,
+  "securitySettingsChanged": false,
+  "productionAccountVerified": false,
+  "physicalMobileDeviceVerified": false,
+  "knownLimits": [
+    "Browser duration is user-reviewed metadata, not authoritative backend song analysis.",
+    "Song-map and shot assignments are manual/provisional, with explicit review holds; no automatic verse/chorus, lyric or beat analysis.",
+    "The existing edit-record size/reference limits and upload limits still apply.",
+    "No actual singing proof, generated performance quality, final assembly or finished movie export is established.",
+    "Music-video timing assignments are planning inputs; existing animatic timing remains a separately reviewed draft.",
+    "Production Vercel/Supabase account verification remains deferred and requires actual live evidence."
+  ]
+}

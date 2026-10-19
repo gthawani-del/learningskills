@@ -14,6 +14,8 @@ try:
   page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None);page.on('response',lambda r:http.append({'status':r.status,'url':r.url}) if r.status>=400 else None)
   url=base+'/api/projects/'+info['projectId'];project=page.request.get(url).json()['project'];summary=page.request.get(url+'/animatic').json()['animatic']
   r=page.request.post(url+'/animatic',data={'expectedVersion':project['version'],'fps':24,'frameCounts':[24 for f in summary['frames']],'acknowledgeTiming':True});assert r.ok,r.text()
+  # The first animation callback can carry a timestamp preceding Play's origin.
+  page.add_init_script("const raf=window.requestAnimationFrame.bind(window);let firstFrame=true;window.requestAnimationFrame=callback=>raf(t=>{const stale=firstFrame;firstFrame=false;callback(stale?performance.now()-100:t);});")
   page.add_init_script("localStorage.setItem('director:lastProject',"+json.dumps(info['projectId'])+")");page.goto(base)
   page.locator('[data-load-animatic]').click();expect(page.locator('[data-animatic-play]')).to_be_visible();page.wait_for_function('()=>document.querySelector("[data-animatic-image]").naturalWidth>0')
   page.locator('[data-animatic-play]').click();expect(page.locator('[data-animatic-image]')).to_have_attribute('alt',__import__('re').compile('Storyboard still 2:'))
@@ -35,6 +37,9 @@ try:
   assert not errors,errors;assert not http,http
   report={'scope':'Actual local HTTP APIs/private stored PNGs and Chromium, with synthetic server-side fal fixtures','passed':['saved frame-accurate silent playback advances to the second actual private image and stops at the last frame','seeking, explicit timing versions, unsaved-edit guard, reload and preserved source decisions','390px editor controls clear footer and pass hit checks; no horizontal overflow','revoked exact frame review holds saved preview without deleting history'],'consoleErrors':errors,'httpErrors':http,'mobileGeometry':geometry,'realPaidCalls':0,'physicalMobileTested':False,'deployedWebsiteTested':False,'audioAligned':False,'finishedMovieExportTested':False}
   (out/'animatic-browser-results.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report));browser.close()
+except Exception:
+ print(json.dumps({'consoleErrors':errors,'httpErrors':http}))
+ raise
 finally:
  server.terminate()
  try:server.wait(timeout=4)

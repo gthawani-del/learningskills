@@ -1,3 +1,4 @@
+await import('../apps/director/tests/music-video.test.mjs');
 // Run all node:test scenarios in one process so the report counts cases, not files.
 await import('../apps/director/tests/qa-runner.test.mjs');
 await import('../apps/director/tests/animatic.test.mjs');
