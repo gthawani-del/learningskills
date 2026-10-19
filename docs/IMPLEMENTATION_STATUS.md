@@ -1,3 +1,13 @@
+# Storyboard shot-contract handoff — 19 October 2026
+
+Step 6 Point 6 is implemented: source-bound shot contracts, exact screenplay dialogue coverage, independent version histories, ordered sequence review and atomic planning-only whole-plan approval. Compact prefilled editing, legacy adoption, missing-coverage preparation and separate v6 AI planning preserve existing media and approved decisions. Actual storyboard pictures and playable animatics remain subsequent work.
+
+**539 automated tests, syntax checks and the production build pass.** Five storyboard, five department and four department-revision browser groups plus seven existing regression scripts pass locally. Twenty independent isolated SQL correctness groups pass; the combined reproducible scale run passes 21 groups. Director migration `20261019124745_director_storyboard_handoff` is installed; 18 new and six replaced functions have service-only invoker permissions/empty search paths, six affected tables retain RLS, and security advisor is clean. Zero active models; generation remains paused; no paid calls or credential changes. See [Storyboard Handoff Acceptance](STORYBOARD_HANDOFF_ACCEPTANCE.md).
+
+Tracker totals remain 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. The isolated 200-shot bulk approval took 25.264 seconds, above the cloud adapter's 20-second timeout: native latency and uncertain-response recovery remain release checks for large plans. Deployed/account tests remain deferred; physical mobile, real model quality/billing and generated media remain untested. Next: Step 7 actual character/look/location references and storyboard frames, then measured animatics. Historical sections below retain their evidence limits.
+
+---
+
 # Targeted department revisions — 19 October 2026
 
 Step 6 Point 5 is implemented: exact upstream version bindings, selective transitive review flags, content-preserving dependency review and explicit selected-department revision requests. A new `revise_departments` operation has separate model review, v5 contract, cost allowance and saved proposal review/application. Unselected documents and recorded choices remain protected; stale plans cannot authorize new media spending.

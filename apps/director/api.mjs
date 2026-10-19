@@ -1,5 +1,7 @@
 import {createPlanningController} from './planning.mjs';
 import {changeDepartmentPlans} from './department-plans.mjs';
+import {changeStoryboardHandoff} from './storyboard-handoff.mjs';
+import {storyboardHandoffContext} from './public/storyboard-handoff-core.js';
 import {departmentPlanningContext} from './public/department-plan-core.js';
 import {DEPARTMENT_GUIDANCE_VERSION} from './public/department-guidance.js';
 import {modelRegistryCommand} from './model-registry.mjs';
@@ -8,7 +10,7 @@ import {screenplayContext} from './public/screenplay-core.js';
 import {createPlanningProvider} from './planning-provider.mjs';
 import {visiblePlanningCall} from './planning-store.mjs';
 import {applyBriefCommand,briefPlanningContext} from './public/creative-brief-core.js';
-import {planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,departmentRevisionSchemaHash} from './planning-profile.mjs';
+import {planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,departmentRevisionSchemaHash,storyboardPlanningSchemaHash} from './planning-profile.mjs';
 import {validatePlanningResult} from './planning-provider.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
@@ -101,7 +103,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(path==='/api/admin/audit'&&req.method==='GET'){permit('audit.read');return reply(200,{commands:await store.operationalAudit(),scope:'operational commands',limit:100});}
  if(path==='/api/admin/commands'&&req.method==='POST'){const request=adminCommand(body,user.id,role);return reply(200,await store.operationalCommand(request));}
  if(path==='/api/admin/registry/commands'&&req.method==='POST'){const request=modelRegistryCommand(body,user.id,role);return reply(200,await store.registryCommand(request));}
- if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value,planningSchemas:{legacy:{requestVersion:'director-planning-v3',inputSchemaHash:planningSchemaHash,operations:['interpret_brief','initial_plan','revise_plan','write_script','revise_script']},departments:{requestVersion:'director-planning-v4',inputSchemaHash:departmentPlanningSchemaHash,operations:['plan_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},departmentRevisions:{requestVersion:'director-planning-v5',inputSchemaHash:departmentRevisionSchemaHash,operations:['revise_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION}},scope:'Schema hashes identify implemented request contracts; they do not provide execution or quality approval.'});}
+ if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value,planningSchemas:{legacy:{requestVersion:'director-planning-v3',inputSchemaHash:planningSchemaHash,operations:['interpret_brief','initial_plan','revise_plan','write_script','revise_script']},departments:{requestVersion:'director-planning-v4',inputSchemaHash:departmentPlanningSchemaHash,operations:['plan_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},departmentRevisions:{requestVersion:'director-planning-v5',inputSchemaHash:departmentRevisionSchemaHash,operations:['revise_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},storyboard:{requestVersion:'director-planning-v6',inputSchemaHash:storyboardPlanningSchemaHash,operations:['plan_storyboard']}},scope:'Schema hashes identify implemented request contracts; they do not provide execution or quality approval.'});}
  if(path==='/api/admin/overview'&&req.method==='GET'){permit('jobs.read');const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'staff-owned projects only',projects:ps.length,jobs,productionEnabled:false});}
  fail(404,'Operation not found.');}
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
@@ -114,6 +116,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
  if(action==='screenplay'&&req.method==='GET')return reply(200,{screenplayContext:screenplayContext(project,await store.records('approvals',id))});
  if(action==='department-plans'&&req.method==='GET')return reply(200,{departmentContext:departmentPlanningContext(project,await store.records('approvals',id))});
+ if(action==='storyboard-handoff'&&req.method==='GET')return reply(200,{storyboardContext:storyboardHandoffContext(project,await store.records('approvals',id))});
+ if((action==='storyboard-handoff'||action==='storyboard-handoff/apply-proposal')&&req.method==='POST')return reply(200,await changeStoryboardHandoff({project,body,actorId:user.id,store,applying:action==='storyboard-handoff/apply-proposal'}));
  if((action==='department-plans'||action==='department-plans/apply-proposal')&&req.method==='POST')return reply(200,await changeDepartmentPlans({project,body,actorId:user.id,store,applying:action==='department-plans/apply-proposal'}));
  if((action==='screenplay'||action==='screenplay/apply-proposal')&&req.method==='POST')return reply(200,await changeScreenplay({project,body,actorId:user.id,store,applying:action==='screenplay/apply-proposal'}));
  if(action==='brief'&&req.method==='GET')return reply(200,{briefContext:briefPlanningContext(project,await store.records('approvals',id))});
@@ -137,9 +141,11 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const planningRead=action?.match(/^planning-calls\/([0-9a-f-]+)$/);
  if(planningRead&&req.method==='GET'){
   if(!uuid.test(planningRead[1]))fail(400,'Invalid planning call identity.');
-  const saved=await store.readPlanningCall(user.id,id,planningRead[1]);return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null});
+  const saved=await store.readPlanningCall(user.id,id,planningRead[1]);let storyboardSource;
+  if(saved.reservation?.operation==='plan_storyboard')try{const input=JSON.parse(saved.request.body.input);storyboardSource={screenplayDocument:input.context.screenplay.current.document};}catch{storyboardSource={screenplayDocument:null};}
+  return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null,...(storyboardSource?{storyboardSource}:{})});
  }
- const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments|revise_departments))?$/);
+ const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments|revise_departments|plan_storyboard))?$/);
  if(planningSummary&&req.method==='GET')return reply(200,await planningController.summary(user.id,id,planningSummary[1]||'interpret_brief'));
  const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
  if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
@@ -149,7 +155,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
  if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
  if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
- if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments','plan_storyboard'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
  return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
  }
  if(action==='plan'&&req.method==='POST'){
@@ -219,7 +225,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='generate'&&req.method==='POST')fail(409,'Generation is held: no model profile has passed execution and quality validation. A verified quote and budget authorization are required.');
  if(action==='export'&&req.method==='POST'){
  if(!demo||env.DIRECTOR_LOCAL_RENDER!=='1')fail(503,'Hosted sound-preserving export is not configured. Accepted assets remain available.');
- const approvals=await store.records('approvals',id);const script=screenplayContext(project,approvals);if(project.screenplay&&!script.approved)fail(409,'Review and approve the current screenplay and its source comparison before export.');if(!project.shots.length||project.shots.some(s=>{const last=approvals.filter(a=>a.artifactId===s.id&&a.version===s.version).at(-1);return last?.decision!=='approved';}))fail(409,'Approve each current shot version before export.');
+ const approvals=await store.records('approvals',id);const script=screenplayContext(project,approvals);if(project.screenplay&&!script.approved)fail(409,'Review and approve the current screenplay and its source comparison before export.');if(project.storyboardHandoff&&!storyboardHandoffContext(project,approvals).planningApproved)fail(409,'Review and approve the current shot contracts and sequence before export.');if(!project.shots.length||project.shots.some(s=>{const last=approvals.filter(a=>a.artifactId===s.id&&a.version===s.version).at(-1);return last?.decision!=='approved';}))fail(409,'Approve each current shot version before export.');
  const {renderFilm}=await import('./render.mjs');const bytes=await renderFilm({project,assets:await store.records('assets',id),assetDir:env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets'});
  res.writeHead(200,{'Content-Type':'video/mp4','Content-Disposition':'attachment; filename="director-film.mp4"','Cache-Control':'no-store'});return res.end(bytes);}
 

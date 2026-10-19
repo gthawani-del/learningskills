@@ -1,0 +1,48 @@
+{
+  "sqlSha256": "d56a9175d10c685e6c366952eaf3dbe7b2a742e3dfee326119836e254e864c3f",
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "all 17 prior SQL increments plus handoff increment install without activating models/resuming generation; editorial v1 DAG reaches all 17 departments used by source freshness",
+    "legacy without archive retains old gate; explicit adoption preserves exact IDs, directions, versions, media and bindings; incomplete preserved legacy direction saves but cannot be approved or spent",
+    "one bounded editorial traversal plus all 17 exact artifacts/latest owner reviews matches prerequisite authority; revoking any department holds whole-plan review",
+    "current source, all department versions, scene/dialogue coverage and exact managed projection validate; bulk approval binds owner/version/archive/ack and atomically appends two contract approvals plus sequence with a bounded receipt",
+    "compact private review evidence contains a SQL-computed exact-archive SHA-256 with sequence/project versions and acknowledgement; a forged hash fails the locked approval trigger",
+    "optional synthetic scale checks preserve the same exact source, artifacts, whole-plan approval and rollback gates at each measured shot count",
+    "sequence rejection/revocation holds whole-plan authority without changing independent contract approval history",
+    "one contract edit preserves all other contracts and approvals, saves a coherent draft with stale sequence pins, and requires explicit pin review before the next whole-plan approval",
+    "explicit sequence reordering retains shot identities and media, creates a new sequence version and requires its own whole-plan review",
+    "save checks latest approval identity under project lock and rejects foreign/stale/unrelated writes; immutable-artifact failure rolls back document, artifact and audit mutations atomically",
+    "bulk approval is all-or-nothing: a missing later contract artifact rolls back earlier contract approvals within the same call",
+    "missing/changed source or department pins, dialogue omissions/duplicates/foreign speakers, verified control claims, unknown/future/text sequence versions and altered flat speech fail closed",
+    "incomplete action/continuity/mandatory criteria remain savable drafts but cannot gain planning approval or media readiness",
+    "generic direction PATCH cannot bypass the managed contract projection; separate media selection and source edits remain savable, while changed sources hold approval and still allow revocation",
+    "preparing missing current-source coverage after screenplay/department review preserves every old contract, orphan scene, flat direction and media as a savable partial draft; stale/orphan contracts continue to hold approval and media",
+    "new storyboard planning uses v6 and captured archive: pause/wrong-version reject, frozen-hash/archive changes hold reserve/claim, exact replay recovers evidence, known response/usage settle after edits, pause and model disable",
+    "existing writing v3, department planning v4 and targeted department revision v5 contracts remain accepted without changing saved provider bodies",
+    "actual media quote, authorization, reserve and dispatch require current whole-plan review; restoring review permits work; submitted-job accounting remains available after revocation",
+    "written contract/sequence approvals cannot become media targets; current ordinary shot targets must match their managed contract projection",
+    "new helpers, bulk/save RPCs and triggers remain service-only SECURITY INVOKER with empty search_path; approval evidence remains append-only",
+    "rollback removes synthetic projects, contracts, reviews, provider identities and ledger transitions; 20 inactive registry seeds remain"
+  ],
+  "productionApplied": false,
+  "scaleTimings": [
+    {
+      "shots": 20,
+      "sequenceCurrentMs": 269,
+      "bulkApprovalMs": 2983,
+      "wholePlanApprovedMs": 849
+    },
+    {
+      "shots": 200,
+      "sequenceCurrentMs": 2754,
+      "bulkApprovalMs": 25264,
+      "wholePlanApprovedMs": 8873
+    }
+  ],
+  "scaleTimingCaveat": "Synthetic isolated WASM timings; shared CPU, no provider work, no native performance or concurrency guarantee.",
+  "limitations": [
+    "single-connection sequential proof simulates stale reads; true concurrent-session locking remains untested",
+    "actual application command/archive fixtures with synthetic model/request/media ledger evidence; no provider creative-output validation",
+    "written contracts and sequence review do not establish generated storyboard frames, playable animatics, accepted audiovisual media or final exports"
+  ]
+}

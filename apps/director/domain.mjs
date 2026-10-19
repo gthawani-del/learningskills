@@ -2,6 +2,7 @@ import {sceneChanged,briefChanged} from './public/revision-impact.js';
 import {briefArtifact} from './public/creative-brief-core.js';
 import {screenplayArtifact} from './public/screenplay-core.js';
 import {departmentPlanArtifacts} from './public/department-plan-core.js';
+import {storyboardHandoffArtifacts,assertStoryboardShotProjection} from './public/storyboard-handoff-core.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -19,6 +20,7 @@ export function newProject(body,owner){
 export function patchProject(previous,body){
  if(Object.hasOwn(body,'screenplay'))fail(400,'Use the screenplay editor to change scripts, sources or review records.');
  if(Object.hasOwn(body,'departmentPlanning'))fail(400,'Use the department planner to change plans and their version history.');
+ if(Object.hasOwn(body,'storyboardHandoff'))fail(400,'Use the shot-plan editor to change storyboard contracts and their version history.');
  if(previous.screenplay?.currentVersion&&body.story!==undefined)fail(409,'Edit the current screenplay to update its treatment and scenes.');
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
  const next=structuredClone(previous);
@@ -36,7 +38,7 @@ export function patchProject(previous,body){
  const current=previous.shots.find(x=>x.id===id);const bindings=s.productionBindings??current?.productionBindings??[];
  if(!Array.isArray(bindings)||bindings.length>100||new Set(bindings.map(b=>b?.recordId)).size!==bindings.length)fail(400,'Invalid production bindings.');
  const productionBindings=bindings.map(b=>{const record=next.production?.records?.find(r=>r.id===b?.recordId);if(!record||!Number.isSafeInteger(b.version)||!record.versions.some(v=>v.version===b.version))fail(400,'A production binding is unavailable.');return {recordId:b.recordId,version:b.version};}).sort((a,b)=>a.recordId.localeCompare(b.recordId));
- const data={productionBindings,id,title:text(s.title||'Untitled shot','shot title',200),description:text(s.description||'','shot direction',12000),duration,framing:text(s.framing||'medium','framing',100),camera:text(s.camera||'static','camera',200),constraints:text(s.constraints||'','constraints',12000),clipAssetId:s.clipAssetId||null,referenceAssetId:s.referenceAssetId||null,sceneId:text(s.sceneId||'','scene ID',100),dialogue:text(s.dialogue||'','dialogue',5000),continuity:text(s.continuity||'','continuity',12000)};
+ const data={productionBindings,id,title:text(s.title||'Untitled shot','shot title',200),description:text(s.description||'','shot direction',12000),duration,framing:text(s.framing||'medium','framing',previous.storyboardHandoff?200:100),camera:text(s.camera||'static','camera',previous.storyboardHandoff?2000:200),constraints:text(s.constraints||'','constraints',previous.storyboardHandoff?60000:12000),clipAssetId:s.clipAssetId||null,referenceAssetId:s.referenceAssetId||null,sceneId:text(s.sceneId||'','scene ID',100),dialogue:text(s.dialogue||'','dialogue',previous.storyboardHandoff?100000:5000),continuity:text(s.continuity||'','continuity',12000)};
  const comparable=x=>{const {version,status,...content}=x;return content;};
  const dependencyChanged=current&&sceneChanged(previous,next,current.sceneId,data.sceneId);
  const changed=!current||hash(comparable(current))!==hash(data)||dependencyChanged;return {...data,version:current?current.version+(changed?1:0):1,status:changed?'draft':current.status||'draft'};});}
@@ -44,12 +46,14 @@ export function patchProject(previous,body){
  if(body.shots===undefined&&body.story!==undefined)next.shots=next.shots.map(s=>sceneChanged(previous,next,s.sceneId)?{...s,version:s.version+1,status:'draft'}:s);
  if(briefChanged(previous,next)&&next.story.version===previous.story.version)next.story={...next.story,version:previous.story.version+1};
  const explicit=new Set(previous.briefExplicitFields||[]);for(const key of ['premise','direction','language','duration','format'])if(body[key]!==undefined&&body[key]!==previous[key])explicit.add(key);next.briefExplicitFields=[...explicit].sort();
+ if(next.storyboardHandoff)assertStoryboardShotProjection(next);
  next.version=previous.version+1;return next;
 }
 export function artifacts(project){return [
  ...(briefArtifact(project)?[briefArtifact(project)]:[]),
  ...(screenplayArtifact(project)?[screenplayArtifact(project)]:[]),
  ...departmentPlanArtifacts(project),
+ ...storyboardHandoffArtifacts(project),
  {logical_key:'story',kind:'story',version:project.story.version,content:project.story},
  ...project.shots.map(s=>({logical_key:s.id,kind:'shot',version:s.version,content:s}))
 ].map(a=>({...a,content_hash:hash(a.content)}));}

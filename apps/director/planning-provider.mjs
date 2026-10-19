@@ -3,11 +3,13 @@ import { planSchema, instruction, validateFilmPlan } from './providers.mjs';
 import { briefProposalSchema, briefProposalInstruction, validateBriefProposal } from './brief-proposal.mjs';
 import { screenplayProposalSchema, screenplayPlanningInstruction, validateScreenplayProposal } from './screenplay-proposal.mjs';
 import { departmentProposalSchema, departmentPlanningInstruction, validateDepartmentContext, validateDepartmentProposal, departmentRevisionProposalSchema, departmentRevisionInstruction, validateDepartmentRevisionContext, validateDepartmentRevisionProposal } from './department-proposal.mjs';
+import {storyboardProposalSchema,storyboardPlanningInstruction,validateStoryboardContext,validateStoryboardProposal} from './storyboard-proposal.mjs';
 export const PLANNING_VERSION = 'director-planning-v3';
 // The first five operation bodies remain byte-for-byte compatible with saved v3
 // requests. Department planning is an additive, separately reviewed v4 contract.
 export const DEPARTMENT_PLANNING_VERSION = 'director-planning-v4';
 export const DEPARTMENT_REVISION_VERSION = 'director-planning-v5';
+export const STORYBOARD_PLANNING_VERSION = 'director-planning-v6';
 export const filmPlanningInstruction = instruction + ' Approved structured-brief decisions in context are binding creative constraints. Preserve their values; material conflicts require review rather than silently rewriting approved choices.';
 const plain = value => !!value && typeof value === 'object' && !Array.isArray(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -20,8 +22,8 @@ export function buildPlanningRequest({ brief, refs = [], duration, model, maxOut
   if (typeof model !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,199}$/.test(model)) fail(400, 'An explicit trusted planning model is required.');
   if (!integer(maxOutputTokens) || maxOutputTokens < 1 || maxOutputTokens > 100000) fail(400, 'An explicit bounded output-token limit is required.');
   const writing = ['write_script', 'revise_script'].includes(operation);
-  const departments = ['plan_departments','revise_departments'].includes(operation),departmentRevision=operation==='revise_departments';
-  if (!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments'].includes(operation) || !plain(context) || JSON.stringify(context).length > (writing || departments ? 180000 : 30000)) fail(400, 'Invalid planning operation or bounded creative context; no source material was truncated.');
+  const departments = ['plan_departments','revise_departments'].includes(operation),departmentRevision=operation==='revise_departments',storyboard=operation==='plan_storyboard';
+  if (!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments','plan_storyboard'].includes(operation) || !plain(context) || JSON.stringify(context).length > (writing || departments || storyboard ? 180000 : 30000)) fail(400, 'Invalid planning operation or bounded creative context; no source material was truncated.');
   if (operation === 'interpret_brief' && (typeof context.inputSignature !== 'string' || !context.inputSignature)) fail(400, 'Brief interpretation requires its saved input signature.');
   if (writing) {
     if (!plain(context.screenplay) || typeof context.screenplay.inputSignature !== 'string' || !context.screenplay.inputSignature || !Array.isArray(context.screenplay.sources)) fail(400, 'Screenplay writing requires a complete saved source context.');
@@ -31,21 +33,23 @@ export function buildPlanningRequest({ brief, refs = [], duration, model, maxOut
   }
   if (departments) validateDepartmentContext(context);
   const revision=departmentRevision?validateDepartmentRevisionContext(context):null;
+  if(storyboard)validateStoryboardContext(context);
   const interpretation = operation === 'interpret_brief';
-  const schema=structuredClone(interpretation ? briefProposalSchema : writing ? screenplayProposalSchema : departmentRevision ? departmentRevisionProposalSchema : departments ? departmentProposalSchema : planSchema);
+  const schema=structuredClone(interpretation ? briefProposalSchema : writing ? screenplayProposalSchema : departmentRevision ? departmentRevisionProposalSchema : departments ? departmentProposalSchema : storyboard ? storyboardProposalSchema : planSchema);
   if(revision){schema.properties.departments.minItems=revision.selected.length;schema.properties.departments.maxItems=revision.selected.length;schema.properties.departments.items.properties.id.enum=[...revision.selected];}
-  const body = { model, instructions: interpretation ? briefProposalInstruction : writing ? screenplayPlanningInstruction : departmentRevision ? departmentRevisionInstruction : departments ? departmentPlanningInstruction : filmPlanningInstruction, input: JSON.stringify({ brief, references: refs, durationSeconds: duration, operation, context }), max_output_tokens: maxOutputTokens, background: true, store: true, text: { format: { type: 'json_schema', name: interpretation ? 'creative_brief_proposal' : writing ? 'screenplay_proposal' : departmentRevision ? 'department_revision_proposal' : departments ? 'department_proposal' : 'film_plan', strict: true, schema } } };
-  const version=departmentRevision?DEPARTMENT_REVISION_VERSION:departments?DEPARTMENT_PLANNING_VERSION:PLANNING_VERSION;
+  const body = { model, instructions: interpretation ? briefProposalInstruction : writing ? screenplayPlanningInstruction : departmentRevision ? departmentRevisionInstruction : departments ? departmentPlanningInstruction : storyboard ? storyboardPlanningInstruction : filmPlanningInstruction, input: JSON.stringify({ brief, references: refs, durationSeconds: duration, operation, context }), max_output_tokens: maxOutputTokens, background: true, store: true, text: { format: { type: 'json_schema', name: interpretation ? 'creative_brief_proposal' : writing ? 'screenplay_proposal' : departmentRevision ? 'department_revision_proposal' : departments ? 'department_proposal' : storyboard ? 'storyboard_handoff_proposal' : 'film_plan', strict: true, schema } } };
+  const version=storyboard?STORYBOARD_PLANNING_VERSION:departmentRevision?DEPARTMENT_REVISION_VERSION:departments?DEPARTMENT_PLANNING_VERSION:PLANNING_VERSION;
   return { version, model, operation, body, requestHash: hash({ version, body }) };
 }
 function requestValid(request) {
-  if (!plain(request) || ![PLANNING_VERSION, DEPARTMENT_PLANNING_VERSION, DEPARTMENT_REVISION_VERSION, 'director-planning-v2'].includes(request.version) || !plain(request.body) || request.model !== request.body.model || hash({ version: request.version, body: request.body }) !== request.requestHash) fail(409, 'Planning request hash or version changed.');
+  if (!plain(request) || ![PLANNING_VERSION, DEPARTMENT_PLANNING_VERSION, DEPARTMENT_REVISION_VERSION, STORYBOARD_PLANNING_VERSION, 'director-planning-v2'].includes(request.version) || !plain(request.body) || request.model !== request.body.model || hash({ version: request.version, body: request.body }) !== request.requestHash) fail(409, 'Planning request hash or version changed.');
   let input;
   try { input = JSON.parse(request.body.input); } catch { fail(409, 'Planning input is invalid.'); }
   const rebuilt = buildPlanningRequest({ brief: input.brief, refs: input.references, duration: input.durationSeconds, model: request.model, maxOutputTokens: request.body.max_output_tokens, operation: input.operation, context: input.context });
   if (request.version === 'director-planning-v2' && !['initial_plan', 'revise_plan', 'interpret_brief'].includes(input.operation)) fail(409, 'This operation was not part of the saved planning version.');
   if ((input.operation==='plan_departments')!==(request.version===DEPARTMENT_PLANNING_VERSION)) fail(409, 'Department planning requires its separately reviewed saved request version.');
   if ((input.operation==='revise_departments')!==(request.version===DEPARTMENT_REVISION_VERSION)) fail(409, 'Targeted department revision requires its separately reviewed saved request version.');
+  if ((input.operation==='plan_storyboard')!==(request.version===STORYBOARD_PLANNING_VERSION)) fail(409, 'Storyboard planning requires its separately reviewed saved request version.');
   if (request.operation !== input.operation || hash({ version: request.version, body: rebuilt.body }) !== request.requestHash) fail(409, 'Planning request differs from the reviewed request contract.');
 }
 function pricingValid(pricing, model, now) {
@@ -90,6 +94,7 @@ export function validatePlanningResult(plan, request) {
   if (['write_script', 'revise_script'].includes(savedInput.operation)) return validateScreenplayProposal(plan, { context: savedInput.context, operation: savedInput.operation });
   if (savedInput.operation === 'plan_departments') return validateDepartmentProposal(plan, { context: savedInput.context });
   if (savedInput.operation === 'revise_departments') return validateDepartmentRevisionProposal(plan, { context: savedInput.context });
+  if (savedInput.operation === 'plan_storyboard') return validateStoryboardProposal(plan, {context:savedInput.context});
   validateFilmPlan(plan);
   const expected = savedInput.durationSeconds;
   const sceneIds = plan.scenes.map(scene => scene.id);
@@ -106,7 +111,7 @@ function validateSnapshotPlan(snapshot, request) {
       if (request) {
         const operation = JSON.parse(request.body.input).operation;
         const validated = validatePlanningResult(snapshot.parsedOutput, request);
-        snapshot[operation === 'interpret_brief' ? 'briefProposal' : ['write_script', 'revise_script'].includes(operation) ? 'screenplay' : ['plan_departments','revise_departments'].includes(operation) ? 'departments' : 'plan'] = validated;
+        snapshot[operation === 'interpret_brief' ? 'briefProposal' : ['write_script', 'revise_script'].includes(operation) ? 'screenplay' : ['plan_departments','revise_departments'].includes(operation) ? 'departments' : operation==='plan_storyboard' ? 'storyboard' : 'plan'] = validated;
       } else snapshot.plan = validateFilmPlan(snapshot.parsedOutput);
     } catch { snapshot.planError = 'Creative result failed the saved request contract; retain response identity and usage for reconciliation.'; }
     delete snapshot.parsedOutput;

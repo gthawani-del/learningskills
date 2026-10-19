@@ -2,6 +2,7 @@ import {normalizeProductionArchive} from './production-records.mjs';
 import {normalizeBriefArchive} from './public/creative-brief-core.js';
 import {normalizeScreenplayArchive,currentScreenplay} from './public/screenplay-core.js';
 import {normalizeDepartmentPlanningArchive} from './public/department-plan-core.js';
+import {normalizeStoryboardHandoffArchive,assertStoryboardShotProjection} from './public/storyboard-handoff-core.js';
 import {newProject,patchProject,hash,text,fail} from './domain.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const roles=new Set(['character_identity','wardrobe','location','visual_style','prop','shot_reference','master_song','dialogue','script','voice_reference','ambience']);
@@ -12,11 +13,12 @@ function normalize(body,owner){
  const base=newProject({title:source.title,premise:source.premise,format:source.format},owner);
  if(!Array.isArray(source.shots||[])||(source.shots||[]).some(s=>!s||typeof s!=='object'))fail(400,'Invalid shot list.');
  const shots=(source.shots||[]).map(({clipAssetId,referenceAssetId,productionBindings,...s})=>s);
- const project=patchProject(base,{title:source.title,premise:source.premise,duration:source.duration,language:source.language,direction:source.direction,stage:source.stage,story:source.story,shots});
+ const project=patchProject(base,{title:source.title,premise:source.premise,duration:source.duration,language:source.language,direction:source.direction,stage:source.stage,story:source.story,...(source.storyboardHandoff?{}:{shots})});
  if(source.briefExplicitFields!==undefined){if(!Array.isArray(source.briefExplicitFields)||source.briefExplicitFields.length>5||new Set(source.briefExplicitFields).size!==source.briefExplicitFields.length||source.briefExplicitFields.some(k=>!['premise','direction','language','duration','format'].includes(k)))fail(400,'Invalid explicit brief source fields.');project.briefExplicitFields=[...source.briefExplicitFields].sort();}
  const creativeBrief=normalizeBriefArchive(source.creativeBrief,project);if(creativeBrief)project.creativeBrief=creativeBrief;
  const screenplay=normalizeScreenplayArchive(source.screenplay,project,{stripReviews:true});if(screenplay){project.screenplay=screenplay;const current=currentScreenplay(project);if(current)project.story={treatment:current.document.treatment,scenes:current.document.scenes.map(s=>({id:s.id,description:s.heading})),version:project.story.version};}
  const departmentPlanning=normalizeDepartmentPlanningArchive(source.departmentPlanning,project);if(departmentPlanning)project.departmentPlanning=departmentPlanning;
+ const storyboardHandoff=normalizeStoryboardHandoffArchive(source.storyboardHandoff,project);if(storyboardHandoff){project.storyboardHandoff=storyboardHandoff;project.shots=patchProject(project,{shots}).shots;assertStoryboardShotProjection(project);}
  if(!Array.isArray(source.notes||[])||(source.notes||[]).length>200)fail(400,'Invalid direction notes.');
  project.notes=(source.notes||[]).map(n=>{if(!n||typeof n!=='object')fail(400,'Invalid direction note.');return {role:'You',text:text(n.text,'direction note',6000)};});
  const seen=new Set();const assets=body.assets.map(a=>{
@@ -31,6 +33,7 @@ function normalize(body,owner){
  if(creativeBrief){content.creativeBrief=creativeBrief;content.briefExplicitFields=project.briefExplicitFields;}
  if(screenplay)content.screenplay=screenplay;
  if(departmentPlanning)content.departmentPlanning=departmentPlanning;
+ if(storyboardHandoff)content.storyboardHandoff=storyboardHandoff;
  const fingerprint=hash(content);project.id=stableImportId({owner,sourceId:body.sourceId,fingerprint});project.version=1;
  project.importState={sourceId:body.sourceId,fingerprint,status:'awaiting_media',assets,links,productionArchive};
  return project;

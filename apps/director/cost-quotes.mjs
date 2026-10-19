@@ -42,7 +42,7 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
   if (!project || !identifier(project.id) || !positive(project.version) || !identifier(artifactId) || !positive(artifactVersion)) fail(400, 'A project and exact artifact version are required.');
   const artifact = [...artifacts(project), ...recordArtifacts(project)].find(a => a.logical_key === artifactId && a.version === artifactVersion);
   if (!artifact) fail(409, 'The requested artifact version is no longer current.');
-  if (artifact.kind === 'department_plan') fail(409, 'A department plan is planning evidence. Create and review its reference, audio or shot specification before quoting media generation.');
+  if (['department_plan','shot_contract','storyboard_sequence'].includes(artifact.kind)) fail(409, 'A production plan is planning evidence. Create and review its reference, audio or shot specification before quoting media generation.');
   if (!requirements || Array.isArray(requirements) || Object.getPrototypeOf(requirements) !== Object.prototype) fail(400, 'Explicit routing requirements are required.');
   const route = selectRoutes({task, requirements, intent, models: [model], now: time}).candidates[0];
   if (!route?.eligibleForQuote) fail(409, 'The selected model does not meet the task and routing requirements.');

@@ -391,7 +391,10 @@
         "apps/director/planning-profile.mjs",
         "apps/director/department-proposal.mjs",
         "apps/director/planning-provider.mjs",
-        "apps/director/planning-consent.mjs"
+        "apps/director/planning-consent.mjs",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs"
       ],
       "tests": [
         "apps/studio/tests/production-contract.test.mjs",
@@ -404,10 +407,15 @@
         "apps/director/tests/department-revision.test.mjs",
         "apps/director/tests/department-revision-api.test.mjs",
         "apps/director/tests/department-revision-browser.py",
-        "database/checks/department-revisions-pglite.mjs"
+        "database/checks/department-revisions-pglite.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py"
       ],
       "verification": "local-and-simulated-provider-with-isolated-sql",
-      "gap": "Source-linked camera/lighting/coverage plans support versioned edits and declared dependency holds: a changed camera plan holds lighting, continuity, storyboard, animatic, VFX and editorial while preserving their documents/history. Actual renderer control fidelity, complete shot contracts and generated coverage/lighting quality remain unverified.",
+      "gap": "Source-linked camera/lighting/coverage plans now feed typed storyboard shot contracts with framing, camera/light intent and mandatory acceptance/failure requirements. Department changes retain declared dependency holds and conservatively stale the bound handoff; actual renderer control fidelity, generated coverage/lighting and real-model cinematography remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F016",
       "dependencies": [
         "versioned-project-records",
@@ -557,7 +565,11 @@
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
         "apps/director/planning-consent.mjs",
-        "database/director-department-revisions.sql"
+        "database/director-department-revisions.sql",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs",
+        "database/director-storyboard-handoff.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -574,10 +586,16 @@
         "apps/director/tests/department-revision.test.mjs",
         "apps/director/tests/department-revision-api.test.mjs",
         "apps/director/tests/department-revision-browser.py",
-        "database/checks/department-revisions-pglite.mjs"
+        "database/checks/department-revisions-pglite.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py",
+        "database/checks/storyboard-handoff-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Department approvals require exact current version, approved brief/script, fresh declared dependency context and planning-only acknowledgement. Legacy missing-pin units, including rights, require explicit review; fresh upstream chains do not require upstream approval order. The all-seventeen production/spending approval gate remains separate. Actual media/rights acceptance and deployed-account races remain unverified.",
+      "gap": "Current-version department and storyboard planning approvals require exact approved source, fresh department dependencies and action-specific acknowledgement. A storyboard_sequence checkpoint atomically approves exact current shot_contract versions plus sequence; legacy/missing coverage/stale pins cannot bypass review. The all-seventeen production/spending gate remains separate. Actual media/rights acceptance and deployed-account concurrency remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -604,7 +622,11 @@
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
         "apps/director/planning-consent.mjs",
-        "database/director-department-revisions.sql"
+        "database/director-department-revisions.sql",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs",
+        "database/director-storyboard-handoff.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -619,10 +641,16 @@
         "apps/director/tests/department-revision.test.mjs",
         "apps/director/tests/department-revision-api.test.mjs",
         "apps/director/tests/department-revision-browser.py",
-        "database/checks/department-revisions-pglite.mjs"
+        "database/checks/department-revisions-pglite.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py",
+        "database/checks/storyboard-handoff-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Server-stamped exact upstream-version pins and the fixed department DAG now derive direct/transitive review holds while preserving documents, choices and approval history. Explicit review_dependencies keeps the document in a new unapproved revision; targeted proposals change only requested units. Whole brief/script changes still hold all source plans. Semantic field/scene impact, complete future media dependencies and deployed concurrency remain unverified.",
+      "gap": "Declared department DAG pins derive transitive holds, while storyboard source baselines bind all seventeen versions and conservatively stale all contracts on source changes. A focused shot edit preserves neighboring histories/approvals but holds old sequence-version pins until explicit review. No content/media is silently deleted or regenerated. Semantic field/scene impact, complete future media dependencies and deployed concurrency remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -879,7 +907,13 @@
         "apps/director/production-state.mjs",
         "apps/director/public/department-plan-core.js",
         "apps/director/public/department-guidance.js",
-        "apps/director/department-plans.mjs"
+        "apps/director/department-plans.mjs",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs",
+        "apps/director/planning-profile.mjs",
+        "apps/director/planning-provider.mjs",
+        "database/director-storyboard-handoff.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -890,10 +924,16 @@
         "apps/director/tests/department-api.test.mjs",
         "apps/director/tests/department-integration.test.mjs",
         "apps/director/tests/department-provider.test.mjs",
-        "apps/director/tests/department-browser.py"
+        "apps/director/tests/department-browser.py",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py",
+        "database/checks/storyboard-handoff-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "All seventeen department plans include storyboard handoffs and camera/lighting/performance requirements. Complete scene-to-shot contracts, actual storyboard frames, timed animatics and their production dependency orchestration remain incomplete. Text plans do not constitute a storyboard.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Typed source-bound storyboard handoff contracts now include purpose/action, framing/camera/light, estimated timing, exact scene/dialogue IDs, intended states, mandatory/flexible evidence/failure requirements and reference/control/audio intent. Independent shot/sequence histories, safe legacy adoption, append-only missing-coverage preparation, focused updates, explicit order/review and separately authorized v6 proposals are implemented. Stale partial drafts remain savable but held. Actual frames, playable animatics, observed continuity and real-model planning quality remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F037",
       "dependencies": [
         "versioned-project-records",
@@ -909,7 +949,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Department storyboard requirements and handoffs are text plans only. Actual storyboard/keyframe generation from approved identity/look references, stable shot IDs, annotations and sequence approval remain missing.",
+      "gap": "Stable shot contracts and ordered planning review are available, but create no storyboard images. Actual storyboard/keyframe generation from approved identity/look/product references, saved frame assets and frame/visual-sequence acceptance remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F038",
       "dependencies": [
         "versioned-project-records",
@@ -926,13 +966,25 @@
       "status": "partial",
       "code": [
         "apps/director/public/app.js",
-        "apps/director/store.mjs"
+        "apps/director/store.mjs",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs",
+        "apps/director/planning-profile.mjs",
+        "apps/director/planning-provider.mjs",
+        "database/director-storyboard-handoff.sql"
       ],
       "tests": [
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py",
+        "database/checks/storyboard-handoff-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Shot specification approval and uploaded-media selection; take comparison, ordering and generated take review missing.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Ordered contract/sequence review now pins exact shot versions and supports explicit reorder plus a guarded atomic planning-only checkpoint. Existing media IDs/reference controls and legacy shot identities are preserved. Actual generated-take comparison/selection, frame/motion/voice acceptance and media-dependent edit review remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F039",
       "dependencies": [
         "versioned-project-records",
@@ -948,7 +1000,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Mandatory playable timed animatic using approved storyboard frames and song/dialogue timing; pacing/coverage approval before final footage remains missing.",
+      "gap": "The handoff supplies ordered shot-version pins and labelled estimated durations only. Actual approved storyboard frames, authoritative measured song/dialogue timing, playable animatic assembly/rendering and audiovisual pacing/coverage approval remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F040",
       "dependencies": [
         "versioned-project-records",
@@ -2686,7 +2738,10 @@
         "apps/director/department-proposal.mjs",
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
-        "apps/director/planning-consent.mjs"
+        "apps/director/planning-consent.mjs",
+        "apps/director/public/storyboard-handoff-core.js",
+        "apps/director/storyboard-handoff.mjs",
+        "apps/director/storyboard-proposal.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -2696,10 +2751,15 @@
         "apps/director/tests/department-revision-api.test.mjs",
         "apps/director/tests/department-provider.test.mjs",
         "apps/director/tests/department-revision-browser.py",
-        "database/checks/department-revisions-pglite.mjs"
+        "database/checks/department-revisions-pglite.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-browser.py"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Versioned department approvals are planning-only, require current source/dependency pins and remain separate from actors, look images, voice recordings, generated media, rights and spending. Targeted revisions create unapproved versions and hold declared descendants without resetting unrelated content. Actual storyboard/animatic/motion/voice generation and review gates remain incomplete.",
+      "gap": "Department and storyboard checkpoints are planning-only. Storyboard approval atomically covers the current ordered sequence and exact contracts while preserving media IDs; it selects no actor, image, voice, frame or take and authorizes no spending. Actual storyboard frames, playable animatics, generated motion/voice review and final media approval remain incomplete.",
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
@@ -4061,7 +4121,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "2cec8aafea0a9d499d7929249fd7918cf4e0805c8dbe60d571c032c5af036dfe"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "b0e1c55eb1d4f429e3eb75240ce8d1d3ccf73fbe0c5d3aed5ccc734932ee1f79"
   },
-  "currentBatch": "Point 5 declared department dependency/revision controls: fixed policy and exact upstream-version pins, transitive review holds, explicit legacy/dependency review, immutable selected-target requests and separately authorized revise_departments/v5 proposals implemented. Nonselected content/history and all user_selected choices are preserved; whole brief/script changes remain conservative source holds. 469 automated tests, syntax and production build pass. Four new revision-browser groups, five Point 4 browser groups and seven regression scripts pass locally; mobile Save/Cancel above-footer geometry and hit targets are checked, with no physical-device or deployed-account claim. Seventeen isolated SQL proof groups pass. Native migration 20261019115348_director_department_revisions is applied; seven reviewed functions are service-only/security-invoker with empty search paths, six tables have RLS, security advisories are empty, zero OpenAI/fal models are active and generation stays paused. No paid calls, provider-key reads/changes or customer-account tests. Counts remain 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. Semantic field/scene impact, complete later media dependencies, real model quality/cost and actual production outputs remain incomplete. See DEPARTMENT_REVISIONS_ACCEPTANCE.md."
+  "currentBatch": "Point 6 storyboard handoff: approved brief/script/all seventeen department plans feed typed shot contracts, independent histories, exact source-dialogue coverage, managed legacy-shot projection, missing-coverage-only preparation, focused edits/order review and an atomic planning-only sequence/contract checkpoint. Separate plan_storyboard/storyboard_planning v6 requires its own reviewed profile and cost allowance; exact known v3/v4/v5 recovery remains intact. 539 automated tests, syntax and production build pass. Five storyboard, five department and four department-revision browser groups plus seven earlier regression scripts pass locally; mobile viewport/footer/hit checks do not establish physical-device or keyboard verification. Final isolated SQL passes 20 standard groups, with a reproducible 21-group combined scale run against the same frozen SQL. Native migration 20261019124745_director_storyboard_handoff is applied; eighteen new and six replaced functions are service-only/security-invoker with empty search paths, six tables have RLS, both new columns exist and security advisories are empty. Zero active OpenAI/fal models, native storyboard archives or planning reservations; generation remains paused. No paid calls, provider-key inspection/change or customer-account tests. A 200-shot synthetic WASM bulk approval took 25.264 seconds versus the adapter 20-second timeout; native latency/concurrency and timeout recovery remain release limitations. Counts stay 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. F038 actual frames and F040 playable animatics remain missing; real model quality/costs, media, production pilots and deployed/physical-device checks are incomplete. See STORYBOARD_HANDOFF_ACCEPTANCE.md and evidence/STORYBOARD_HANDOFF_CHECKS_2026-10-19.json / STORYBOARD_HANDOFF_NATIVE_CHECKS_2026-10-19.json."
 }

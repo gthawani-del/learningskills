@@ -68,4 +68,9 @@ await import('../apps/director/tests/department-guidance.test.mjs');
 await import('../apps/director/tests/department-cloud.test.mjs');
 await import('../apps/director/tests/department-revision-api.test.mjs');
 await import('../apps/director/tests/department-revision.test.mjs');
+await import('../apps/director/tests/storyboard-api.test.mjs');
+await import('../apps/director/tests/storyboard-integration.test.mjs');
+await import('../apps/director/tests/storyboard-provider.test.mjs');
+await import('../apps/director/tests/storyboard-handoff.test.mjs');
+await import('../apps/director/tests/storyboard-handoff-cloud.test.mjs');
 

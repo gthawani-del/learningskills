@@ -1,3 +1,4 @@
+import {applyStoryboardHandoffCommand} from './storyboard-handoff-core.js';
 import {applyDepartmentCommand} from './department-plan-core.js';
 import {sceneChanged,briefChanged} from './revision-impact.js';
 import {applyScreenplayProjectCommand} from './screenplay-project.js';
@@ -24,3 +25,5 @@ export async function addDeviceAsset(project,file,metadata){const d=await db();c
 export async function deviceAssets(projectId){return (await all('assets')).filter(a=>a.projectId===projectId);}
 
 export async function commandDepartmentsDevice(previous,command){const next=applyDepartmentCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}
+
+export async function commandStoryboardDevice(previous,command){const next=applyStoryboardHandoffCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}

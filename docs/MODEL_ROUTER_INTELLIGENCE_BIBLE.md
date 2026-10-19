@@ -1,6 +1,6 @@
 # Model Router Intelligence Bible
 
-Revision 6 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 7 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
@@ -39,6 +39,20 @@ Free `request_revision` stores a catalog-ordered nonempty target list, instructi
 The new aggregate registry fingerprints bind the full dependency policy and the relevant v4/v5 schema/instructions. Eligibility is never inherited from writing or initial department planning. Each new operation still needs its own current quote, allowance and exact saved request. The original five v3 operations and known v4 department calls retain exact saved body/schema/instructions and recovery; later derived dependency data is not a prerequisite for inspecting a historical paid request. No silent model switch, paid retry, media approval or new charge follows from recording a revision request or dependency review.
 
 The all-17 current department-plan approval production/spending gate remains separate. These advances cover declared interdepartment dependencies and scoped planning revisions. Complete scene/field semantic impact, later media-artifact dependency wiring, real model revision quality, actual media and finished-output acceptance remain incomplete. See [Model Registry Architecture](MODEL_REGISTRY_ARCHITECTURE.md) and [Department Planning Knowledge](DEPARTMENT_PLANNING_KNOWLEDGE.md) for the implemented contracts and their limits.
+
+## Point 6 storyboard handoff and ordered contract review — 19 October 2026
+
+The current approved brief, source-current approved screenplay and all 17 current approved department plans now form the source for typed storyboard handoff plans. Independent shot histories record purpose/action, framing, camera/light intent, estimated duration, source character/dialogue IDs, intended start/end state and continuity. Requirements distinguish mandatory versus flexible behavior with future acceptance evidence and failure conditions. Reference requirements request identity/look/location/product/composition/lighting/performance support without selecting or inventing assets. Controls are `prompt_only`, `reference_required` or `route_verification_required`; observations, parameter support, actual timing and media quality are not self-certified.
+
+Free `GET/POST /api/projects/:id/storyboard-handoff` supports `prepare`, focused `update`, explicit `reorder`, `review_sequence` and acknowledged `refresh`. Conservative preparation creates a reviewable starting contract per source scene. On an existing archive it appends only missing current-scene/dialogue coverage and a new unapproved sequence version, preserving every existing contract document/version, media association and relative order. With no missing coverage it is a no-op; it does not silently refresh stale sequence pins. Stale or removed-source contracts remain visible and held, and partial drafts can be saved without acquiring planning approval. One shot per scene is not a claim of complete cinematic coverage; a scene beyond the 900-second contract estimate bound needs a split/replanning hold. No scene ending is silently dropped and the bound does not promise a fifteen-minute model take. The source remains the whole approved story and departments, including protected original vocals, product/copy constraints and off-screen narrator decisions. Speaker associations do not imply visible casting or a demographic appearance.
+
+Paid `plan_storyboard` maps to registry task `storyboard_planning` and the separate `director-planning-v6` schema/guidance contract. It needs its own reviewed operation/task/quality/execution/pricing profile and allowance; writing or department eligibility is insufficient. The output is only an ordered list of typed shot proposals. Every source scene must be covered and every source dialogue ID assigned exactly once in its actual scene; approved words are not replaced by model text. All existing active IDs and their relative order remain protected, source-fresh approved documents remain exact, and an effectively approved sequence protects its complete order/quantity and blocks a new paid planning call until review is explicitly reopened. Existing known v3/v4/v5 requests remain retrievable/recoverable under their exact saved contracts.
+
+`POST /api/projects/:id/storyboard-handoff/apply-proposal` explicitly applies a completed owned saved call with current project/source/review checks. Managed legacy flat-shot fields are a projection backed by the typed contracts; existing media identities and separate editing/reference controls remain intact. Shot and sequence histories are independent. The sequence pins exact ordered shot versions, and a single planning-only approval checkpoint covers its current contracts and order through guarded atomic persistence. A changed source, contract version or order requires renewed current review; accepted media is neither deleted nor automatically regenerated.
+
+All 17 department versions are bound into each source baseline: changing any one conservatively marks every current contract source-stale, rather than claiming selective semantic impact on shots. A focused contract edit with unchanged source preserves neighboring histories/approvals and holds the old sequence pins. Legacy flat shots first require free adoption, preserving IDs/order/media and exact source lines. Missing scene mappings, ambiguous/changed dialogue or duplicate coverage hold adoption instead of discarding work; missing action, continuity or mandatory criteria hold approval. The current `storyboard_sequence` checkpoint atomically writes exact `shot_contract:<id>` and sequence decisions with a planning-only acknowledgement; direct individual contract approval cannot bypass whole-sequence review.
+
+F037 advances its existing partial implementation to enforceable planning contracts; F039 advances ordered plan review, not generated-take acceptance. F038 actual storyboard/keyframe generation and F040 actual playable animatics remain missing. This handoff creates no images, selects no identity/voice/media, performs no song listening/alignment, renders no animatic and proves no two-attempt or real filmmaking quality. [Storyboard Handoff Knowledge](STORYBOARD_HANDOFF_KNOWLEDGE.md) records the concrete craft rules, source-grounded scenarios and remaining production holds.
 
 ## Script entry and originality — user clarification, 19 October 2026
 
@@ -977,13 +991,13 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F037 Create storyboard direction and shot contracts
 
-- **Application operation, proposed:** `POST /api/projects/:id/storyboard/plan`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
-- **Input → output:** script; references; sequence intent → ordered enforceable shot contracts.
-- **Acceptance/limits:** Mandatory/flexible/evidence/failure criteria and intended states.
-- **Prerequisite:** Approved script and world. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Application operation:** `GET/POST /api/projects/:id/storyboard-handoff; POST /api/projects/:id/storyboard-handoff/apply-proposal; paid plan_storyboard via scoped planning calls`.
+- **Execution binding:** Free source-grounded rule/manual handoff or reviewed registry-selected OpenAI Responses storyboard_planning under director-planning-v6.
+- **Input → output:** Current approved structured brief; full source-current approved screenplay; all seventeen approved current department versions; existing contract/order/review context → Ordered typed shot contracts with independent histories, source scene/dialogue links, mandatory/flexible evidence/failure requirements and intended states.
+- **Acceptance/limits:** Current planning subset implements source-bound purpose/action/framing/camera/light/start-end/continuity, reference requirements, control classes, estimated timing, independent versions and explicit proposal application. Preparation adds only missing source coverage without overwriting existing contracts/media/order; stale partial drafts remain savable but held. Approval and model acceptance require every scene covered and every source dialogue ID assigned exactly once without changing words. Existing active IDs/order and current approved contracts are protected. Actual frames, measured timing, rendering and real filmmaking quality remain unverified.
+- **Prerequisite:** Current approved brief, source-current screenplay, all current approved departments and action-specific current contract/review context. **Cost basis:** Free rule/manual preparation and review; paid v6 reasoning uses current reviewed registry token rates and its own exact authorized reservation.
+- **Recovery:** Preserve current contracts/media/history and explicit choices; reject stale source, project or review context. Known paid requests retain their original recovery contract without hidden retry/model switch. **Release gate:** Reviewed real-model planning/cost evaluation, actual storyboard frames/animatics and media quality/release evidence remain incomplete.
+- **Alternative:** Free focused manual planning remains available. O01/M01 remain historical research candidates; no automatic model or intermediary fallback is enabled.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F038 Generate storyboard/keyframes from references
@@ -998,12 +1012,12 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F039 Approve/order shots and choose takes
 
-- **Application operation, proposed:** `POST /api/shots/:id/selection`.
-- **Execution binding:** `Supabase Postgres version-guard transaction`. D: documented dependency.
-- **Input → output:** shot/take/version; order change → selected take and dependency events.
-- **Acceptance/limits:** Cannot approve stale/wrong version; keep alternatives.
-- **Prerequisite:** Review permission. **Cost basis:** Service/compute/storage usage; quote/configuration pending.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Application operation:** `GET/POST /api/projects/:id/storyboard-handoff for ordering/review; POST /api/projects/:id/approvals for the current storyboard_sequence planning checkpoint`.
+- **Execution binding:** Versioned shot/sequence contracts with guarded atomic application/Supabase planning-approval persistence.
+- **Input → output:** Current source-bound contracts; exact ordered shot versions; expected project version; planning-only acknowledgement and owner permission → Versioned order and bulk planning-only contract/sequence approval; existing media identities are preserved independently.
+- **Acceptance/limits:** Current ordered-plan subset supports explicit reorder and exact sequence-version pins, one planning-only checkpoint for current contracts plus sequence, current-source/review guards and preserved media/reference controls. It does not generate frames, select/compare generated takes, approve actual media or create a playable animatic.
+- **Prerequisite:** Current approved brief, source-current screenplay, all current approved departments and action-specific current contract/review context. **Cost basis:** Deterministic version/order/review actions invoke no model; no implicit media-generation or spending authorization.
+- **Recovery:** Preserve current contracts/media/history and explicit choices; reject stale source, project or review context. Known paid requests retain their original recovery contract without hidden retry/model switch. **Release gate:** Actual generated-take comparison/selection, frame/motion/voice acceptance, complete media dependency coverage and deployed-account concurrency remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F040 Assemble timed animatic before motion production
@@ -3370,22 +3384,29 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F037",
       "category": "Cast, design and storyboard",
       "functionality": "Create storyboard direction and shot contracts",
-      "application_operation": "POST /api/projects/:id/storyboard/plan",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
-      "required_input": "script; references; sequence intent",
-      "expected_output": "ordered enforceable shot contracts",
-      "limits_and_quality_rule": "Mandatory/flexible/evidence/failure criteria and intended states",
-      "prerequisite": "Approved script and world",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "application_operation": "GET/POST /api/projects/:id/storyboard-handoff; POST /api/projects/:id/storyboard-handoff/apply-proposal; paid plan_storyboard via scoped planning calls",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free source-grounded rule/manual handoff or reviewed registry-selected OpenAI Responses storyboard_planning under director-planning-v6",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed planning/order/review subset; no real generated-media or model-quality evidence implied",
+      "required_input": "Current approved structured brief; full source-current approved screenplay; all seventeen approved current department versions; existing contract/order/review context",
+      "expected_output": "Ordered typed shot contracts with independent histories, source scene/dialogue links, mandatory/flexible evidence/failure requirements and intended states",
+      "limits_and_quality_rule": "Current planning subset implements source-bound purpose/action/framing/camera/light/start-end/continuity, reference requirements, control classes, estimated timing, independent versions and explicit proposal application. Preparation adds only missing source coverage without overwriting existing contracts/media/order; stale partial drafts remain savable but held. Approval and model acceptance require every scene covered and every source dialogue ID assigned exactly once without changing words. Existing active IDs/order and current approved contracts are protected. Actual frames, measured timing, rendering and real filmmaking quality remain unverified.",
+      "prerequisite": "Current approved brief, source-current screenplay, all seventeen current approved department plans and action-specific current contract/review context",
+      "billing_basis": "Free rule/manual preparation and review; paid v6 reasoning uses current reviewed registry token rates and its own exact authorized reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed real-model planning/cost evaluation, actual storyboard frames/animatics and media quality/release evidence remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Free focused manual planning; no automatic provider/intermediary fallback",
+      "implementation_status": "Partial: typed handoff and ordered planning review implemented; actual storyboard images, takes and media quality remain incomplete",
+      "historical_candidate_reference": "O01",
+      "planning_operations": [
+        "plan_storyboard"
+      ],
+      "request_version": "director-planning-v6",
+      "proposal_application_operation": "POST /api/projects/:id/storyboard-handoff/apply-proposal"
     },
     {
       "id": "F038",
@@ -3412,22 +3433,23 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F039",
       "category": "Cast, design and storyboard",
       "functionality": "Approve/order shots and choose takes",
-      "application_operation": "POST /api/shots/:id/selection",
+      "application_operation": "GET/POST /api/projects/:id/storyboard-handoff for ordering/review; POST /api/projects/:id/approvals for the current storyboard_sequence planning checkpoint",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Supabase Postgres version-guard transaction",
-      "execution_type": "application/service/worker",
-      "evidence": "D: documented dependency",
-      "required_input": "shot/take/version; order change",
-      "expected_output": "selected take and dependency events",
-      "limits_and_quality_rule": "Cannot approve stale/wrong version; keep alternatives",
-      "prerequisite": "Review permission",
-      "billing_basis": "Service/compute/storage usage; quote/configuration pending",
+      "external_endpoint_or_tool": "Versioned shot/sequence contracts with guarded atomic application/Supabase planning-approval persistence",
+      "execution_type": "application/database",
+      "evidence": "Implemented typed planning/order/review subset; no real generated-media or model-quality evidence implied",
+      "required_input": "Current source-bound contracts; exact ordered shot versions; expected project version; planning-only acknowledgement and owner permission",
+      "expected_output": "Versioned order and bulk planning-only contract/sequence approval; existing media identities are preserved independently",
+      "limits_and_quality_rule": "Current ordered-plan subset supports explicit reorder and exact sequence-version pins, one planning-only checkpoint for current contracts plus sequence, current-source/review guards and preserved media/reference controls. It does not generate frames, select/compare generated takes, approve actual media or create a playable animatic.",
+      "prerequisite": "Current approved brief, source-current screenplay, all seventeen current approved department plans and action-specific current contract/review context",
+      "billing_basis": "Deterministic version/order/review actions invoke no model; no implicit media-generation or spending authorization",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "release_gate_or_blocker": "Actual generated-take comparison/selection, frame/motion/voice acceptance, complete media dependency coverage and deployed-account concurrency remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Supabase Postgres version-guard transaction",
-      "alternative_route": ""
+      "alternative_route": "",
+      "implementation_status": "Partial: typed handoff and ordered planning review implemented; actual storyboard images, takes and media quality remain incomplete"
     },
     {
       "id": "F040",

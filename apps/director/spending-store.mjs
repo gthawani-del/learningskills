@@ -71,7 +71,7 @@ export const cloudSpendingMethods={
   // temporary pure transition below validates new requests without persisting.
   const request={actorId:c.actorId,expectedVersion:c.expectedVersion,quoteId:c.quoteId,maxMicroUsd:c.maxMicroUsd,finishReserveMicroUsd:c.finishReserveMicroUsd,expiresAt:saved.quote.expiresAt};
   const receipts=await this.request(`/rest/v1/director_spending_commands?project_id=eq.${c.projectId}&request_id=eq.${c.requestId}`);
-  if(!receipts.length){const model=await this.readModel(saved.quote.modelId);authorizeSpending({projects:[project],quotes:[saved],approvals:project.departmentPlanning?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
+  if(!receipts.length){const model=await this.readModel(saved.quote.modelId);authorizeSpending({projects:[project],quotes:[saved],approvals:project.departmentPlanning||project.storyboardHandoff?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
   const result=await this.spendingRPC('director_authorize_quote',{p_actor_id:c.actorId,p_project_id:c.projectId,p_expected_version:c.expectedVersion,p_request_id:c.requestId,p_quote_id:c.quoteId,p_max_micro_usd:c.maxMicroUsd,p_finish_reserve_micro_usd:c.finishReserveMicroUsd,p_expires_at:request.expiresAt});
   return this.spendingAuthorizationView(result.authorization,saved.quote);
  },
