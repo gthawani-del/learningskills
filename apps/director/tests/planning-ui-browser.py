@@ -6,7 +6,7 @@ BASE=os.environ.get('DIRECTOR_TEST_URL','http://127.0.0.1:3432')
 PROJECT='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
 out=Path('test-results');out.mkdir(exist_ok=True)
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+ b=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
  page=b.new_page(viewport={'width':1440,'height':1000});errors=[];page.on('pageerror',lambda e:errors.append(str(e)));posts=[];revokes=[];authorizations=[];consents=[];calls=[];planning_enabled={'value':False}
  project={'id':PROJECT,'title':'Cost review fixture','premise':'A station at dawn.','format':'short_film','stage':'story','version':1,'duration':5,'language':'English','direction':'','story':{'version':1,'treatment':'A letter arrives.','scenes':[]},'shots':[]}
  quote={'id':'quote-fixture','task':'image_edit','totalMicroUsd':1000000,'expiresAt':'2099-01-01T00:00:00Z','modelId':'M09','artifactId':'story','artifactVersion':1}

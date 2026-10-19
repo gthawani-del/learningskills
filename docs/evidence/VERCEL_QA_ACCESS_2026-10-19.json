@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-19",
+  "results": [
+    {
+      "url": "https://learningskills.vercel.app/",
+      "seconds": 0.57,
+      "curlExit": 0,
+      "tlsVerificationEnabled": true,
+      "statusLines": [
+        "HTTP/1.1 200 OK",
+        "HTTP/2 200 "
+      ],
+      "vercelAuthenticationText": false,
+      "challengeText": false
+    },
+    {
+      "url": "https://learningskills.vercel.app/api/config",
+      "seconds": 0.81,
+      "curlExit": 0,
+      "tlsVerificationEnabled": true,
+      "statusLines": [
+        "HTTP/1.1 200 OK",
+        "HTTP/2 200 "
+      ],
+      "fieldNames": [
+        "mode",
+        "user",
+        "session",
+        "capabilities",
+        "uploadMaxBytes"
+      ],
+      "publicDiagnosticFlags": {
+        "mode": "supabase",
+        "capabilities": {
+          "planning": false,
+          "planningControls": false,
+          "media": false,
+          "uploads": false,
+          "localExport": false
+        }
+      }
+    },
+    {
+      "url": "https://learningskills.vercel.app/api/projects",
+      "seconds": 0.54,
+      "curlExit": 0,
+      "tlsVerificationEnabled": true,
+      "statusLines": [
+        "HTTP/1.1 200 OK",
+        "HTTP/2 503 "
+      ],
+      "fieldNames": [
+        "error"
+      ],
+      "publicDiagnosticFlags": {
+        "error": "Configure the server Supabase connection before saving projects."
+      }
+    },
+    {
+      "url": "https://learningskills-git-codex-director-studio-foundation-ggg12.vercel.app/api/config",
+      "seconds": 0.57,
+      "curlExit": 0,
+      "tlsVerificationEnabled": true,
+      "statusLines": [
+        "HTTP/1.1 200 OK",
+        "HTTP/2 302 "
+      ],
+      "redirectWithoutQuery": "https://vercel.com/sso-api",
+      "vercelAuthenticationText": true,
+      "challengeText": false
+    }
+  ]
+}

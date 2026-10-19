@@ -1,3 +1,4 @@
+import os
 """Actual local registry/admin and routing HTTP flows. Auth adapter and provider are synthetic.
 No browser request interception, external providers, cloud writes or physical phones.
 """
@@ -12,7 +13,7 @@ try:
  except Exception:raise AssertionError('Registry fixture did not start: '+line+server.stdout.read())
  base='http://127.0.0.1:'+str(info['port']);candidate=info['candidate'];project_url=base+'/api/projects/'+info['projectId']
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
   errors=[];http=[];passed=[]
   def role_context(role,viewport={'width':1440,'height':1000}):
    context=browser.new_context(viewport=viewport);context.add_cookies([{'name':'director_session','value':info['actors'][role],'url':base,'httpOnly':True,'sameSite':'Strict'}]);return context

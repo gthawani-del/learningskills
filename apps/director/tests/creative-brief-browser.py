@@ -6,7 +6,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 out=Path('test-results');out.mkdir(exist_ok=True)
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+ b=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
  page=b.new_page(viewport={'width':1440,'height':1000});page.set_default_timeout(12000)
  errors=[];http=[];console_errors=[];mutations=[]
  page.on('pageerror',lambda e:errors.append(str(e)))

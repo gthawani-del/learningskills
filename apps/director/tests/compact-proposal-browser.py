@@ -1,3 +1,4 @@
+import os
 """Real local API + browser; simulated provider, no paid calls or cloud writes."""
 import json,subprocess
 from pathlib import Path
@@ -7,7 +8,7 @@ server=subprocess.Popen(['node',str(Path(__file__).with_name('compact-proposal-s
 try:
  info=json.loads(server.stdout.readline());base='http://127.0.0.1:'+str(info['port']);url=base+'/api/projects/'+info['projectId']
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
   page=browser.new_page(viewport={'width':1440,'height':1000});page.set_default_timeout(15000);errors=[];http=[]
   page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None);page.on('response',lambda r:http.append({'status':r.status,'url':r.url}) if r.status>=400 else None);page.on('dialog',lambda d:d.accept())
   page.add_init_script("localStorage.setItem('director:lastProject',"+json.dumps(info['projectId'])+")");page.goto(base);expect(page.locator('#compact-brief')).to_be_visible()
