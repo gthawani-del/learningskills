@@ -12,6 +12,8 @@ jobs:
   qa:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      DIRECTOR_CHROMIUM_PATH: /usr/bin/google-chrome
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +35,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
       - name: Full release QA
-        run: npm run qa
+        run: |
+          "$DIRECTOR_CHROMIUM_PATH" --version
+          npm run qa
       - name: Preserve QA evidence
         if: always()
         uses: actions/upload-artifact@v4
