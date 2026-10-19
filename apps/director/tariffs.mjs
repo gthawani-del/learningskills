@@ -2,7 +2,7 @@ import { hash } from './domain.mjs';
 const plain = x => !!x && typeof x === 'object' && !Array.isArray(x) && [Object.prototype, null].includes(Object.getPrototypeOf(x));
 const positive = x => Number.isSafeInteger(x) && x > 0;
 const nonnegative = x => Number.isSafeInteger(x) && x >= 0;
-const units = new Set(['second', 'image', 'character', 'request', 'megapixel', 'thousand_character', 'reference_token', 'output_token']);
+const units = new Set(['second', 'image', 'input_image', 'character', 'request', 'megapixel', 'thousand_character', 'reference_token', 'output_token']);
 function block(message) { throw Object.assign(new Error(message), { status: 409 }); }
 function https(value) { try { const u = new URL(value); return u.protocol === 'https:' && !!u.hostname && !u.username && !u.password; } catch { return false; } }
 function boundedNumber(value, name) { if (value > BigInt(Number.MAX_SAFE_INTEGER)) block(`${name} exceeds safe integer precision.`); return Number(value); }
@@ -26,6 +26,10 @@ function characterCount(input, component) {
 function quantity(component, input, usageEvidence, price) {
   if (['reference_token', 'output_token'].includes(component.unit)) return measured(component, usageEvidence, price, input);
   if (component.unit === 'request') return [1n, 1n];
+  if (component.unit === 'input_image') {
+    if (!Array.isArray(input.image_urls) || !input.image_urls.length || input.image_urls.length > 10 || input.image_urls.some(url => !https(url))) block('Input-image pricing requires 1–10 explicit HTTPS image references.');
+    return [BigInt(input.image_urls.length), 1n];
+  }
   if (component.unit === 'second') {
     if (typeof input.duration !== 'number' || input.duration <= 0) return measured(component, usageEvidence, price, input);
     return decimal(input.duration);

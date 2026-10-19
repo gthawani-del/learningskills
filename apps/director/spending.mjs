@@ -5,6 +5,7 @@ import {createCostQuote} from './cost-quotes.mjs';
 import {departmentPlanningContext} from './public/department-plan-core.js';
 import {storyboardHandoffContext} from './public/storyboard-handoff-core.js';
 import {referenceProductionContext} from './public/reference-production-core.js';
+import {storyboardProductionContext} from './public/storyboard-production-core.js';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const positive = n => Number.isSafeInteger(n) && n > 0;
@@ -69,6 +70,7 @@ export function authorizeSpending(state, command, {model, now}) {
  if (!record) fail(404, 'Persisted quote not found.');
  if(project.departmentPlanning&&departmentPlanningContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).departments.some(unit=>!unit.approved))fail(409,'Review the current department plans before authorizing media production. Planning approval does not approve generated assets.');
  const reference=record.quote.artifactId?.startsWith('reference_brief:')&&['reference_image','reference_look'].includes(record.quote.task);
+ if(record.quote.artifactId?.startsWith('storyboard_brief:')){const frame=storyboardProductionContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id),{assets:state.assets||[],referenceCandidates:state.referenceCandidates||[],candidates:state.storyboardCandidates||[]}).shots.find(s=>'storyboard_brief:'+s.shotId===record.quote.artifactId);if(record.quote.task!=='storyboard_frame'||!frame?.directionApproved||frame.sourceStale||frame.referenceStale)fail(409,'Review the current storyboard frame direction, shot plan and exact reference selections before authorizing generation.');}
  if(reference){const subject=referenceProductionContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id),{assets:state.assets||[],candidates:state.referenceCandidates||[]}).subjects.find(s=>'reference_brief:'+s.id===record.quote.artifactId);if(!subject?.directionApproved||subject.sourceStale||subject.identityStale)fail(409,'Review the current reference direction and approved identity before authorizing this image.');}
  if(!reference&&project.storyboardHandoff&&!storyboardHandoffContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).planningApproved)fail(409,'Review the current shot contracts and sequence before authorizing media production. This approval does not approve generated frames, voices or footage.');
  const time = checkQuote(project, record.quote, record.input, model, now);

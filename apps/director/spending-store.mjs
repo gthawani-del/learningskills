@@ -4,7 +4,7 @@ import {persistQuote,authorizeSpending,revokeSpending} from './spending.mjs';
 import {fail} from './domain.mjs';
 
 const summary = (quotes,authorizations,reservations=[]) => ({quotes,authorizations,reservations,currency:'USD',generationEnabled:false,scope:'Generation cost estimates and spending limits; not customer billing or a wallet balance.'});
-export const visibleQuote = q => Object.fromEntries(['id','projectId','projectVersion','artifactId','artifactVersion','modelId','endpoint','task','requirements','intent','currency','totalMicroUsd','createdAt','expiresAt','estimateOnly','generationAuthorized'].filter(k=>Object.hasOwn(q,k)).map(k=>[k,structuredClone(q[k])]));
+export const visibleQuote = q => Object.fromEntries(['id','projectId','projectVersion','artifactId','artifactVersion','modelId','endpoint','task','requirements','intent','currency','totalMicroUsd','components','createdAt','expiresAt','estimateOnly','generationAuthorized'].filter(k=>Object.hasOwn(q,k)).map(k=>[k,structuredClone(q[k])]));
 const owner = (state,actorId,projectId) => {const p=state.projects.find(p=>p.id===projectId&&p.ownerId===actorId);if(!p)fail(404,'Project not found.');return p;};
 
 export const localSpendingMethods={
@@ -71,7 +71,7 @@ export const cloudSpendingMethods={
   // temporary pure transition below validates new requests without persisting.
   const request={actorId:c.actorId,expectedVersion:c.expectedVersion,quoteId:c.quoteId,maxMicroUsd:c.maxMicroUsd,finishReserveMicroUsd:c.finishReserveMicroUsd,expiresAt:saved.quote.expiresAt};
   const receipts=await this.request(`/rest/v1/director_spending_commands?project_id=eq.${c.projectId}&request_id=eq.${c.requestId}`);
-  if(!receipts.length){const model=await this.readModel(saved.quote.modelId),reference=saved.quote.artifactId?.startsWith('reference_brief:'),facts=reference?{assets:await this.records('assets',project.id),referenceCandidates:await this.referenceCandidates(c.actorId,project.id)}:{};authorizeSpending({projects:[project],quotes:[saved],...facts,approvals:project.departmentPlanning||project.storyboardHandoff||reference?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
+  if(!receipts.length){const model=await this.readModel(saved.quote.modelId),reference=saved.quote.artifactId?.startsWith('reference_brief:'),frame=saved.quote.artifactId?.startsWith('storyboard_brief:'),facts=reference||frame?{assets:await this.records('assets',project.id),referenceCandidates:await this.referenceCandidates(c.actorId,project.id),...(frame?{storyboardCandidates:await this.storyboardCandidates(c.actorId,project.id)}:{})}:{};authorizeSpending({projects:[project],quotes:[saved],...facts,approvals:project.departmentPlanning||project.storyboardHandoff||reference||frame?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
   const result=await this.spendingRPC('director_authorize_quote',{p_actor_id:c.actorId,p_project_id:c.projectId,p_expected_version:c.expectedVersion,p_request_id:c.requestId,p_quote_id:c.quoteId,p_max_micro_usd:c.maxMicroUsd,p_finish_reserve_micro_usd:c.finishReserveMicroUsd,p_expires_at:request.expiresAt});
   return this.spendingAuthorizationView(result.authorization,saved.quote);
  },

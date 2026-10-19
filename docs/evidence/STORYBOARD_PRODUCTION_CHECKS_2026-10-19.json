@@ -1,0 +1,947 @@
+{
+  "date": "2026-10-19",
+  "scope": "Local storyboard frame implementation/browser verification, isolated SQL and native metadata; not deployed or paid media acceptance",
+  "baselineCommit": "fafb82c21d9e12d115ed22685960541b217ae265",
+  "automated": {
+    "command": "npm test",
+    "passed": 696,
+    "failed": 0,
+    "skipped": 0,
+    "storyboardCore": 20,
+    "storyboardProvider": 17,
+    "storyboardAPI": 22,
+    "storyboardIntegration": 7,
+    "storyboardCloud": 9,
+    "storyboardPricing": 3,
+    "realProviderCalls": 0
+  },
+  "syntaxCheck": "npm run check passed",
+  "productionBuild": "npm run build passed; production Node package built and imported without provider calls",
+  "storyboardFrameBrowserGroups": 4,
+  "departmentBrowserGroups": 5,
+  "revisionBrowserGroups": 4,
+  "handoffBrowserGroups": 5,
+  "referenceBrowserGroups": 5,
+  "earlierRegressionScripts": 7,
+  "browserReports": [
+    {
+      "path": "test-results/storyboard-production-browser-results.json",
+      "sha256": "74d232a9b0fc2abf76f865ec517436570dff002b5bea28ae2269124db932a4b5",
+      "report": {
+        "scope": "Actual local HTTP APIs/private assets and Chromium, with server-side simulated fal output and no API interception",
+        "passed": [
+          "Approved source references and handoff produce two free frame briefs with exact input pins and proposed pictured characters; no generated frame, selection or paid job is invented",
+          "Wide frame cost includes five unique inputs, explicit sharing, project cap and spending approval; one Run, original poll and private native-aspect image import lead to separate human selection/approval, and a consumed quote cannot start another attempt",
+          "390px Chromium preserves unsaved direction/aspect choices, blocks Costs and planning while the edit is dirty, keeps Save/Cancel and real selection/approval actions above the footer and creates a private portrait frame at 864\u00d71536 without cropping the wide frame",
+          "Revoking the exact identity-selection approval creates real downstream frame holds while every existing direction, candidate image, selection and original job remains available"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "mobileActionGeometry": {
+          "width": 390,
+          "footerTop": 786,
+          "buttons": [
+            {
+              "text": "Save frame direction",
+              "top": 601.9375,
+              "bottom": 668.125,
+              "centerHit": true
+            },
+            {
+              "text": "Cancel",
+              "top": 612.984375,
+              "bottom": 657.078125,
+              "centerHit": true
+            }
+          ],
+          "overflow": false
+        },
+        "simulatedProviderJobs": 2,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "Synthetic PNG fixtures prove dimensions, storage and user-flow behavior, not model quality, photorealism or provider billing",
+          "Frames represent still planning evidence; no timed animatic, dialogue delivery, camera motion, voice or finished video is verified",
+          "No real account isolation, deployed website, physical mobile device or virtual keyboard verification"
+        ]
+      }
+    },
+    {
+      "path": "test-results/department-browser-results.json",
+      "sha256": "7963aa19878648ebce4ee2f15527b934945abd180cac2439bb9d24635ba2ec9e",
+      "report": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium; deterministic server-side simulated OpenAI responses; no browser request interception",
+        "passed": [
+          "Approved script prepares all seventeen department plans for free in a collapsed overview, including casting, look, voice, storyboard and animatic; no model calls or default text-box wall",
+          "Planning-only acknowledgement is required; one focused edit blocks accidental navigation, versions only Camera and preserves Rights approval and other department documents",
+          "An explicit creative choice survives reload, remains separate from performer/media approval and does not authorize generation",
+          "Department AI has its own displayed operation allowance, never runs on consent alone, persists a queued simulated call and applies only after review while preserving approved plans and user choices",
+          "390px Chromium viewport shows seventeen compact collapsed rows within a bounded overview; opening one closes the others, focused editing works without horizontal overflow; physical mobile and virtual keyboards remain untested"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "geometry": {
+          "width": 390,
+          "height": 844,
+          "left": 17,
+          "right": 373,
+          "cards": [
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            }
+          ],
+          "overflow": false
+        },
+        "mobileOverview": {
+          "width": 390,
+          "height": 844,
+          "workspaceHeight": 1885.515625,
+          "rows": [
+            {
+              "id": "producing",
+              "height": 74
+            },
+            {
+              "id": "direction",
+              "height": 74
+            },
+            {
+              "id": "script_breakdown",
+              "height": 74
+            },
+            {
+              "id": "casting",
+              "height": 74
+            },
+            {
+              "id": "look",
+              "height": 74
+            },
+            {
+              "id": "locations",
+              "height": 74
+            },
+            {
+              "id": "camera",
+              "height": 74
+            },
+            {
+              "id": "lighting",
+              "height": 74
+            },
+            {
+              "id": "voice",
+              "height": 74
+            },
+            {
+              "id": "sound",
+              "height": 74
+            },
+            {
+              "id": "music",
+              "height": 74
+            },
+            {
+              "id": "continuity",
+              "height": 74
+            },
+            {
+              "id": "storyboard",
+              "height": 74
+            },
+            {
+              "id": "animatic",
+              "height": 74
+            },
+            {
+              "id": "vfx",
+              "height": 74
+            },
+            {
+              "id": "editorial",
+              "height": 74
+            },
+            {
+              "id": "rights",
+              "height": 74
+            }
+          ],
+          "openCount": 0
+        },
+        "simulatedDepartmentCalls": 1,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real model-output or filmmaking-quality evaluation",
+          "No paid OpenAI or fal calls",
+          "No physical mobile device or virtual keyboard",
+          "No deployed account/isolation testing",
+          "Plans are not generated characters, voice samples, storyboards, animatics or finished films"
+        ]
+      }
+    },
+    {
+      "path": "test-results/department-revision-browser-results.json",
+      "sha256": "15b6e43c5f860dbc3f319269f1211fd24754c70d83e997553eef2936a833a80a",
+      "report": {
+        "scope": "Actual local HTTP APIs and Chromium with a server-side simulated provider; no browser request interception",
+        "passed": [
+          "A camera edit versions only Camera, exposes six dependent review holds, preserves approved Rights/Voice/Music and requires explicit acknowledgement to retain Lighting unchanged in a new unapproved version",
+          "The focused revision request defaults to Camera only; saving it and approving the separately displayed revision model allowance preserve all department versions and start no model call",
+          "One queued simulated revision survives reload, records its actual simulated cost, previews only Camera and applies only that snapshot; dependent plans are flagged again without automatic rewrites or paid retries",
+          "390px Chromium viewport retains the unsaved instruction and Voice-only scope when Costs \u2192 Planning limits is blocked without a planning API request or modal; one focused editor has no overflow, Save/Cancel scroll above the fixed footer and pass center hit checks; actual Save records a second free request without another model call"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "mobileGeometry": {
+          "width": 390,
+          "height": 844,
+          "form": {
+            "left": 36,
+            "right": 354,
+            "width": 318
+          },
+          "workspace": {
+            "left": 17,
+            "right": 373,
+            "width": 356
+          },
+          "openUnits": 1,
+          "overflow": false
+        },
+        "mobileActionGeometry": {
+          "width": 390,
+          "height": 844,
+          "footerTop": 786,
+          "buttons": [
+            {
+              "text": "Save revision request",
+              "top": 651.78125,
+              "bottom": 703.78125,
+              "left": 51,
+              "right": 190.5,
+              "centerHit": true
+            },
+            {
+              "text": "Cancel",
+              "top": 655.78125,
+              "bottom": 699.78125,
+              "left": 199.5,
+              "right": 339,
+              "centerHit": true
+            }
+          ]
+        },
+        "unsavedPlanningGuard": {
+          "planningRequestsBefore": 9,
+          "planningRequestsAfter": 9,
+          "instructionRetained": true,
+          "selectedDepartmentIds": [
+            "voice"
+          ],
+          "planningDialogOpened": false,
+          "newRevisionRequestSaved": false
+        },
+        "simulatedRevisionCalls": 1,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real OpenAI revision-quality evaluation",
+          "No physical mobile device or virtual keyboard",
+          "No deployed account or live billing verification",
+          "Department plans and review holds are not generated-media or final-film quality evidence"
+        ]
+      }
+    },
+    {
+      "path": "test-results/storyboard-browser-results.json",
+      "sha256": "087976db134c3c2becb91efe4c38e7732aa524b496094715ca9d4b0a982b847f",
+      "report": {
+        "scope": "Actual local HTTP APIs and Chromium with a server-side simulated provider; no browser request interception",
+        "passed": [
+          "Approved screenplay and all seventeen department plans produce complete source-linked shot contracts for free; compact collapsed rows start with no text boxes, media or model calls, and one explicit planning-only approval reviews the whole sequence",
+          "A focused edit versions one contract, preserves neighboring approvals and explicitly updates sequence pins; accessible reordering changes order only and survives reload",
+          "Storyboard planning has its own reviewed model and allowance; explicit submission, saved simulated usage, read-only proposal review and Apply preserve existing order and approved neighboring contracts without generating frames or retrying automatically",
+          "390px Chromium keeps one focused prefilled editor, blocks Costs \u2192 Planning while text is unsaved, preserves that draft, has no horizontal overflow and keeps actual clickable Save/Cancel controls above the footer",
+          "An actual API department revision creates visible downstream source holds after reload while preserving every saved contract, its order and existing paid call"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "mobileActionGeometry": {
+          "width": 390,
+          "height": 844,
+          "footerTop": 786,
+          "formLeft": 36,
+          "formRight": 354,
+          "buttons": [
+            {
+              "text": "Save shot contract",
+              "left": 50,
+              "right": 190.5,
+              "top": 651.84375,
+              "bottom": 703.84375,
+              "centerHit": true
+            },
+            {
+              "text": "Cancel",
+              "left": 199.5,
+              "right": 340,
+              "top": 655.84375,
+              "bottom": 699.84375,
+              "centerHit": true
+            }
+          ],
+          "overflow": false
+        },
+        "simulatedStoryboardCalls": 1,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No generated storyboard images or playable animatic",
+          "No real OpenAI quality or billing evaluation",
+          "No physical mobile device or virtual keyboard",
+          "No deployed-account verification; existing media editing/playback regressions are separate checks"
+        ]
+      }
+    },
+    {
+      "path": "test-results/reference-browser-results.json",
+      "sha256": "6cc42461f0268004386659777663783bb2bfed5ec22371e854996986409812b9",
+      "report": {
+        "scope": "Real local HTTP APIs, authenticated private image reads and Chromium; server-side simulated fal provider, no request interception",
+        "passed": [
+          "Six compact prefilled identity, look and location directions are prepared from reviewed sources for free, with no blank form wall, generated asset, default selection or job",
+          "An explicit estimate, saved project cap, spending authorization and separate Run produce one saved job; private PNG import requires human selection and approval, survives reload, and reopening the consumed quote cannot reuse its permission or request another estimate before diagnosis",
+          "Look generation explicitly binds the approved identity and requires permission before a signed private identity is shared with its selected provider; look approval preserves the identity decision",
+          "390px Chromium retains unsaved direction text, blocks a planning shortcut, keeps real Save/Cancel and candidate selection/approval controls above the footer, decodes the private image, and completes mobile-view generation without overflow",
+          "A real department revision holds all current-source reference approvals and new generation while retaining every historical direction, private image, selection and original job"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "mobileActionGeometry": {
+          "width": 390,
+          "footerTop": 786,
+          "buttons": [
+            {
+              "text": "Save direction version",
+              "top": 616.265625,
+              "bottom": 668.265625,
+              "centerHit": true
+            },
+            {
+              "text": "Cancel",
+              "top": 620.265625,
+              "bottom": 664.265625,
+              "centerHit": true
+            }
+          ],
+          "overflow": false
+        },
+        "simulatedProviderJobs": 3,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "Synthetic image fixtures do not validate creative model quality, realistic characters or provider billing",
+          "No physical phone, virtual keyboard, real account or deployed website verification",
+          "No storyboard frame generation, animatic, voice or movie export in this module"
+        ]
+      }
+    },
+    {
+      "path": "test-results/creative-brief-browser-results.json",
+      "sha256": "6afd7a32a34a1107aced506df5ea3c963566a4a587d9ab920bf32b19b424d18c",
+      "report": {
+        "scope": "actual local device draft UI, not live Supabase or paid model output",
+        "passed": [
+          "compact inline proposal",
+          "prefilled purpose premise runtime language",
+          "original settings collapsed",
+          "one default composer textarea",
+          "choices disclosure without empty-field wall",
+          "one prefilled field editor",
+          "cancel restores content and focus",
+          "unsaved edit survives stage navigation and stays scoped when switching projects",
+          "approval and field switching blocked during edits",
+          "pending write controls disabled",
+          "targeted correction preserves unrelated settings",
+          "controlled IndexedDB failure preserves input",
+          "explicit approve and continue",
+          "source edit requires renewed approval",
+          "device persistence",
+          "390px viewport review"
+        ],
+        "fixtureChecks": [
+          "Controlled one-time IndexedDB write failure; not an observed infrastructure outage",
+          "Controlled IndexedDB completion delay for pending-control checks"
+        ],
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "postRequests": [],
+        "physicalMobileTested": false
+      }
+    },
+    {
+      "path": "test-results/v2-workspace-results.json",
+      "sha256": "b51d6cd7028281b5b3836434d4ea45813d66fe7143f7afb747d07274156ffad3",
+      "report": {
+        "url": "http://127.0.0.1:39667",
+        "passed": [
+          "brief editing",
+          "story version and approval",
+          "shot editing",
+          "image preview and alternate image selection",
+          "video playback pause seek",
+          "draft and media reload persistence",
+          "direction notes and saved-project picker",
+          "truthful cloud gate",
+          "draft JSON download",
+          "390px viewport drawers and overflow"
+        ],
+        "pageErrors": [],
+        "console": [],
+        "httpErrors": [],
+        "physicalMobileTested": false
+      }
+    },
+    {
+      "path": "test-results/mobile-footer-results.json",
+      "sha256": "5b3cde074059c5d2eda220e91f294342bc2ec715cc5cb554ca72bda2a8e7f626",
+      "report": {
+        "scope": "actual local Chromium viewport geometry and controls",
+        "geometry": [
+          {
+            "viewport": {
+              "width": 390,
+              "height": 880
+            },
+            "composer": {
+              "top": 606.8125,
+              "bottom": 741,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 741,
+              "bottom": 762,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 774,
+              "bottom": 839,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 597.8125,
+              "left": 17,
+              "right": 373,
+              "height": 379.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "composer": {
+              "top": 570.8125,
+              "bottom": 705,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 705,
+              "bottom": 726,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 738,
+              "bottom": 803,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 561.8125,
+              "left": 17,
+              "right": 373,
+              "height": 343.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 375,
+              "height": 812
+            },
+            "composer": {
+              "top": 538.8125,
+              "bottom": 673,
+              "left": 17,
+              "right": 358,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 673,
+              "bottom": 694,
+              "left": 17,
+              "right": 358,
+              "height": 21
+            },
+            "footer": {
+              "top": 706,
+              "bottom": 771,
+              "left": 0,
+              "right": 375,
+              "height": 65
+            },
+            "transcript": {
+              "top": 277.5625,
+              "bottom": 529.8125,
+              "left": 17,
+              "right": 358,
+              "height": 252.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 360,
+              "height": 640
+            },
+            "composer": {
+              "top": 366.8125,
+              "bottom": 501,
+              "left": 17,
+              "right": 343,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 501,
+              "bottom": 522,
+              "left": 17,
+              "right": 343,
+              "height": 21
+            },
+            "footer": {
+              "top": 534,
+              "bottom": 599,
+              "left": 0,
+              "right": 360,
+              "height": 65
+            },
+            "transcript": {
+              "top": 277.5625,
+              "bottom": 357.8125,
+              "left": 17,
+              "right": 343,
+              "height": 80.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 520
+            },
+            "composer": {
+              "top": 246.8125,
+              "bottom": 381,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 381,
+              "bottom": 402,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 414,
+              "bottom": 479,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 237.8125,
+              "left": 17,
+              "right": 373,
+              "height": 19.25
+            },
+            "overflow": false
+          }
+        ],
+        "noFeedbackGeometry": {
+          "noteBottom": 803,
+          "footerTop": 815,
+          "footerBottom": 880,
+          "viewportHeight": 880
+        },
+        "consoleErrors": [],
+        "httpErrors": [],
+        "physicalMobileTested": false,
+        "captureOnly": false
+      }
+    },
+    {
+      "path": "test-results/compact-proposal-browser-results.json",
+      "sha256": "b5f76924d0afddc73728c0c95c2940cc8d5232d0f07faeef60062d1a54a7dfa5",
+      "report": {
+        "scope": "Real local browser/API with in-memory store and server-side simulated planning provider; no browser request interception",
+        "passed": [
+          "explicit allowance without automatic submission",
+          "one saved interpretation call survives reload",
+          "read-only compact delta review",
+          "unknown fields omitted",
+          "protected purpose and tone omitted from proposed changes",
+          "explicit apply returns to inline review",
+          "new known look visible in main proposal",
+          "applied result remains unapproved",
+          "story and approved choices preserved",
+          "single simulated call with usage accounting"
+        ],
+        "realPaidCalls": 0,
+        "consoleErrors": [],
+        "httpErrors": [],
+        "physicalMobileTested": false
+      }
+    },
+    {
+      "path": "test-results/registry-browser-results.json",
+      "sha256": "daa8c8c3d8ec8784677aedad278d2f126aed350f9d42004bb1a281c640a4449f",
+      "report": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium; server-side synthetic auth lookup and reviewed model evidence; no browser request interception",
+        "passed": [
+          "Owner saves a credential-free inactive draft; no serving model, quote route, customer allowance or provider call changes",
+          "Publication requires explicit evidence acknowledgement, creates one release and admits the reviewed operation-specific route without starting generation",
+          "Reviewer sees registry evidence and release history with no editing, publication or disable controls; 390px viewport has no horizontal overflow",
+          "Studio displays exact operation/model/version/maximum reservation; approving the displayed route binds its fingerprint and operation, and switching operations does not reuse that allowance or start a call"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real Supabase identity/account-isolation test",
+          "No live provider execution or quality assessment",
+          "No physical mobile or virtual keyboard test"
+        ]
+      }
+    },
+    {
+      "path": "test-results/writing-browser-results.json",
+      "sha256": "8352083b450e6238ba82b2b8e1730a544da646c7cc76c04795ba3a27cfdd1113",
+      "report": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium interactions; server-side simulated OpenAI responses; no browser request interception",
+        "passed": [
+          "Original writing is the default; neither viewing the workspace nor approving a limit starts a model call",
+          "Saved queued call survives reload; review is read-only; explicit apply creates an unapproved version with model-call provenance and accounted simulated usage",
+          "Coverage limitations are visible and explicit acknowledgement is required before script approval",
+          "Unsaved screenplay field text survives in-app stage navigation; its selector remains locked and cancel leaves saved script unchanged",
+          "Saved targeted revision is free until explicitly run; applying changes the selected scene, preserves other scene and characters, retains history and requires renewed approval",
+          "390px Chromium viewport renders screenplay without horizontal overflow; this is not physical mobile verification",
+          "Optional .txt upload preserves exact UTF-8 BOM, leading newline, CRLF source text and declared provenance, never calls a model, exposes deterministic matches and requires passage-use explanations before approval; source and review survive reload",
+          "Briefing composer, note and footer remain separated across five desktop-emulated mobile viewport sizes"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "controlledStageFailure": false,
+        "expectedInjectedConsoleErrors": [],
+        "expectedInjectedHttpErrors": [],
+        "mobileScriptGeometry": {
+          "width": 390,
+          "height": 844,
+          "workspaceLeft": 17,
+          "workspaceRight": 373,
+          "approvalTop": 686.609375,
+          "approvalBottom": 738.609375,
+          "overflow": false
+        },
+        "footerGeometry": [
+          {
+            "width": 390,
+            "height": 880,
+            "composer": {
+              "top": 647.8125,
+              "bottom": 782
+            },
+            "note": {
+              "top": 782,
+              "bottom": 803
+            },
+            "footer": {
+              "top": 815,
+              "bottom": 880
+            },
+            "overflow": false
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "composer": {
+              "top": 611.8125,
+              "bottom": 746
+            },
+            "note": {
+              "top": 746,
+              "bottom": 767
+            },
+            "footer": {
+              "top": 779,
+              "bottom": 844
+            },
+            "overflow": false
+          },
+          {
+            "width": 375,
+            "height": 812,
+            "composer": {
+              "top": 579.8125,
+              "bottom": 714
+            },
+            "note": {
+              "top": 714,
+              "bottom": 735
+            },
+            "footer": {
+              "top": 747,
+              "bottom": 812
+            },
+            "overflow": false
+          },
+          {
+            "width": 360,
+            "height": 640,
+            "composer": {
+              "top": 407.8125,
+              "bottom": 542
+            },
+            "note": {
+              "top": 542,
+              "bottom": 563
+            },
+            "footer": {
+              "top": 575,
+              "bottom": 640
+            },
+            "overflow": false
+          },
+          {
+            "width": 390,
+            "height": 520,
+            "composer": {
+              "top": 287.8125,
+              "bottom": 422
+            },
+            "note": {
+              "top": 422,
+              "bottom": 443
+            },
+            "footer": {
+              "top": 455,
+              "bottom": 520
+            },
+            "overflow": false
+          }
+        ],
+        "realPaidCalls": 0,
+        "simulatedWritingCalls": 2,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real OpenAI writing or quality evaluation",
+          "No external originality corpus",
+          "No physical phone or virtual keyboard testing",
+          "No Supabase account or deployed-site tests"
+        ]
+      }
+    },
+    {
+      "path": "test-results/planning-ui-results.json",
+      "sha256": "aac80750bbb29cf25225634effa4c7102d369b77d4e8902c0a753f0ec6d78e69",
+      "report": {
+        "scope": "browser UI with intercepted planning API fixtures; no paid models or live consent backend",
+        "passed": [
+          "unavailable route gate",
+          "one-call minimum plus protected finish",
+          "maxCalls is upper limit",
+          "ambiguous response UUID reuse",
+          "consent never auto starts call",
+          "unknown call blocks replacement",
+          "explicit polling",
+          "reserved resume reuses hold",
+          "reserved cancellation",
+          "unknown cannot resume or cancel",
+          "explicit revoke",
+          "390px viewport overflow check"
+        ],
+        "pageErrors": [],
+        "injectedNetworkFailure": true,
+        "physicalMobileTested": false
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "test-results/storyboard-frame-candidate-desktop.png",
+      "sha256": "c10cf8e04ad1d4a254ba7faac1e29dc75a7fbec7b494570665962be6518776fd",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-candidate-mobile.png",
+      "sha256": "bb4c53064564b43895876e17e694af45541a589e786ac31f545da4d1c6e64195",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-image-desktop.png",
+      "sha256": "bad41bee25f831e6c9a53fd1363df5494adbdb53ea27b22fdc4b121949f25e51",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-image-mobile.png",
+      "sha256": "8c50144236dc24663a52e8f9189ae41afd6d76a9fb913dd342410e93d360965c",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-mobile-approval.png",
+      "sha256": "02af4da4cf147eb6d92a80360c1d1366b4a9887147c952db961cce706b22ce55",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-mobile-editor-actions.png",
+      "sha256": "8dcfc8015e5b0c8351c9b5b7ec2b24a324bbba1cd99b17813e9fb014db41b93e",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    },
+    {
+      "path": "test-results/storyboard-frame-overview-desktop.png",
+      "sha256": "17c19a8fd5fceea9436da2c2ea8f8bcfa65eceae6c2bb256fd59aa67611e3c6c",
+      "note": "Synthetic PNG candidate fixture; desktop Chromium viewport, not physical-device or model-quality evidence."
+    }
+  ],
+  "sqlProof": {
+    "sqlSha256": "b47ca7b6fe4282d2092a2f49ccfbd81e87f3cd110552e613980db020289ad61b",
+    "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+    "passed": [
+      "all twenty additive migrations install; private bucket, inactive seed models and generation pause preserved",
+      "approved handoff and exact independently approved identity/look/location selections produce a source-bound frame direction; pictured-character acknowledgment is required",
+      "specialized save enforces owner, version, captured latest review and archive-only changes; stale-read review race and generic save cannot bypass it",
+      "typed current/source/reference versions fail closed against malformed strings and fractions",
+      "native quote parity prices one output plus additional distinct inputs using exact integer tariff arithmetic; route, quantity, aspect, snapshot and signed owned input order are enforced",
+      "portrait 864\u00d71536 and square 1024\u00d71024 use native output configurations instead of implicit cropping",
+      "changed reference selection holds prior direction; explicit refresh retains all role pins while same identity/look asset is deduplicated and charged once",
+      "sequence reorder and neighboring contract edits hold frames until whole-plan review; unchanged own source/ref specification becomes reusable after review without regeneration",
+      "native reviewed-profile publication eligibility covers both reference image endpoints, reference look and complete-priced storyboard frames while preserving all three older endpoint/task pairs",
+      "explicit project cap and separate authorization reuse existing reserve/claim accounting; pause and revoked input review hold new dispatch while exact known reservation replay is preserved",
+      "completed frame imports retain exact historical aspect and frozen job endpoint after model retirement/pause; receipts replay and stored pixels/provenance identities are immutable",
+      "candidate storage, human selection and acknowledged frame review remain separate; selected frame is never a generation target, settlement/recovery and explicit diagnosed correction remain available",
+      "fresh explicit quote/authorization and diagnosed correction permit only attempt two; unknown prior charge and the hard two-attempt limit hold new work",
+      "all new native functions are service-only SECURITY INVOKER with empty search_path and candidate receipts remain append-only",
+      "rollback removes every synthetic project, candidate, spending record and active model"
+    ],
+    "productionApplied": false,
+    "limitations": [
+      "Sequential stale-read simulations do not prove actual concurrent-session scheduling.",
+      "Synthetic image metadata/output receipts; actual PNG bytes, private transfer and browser UI checked separately.",
+      "No paid model, quality, invoice, mobile-device or native latency verification."
+    ]
+  },
+  "nativeEvidence": "docs/evidence/STORYBOARD_PRODUCTION_NATIVE_CHECKS_2026-10-19.json",
+  "deployedWebsiteTested": false,
+  "physicalMobileTested": false,
+  "virtualKeyboardTested": false,
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "limitations": [
+    "Synthetic PNG fixtures validate actual dimensions, private storage and workflow, not cinematic quality, photorealism or voice/motion.",
+    "Deployed website and real Supabase account-isolation tests remain deferred.",
+    "No physical phone, virtual keyboard, native concurrent-session scheduling or native latency verification.",
+    "No paid generation, actual invoice reconciliation or demonstrated two-attempt quality-success rate.",
+    "No playable timed animatic, footage generation, sound pipeline or hosted finished-film export."
+  ]
+}

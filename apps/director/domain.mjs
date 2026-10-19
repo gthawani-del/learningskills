@@ -4,6 +4,7 @@ import {screenplayArtifact} from './public/screenplay-core.js';
 import {departmentPlanArtifacts} from './public/department-plan-core.js';
 import {storyboardHandoffArtifacts,assertStoryboardShotProjection} from './public/storyboard-handoff-core.js';
 import {referenceProductionArtifacts} from './public/reference-production-core.js';
+import {storyboardProductionArtifacts} from './public/storyboard-production-core.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -23,6 +24,7 @@ export function patchProject(previous,body){
  if(Object.hasOwn(body,'departmentPlanning'))fail(400,'Use the department planner to change plans and their version history.');
  if(Object.hasOwn(body,'storyboardHandoff'))fail(400,'Use the shot-plan editor to change storyboard contracts and their version history.');
  if(Object.hasOwn(body,'referenceProduction'))fail(400,'Use the reference workspace to change reference directions, candidates and selections.');
+ if(Object.hasOwn(body,'storyboardProduction'))fail(400,'Use storyboard production to change frame directions, reference bindings and selected images.');
  if(previous.screenplay?.currentVersion&&body.story!==undefined)fail(409,'Edit the current screenplay to update its treatment and scenes.');
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
  const next=structuredClone(previous);
@@ -57,6 +59,7 @@ export function artifacts(project){return [
  ...departmentPlanArtifacts(project),
  ...storyboardHandoffArtifacts(project),
  ...referenceProductionArtifacts(project),
+ ...storyboardProductionArtifacts(project),
  {logical_key:'story',kind:'story',version:project.story.version,content:project.story},
  ...project.shots.map(s=>({logical_key:s.id,kind:'shot',version:s.version,content:s}))
 ].map(a=>({...a,content_hash:hash(a.content)}));}

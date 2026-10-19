@@ -1,3 +1,13 @@
+# Storyboard frame production — 19 October 2026
+
+The second Step 7 increment binds exact approved identity, look and location images to individual shot contracts and implements real frame-job orchestration, private dimension-checked PNG import, explicit candidate selection and separate human frame approval. Compact prefilled editing confirms the pictured cast and native wide/portrait/square aspect. Source/reference changes hold stale reuse while retaining all media and histories. Estimates include additional distinct input images and use the existing shared spending limits, explicit authorization and two-attempt controls.
+
+**696 automated tests, syntax checks and the production build pass.** Four new local browser groups, department/revision/handoff/reference checks and seven earlier regression scripts pass. Fifteen independent isolated SQL proof groups pass. Director migration `20261019135954_director_storyboard_production` is installed; 20 new and seven replaced functions are service-only invokers with empty search paths, ten affected tables retain RLS, the private PNG bucket is unchanged and security advisor is clean. Native models remain inactive; generation remains paused; no paid calls or credential changes. See [Storyboard Production Acceptance](STORYBOARD_PRODUCTION_ACCEPTANCE.md).
+
+Tracker totals are 70 partial, 91 missing/unverified, six deferred and zero fully production-accepted. Frame pictures remain START-state planning evidence. Real quality/billing, deployed/account checks, physical devices and native concurrency/latency remain unverified. Timed animatics, footage, voice/sound and finished-film export remain subsequent work. Historical sections below retain their evidence limits.
+
+---
+
 # Reference generation and selection — 19 October 2026
 
 The first Step 7 increment implements source-bound identity, identity-preserving look and location reference production: compact prefilled directions, separate direction approval, reviewed model/cost estimate, explicit project cap and authorization, durable image jobs, private decoded PNG import, candidate selection and exact-image human approval. Source and identity changes preserve prior images/history while holding stale reuse. Existing quotes, unknown-charge recovery and the two-attempt limit remain authoritative; a correction record gates another attempt without automatically rewriting prompts.

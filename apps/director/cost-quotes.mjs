@@ -3,6 +3,9 @@ import {calculateTariff} from './tariffs.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {recordArtifacts} from './production-records.mjs';
 import {currentReferenceBrief} from './public/reference-production-core.js';
+import {currentStoryboardProductionSpec} from './public/storyboard-production-core.js';
+import {currentStoryboardSequence} from './public/storyboard-handoff-core.js';
+import {assertStoryboardFramePricing} from './storyboard-pricing.mjs';
 
 const MAX_UNITS = 1_000_000;
 const forbidden = new Set(['cost','price','budget','authorization','authorized','generationauthorized','estimate','quote','quoteid','approved','accepted','approval','spend','billing','currency','unitmicrousd','totalmicrousd','priceevidence','priceversion','expectedversion','ownerid','projectid','inputprice','clientbudget','generationauthorization','maxcost','estimatedcost','estimatedcostmicrousd','amountmicrousd','reservedmicrousd','pricing','canexpense','canauthorize','authorizationid','budgetusd','budgetmicrousd','costusd','costmicrousd','priceusd','pricemicrousd','usageevidence','usagebound','usagebounds','tokenusage','actualtokens']);
@@ -108,6 +111,15 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     if((subject.kind==='character_look')!==(task==='reference_look'))fail(409,'Reference look generation must use its identity-conditioned task.');
     quote.referenceBinding={subjectId,subjectVersion:snapshot.version,sourceVersion:snapshot.sourceVersion,inputSignature:source.inputSignature,document:structuredClone(snapshot.document),identityBinding:structuredClone(snapshot.identityBinding),prompt:input.prompt};
   }
-  if(artifact.kind==='reference_selection')fail(409,'A selected reference is review evidence and cannot be used as a generation specification.');
+  if(artifact.kind==='storyboard_brief'){
+    if(task!=='storyboard_frame'||typeof input.prompt!=='string'||!input.prompt.trim())fail(409,'A storyboard frame requires its canonical reviewed frame task and direction.');
+    assertStoryboardFramePricing(model.price_evidence,input);
+    const shotId=artifactId.slice('storyboard_brief:'.length),snapshot=currentStoryboardProductionSpec(project,shotId),sequence=currentStoryboardSequence(project),seen=new Set(),referenceAssets=[];
+    if(!snapshot||!sequence)fail(409,'The current storyboard specification and sequence are required.');
+    for(const binding of snapshot.document.referenceBindings){const key=binding.assetId+':'+binding.assetVersion;if(!seen.has(key)){seen.add(key);referenceAssets.push({assetId:binding.assetId,assetVersion:binding.assetVersion});}}
+    if(referenceAssets.length!==input.image_urls.length)fail(409,'The frame quote must preserve the complete approved input-image list.');
+    quote.storyboardBinding={shotId,specVersion:snapshot.version,snapshot:structuredClone(snapshot),sequenceVersion:sequence.version,prompt:input.prompt,referenceAssets};
+  }
+  if(['reference_selection','storyboard_frame'].includes(artifact.kind))fail(409,'A selected image is review evidence and cannot be used as a generation specification.');
   return {id: hash(quote), ...quote};
 }

@@ -12,7 +12,7 @@ export function quoteRequirements({task,requirements={},model,input}){
  if(input.image_url||input.end_image_url||input.middle_image_url||input.image_urls?.length||input.reference_image_urls?.length||input.reference_conditions?.some(r=>r.type==='image'))actual.inputModes.push('image');
  if(input.reference_audio_urls?.length||input.reference_conditions?.some(r=>r.type==='audio'))actual.inputModes.push('audio');
  if(input.reference_video_urls?.length||input.reference_conditions?.some(r=>r.type==='video'))actual.inputModes.push('video');
- actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',reference_video:'video',speech_synthesis:'audio'}[task];
+ actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',storyboard_frame:'image',reference_video:'video',speech_synthesis:'audio'}[task];
  if(!actual.modality)fail(409,'This task has no reviewed quote adapter.');
  // A capability flag cannot establish synchronized performance for these
  // adapters. A dedicated reviewed lip-sync payload adapter is required first.

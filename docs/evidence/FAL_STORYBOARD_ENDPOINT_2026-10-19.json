@@ -1,0 +1,347 @@
+{
+  "version": "director-storyboard-frame-endpoint-evidence-v1",
+  "observedAt": "2026-10-19T13:33:58.867Z",
+  "purpose": "Read-only current schema and public tariff observations for a proposed storyboard-frame adapter. No model activation, paid generation, quality validation or account invoice validation.",
+  "endpoint_id": "bytedance/seedream/v5/pro/edit",
+  "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit",
+  "schema": {
+    "input_schema": {
+      "title": "SeedDream50ProEditInput",
+      "x-fal-order-properties": [
+        "prompt",
+        "image_size",
+        "num_images",
+        "output_format",
+        "sync_mode",
+        "enable_safety_checker",
+        "enhance_prompt_mode",
+        "image_urls"
+      ],
+      "required": [
+        "prompt",
+        "image_urls"
+      ],
+      "type": "object",
+      "properties": {
+        "enhance_prompt_mode": {
+          "default": "standard",
+          "type": "string",
+          "description": "Prompt optimization mode. `standard` prioritizes image quality; `fast` reduces generation time.",
+          "enum": [
+            "standard",
+            "fast"
+          ],
+          "title": "Enhance Prompt Mode"
+        },
+        "prompt": {
+          "examples": [
+            "Replace the product in Figure 1 with that in Figure 2. Seamlessly render the logo in Figure 3 into the product design, in a frosted glass texture."
+          ],
+          "type": "string",
+          "description": "The text prompt used to edit the image.",
+          "title": "Prompt"
+        },
+        "sync_mode": {
+          "default": false,
+          "type": "boolean",
+          "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+          "title": "Sync Mode"
+        },
+        "enable_safety_checker": {
+          "default": true,
+          "examples": [
+            true
+          ],
+          "type": "boolean",
+          "description": "If set to true, the safety checker will be enabled. Disabling it requires account authorization; unauthorized requests are always checked.",
+          "title": "Enable Safety Checker"
+        },
+        "image_size": {
+          "default": "auto_2K",
+          "examples": [
+            "auto_2K"
+          ],
+          "anyOf": [
+            {
+              "title": "ImageSize",
+              "x-fal-order-properties": [
+                "width",
+                "height"
+              ],
+              "type": "object",
+              "properties": {
+                "width": {
+                  "maximum": 14142,
+                  "exclusiveMinimum": 0,
+                  "default": 512,
+                  "type": "integer",
+                  "description": "The width of the generated image.",
+                  "title": "Width"
+                },
+                "height": {
+                  "maximum": 14142,
+                  "exclusiveMinimum": 0,
+                  "default": 512,
+                  "type": "integer",
+                  "description": "The height of the generated image.",
+                  "title": "Height"
+                }
+              }
+            },
+            {
+              "type": "string",
+              "enum": [
+                "square_hd",
+                "square",
+                "portrait_4_3",
+                "portrait_16_9",
+                "landscape_4_3",
+                "landscape_16_9",
+                "auto_1K",
+                "auto_2K"
+              ]
+            }
+          ],
+          "x-fal": {
+            "max_area": 4194304,
+            "max_aspect_ratio": 16,
+            "min_area": 1048576,
+            "min_aspect_ratio": 0.0625
+          },
+          "description": "The size of the generated image. Total pixels must be between 1024x1024 and 2048x2048, with aspect ratio between 1/16 and 16.",
+          "title": "Image Size"
+        },
+        "image_urls": {
+          "examples": [
+            [
+              "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_1.png",
+              "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_2.png",
+              "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_3.png"
+            ]
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "description": "List of URLs of input reference images. Up to 10 images are supported; if more are sent, only the last 10 are used.",
+          "title": "Image URLs"
+        },
+        "num_images": {
+          "maximum": 6,
+          "default": 1,
+          "minimum": 1,
+          "type": "integer",
+          "description": "Number of separate model generations to run with the prompt.",
+          "title": "Num Images"
+        },
+        "output_format": {
+          "default": "jpeg",
+          "examples": [
+            "jpeg"
+          ],
+          "type": "string",
+          "description": "The file format of the generated image.",
+          "enum": [
+            "jpeg",
+            "png"
+          ],
+          "title": "Output Format"
+        }
+      }
+    },
+    "output_schema": {
+      "title": "SeedDream50ProEditOutput",
+      "x-fal-order-properties": [
+        "images"
+      ],
+      "required": [
+        "images"
+      ],
+      "type": "object",
+      "properties": {
+        "images": {
+          "examples": [
+            [
+              {
+                "url": "https://v3b.fal.media/files/b/0aa16df4/L8veDBOTxHhmpO5wQnioS_14c2d9c1736b4803a43796669c6d4fca.png"
+              }
+            ]
+          ],
+          "items": {
+            "properties": {
+              "width": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "examples": [
+                  1024
+                ],
+                "description": "The width of the image in pixels.",
+                "title": "Width"
+              },
+              "url": {
+                "type": "string",
+                "description": "The URL where the file can be downloaded from.",
+                "title": "Url"
+              },
+              "file_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "examples": [
+                  "z9RV14K95DvU.png"
+                ],
+                "description": "The name of the file. It will be auto-generated if not provided.",
+                "title": "File Name"
+              },
+              "content_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "examples": [
+                  "image/png"
+                ],
+                "description": "The mime type of the file.",
+                "title": "Content Type"
+              },
+              "file_size": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "examples": [
+                  4404019
+                ],
+                "description": "The size of the file in bytes.",
+                "title": "File Size"
+              },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "examples": [
+                  1024
+                ],
+                "description": "The height of the image in pixels.",
+                "title": "Height"
+              }
+            },
+            "x-fal-order-properties": [
+              "url",
+              "content_type",
+              "file_name",
+              "file_size",
+              "width",
+              "height"
+            ],
+            "required": [
+              "url"
+            ],
+            "description": "Represents an image file.",
+            "type": "object",
+            "title": "Image"
+          },
+          "type": "array",
+          "description": "Generated images.",
+          "title": "Images"
+        }
+      }
+    }
+  },
+  "priceToolObservation": {
+    "endpoint_id": "bytedance/seedream/v5/pro/edit",
+    "unit_price": 0.0675,
+    "unit": "units",
+    "currency": "USD"
+  },
+  "publicPricingObservation": {
+    "sourceUrl": "https://fal.ai/models/bytedance/seedream/v5/pro/edit",
+    "status": "tentative_public_price_not_account_verified",
+    "outputAreaTiers": [
+      {
+        "maxAreaPixels": 2359296,
+        "basePerOutputMicroUsd": 67500
+      },
+      {
+        "minAreaExclusivePixels": 2359296,
+        "maxAreaPixels": 4194304,
+        "basePerOutputMicroUsd": 135000
+      }
+    ],
+    "additionalInputs": {
+      "firstInputCharged": false,
+      "eachInputAfterFirstPerOutputMicroUsd": 4500
+    },
+    "examples": [
+      {
+        "inputImageCount": 1,
+        "outputImageCount": 1,
+        "areaPixels": 1048576,
+        "candidateMicroUsd": 67500
+      },
+      {
+        "inputImageCount": 10,
+        "outputImageCount": 1,
+        "areaPixels": 1048576,
+        "candidateMicroUsd": 108000
+      }
+    ],
+    "reviewRequired": "Configured price must bind exact input-image count, output-image count and output area. A flat one-image tariff cannot silently cover additional reference inputs."
+  },
+  "adapterProposal": {
+    "nativeOutputConfigurations": [
+      {"aspectRatio":"16:9","width":1536,"height":864},
+      {"aspectRatio":"9:16","width":864,"height":1536},
+      {"aspectRatio":"1:1","width":1024,"height":1024}
+    ],
+    "inputSchemaHash": "59c29f097a94816c64f5b16f38872a90ee475c6633de9ce3e5c65c40f69a661a",
+    "promptMaxUtf8Bytes": 100000,
+    "promptBoundProvenance": "Local reviewed adapter bound, not an asserted upstream maximum; included shot/source/reference fields are never truncated.",
+    "inputReferenceLimit": 10,
+    "outputImageCount": 1,
+    "output_format": "png",
+    "sync_mode": false,
+    "enable_safety_checker": true,
+    "enhance_prompt_mode": "standard",
+    "referenceOrder": "Server-validated complete current binding order, labelled Image1..ImageN. Never silently drop references beyond limit.",
+    "renderScope": "One proposed storyboard start-state frame, not a video, dialogue, measured identity proof, ending-state demonstration or final-film approval.",
+    "qualityValidated": false,
+    "executionTested": false,
+    "paidCallsMade": 0
+  },
+  "craftSources": [
+    "fal:storytelling",
+    "fal:cinematography",
+    "fal:fal-prompting",
+    "fal:character-design"
+  ],
+  "limitations": [
+    "Provider schema exposes no native locked character identity, exact lens/camera pose, depth map or measured camera controls in this bounded adapter. Camera and continuity remain prompt direction and explicit human review requirements.",
+    "Public pricing is marked tentative. Input image count changes the candidate tariff.",
+    "More than ten distinct required asset images must hold for explicit scope revision; never silently discard or substitute a reference."
+  ]
+}

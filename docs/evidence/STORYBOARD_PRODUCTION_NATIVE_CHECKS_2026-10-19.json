@@ -1,0 +1,353 @@
+{
+  "date": "2026-10-19",
+  "scope": "Native additive migration and read-only metadata/security checks; not application account, provider, concurrency or latency acceptance",
+  "project": "Director",
+  "projectId": "ygyjqubrpqwfgbquwqeo",
+  "migrationSha256": "b47ca7b6fe4282d2092a2f49ccfbd81e87f3cd110552e613980db020289ad61b",
+  "rls": {
+    "director_jobs": true,
+    "director_assets": true,
+    "director_reviews": true,
+    "director_projects": true,
+    "director_approvals": true,
+    "director_artifacts": true,
+    "director_proposals": true,
+    "director_quote_records": true,
+    "director_reference_candidates": true,
+    "director_storyboard_candidates": true
+  },
+  "jobs": 0,
+  "bucket": {
+    "id": "director-reference-media",
+    "public": false,
+    "fileSizeLimit": 10485760,
+    "allowedMimeTypes": [
+      "image/png"
+    ]
+  },
+  "functions": [
+    {
+      "name": "director_approve_storyboard_production",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_artifact_is_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_authorize_quote",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_composite_quote_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_document_approval_ready",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_persist_quote",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_register_storyboard_candidate",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_registry_review_ready",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_reserve_storyboard_job",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_review_storyboard_job",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_save_storyboard_production",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_media_ready",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_archive_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_asset_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_candidate_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_candidate_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_direction_approved",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_document_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_job_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_legacy_artifact_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_pin_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_quote_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_reference_assets",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_review_guard",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_selection_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_spec_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_storyboard_production_tariff_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "publicExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    }
+  ],
+  "migration": {
+    "name": "director_storyboard_production",
+    "version": "20261019135954"
+  },
+  "activeModels": 0,
+  "generationPaused": true,
+  "nativeCandidates": 0,
+  "planningReservations": 0,
+  "candidateTablePrivileges": {
+    "anonSelect": false,
+    "serviceDelete": false,
+    "serviceInsert": true,
+    "serviceSelect": true,
+    "serviceUpdate": false,
+    "authenticatedSelect": false
+  },
+  "nativeStoryboardArchives": 0,
+  "storyboardEvidenceColumn": {
+    "type": "jsonb",
+    "nullable": "YES"
+  },
+  "securityAdvisories": [],
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "customerAccountsTested": false,
+  "nativeLatencyTested": false
+}

@@ -1,0 +1,27 @@
+{
+  "sqlSha256": "b47ca7b6fe4282d2092a2f49ccfbd81e87f3cd110552e613980db020289ad61b",
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "all twenty additive migrations install; private bucket, inactive seed models and generation pause preserved",
+    "approved handoff and exact independently approved identity/look/location selections produce a source-bound frame direction; pictured-character acknowledgment is required",
+    "specialized save enforces owner, version, captured latest review and archive-only changes; stale-read review race and generic save cannot bypass it",
+    "typed current/source/reference versions fail closed against malformed strings and fractions",
+    "native quote parity prices one output plus additional distinct inputs using exact integer tariff arithmetic; route, quantity, aspect, snapshot and signed owned input order are enforced",
+    "portrait 864×1536 and square 1024×1024 use native output configurations instead of implicit cropping",
+    "changed reference selection holds prior direction; explicit refresh retains all role pins while same identity/look asset is deduplicated and charged once",
+    "sequence reorder and neighboring contract edits hold frames until whole-plan review; unchanged own source/ref specification becomes reusable after review without regeneration",
+    "native reviewed-profile publication eligibility covers both reference image endpoints, reference look and complete-priced storyboard frames while preserving all three older endpoint/task pairs",
+    "explicit project cap and separate authorization reuse existing reserve/claim accounting; pause and revoked input review hold new dispatch while exact known reservation replay is preserved",
+    "completed frame imports retain exact historical aspect and frozen job endpoint after model retirement/pause; receipts replay and stored pixels/provenance identities are immutable",
+    "candidate storage, human selection and acknowledged frame review remain separate; selected frame is never a generation target, settlement/recovery and explicit diagnosed correction remain available",
+    "fresh explicit quote/authorization and diagnosed correction permit only attempt two; unknown prior charge and the hard two-attempt limit hold new work",
+    "all new native functions are service-only SECURITY INVOKER with empty search_path and candidate receipts remain append-only",
+    "rollback removes every synthetic project, candidate, spending record and active model"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "Sequential stale-read simulations do not prove actual concurrent-session scheduling.",
+    "Synthetic image metadata/output receipts; actual PNG bytes, private transfer and browser UI checked separately.",
+    "No paid model, quality, invoice, mobile-device or native latency verification."
+  ]
+}

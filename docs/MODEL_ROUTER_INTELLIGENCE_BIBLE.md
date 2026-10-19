@@ -1,6 +1,6 @@
 # Model Router Intelligence Bible
 
-Revision 8 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 9 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
@@ -52,7 +52,7 @@ Paid `plan_storyboard` maps to registry task `storyboard_planning` and the separ
 
 All 17 department versions are bound into each source baseline: changing any one conservatively marks every current contract source-stale, rather than claiming selective semantic impact on shots. A focused contract edit with unchanged source preserves neighboring histories/approvals and holds the old sequence pins. Legacy flat shots first require free adoption, preserving IDs/order/media and exact source lines. Missing scene mappings, ambiguous/changed dialogue or duplicate coverage hold adoption instead of discarding work; missing action, continuity or mandatory criteria hold approval. The current `storyboard_sequence` checkpoint atomically writes exact `shot_contract:<id>` and sequence decisions with a planning-only acknowledgement; direct individual contract approval cannot bypass whole-sequence review.
 
-F037 advances its existing partial implementation to enforceable planning contracts; F039 advances ordered plan review, not generated-take acceptance. F038 actual storyboard/keyframe generation and F040 actual playable animatics remain missing. This handoff creates no images, selects no identity/voice/media, performs no song listening/alignment, renders no animatic and proves no two-attempt or real filmmaking quality. [Storyboard Handoff Knowledge](STORYBOARD_HANDOFF_KNOWLEDGE.md) records the concrete craft rules, source-grounded scenarios and remaining production holds.
+At the Point 6 handoff milestone, F037 advanced its existing partial implementation to enforceable planning contracts and F039 advanced ordered plan review, not generated-take acceptance. F038 actual storyboard/keyframe generation and F040 actual playable animatics were still missing; the later Step 7 frame-production section below supersedes that earlier F038 state. This handoff creates no images, selects no identity/voice/media, performs no song listening/alignment, renders no animatic and proves no two-attempt or real filmmaking quality. [Storyboard Handoff Knowledge](STORYBOARD_HANDOFF_KNOWLEDGE.md) records the concrete craft rules, source-grounded scenarios and remaining production holds.
 
 ## Step 7 first increment: image reference production — 19 October 2026
 
@@ -69,6 +69,22 @@ The bounded adapters request one 1024×1024 PNG: `fal-ai/flux-2-pro` or `fal-ai/
 `POST /api/projects/:id/reference-production/import` uses an owned completed job ID and saved output evidence, never a caller-supplied output URL. The supported generated result is validated and copied into private project storage with exact checksum/provenance before an immutable candidate receipt can exist. A failed download or import is recovered against the original job; it does not authorize a new generation. Selection binds an actual owned stored candidate and exact current direction/source; reference-selection approval requires an explicit acknowledgement that the image was inspected against the criteria. A successful API response, prompt or model self-assessment does not establish anatomy, same-person continuity, real-world authenticity or rights.
 
 The selected image is not automatically copied into generic production-library records or assigned to a storyboard/shot. Device imports retain creative history without copying trusted generated receipts, approvals or spending authority. Identity/look/world approval does not select a voice, clear permissions, create storyboard frames or authorize footage. F033/F034 cover only this first reference-production subset; independent props/SKUs, full reference-sheet/angle coverage, image-assisted quality calibration, actual provider-quality/cost pilots, storyboard frames, playable animatics and finished media remain separate work. [Reference Production Knowledge](REFERENCE_PRODUCTION_KNOWLEDGE.md) gives concrete craft rules, deterministic-versus-human acceptance and recovery limits. The [reference acceptance record](REFERENCE_PRODUCTION_ACCEPTANCE.md) distinguishes synthetic workflow and native metadata evidence from unrun paid quality, customer-account and physical-device checks.
+
+## Step 7 next increment: storyboard start-state frames — 19 October 2026
+
+`director-storyboard-production-v1` adds actual image-candidate generation/import, explicit selection and human frame review against an approved shot contract. Its render target is one pictured **starting state**, rather than proof of the whole action, ending, spoken words, singing, motion or timed animatic. A frame can show the required medium composition, blue coat and envelope in the left hand at that instant; it cannot establish that the envelope remains there through “Nothing important.” or that the performance conceals the discovery. Mandatory pictured defects fail the source contract even if the image is attractive.
+
+The current approved brief/script, all 17 fresh approved departments and the complete approved shot-contract sequence are required. Missing-only preparation proposes pictured character IDs from source associations and visibly requires explicit frame-direction confirmation; off-screen dialogue does not silently become a cast image. Every chosen pictured person needs exact current approved selected identity **and** look images, and every frame in this bounded increment needs its source-scene location image. Role bindings pin reference subject/version, selection/version and asset/version. Changed source or an exact bound identity/look/location selection holds the affected earlier frames while retaining images/history; a look cannot substitute an unapproved actor for the selected identity master.
+
+All shot-reference requirements have explicit decisions. Unsupported required product, composition, lighting or performance image-reference roles hold generation and need upstream contract review; they cannot be waived as not applicable or renamed prompt-only to bypass a mandatory input. Camera/light/composition prose remains intended treatment, with no native exact-optics, locked-identity or depth-control guarantee. The server supplies canonical role-labelled input order and deduplicates identical asset images while retaining every role/version pin. More than ten distinct required inputs holds work rather than silently dropping references.
+
+`GET/POST /api/projects/:id/storyboard-production` provides free preparation, focused edit, acknowledged source/reference refresh and explicit image selection. The current `storyboard_brief:<shotId>` approval requires `acknowledgeFrameDirection:true`. `/storyboard-production/quotes` builds the source-bound server prompt and exact privately signed approved inputs with `shareReferences:true`; `/storyboard-production/jobs` uses the existing quote/authorization/reservation/job ledger; `/storyboard-production/import` saves the owned completed single PNG privately with checksum/job/payload/shot/specification provenance; `/storyboard-production/reviews` records a visible correction before another same-work-unit attempt. Selection is followed by separate `storyboard_frame:<shotId>` approval with `acknowledgeFrameReview:true`. No raw client prompt/output URL, hidden candidate batch, automatic selection or prompt repair grants authority.
+
+The supported Seedream edit frame configurations are 16:9 at 1536×864, 9:16 at 864×1536 and 1:1 at 1024×1024, rather than a silent crop of a square. Unsupported explicit source aspects hold for approved revision. Dated public price evidence observes $0.0675 per output in these area configurations plus $0.0045 per distinct input after the first: one input is a candidate $0.0675 and ten inputs $0.108. These observations are not account-verified/live charges or route activation. Executable registry tariff evidence must include the exact base and additional `input_image` fees; an old flat single-reference quote is insufficient.
+
+Frame histories/selections are independent of shot-contract versions and do not overwrite flat shot references, clip IDs or timeline selections. A reordered sequence or neighboring contract change requires renewed whole-plan approval; after that review, an unchanged own contract/source/reference/frame can remain usable without regeneration. Its recorded old sequence version is audit context, not a demand to rebuild every image. Known completed/unknown jobs retain their frozen output/accounting recovery after source changes or model retirement; stale results cannot become new current selections merely because they were imported successfully.
+
+F038 advances the guarded frame-lifecycle subset and F039 adds explicit still-frame selection/review; neither establishes real paid provider quality or moving-take acceptance. F040 playable timed animatics remains missing. [Storyboard Production Knowledge](STORYBOARD_PRODUCTION_KNOWLEDGE.md) supplies source-grounded craft, pictured-versus-temporal evidence, role limits, exact aspects/costs and reuse rules. The [acceptance record](STORYBOARD_PRODUCTION_ACCEPTANCE.md) records actual workflow/native checks and unrun paid-quality, account and device tests.
 
 ## Script entry and originality — user clarification, 19 October 2026
 
@@ -988,11 +1004,11 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F035 Review reference identity, wardrobe and composition
 
-- **Application operation:** `POST /api/projects/:id/reference-production (select); POST /api/projects/:id/approvals for reference_selection:<subjectId> with acknowledgeReferenceReview`.
-- **Execution binding:** Deterministic source/asset/version guards plus explicit human inspection of the actual private candidate.
-- **Input → output:** Actual owned stored image candidate; exact current approved direction/source; current selected identity binding for looks; explicit review acknowledgement → Version-bound selection event and separate approval or rejection, retaining earlier candidates/media/history.
-- **Acceptance/limits:** Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or all future continuity. Direction approval is not image approval. Model-assisted image review remains a separate unimplemented/calibration task.
-- **Prerequisite:** Current approved reference direction and actual candidate/asset receipt; current source/departments and identity where applicable. **Cost basis:** No model call for manual image selection/approval; private storage/compute separate; future assisted-review cost must receive its own reviewed route/authorization.
+- **Application operation:** `POST /api/projects/:id/reference-production or /storyboard-production (select); POST /api/projects/:id/approvals for current reference_selection:<subjectId> or storyboard_frame:<shotId> with the appropriate visual-review acknowledgement`.
+- **Execution binding:** Deterministic source/asset/version guards plus explicit human inspection of the actual private reference or storyboard start-state image.
+- **Input → output:** Actual owned stored image candidate; exact current approved reference/frame direction and source; applicable identity/look/location pins; action-specific visual-review acknowledgement → Version-bound reference/frame selection and separate human approval or rejection, retaining earlier candidates/media/history.
+- **Acceptance/limits:** Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or temporal continuity. Storyboard approval covers only the pictured start-state still, not movement/end-state/audio. Direction approval is not image approval. Model-assisted visual review remains a separate unimplemented/calibration task.
+- **Prerequisite:** Action-specific current approved reference or frame direction and actual owned stored candidate; current source/departments/identity pins, plus the complete current approved shot plan for frames. **Cost basis:** No model call for manual image selection/approval; private storage/compute separate; future assisted-review cost must receive its own reviewed route/authorization.
 - **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Real visual-quality evaluations, image-assisted review/calibration, rights evidence and production-quality acceptance remain incomplete.
 - **Alternative:** Manual review is the current path; O01/M03 remain historical assisted-review candidates and confer no automatic route.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
@@ -1001,10 +1017,10 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 - **Application operation:** `GET/POST /api/projects/:id/reference-production; existing project production-record and private-asset APIs`.
 - **Execution binding:** Versioned reference archive, immutable owned candidates, private project storage and guarded Supabase persistence.
-- **Input → output:** Source-linked identity/look/location directions; owned stored assets/candidates; exact identity and selection versions; separately recorded permissions evidence → Preserved subject/selection history, private asset provenance, stale-source/identity holds and exact approvals.
-- **Acceptance/limits:** No automatic generic production-record projection or storyboard media selection. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence stays separate from creative selection; uploaded material is not automatically authorized.
+- **Input → output:** Source-linked identity/look/location directions; owned stored assets/candidates; exact identity and selection versions; separately recorded permissions evidence → Preserved source/subject/selection histories, private asset provenance, exact approved role bindings into frame specifications and stale-source/identity/reference holds.
+- **Acceptance/limits:** Explicit identity/look/location selections now bind storyboard frame inputs by exact subject/selection/asset versions. There is no automatic generic-record projection or flat shot/timeline media assignment. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence remains separate from creative selection.
 - **Prerequisite:** Authenticated project scope, current source/identity bindings, actual private assets and action-specific approval checks. **Cost basis:** Storage/compute usage separate from existing generation quote/reservation; free record/selection operations do not start provider calls.
-- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Complete use-rights evidence/retention/deletion, later storyboard/media binding and real account/quality validation remain incomplete.
+- **Recovery:** Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch. **Release gate:** Complete use-rights evidence/retention/deletion, later animatic/footage/edit binding and real account/quality validation remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F037 Create storyboard direction and shot contracts
@@ -1020,22 +1036,23 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F038 Generate storyboard/keyframes from references
 
-- **Application operation, proposed:** `POST /api/shots/:id/frames`.
-- **Execution binding:** `bytedance/seedream/v5/pro/edit` (M09). S: live fal schema inspected; no execution.
-- **Input → output:** approved references and frame direction → candidate storyboard images.
-- **Acceptance/limits:** Selected frame must pass actual framing/identity/prop review.
-- **Prerequisite:** Shot contract; image allowance. **Cost basis:** USD 0.0675 / units; observation only.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Application operation:** `GET/POST /api/projects/:id/storyboard-production; POST /api/projects/:id/storyboard-production/quotes; POST /api/projects/:id/storyboard-production/jobs; POST /api/projects/:id/storyboard-production/import; POST /api/projects/:id/storyboard-production/reviews`.
+- **Execution binding:** Reviewed registry-selected storyboard_frame using bytedance/seedream/v5/pro/edit, exact approved identity/look/location inputs and private stored single-image output.
+- **Input → output:** Current approved source/departments and complete shot-plan checkpoint; exact own shot contract/frame direction; reviewed pictured cast; approved role-bound identity/look/location selections and private assets; current composite quote/authorization → One private stored start-state frame candidate per explicit attempt, immutable owned-job provenance, explicit selection and separate exact human frame approval.
+- **Acceptance/limits:** One actual PNG start-state image, not action/end-state/audio/motion proof. Exact identity and look are required for each chosen visible person and source-scene location for every frame. More than ten distinct input images or unsupported required reference roles holds work without truncation/waiver. Native sizes are 1536x864, 864x1536 or 1024x1024 for approved 16:9, 9:16 or 1:1. No automatic flat-shot/timeline media assignment or calibrated identity/semantic QA.
+- **Prerequisite:** Current approved brief/script/all seventeen departments, complete approved handoff sequence, acknowledged current frame direction and exact approved reference bindings; explicit private-image sharing and financial consent. **Cost basis:** Current reviewed configuration-specific base plus input_image tariff using distinct submitted asset count, with the first input included; public observed $0.0675 base plus $0.0045 per additional input is candidate evidence only.
+- **Recovery:** Preserve prior frame/candidate/selection histories; recover the exact frozen job/output receipt after source/model changes; reject stale selection and do not regenerate after import/unknown failures. **Release gate:** Real paid image/identity/price validation, unsupported mandatory role coverage, actual timed animatics, footage quality and deployed-account/device checks remain incomplete.
+- **Alternative:** Explicitly review/revise upstream shot/reference scope if unsupported; no text-only identity substitute or automatic paid/model fallback.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F039 Approve/order shots and choose takes
 
-- **Application operation:** `GET/POST /api/projects/:id/storyboard-handoff for ordering/review; POST /api/projects/:id/approvals for the current storyboard_sequence planning checkpoint`.
-- **Execution binding:** Versioned shot/sequence contracts with guarded atomic application/Supabase planning-approval persistence.
-- **Input → output:** Current source-bound contracts; exact ordered shot versions; expected project version; planning-only acknowledgement and owner permission → Versioned order and bulk planning-only contract/sequence approval; existing media identities are preserved independently.
-- **Acceptance/limits:** Current ordered-plan subset supports explicit reorder and exact sequence-version pins, one planning-only checkpoint for current contracts plus sequence, current-source/review guards and preserved media/reference controls. It does not generate frames, select/compare generated takes, approve actual media or create a playable animatic.
-- **Prerequisite:** Current approved brief, source-current screenplay, all current approved departments and action-specific current contract/review context. **Cost basis:** Deterministic version/order/review actions invoke no model; no implicit media-generation or spending authorization.
-- **Recovery:** Preserve current contracts/media/history and explicit choices; reject stale source, project or review context. Known paid requests retain their original recovery contract without hidden retry/model switch. **Release gate:** Actual generated-take comparison/selection, frame/motion/voice acceptance, complete media dependency coverage and deployed-account concurrency remain incomplete.
+- **Application operation:** `GET/POST /api/projects/:id/storyboard-handoff for planning order/review; GET/POST /api/projects/:id/storyboard-production for frame selection; POST /api/projects/:id/approvals for current storyboard_sequence, storyboard_brief:<shotId> and storyboard_frame:<shotId> checkpoints`.
+- **Execution binding:** Independent versioned shot-plan and stored-frame histories with guarded source/reference approval persistence and explicit human still review.
+- **Input → output:** Current approved source/department/shot-plan checkpoint; own current contract/frame specification; exact approved reference pins and owned stored candidate; expected project version and action-specific acknowledgements → Preserved ordered planning checkpoint plus explicit candidate frame selection and separately approved current start-state still; existing clip/reference identities remain independent.
+- **Acceptance/limits:** Whole-sequence planning approval is distinct from still selection. Pictured cast/direction and actual frame review need separate acknowledgements. Neighbor/reorder changes need whole-plan reapproval but unchanged own contracts/references/frames can be reused afterward. No frame selection mutates flat shot-contract versions, clip IDs or timeline media. Generated moving-take comparison, temporal performance/audio and playable-animatic acceptance remain incomplete.
+- **Prerequisite:** Action-specific current source/contract/reference/owned-image context; current whole-plan checkpoint; acknowledged pictured cast and actual human still inspection. **Cost basis:** Deterministic order/selection/review invokes no model or implicit spend; any new frame attempt needs its own exact reviewed financial context.
+- **Recovery:** Preserve previous contracts, frames, media and selections; keep stale outputs visible and reconcile exact saved jobs without hidden regeneration. **Release gate:** Real provider frame/identity quality, whole visual/audiovisual sequence evaluation, moving-take comparison/selection, footage/voice acceptance and live concurrency remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F040 Assemble timed animatic before motion production
@@ -3372,15 +3389,15 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F035",
       "category": "Cast, design and storyboard",
       "functionality": "Review reference identity, wardrobe and composition",
-      "application_operation": "POST /api/projects/:id/reference-production (select); POST /api/projects/:id/approvals for reference_selection:<subjectId> with acknowledgeReferenceReview",
+      "application_operation": "POST /api/projects/:id/reference-production or /storyboard-production (select); POST /api/projects/:id/approvals for current reference_selection:<subjectId> or storyboard_frame:<shotId> with the appropriate visual-review acknowledgement",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Deterministic source/asset/version guards plus explicit human inspection of the actual private candidate",
+      "external_endpoint_or_tool": "Deterministic source/asset/version guards plus explicit human inspection of the actual private reference or storyboard start-state image",
       "execution_type": "application and human visual review",
       "evidence": "Implemented exact candidate-selection/review workflow; no calibrated automatic visual or identity detector",
-      "required_input": "Actual owned stored image candidate; exact current approved direction/source; current selected identity binding for looks; explicit review acknowledgement",
-      "expected_output": "Version-bound selection event and separate approval or rejection, retaining earlier candidates/media/history",
-      "limits_and_quality_rule": "Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or all future continuity. Direction approval is not image approval. Model-assisted image review remains a separate unimplemented/calibration task.",
-      "prerequisite": "Current approved reference direction and actual candidate/asset receipt; current source/departments and identity where applicable",
+      "required_input": "Actual owned stored image candidate; exact current approved reference/frame direction and source; applicable identity/look/location pins; action-specific visual-review acknowledgement",
+      "expected_output": "Version-bound reference/frame selection and separate human approval or rejection, retaining earlier candidates/media/history",
+      "limits_and_quality_rule": "Human acknowledgement records inspection against explicit criteria; it does not prove biometric identity, correct anatomy, factual authenticity, rights or temporal continuity. Storyboard approval covers only the pictured start-state still, not movement/end-state/audio. Direction approval is not image approval. Model-assisted visual review remains a separate unimplemented/calibration task.",
+      "prerequisite": "Action-specific current approved reference or frame direction and actual owned stored candidate; current source/departments/identity pins, plus the complete current approved shot plan for frames",
       "billing_basis": "No model call for manual image selection/approval; private storage/compute separate; future assisted-review cost must receive its own reviewed route/authorization",
       "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
       "release_gate_or_blocker": "Real visual-quality evaluations, image-assisted review/calibration, rights evidence and production-quality acceptance remain incomplete",
@@ -3388,7 +3405,7 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router/vision",
       "alternative_route": "Manual review is the current path; O01/M03 remain historical assisted-review candidates and confer no automatic route",
-      "implementation_status": "Partial: source/version-bound human reference review; real quality validation and calibrated assisted review incomplete",
+      "implementation_status": "Partial: source/version-bound human reference and start-state frame review; real quality validation and calibrated assisted review incomplete",
       "historical_candidate_reference": "O01",
       "reference_production_version": "director-reference-production-v1"
     },
@@ -3402,12 +3419,12 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "execution_type": "application/service/storage",
       "evidence": "Implemented reference-version/provenance and existing library controls; rights clearance and real media quality remain separate",
       "required_input": "Source-linked identity/look/location directions; owned stored assets/candidates; exact identity and selection versions; separately recorded permissions evidence",
-      "expected_output": "Preserved subject/selection history, private asset provenance, stale-source/identity holds and exact approvals",
-      "limits_and_quality_rule": "No automatic generic production-record projection or storyboard media selection. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence stays separate from creative selection; uploaded material is not automatically authorized.",
+      "expected_output": "Preserved source/subject/selection histories, private asset provenance, exact approved role bindings into frame specifications and stale-source/identity/reference holds",
+      "limits_and_quality_rule": "Explicit identity/look/location selections now bind storyboard frame inputs by exact subject/selection/asset versions. There is no automatic generic-record projection or flat shot/timeline media assignment. Device imports cannot copy live candidate receipts, approvals or spending authority. Consent/rights evidence remains separate from creative selection.",
       "prerequisite": "Authenticated project scope, current source/identity bindings, actual private assets and action-specific approval checks",
       "billing_basis": "Storage/compute usage separate from existing generation quote/reservation; free record/selection operations do not start provider calls",
       "recovery": "Preserve all earlier candidate/media/history; reconcile the exact saved job and import receipt before retrying; no hidden regeneration or model switch",
-      "release_gate_or_blocker": "Complete use-rights evidence/retention/deletion, later storyboard/media binding and real account/quality validation remain incomplete",
+      "release_gate_or_blocker": "Complete use-rights evidence/retention/deletion, later animatic/footage/edit binding and real account/quality validation remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Supabase Postgres plus private Storage",
@@ -3447,44 +3464,52 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F038",
       "category": "Cast, design and storyboard",
       "functionality": "Generate storyboard/keyframes from references",
-      "application_operation": "POST /api/shots/:id/frames",
-      "execution_reference": "M09",
-      "external_endpoint_or_tool": "bytedance/seedream/v5/pro/edit",
-      "execution_type": "fal model",
-      "evidence": "S: live fal schema inspected; no execution",
-      "required_input": "approved references and frame direction",
-      "expected_output": "candidate storyboard images",
-      "limits_and_quality_rule": "Selected frame must pass actual framing/identity/prop review",
-      "prerequisite": "Shot contract; image allowance",
-      "billing_basis": "USD 0.0675 / units; observation only",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "application_operation": "GET/POST /api/projects/:id/storyboard-production; POST /api/projects/:id/storyboard-production/quotes; POST /api/projects/:id/storyboard-production/jobs; POST /api/projects/:id/storyboard-production/import; POST /api/projects/:id/storyboard-production/reviews",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Reviewed registry-selected storyboard_frame using bytedance/seedream/v5/pro/edit, exact approved identity/look/location inputs and private stored single-image output",
+      "execution_type": "application plus optional reviewed fal reference-edit model",
+      "evidence": "Implemented first start-state frame lifecycle; synthetic workflow/native metadata checks do not establish real provider image or temporal quality",
+      "required_input": "Current approved source/departments and complete shot-plan checkpoint; exact own shot contract/frame direction; reviewed pictured cast; approved role-bound identity/look/location selections and private assets; current composite quote/authorization",
+      "expected_output": "One private stored start-state frame candidate per explicit attempt, immutable owned-job provenance, explicit selection and separate exact human frame approval",
+      "limits_and_quality_rule": "One actual PNG start-state image, not action/end-state/audio/motion proof. Exact identity and look are required for each chosen visible person and source-scene location for every frame. More than ten distinct input images or unsupported required reference roles holds work without truncation/waiver. Native sizes are 1536x864, 864x1536 or 1024x1024 for approved 16:9, 9:16 or 1:1. No automatic flat-shot/timeline media assignment or calibrated identity/semantic QA.",
+      "prerequisite": "Current approved brief/script/all seventeen departments, complete approved handoff sequence, acknowledged current frame direction and exact approved reference bindings; explicit private-image sharing and financial consent",
+      "billing_basis": "Current reviewed configuration-specific base plus input_image tariff using distinct submitted asset count, with the first input included; public observed $0.0675 base plus $0.0045 per additional input is candidate evidence only",
+      "recovery": "Preserve prior frame/candidate/selection histories; recover the exact frozen job/output receipt after source/model changes; reject stale selection and do not regenerate after import/unknown failures",
+      "release_gate_or_blocker": "Real paid image/identity/price validation, unsupported mandatory role coverage, actual timed animatics, footage quality and deployed-account/device checks remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "bytedance/seedream/v5/pro/edit",
-      "alternative_route": ""
+      "alternative_route": "Explicitly review/revise upstream shot/reference scope if unsupported; no text-only identity substitute or automatic paid/model fallback",
+      "implementation_status": "Partial: start-state frame candidate generation/import/selection/review workflow; actual model-quality, moving-take and complete sequence production acceptance incomplete",
+      "historical_candidate_reference": "M09",
+      "storyboard_production_version": "director-storyboard-production-v1",
+      "retry_review_operation": "POST /api/projects/:id/storyboard-production/reviews",
+      "status_operation": "POST /api/projects/:id/jobs/:jobId/poll",
+      "explicit_attempt_quantity": 1,
+      "max_distinct_input_images": 10
     },
     {
       "id": "F039",
       "category": "Cast, design and storyboard",
       "functionality": "Approve/order shots and choose takes",
-      "application_operation": "GET/POST /api/projects/:id/storyboard-handoff for ordering/review; POST /api/projects/:id/approvals for the current storyboard_sequence planning checkpoint",
+      "application_operation": "GET/POST /api/projects/:id/storyboard-handoff for planning order/review; GET/POST /api/projects/:id/storyboard-production for frame selection; POST /api/projects/:id/approvals for current storyboard_sequence, storyboard_brief:<shotId> and storyboard_frame:<shotId> checkpoints",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Versioned shot/sequence contracts with guarded atomic application/Supabase planning-approval persistence",
-      "execution_type": "application/database",
-      "evidence": "Implemented typed planning/order/review subset; no real generated-media or model-quality evidence implied",
-      "required_input": "Current source-bound contracts; exact ordered shot versions; expected project version; planning-only acknowledgement and owner permission",
-      "expected_output": "Versioned order and bulk planning-only contract/sequence approval; existing media identities are preserved independently",
-      "limits_and_quality_rule": "Current ordered-plan subset supports explicit reorder and exact sequence-version pins, one planning-only checkpoint for current contracts plus sequence, current-source/review guards and preserved media/reference controls. It does not generate frames, select/compare generated takes, approve actual media or create a playable animatic.",
-      "prerequisite": "Current approved brief, source-current screenplay, all seventeen current approved department plans and action-specific current contract/review context",
-      "billing_basis": "Deterministic version/order/review actions invoke no model; no implicit media-generation or spending authorization",
-      "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Actual generated-take comparison/selection, frame/motion/voice acceptance, complete media dependency coverage and deployed-account concurrency remain incomplete",
+      "external_endpoint_or_tool": "Independent versioned shot-plan and stored-frame histories with guarded source/reference approval persistence and explicit human still review",
+      "execution_type": "application/service and human review",
+      "evidence": "Implemented ordered planning review and actual stored-frame selection/review; no real moving-take/semantic quality evaluation",
+      "required_input": "Current approved source/department/shot-plan checkpoint; own current contract/frame specification; exact approved reference pins and owned stored candidate; expected project version and action-specific acknowledgements",
+      "expected_output": "Preserved ordered planning checkpoint plus explicit candidate frame selection and separately approved current start-state still; existing clip/reference identities remain independent",
+      "limits_and_quality_rule": "Whole-sequence planning approval is distinct from still selection. Pictured cast/direction and actual frame review need separate acknowledgements. Neighbor/reorder changes need whole-plan reapproval but unchanged own contracts/references/frames can be reused afterward. No frame selection mutates flat shot-contract versions, clip IDs or timeline media. Generated moving-take comparison, temporal performance/audio and playable-animatic acceptance remain incomplete.",
+      "prerequisite": "Action-specific current source/contract/reference/owned-image context; current whole-plan checkpoint; acknowledged pictured cast and actual human still inspection",
+      "billing_basis": "Deterministic order/selection/review invokes no model or implicit spend; any new frame attempt needs its own exact reviewed financial context",
+      "recovery": "Preserve previous contracts, frames, media and selections; keep stale outputs visible and reconcile exact saved jobs without hidden regeneration",
+      "release_gate_or_blocker": "Real provider frame/identity quality, whole visual/audiovisual sequence evaluation, moving-take comparison/selection, footage/voice acceptance and live concurrency remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 5,7,8; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Supabase Postgres version-guard transaction",
       "alternative_route": "",
-      "implementation_status": "Partial: typed handoff and ordered planning review implemented; actual storyboard images, takes and media quality remain incomplete"
+      "implementation_status": "Partial: ordered plan and actual stored still-frame selection/review; generated moving takes and final media acceptance incomplete",
+      "storyboard_production_version": "director-storyboard-production-v1"
     },
     {
       "id": "F040",

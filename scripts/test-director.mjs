@@ -81,3 +81,10 @@ await import('../apps/director/tests/reference-production.test.mjs');
 await import('../apps/director/tests/reference-cloud.test.mjs');
 await import('../apps/director/tests/reference-images.test.mjs');
 
+await import('../apps/director/tests/storyboard-production-api.test.mjs');
+await import('../apps/director/tests/storyboard-production-integration.test.mjs');
+await import('../apps/director/tests/storyboard-frame-provider.test.mjs');
+await import('../apps/director/tests/storyboard-pricing.test.mjs');
+await import('../apps/director/tests/storyboard-production.test.mjs');
+await import('../apps/director/tests/storyboard-production-cloud.test.mjs');
+

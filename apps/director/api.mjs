@@ -1,3 +1,4 @@
+import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {createReferenceController} from './reference-production.mjs';
 import {createPlanningController} from './planning.mjs';
 import {changeDepartmentPlans} from './department-plans.mjs';
@@ -62,6 +63,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const planningController=store?createPlanningController({store,provider:providedPlanningProvider||createPlanningProvider({env,fetcher}),env}):null;
  const mediaStorage=providedStorage||createMediaStorage({env,fetcher,demo});
  const referenceController=store?createReferenceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
+ const storyboardProductionController=store?createStoryboardProductionController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
  const clearSession=()=>[cookie('director_session','',0),cookie('director_refresh','',0,'/api')];
@@ -116,6 +118,12 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}
  if(action==='import-complete'&&req.method==='POST')return reply(200,{project:await imports.complete(user.id,id)});
+ if(action==='storyboard-production'&&req.method==='GET')return reply(200,await storyboardProductionController.summary(user.id,project));
+ if(action==='storyboard-production'&&req.method==='POST')return reply(200,await storyboardProductionController.change(user.id,project,body));
+ if(action==='storyboard-production/quotes'&&req.method==='POST')return reply(201,await storyboardProductionController.quote(user.id,project,body));
+ if(action==='storyboard-production/jobs'&&req.method==='POST')return reply(201,await storyboardProductionController.start(user.id,project,body));
+ if(action==='storyboard-production/import'&&req.method==='POST')return reply(200,await storyboardProductionController.importOutput(user.id,project,body));
+ if(action==='storyboard-production/reviews'&&req.method==='POST')return reply(200,await storyboardProductionController.review(user.id,project,body));
  if(action==='reference-production'&&req.method==='GET')return reply(200,await referenceController.summary(user.id,project));
  if(action==='reference-production'&&req.method==='POST')return reply(200,await referenceController.change(user.id,project,body));
  if(action==='reference-production/quotes'&&req.method==='POST')return reply(201,await referenceController.quote(user.id,project,body));
@@ -193,7 +201,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const allowed=action==='routes'?['task','requirements','intent']:['task','requirements','intent','requestId','expectedVersion','modelId','artifactId','artifactVersion','input'];
  if(Object.keys(body).some(k=>!allowed.includes(k)))fail(400,'Unsupported routing or quote field.');
  if(!knownRoutingTask(body.task))fail(400,'Choose a known production task.');
- if(action==='quotes'&&['reference_image','reference_look'].includes(body.task))fail(400,'Use reference production to quote a reviewed direction; raw client image prompts are not accepted.');
+ if(action==='quotes'&&['reference_image','reference_look','storyboard_frame'].includes(body.task))fail(400,'Use reference production to quote a reviewed direction; raw client image prompts are not accepted.');
  const requestFingerprint=hash(body);
  if(action==='quotes'&&body.requestId!==undefined){if(!uuid.test(body.requestId))fail(400,'Use a valid quote request UUID.');if(typeof store.replayCostQuote!=='function')fail(503,'Saved spending controls are not configured.');const previous=await store.replayCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,requestFingerprint});if(previous)return reply(200,{quote:previous,saved:true});}
  const models=taskCandidates(body.task,await store.registry()),now=new Date();
@@ -208,7 +216,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  }
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
- if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id),project.referenceProduction?await store.referenceCandidates(user.id,id):[])});
+ if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id),project.referenceProduction?await store.referenceCandidates(user.id,id):[],project.storyboardProduction?await store.storyboardCandidates(user.id,id):[])});
  if(action==='approvals'&&req.method==='POST'){
  if(!['approved','rejected','revoked'].includes(body.decision)||!Number.isSafeInteger(body.version))fail(400,'Invalid approval decision.');return reply(201,{approval:await store.approve(project,body,user.id)});}
  if(action==='approvals'&&req.method==='GET')return reply(200,{approvals:await store.records('approvals',id)});

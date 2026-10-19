@@ -181,7 +181,12 @@
         "apps/director/public/app.js",
         "apps/director/reference-production.mjs",
         "apps/director/reference-images.mjs",
-        "database/director-reference-production.sql"
+        "database/director-reference-production.sql",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -189,10 +194,17 @@
         "apps/director/tests/reference-api.test.mjs",
         "apps/director/tests/reference-integration.test.mjs",
         "apps/director/tests/reference-images.test.mjs",
-        "apps/director/tests/reference-browser.py"
+        "apps/director/tests/reference-browser.py",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Owner-scoped private retrieval now includes validated generated reference PNGs stored in the private reference bucket, alongside device/upload previews. Synthetic authenticated image/browser checks and native bucket metadata pass; large-media range streaming, true cross-account and deployed-account access remain unverified.",
+      "gap": "Owner-scoped private retrieval now includes generated reference and native-aspect storyboard PNGs stored in the private reference bucket, alongside device/upload previews. Synthetic authenticated image/browser checks and native bucket metadata pass; large-media range streaming, true cross-account and deployed-account access remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F009",
       "dependencies": [
         "cloud-connection"
@@ -584,7 +596,12 @@
         "apps/director/reference-input.mjs",
         "apps/director/providers.mjs",
         "apps/director/api.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -614,10 +631,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Current department/storyboard planning approvals retain exact source/dependency guards. Reference direction, explicit actual-candidate selection and separately acknowledged reference_selection approval now bind exact subject/source/asset/identity versions. Planning approval and image selection do not clear rights, authorize spending or approve future generated footage. Actual provider quality and deployed-account concurrency remain unverified.",
+      "gap": "Department/shot-plan checkpoints retain exact source/dependency guards. Reference review and storyboard frame direction, explicit candidate selection and separate human still approval bind current source/contract/role/asset versions with action-specific acknowledgements. No approval grants rights, spend or temporal/audio/finished-media acceptance. Real provider quality and deployed/native concurrency remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -656,7 +680,12 @@
         "apps/director/reference-input.mjs",
         "apps/director/providers.mjs",
         "apps/director/api.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -684,10 +713,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Department DAG holds and conservative all-seventeen source pins remain. Reference source changes hold earlier selections, and changed approved identity selections hold exactly bound look references without deleting images/history. Focused storyboard edits retain neighboring histories while sequence pins need review. Semantic field/scene impact, complete later media dependencies and real concurrency remain incomplete.",
+      "gap": "Department DAG and conservative all-seventeen source holds remain. Storyboard frames bind their own contract/source and exact approved identity/look/location selections; changed used pins hold earlier frames without deleting history/media. Order or neighboring-contract changes require whole-plan review, after which unchanged own frames can be reused. Semantic field/scene impact, comprehensive later media dependencies and real concurrency remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -935,7 +971,12 @@
         "database/director-reference-production.sql",
         "apps/director/reference-input.mjs",
         "apps/director/providers.mjs",
-        "apps/director/api.mjs"
+        "apps/director/api.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/v2-workspace.py",
@@ -945,10 +986,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Actual stored image candidates have source/asset/version guards, explicit criteria acknowledgement at selection and separate exact reference approval. This records human visual judgement; no automatic calibrated identity/anatomy/typography detector, rights clearance or real provider-quality acceptance is claimed. Generated-output quality and assisted-review calibration remain incomplete.",
+      "gap": "Actual private reference and start-state frame candidates require exact source/contract/asset/role guards, explicit inspection acknowledgement at selection and separate current image approval. This is human judgement rather than calibrated semantic/anatomy/identity/OCR detection, rights clearance or proof of action-end/motion/audio. Real visual-quality evaluation and assisted-review calibration remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F035",
       "dependencies": [
         "versioned-project-records",
@@ -973,7 +1021,12 @@
         "database/director-reference-production.sql",
         "apps/director/reference-input.mjs",
         "apps/director/providers.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -984,10 +1037,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Independent source/identity/look/location histories, append-only selections, exact identity bindings, private output checksums and immutable owned candidate receipts are implemented alongside existing library records. Device imports retain creative histories without copying trusted candidate/approval authority. No automatic generic-record projection or storyboard selection occurs. Complete rights, retention and later media binding remain incomplete.",
+      "gap": "Independent reference/frame histories, private checksums/provenance, immutable owned candidates and exact approved identity/look/location role bindings into frame specifications are implemented. Changed own bindings hold earlier media without automatic generic-record, flat-shot or timeline assignment. Imported creative history carries no live candidate/approval authority. Complete rights, retention and later animatic/footage/edit binding remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F036",
       "dependencies": [
         "versioned-project-records",
@@ -1012,7 +1072,13 @@
         "apps/director/storyboard-proposal.mjs",
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
-        "database/director-storyboard-handoff.sql"
+        "database/director-storyboard-handoff.sql",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/api.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -1029,10 +1095,17 @@
         "apps/director/tests/storyboard-integration.test.mjs",
         "apps/director/tests/storyboard-provider.test.mjs",
         "apps/director/tests/storyboard-browser.py",
-        "database/checks/storyboard-handoff-pglite.mjs"
+        "database/checks/storyboard-handoff-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Typed source-bound storyboard handoff contracts now include purpose/action, framing/camera/light, estimated timing, exact scene/dialogue IDs, intended states, mandatory/flexible evidence/failure requirements and reference/control/audio intent. Independent shot/sequence histories, safe legacy adoption, append-only missing-coverage preparation, focused updates, explicit order/review and separately authorized v6 proposals are implemented. Stale partial drafts remain savable but held. Actual frames, playable animatics, observed continuity and real-model planning quality remain incomplete.",
+      "gap": "Typed source-bound shot contracts now feed the separate guarded start-state-frame lifecycle, preserving purpose/action, framing/camera/light, exact dialogue IDs, intended states and evidence/failure criteria. Independent plan/frame histories, missing-only preparation, focused revisions and reviewed v6 planning proposals preserve earlier media. Real model planning judgement, generated-output quality, measured timing and complete production remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F037",
       "dependencies": [
         "versioned-project-records",
@@ -1044,11 +1117,27 @@
       "requirement": "Generate storyboard/keyframes from references",
       "area": "Cast, design and storyboard",
       "step": 7,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "Stable shot contracts and ordered planning review are available, but create no storyboard images. Actual storyboard/keyframe generation from approved identity/look/product references, saved frame assets and frame/visual-sequence acceptance remain missing.",
+      "status": "partial",
+      "code": [
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/api.mjs",
+        "apps/director/public/app.js"
+      ],
+      "tests": [
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
+      ],
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Approved shot plans and exact identity/look/location images now support canonical role-bound one-frame quotes/jobs, native 16:9/9:16/1:1 private PNG import, explicit selection and separate human start-state review. Pictured cast is proposed then acknowledged; unsupported required image roles and over-ten distinct inputs hold. Full product/composition/performance-reference coverage, end-keyframe chains, real image/identity/pricing quality and production pilots remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F038",
       "dependencies": [
         "versioned-project-records",
@@ -1071,7 +1160,13 @@
         "apps/director/storyboard-proposal.mjs",
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
-        "database/director-storyboard-handoff.sql"
+        "database/director-storyboard-handoff.sql",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/api.mjs"
       ],
       "tests": [
         "apps/director/tests/v2-workspace.py",
@@ -1080,10 +1175,17 @@
         "apps/director/tests/storyboard-integration.test.mjs",
         "apps/director/tests/storyboard-provider.test.mjs",
         "apps/director/tests/storyboard-browser.py",
-        "database/checks/storyboard-handoff-pglite.mjs"
+        "database/checks/storyboard-handoff-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Ordered contract/sequence review now pins exact shot versions and supports explicit reorder plus a guarded atomic planning-only checkpoint. Existing media IDs/reference controls and legacy shot identities are preserved. Actual generated-take comparison/selection, frame/motion/voice acceptance and media-dependent edit review remain incomplete.",
+      "gap": "Ordered shot-plan review now coexists with actual stored frame-candidate selection and separate exact still approval. Own-frame histories/role pins remain independent; unchanged frames can be reused after renewed whole-plan review for order/neighbor edits without mutating flat contract or timeline media. Generated moving-take comparison/selection, temporal/voice acceptance and complete audiovisual sequence review remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F039",
       "dependencies": [
         "versioned-project-records",
@@ -1099,7 +1201,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "The handoff supplies ordered shot-version pins and labelled estimated durations only. Actual approved storyboard frames, authoritative measured song/dialogue timing, playable animatic assembly/rendering and audiovisual pacing/coverage approval remain missing.",
+      "gap": "Start-state storyboard images can now be separately generated/imported, selected and approved through the guarded frame lifecycle; handoff timing remains labelled planning estimates. Authoritative measured song/dialogue timing, playable animatic assembly/rendering, pacing with sound and audiovisual coverage approval remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F040",
       "dependencies": [
         "versioned-project-records",
@@ -1411,16 +1513,29 @@
         "apps/director/render.mjs",
         "apps/director/api.mjs",
         "apps/director/reference-images.mjs",
-        "apps/director/reference-production.mjs"
+        "apps/director/reference-production.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/public/app.js"
       ],
       "tests": [
         "apps/director/tests/render.test.mjs",
         "apps/director/tests/reference-images.test.mjs",
         "apps/director/tests/reference-api.test.mjs",
-        "apps/director/tests/reference-integration.test.mjs"
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Local FFmpeg/upload checks now include bounded single-reference PNG download/decode, dimensions, checksum, MIME/role/provenance and private immutable storage validation. Reference workflow checks use synthetic images/providers; general hosted video/audio ingest, real-output technical quality, concurrency and production-wide validation remain incomplete.",
+      "gap": "Local FFmpeg/upload checks now include bounded reference/storyboard PNG download/decode, exact configured dimensions/aspect, checksum, MIME/role/provenance and private immutable storage. Checks use synthetic provider images; general hosted video/audio ingest, real-output technical/creative quality, concurrency and production-wide validation remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F059",
       "dependencies": [
         "accepted-media",
@@ -1634,7 +1749,12 @@
         "apps/director/providers.mjs",
         "apps/director/public/app.js",
         "apps/director/spending.mjs",
-        "apps/director/jobs.mjs"
+        "apps/director/jobs.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/model-router.test.mjs",
@@ -1656,10 +1776,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Reviewed reference_image/reference_look tasks now receive canonical server-built one-image quotes with exact source/direction/configuration bindings, alongside existing planning/media routing. Public fixed-size FLUX Pro price is candidate evidence; Klein rounding remains held. Complete sequence economics, current live billing/prices and real output-quality benchmarks remain unverified.",
+      "gap": "Canonical storyboard_frame quotes add reviewed native aspect/output configuration and role-preserving distinct-input counts to the existing task/operation router. Composite tariffs include output base and input_image charges after the included first image; flat old reference pricing cannot bypass additional-image fees. Public rates remain candidate evidence. Complete sequence economics, live account prices/invoices and real quality benchmarks remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F070",
       "dependencies": [
         "versioned-project-records",
@@ -1694,7 +1821,13 @@
         "apps/director/public/app.js",
         "apps/director/jobs.mjs",
         "apps/director/quote-input.mjs",
-        "apps/director/routing-task-catalog.mjs"
+        "apps/director/routing-task-catalog.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/tariffs.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
@@ -1712,10 +1845,19 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Existing atomic quote/authorization/reservation, project cap/finishing reserve, replay, unknown-outcome and two-attempt controls now cover reference work. Only exact approved reference-image tasks may precede storyboard approval; unrelated media retains its gates. Visible correction review is required before another same-work-unit attempt and does not auto-rewrite/repair. True cross-session concurrency, real provider billing and commercial accounting remain incomplete.",
+      "gap": "Existing project caps/finishing reserves, scoped quote authorization/reservation, replay, unknown-outcome and two-attempt controls now cover exact storyboard specs, current whole-plan review and approved role-bound image inputs. A visible correction reason gates another same-work-unit attempt without automatic prompt repair. True cross-session concurrency, live provider settlement and commercial accounting remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F071",
       "dependencies": [
         "versioned-project-records",
@@ -1740,7 +1882,12 @@
         "apps/director/public/app.js",
         "apps/director/spending.mjs",
         "apps/director/quote-input.mjs",
-        "apps/director/routing-task-catalog.mjs"
+        "apps/director/routing-task-catalog.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
@@ -1751,10 +1898,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Added bounded FLUX Pro/Klein text-origin reference and selected-identity Seedream look dispatch through existing reviewed route, quote, authorization, pause, immutable input and attempt guards. Synthetic provider tests pass; models remain inactive and no paid provider execution or real creative quality is established.",
+      "gap": "Bounded Seedream storyboard_frame dispatch now preserves exact approved own contract/specification, role-labelled deduplicated inputs, native aspect, complete tariff and existing authorization/pause/attempt guards. Earlier reference/planning routes remain covered. Synthetic provider checks pass; models stay inactive and real paid execution/creative quality is not established.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F072",
       "dependencies": [
         "versioned-project-records",
@@ -1779,7 +1933,12 @@
         "apps/director/public/app.js",
         "apps/director/spending.mjs",
         "apps/director/quote-input.mjs",
-        "apps/director/routing-task-catalog.mjs"
+        "apps/director/routing-task-catalog.mjs",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
@@ -1789,10 +1948,17 @@
         "apps/director/tests/reference-provider.test.mjs",
         "apps/director/tests/reference-cloud.test.mjs",
         "apps/director/tests/reference-browser.py",
-        "database/checks/reference-production-pglite.mjs"
+        "database/checks/reference-production-pglite.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Owned completed reference-image jobs now reconcile saved output evidence into validated private PNG assets and immutable candidate receipts. Replayed/interrupted imports recover the original stored object/job without paid regeneration; paused or stale creative state does not prevent known-output accounting/retrieval. General video/audio ingestion, live provider outcomes/invoices and durable worker operations remain incomplete.",
+      "gap": "Owned completed reference/storyboard jobs now recover frozen output evidence into validated private PNGs and immutable candidate receipts. Imports replay/recover without regeneration after source/model changes; stale imports do not gain current selection authority. General video/audio ingestion, actual live provider/invoice outcomes and durable worker operations remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F073",
       "dependencies": [
         "versioned-project-records",
@@ -1979,7 +2145,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Narrow reference-image import recovery can restore an interrupted completed-job asset/receipt without regeneration. General missing-output restoration across expired/unavailable provider results, video/audio jobs, retention/deletion and operator recovery remains missing.",
+      "gap": "Narrow reference/storyboard PNG recovery restores interrupted completed-job storage/asset/receipt steps without generation. General missing-output restoration across unavailable/expired provider results, video/audio jobs, retention/deletion and operator recovery remains missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F083",
       "dependencies": [
         "domain-foundations"
@@ -2916,7 +3082,13 @@
         "apps/director/public/reference-production-core.js",
         "apps/director/reference-production.mjs",
         "apps/director/reference-store.mjs",
-        "database/director-reference-production.sql"
+        "database/director-reference-production.sql",
+        "apps/director/public/storyboard-production-core.js",
+        "apps/director/storyboard-production.mjs",
+        "apps/director/storyboard-production-store.mjs",
+        "database/director-storyboard-production.sql",
+        "apps/director/storyboard-frame-input.mjs",
+        "apps/director/api.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
@@ -2933,10 +3105,17 @@
         "apps/director/tests/storyboard-provider.test.mjs",
         "apps/director/tests/storyboard-browser.py",
         "apps/director/tests/reference-browser.py",
-        "apps/director/tests/reference-api.test.mjs"
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/storyboard-production-browser.py",
+        "database/checks/storyboard-production-pglite.mjs"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Department/storyboard checkpoints remain planning-only. Reference production separately selects actual owned stored images and approves their exact source/identity-bound selections with human review acknowledgement; it does not clear rights or authorize spend. Actual storyboard frames, animatics, motion/voice review and final media approval remain incomplete.",
+      "gap": "Planning, actual reference selection and actual start-state frame approval are separate checkpoints. Frame direction confirms proposed pictured cast and role inputs; human frame approval covers the actual still only. It does not clear rights, grant spend, prove motion/end-state/audio or accept final footage. Playable animatics, moving-take/voice review and finished media approval remain incomplete.",
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
@@ -4298,7 +4477,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "1d354f7b28a194502f41ad720fde27ab756524702a021c787288576373a43f0d"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "8ecf49cbf76d25c16dcfd565916eec23ef3577e4d947f7020bc0d684dea16d13"
   },
-  "currentBatch": "First Step 7 reference-production increment: source-grounded identity/look/location directions, exact approved selected-identity bindings for looks, owned upload candidates, canonical one-image quotes/jobs, validated private PNG ingestion, immutable provenance, explicit selection and separate human reference approval implemented. Existing project budgets/finishing reserves, authorizations, two-attempt boundaries and unknown-outcome recovery remain authoritative. A visible correction review gates another same-work-unit attempt but is not automatic prompt repair. No generic-record projection or automatic storyboard/media selection; imported creative histories carry no trusted candidate/approval authority. 618 automated tests, syntax and production build pass. Five reference-browser groups including consumed-quote permission guards, five department, four revision, five storyboard groups and seven earlier regression scripts pass locally; no physical-device/deployed-account claim. Twelve independent isolated SQL groups pass against SHA-256 a252eabdda933a7da139c84485274f9a3b88a6baa7849cf972e10a1eadcdc30f. Native migration 20261019132520_director_reference_production is applied: twenty-three functions (eighteen new/five replaced) are service-only/security-invoker with empty search paths, nine affected tables have RLS, reference_evidence is jsonb, candidates allow service SELECT/INSERT only and the reference bucket is private PNG-only with a 10 MiB limit. Security advisories are empty; zero active models, native reference candidates/archives, jobs or planning reservations and generation stays paused. No paid call, provider-key inspection/change, customer-account or native concurrency test. FLUX Pro public fixed-configuration $0.03 is candidate evidence only; Klein exact megapixel rounding remains held. F033/F034 advance missing to partial: counts now 69 partial, 92 missing/unverified, 6 deferred and zero fully production-accepted. Real output/identity/price quality, full prop/reference packs/rights, later media binding, actual storyboard frames/animatics, pilots and final films remain incomplete. See REFERENCE_PRODUCTION_ACCEPTANCE.md and evidence/REFERENCE_PRODUCTION_CHECKS_2026-10-19.json / REFERENCE_PRODUCTION_NATIVE_CHECKS_2026-10-19.json."
+  "currentBatch": "Storyboard start-state frame increment: approved own shot contract and exact approved identity/look/location roles feed canonical deduplicated image inputs, explicit pictured-cast/frame-direction review, one-frame quotes/jobs, native-aspect validated private PNG import, candidate selection and separate human still approval. Three native configurations are 1536x864, 864x1536 and 1024x1024; additional distinct inputs require a complete input_image tariff. Unsupported required image roles and more than ten distinct assets hold without waiver/truncation. Own source/contract/used-reference changes stale earlier frames; after renewed whole-plan review an unchanged own frame survives order/neighbor edits. No automatic flat-shot/timeline assignment, semantic detector or prompt repair. 696 automated tests, syntax and production build pass. Four new frame-production browser groups plus department5/revision4/handoff5/reference5 and seven earlier regression scripts pass locally; normal runs have no unexpected console/HTTP errors and deliberate writing/planning failures remain labelled fixtures. No physical-device/keyboard or deployed-account claim. Fifteen independent isolated SQL groups pass against b47ca7b6fe4282d2092a2f49ccfbd81e87f3cd110552e613980db020289ad61b. Native migration 20261019135954_director_storyboard_production is applied: twenty-seven reviewed functions are service-only/security-invoker with empty search paths, ten affected tables have RLS and the private PNG-only 10 MiB bucket is unchanged. Security advisories are empty; zero active models, native storyboard-production archives/candidates, jobs or planning reservations and generation stays paused. No paid call, provider-key inspection/change, customer-account or native latency/concurrency check. Public Seedream base/additional-input rates are dated candidate evidence only. F038 advances missing to partial: 70 partial, 91 missing/unverified, 6 deferred and zero fully production-accepted. Real image/identity/price quality, unsupported reference roles/end-keyframe chains, actual timed animatics (F040 missing), motion/end-state/audio proof, later footage/edit binding, paid pilots and finished films remain incomplete. See STORYBOARD_PRODUCTION_ACCEPTANCE.md and evidence/STORYBOARD_PRODUCTION_CHECKS_2026-10-19.json / STORYBOARD_PRODUCTION_NATIVE_CHECKS_2026-10-19.json."
 }
