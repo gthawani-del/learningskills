@@ -4,7 +4,7 @@ The existing Node tests, Python Playwright scripts, fixture servers, FFmpeg chec
 
 ## Setup and daily checks
 
-Use Node 22, Python 3.12 and FFmpeg/FFprobe. Run `npm ci`, `python3 -m pip install -r requirements-qa.txt`, and `python3 -m playwright install --with-deps chromium` once. Chromium at `/usr/bin/chromium` remains supported; `DIRECTOR_CHROMIUM_PATH` selects another installed executable. CI installs the same pinned PGlite/Playwright versions and FFmpeg. Runtime code has no new dependency.
+Use Node 22, Python 3.12 and FFmpeg/FFprobe. Run `npm ci`, `python3 -m pip install -r requirements-qa.txt`, and `python3 -m playwright install --with-deps chromium` once. Chromium at `/usr/bin/chromium` remains supported; CI uses the hosted runner’s `/usr/bin/google-chrome` for the existing H.264 fixture; `DIRECTOR_CHROMIUM_PATH` selects another installed executable. CI installs the same pinned PGlite/Playwright versions and FFmpeg. Runtime code has no new dependency.
 
 Run `npm run qa:fast -- --changed apps/director/public/storyboard-production-core.js` during feature work. In a Git checkout, `npm run qa:fast -- --base origin/main` selects files changed since the common ancestor. Explicit paths support connector-backed workspaces without Git metadata. The runner follows static module imports for Node tests, maps affected browser surfaces, includes SQL for persistence changes and falls back conservatively for unclassified runtime/tooling changes. Fast mode always performs syntax/build checks; it is not release acceptance. Dynamic dependencies cannot be inferred perfectly: shared changes and uncertain impact require full QA.
 
