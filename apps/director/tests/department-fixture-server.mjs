@@ -8,7 +8,7 @@ import { applyBriefCommand } from '../public/creative-brief-core.js';
 import { applyScreenplayProjectCommand } from '../public/screenplay-project.js';
 import { screenplayInputSignature } from '../public/screenplay-core.js';
 import { applyDepartmentCommand, departmentPlanningContext } from '../public/department-plan-core.js';
-import { departmentPlanningSchemaHash } from '../planning-profile.mjs';
+import { departmentPlanningSchemaHash, departmentRevisionSchemaHash } from '../planning-profile.mjs';
 import { reviewedPlanningFixture } from './planning-fixture-profile.mjs';
 import { syntheticPlanningModel, screenplayDocument } from './writing-fixture-server.mjs';
 
@@ -21,9 +21,16 @@ export function syntheticDepartmentModel() {
   return reviewedPlanningFixture(model, { operations: ['plan_departments'] });
 }
 
-export async function departmentFixture({ file, queued = false, malformed = false, paused = false, approvedScript = true } = {}) {
+export function syntheticDepartmentRevisionModel() {
+  const model = syntheticDepartmentModel();
+  model.id = 'O-department-revisions-local';
+  model.schema_evidence.inputSchemaHash = departmentRevisionSchemaHash;
+  return reviewedPlanningFixture(model, { operations: ['revise_departments'] });
+}
+
+export async function departmentFixture({ file, queued = false, malformed = false, paused = false, approvedScript = true, revisionEnabled = false, prepared = false, approveDepartments = false } = {}) {
   const store = await new LocalStore(file).init();
-  store.state.models = [syntheticDepartmentModel()];
+  store.state.models = [syntheticDepartmentModel(), ...(revisionEnabled ? [syntheticDepartmentRevisionModel()] : [])];
   store.state.operationalControl.generationPaused = paused;
   let project = newProject({ title: 'Department planning proof', premise: 'Mira, a station attendant, keeps a promise to a stranger.', direction: 'Natural skin texture, motivated practical lighting and restrained performance.' }, 'demo-user');
   project = applyBriefCommand(project, { expectedVersion: project.version, action: 'suggest' });
@@ -32,8 +39,25 @@ export async function departmentFixture({ file, queued = false, malformed = fals
   await store.create(project);
   await store.approve(project, { expectedVersion: project.version, artifactId: 'brief', version: project.creativeBrief.currentVersion, decision: 'approved', acknowledgeAssumptions: true }, project.ownerId);
   if (approvedScript) await store.approve(project, { expectedVersion: project.version, artifactId: 'screenplay', version: project.screenplay.currentVersion, decision: 'approved', acknowledgeLimitedCoverage: true }, project.ownerId);
-  const requests = []; let submits = 0, polls = 0;
+  if (prepared || approveDepartments) {
+    const next = applyDepartmentCommand(project, { expectedVersion: project.version, action: 'prepare' }, await store.records('approvals', project.id));
+    await store.saveDepartmentPlans(next, project.version, { expectedApprovalId: (await store.records('approvals', project.id)).at(-1)?.id ?? null });
+    project = next;
+  }
+  if (approveDepartments) for (const unit of departmentPlanningContext(project, await store.records('approvals', project.id)).departments) await store.approve(project, { expectedVersion: project.version, artifactId: 'department:' + unit.id, version: unit.current.version, decision: 'approved', ackPlanningOnly: true }, project.ownerId);
+  const requests = [], snapshots = new Map(); let submits = 0, polls = 0;
   async function simulated(responseId, request) {
+    const input = JSON.parse(request.body.input);
+    if (input.operation === 'revise_departments') {
+      const context = input.context.departmentPlanning, selected = context.revision.request.departmentIds;
+      const departments = selected.map(id => {
+        const document = structuredClone(context.departments.find(unit => unit.id === id).current.document);
+        document.summary += ' Simulated scoped revision: ' + context.revision.request.instruction.slice(0, 300);
+        return { id, document };
+      });
+      if (malformed) departments.pop();
+      return { id: responseId, status: 'completed', usage: { inputTokens: 10, outputTokens: 5, cachedInputTokens: 0 }, departments: { departments } };
+    }
     const current = await store.get(project.id, project.ownerId), approvals = await store.records('approvals', project.id);
     const prepared = applyDepartmentCommand(current, { expectedVersion: current.version, action: 'prepare' }, approvals);
     const departments = departmentPlanningContext(prepared, approvals).departments.map(unit => {
@@ -45,8 +69,8 @@ export async function departmentFixture({ file, queued = false, malformed = fals
     return { id: responseId, status: 'completed', usage: { inputTokens: 10, outputTokens: 5, cachedInputTokens: 0 }, departments: { departments } };
   }
   const planningProvider = {
-    submit: async ({ request }) => { requests.push(structuredClone(request)); const id = `resp_departments_${++submits}`; return queued ? { id, status: 'queued', usage: null } : simulated(id, request); },
-    poll: async ({ responseId, request }) => { polls++; return simulated(responseId, request); },
+    submit: async ({ request }) => { requests.push(structuredClone(request)); const id = `resp_departments_${++submits}`, result = await simulated(id, request); snapshots.set(id, result); return queued ? { id, status: 'queued', usage: null } : result; },
+    poll: async ({ responseId }) => { polls++; return structuredClone(snapshots.get(responseId)); },
   };
   const env = { DIRECTOR_DEMO: '1', OPENAI_API_KEY: 'synthetic-no-network' };
   return { store, project, env, planningProvider, requests, counters: () => ({ submits, polls }) };
@@ -59,7 +83,8 @@ export async function departmentServer(options) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { server, project } = await departmentServer();
+  const revision = process.env.DIRECTOR_DEPARTMENT_REVISION_FIXTURE === '1';
+  const { server, project } = await departmentServer({ revisionEnabled: revision, prepared: revision, approveDepartments: revision });
   server.listen(0, '127.0.0.1', () => console.log(JSON.stringify({ projectId: project.id, port: server.address().port })));
   process.on('SIGTERM', () => server.close(() => process.exit(0)));
 }

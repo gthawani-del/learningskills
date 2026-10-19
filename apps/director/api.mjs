@@ -8,7 +8,7 @@ import {screenplayContext} from './public/screenplay-core.js';
 import {createPlanningProvider} from './planning-provider.mjs';
 import {visiblePlanningCall} from './planning-store.mjs';
 import {applyBriefCommand,briefPlanningContext} from './public/creative-brief-core.js';
-import {planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash} from './planning-profile.mjs';
+import {planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,departmentRevisionSchemaHash} from './planning-profile.mjs';
 import {validatePlanningResult} from './planning-provider.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
@@ -101,7 +101,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(path==='/api/admin/audit'&&req.method==='GET'){permit('audit.read');return reply(200,{commands:await store.operationalAudit(),scope:'operational commands',limit:100});}
  if(path==='/api/admin/commands'&&req.method==='POST'){const request=adminCommand(body,user.id,role);return reply(200,await store.operationalCommand(request));}
  if(path==='/api/admin/registry/commands'&&req.method==='POST'){const request=modelRegistryCommand(body,user.id,role);return reply(200,await store.registryCommand(request));}
- if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value,planningSchemas:{legacy:{requestVersion:'director-planning-v3',inputSchemaHash:planningSchemaHash,operations:['interpret_brief','initial_plan','revise_plan','write_script','revise_script']},departments:{requestVersion:'director-planning-v4',inputSchemaHash:departmentPlanningSchemaHash,operations:['plan_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION}},scope:'Schema hashes identify implemented request contracts; they do not provide execution or quality approval.'});}
+ if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value,planningSchemas:{legacy:{requestVersion:'director-planning-v3',inputSchemaHash:planningSchemaHash,operations:['interpret_brief','initial_plan','revise_plan','write_script','revise_script']},departments:{requestVersion:'director-planning-v4',inputSchemaHash:departmentPlanningSchemaHash,operations:['plan_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},departmentRevisions:{requestVersion:'director-planning-v5',inputSchemaHash:departmentRevisionSchemaHash,operations:['revise_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION}},scope:'Schema hashes identify implemented request contracts; they do not provide execution or quality approval.'});}
  if(path==='/api/admin/overview'&&req.method==='GET'){permit('jobs.read');const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'staff-owned projects only',projects:ps.length,jobs,productionEnabled:false});}
  fail(404,'Operation not found.');}
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
@@ -139,7 +139,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
   if(!uuid.test(planningRead[1]))fail(400,'Invalid planning call identity.');
   const saved=await store.readPlanningCall(user.id,id,planningRead[1]);return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null});
  }
- const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments))?$/);
+ const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments|revise_departments))?$/);
  if(planningSummary&&req.method==='GET')return reply(200,await planningController.summary(user.id,id,planningSummary[1]||'interpret_brief'));
  const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
  if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
@@ -149,7 +149,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
  if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
  if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
- if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
  return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
  }
  if(action==='plan'&&req.method==='POST'){

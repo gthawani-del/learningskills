@@ -1,3 +1,13 @@
+# Targeted department revisions — 19 October 2026
+
+Step 6 Point 5 is implemented: exact upstream version bindings, selective transitive review flags, content-preserving dependency review and explicit selected-department revision requests. A new `revise_departments` operation has separate model review, v5 contract, cost allowance and saved proposal review/application. Unselected documents and recorded choices remain protected; stale plans cannot authorize new media spending.
+
+**469 automated tests, syntax checks and the production build pass.** Four new local browser groups, the department regression and seven existing browser scripts pass; mobile Save/Cancel clear the footer and pass hit checks. Seventeen isolated SQL groups pass. Native Director migration `20261019115348_director_department_revisions` is applied; seven service-only invoker functions, six RLS tables and a clean security advisor are verified. See [Department Revisions Acceptance](DEPARTMENT_REVISIONS_ACCEPTANCE.md). Generation stays paused, native models remain inactive and no real paid provider call or model-quality claim is made. Deployed/account tests remain deferred and physical devices remain untested.
+
+Tracker counts remain 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. Dependency flags operate at the department level; whole approved-brief/script source changes still conservatively require source review across the department plans. Next: Point 6 storyboard handoff; actual frames, timed animatics and finished media remain subsequent production work. Historical sections below retain their evidence limits.
+
+---
+
 # Department planning — 19 October 2026
 
 Step 6 Point 4 is implemented: 17 approved-source department plans, free deterministic prefilling, focused versioned editing, independent planning-only review, compact desktop/mobile-viewport overview and a separately reviewed/authorized AI proposal operation. Actual casting, voice auditions, generated boards and playable animatics remain subsequent media work.

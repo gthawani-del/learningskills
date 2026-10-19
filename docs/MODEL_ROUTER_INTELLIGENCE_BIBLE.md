@@ -1,6 +1,6 @@
 # Model Router Intelligence Bible
 
-Revision 5 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+Revision 6 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
@@ -18,13 +18,27 @@ The current approved structured brief and source-current approved screenplay now
 
 Each plan records applicability and rationale, practical requirements and proposed/user decisions scoped to existing scene/character IDs, handoffs and acceptance checks. All known reviewed brief fields reach the relevant units with their explicit/inferred provenance preserved; general constraints reach every unit. The whole script, including its ending, remains authoritative. A role may be an off-screen narrator, so written-character presence alone cannot mandate on-screen identity/wardrobe generation. Explicit original-vocal, product/claim and no-on-screen-host constraints remain visible. No demographic appearance/accent, song analysis, asset, right, real timing or cost is invented from a name, filename or stereotype. Craft guidance and its limits are recorded in [Department Planning Knowledge](DEPARTMENT_PLANNING_KNOWLEDGE.md).
 
-The current endpoints are `GET/POST /api/projects/:id/department-plans` for free rule preparation, manual updates and acknowledged one-unit source refresh, plus `POST /api/projects/:id/department-plans/apply-proposal` for explicit application of a completed saved project-owned model proposal. Preparation fills missing plans without overwriting existing work. The proposal application checks exact project/source/review context; generated proposals preserve currently approved department documents and existing user-selected choices. Plan approval binds `department:<id>` and its exact version, current source and a planning-only acknowledgement.
+The current endpoints are `GET/POST /api/projects/:id/department-plans` for free rule preparation, manual updates and acknowledged one-unit source refresh, plus `POST /api/projects/:id/department-plans/apply-proposal` for explicit application of a completed saved project-owned model proposal. Preparation fills missing plans without overwriting existing work. The proposal application checks exact project/source/review context; initial full-plan proposals preserve source-fresh last-approved documents even when dependency review is held, along with existing user-selected choices. Plan approval binds `department:<id>` and its exact version, current source and a planning-only acknowledgement.
 
 Paid department reasoning is a separate sixth planning operation: `plan_departments`, mapped to registry task `department_planning`. Its `director-planning-v4` request/schema/guidance contract is opt-in through a reviewed model profile and fresh operation-specific execution/quality evidence. The previous five operations retain their v3 request contracts; writing eligibility does not grant department eligibility. Preview the route and estimate at `GET /api/projects/:id/planning/plan_departments`, then use the existing operation-specific consent/reservation/call lifecycle. No automatic model switch, paid retry, new asset approval or generation authorization follows from plan preparation or approval. Full request/context bounds remain enforced; duplicate opaque source/decision signatures use SHA-256 bindings without removing the full screenplay, supplied sources, plans or knowledge from context. Existing paid calls retain their exact saved request/knowledge contract for recovery.
 
-Source changes mark earlier plans stale and retain their history. Focused edits version the selected unit and preserve neighboring work. **Point 5’s automatic targeted interdepartment and downstream-production invalidation remains pending:** these conservative source checks and explicit refreshes do not yet provide that dependency-aware behavior.
+Source changes mark earlier plans stale and retain their history. Focused edits version the selected unit and preserve neighboring content/history. The additive Point 5 contract below now derives transitive department review holds from exact upstream-version pins; it does not establish semantic source-change impact or complete later media-production dependency wiring.
 
 This implementation creates reviewable plans and guarded reasoning proposals. It does not create or approve actual casting/look images, voice auditions, storyboard frames, playable animatics, song analysis, footage or finished films. Those outputs, real-model judgement/cost, quality pilots and the two-attempt target remain separate production/release work. The functions below retain their full product requirements; F014–F018’s current planning subset shares this department endpoint/operation rather than the earlier proposed dedicated paths.
+
+## Point 5 targeted revisions and dependency review — 19 October 2026
+
+The versioned fixed catalog DAG, `director-department-dependencies-v1`, records each new department snapshot’s `dependencyContext`: the policy version and exact direct-upstream `{departmentId, version}` bindings. The server stamps pins from the final candidate archive. Source freshness, dependency freshness and creative approval are separate. Missing context, missing/changed upstream versions and a stale upstream chain produce explicit review holds. Historical documents, choices, versions and approval events are preserved; they are not deleted or silently rewritten to conceal an impact.
+
+Changing camera illustrates the declared graph: lighting, continuity, storyboard, animatic, VFX and editorial need review, while rights, voice, music and other non-descendants remain unchanged. A dependent unit can be held through an intermediate stale unit even if that intermediate unit has not yet acquired a new content version. Whole brief/script changes remain conservative source holds on all plans; this implementation does not infer semantic field/scene-level change impact from arbitrary writing.
+
+Free `review_dependencies` requires an explicit acknowledgement and the unit’s current source plus a fresh upstream dependency chain. It preserves the document/user choices, records current pins in a new unapproved revision and requires subsequent explicit plan approval. There is no upstream-approval-order requirement: graph freshness is distinct from approval. Legacy snapshots lacking dependency context remain byte-preserved but held until explicit review, including rights with an empty dependency list. They do not become trusted merely because they were loaded under a newer application.
+
+Free `request_revision` stores a catalog-ordered nonempty target list, instruction, source version and all 17 department versions. It starts no call and grants no spending authority; a changed bound source or department version makes it stale. A separately authorized `revise_departments` call uses task `department_revision` and `director-planning-v5`, with fresh exact operation/task/schema/execution/quality evidence. Its result must match only the selected subset. An explicitly requested approved target document may change, but all existing `user_selected` choices remain protected and nonselected content/history is unchanged. Applying a result creates new unapproved target revisions; downstream holds are derived rather than fulfilled through automatic regeneration.
+
+The new aggregate registry fingerprints bind the full dependency policy and the relevant v4/v5 schema/instructions. Eligibility is never inherited from writing or initial department planning. Each new operation still needs its own current quote, allowance and exact saved request. The original five v3 operations and known v4 department calls retain exact saved body/schema/instructions and recovery; later derived dependency data is not a prerequisite for inspecting a historical paid request. No silent model switch, paid retry, media approval or new charge follows from recording a revision request or dependency review.
+
+The all-17 current department-plan approval production/spending gate remains separate. These advances cover declared interdepartment dependencies and scoped planning revisions. Complete scene/field semantic impact, later media-artifact dependency wiring, real model revision quality, actual media and finished-output acceptance remain incomplete. See [Model Registry Architecture](MODEL_REGISTRY_ARCHITECTURE.md) and [Department Planning Knowledge](DEPARTMENT_PLANNING_KNOWLEDGE.md) for the implemented contracts and their limits.
 
 ## Script entry and originality — user clarification, 19 October 2026
 
@@ -93,7 +107,7 @@ The two-attempt quality target must be reported both per defined work unit and a
 
 ### Implementation status
 
-These remain mandatory production requirements. Point 4 now supplies all 17 typed department plans, versioned rule/manual records, guarded model proposals and planning-only approvals from the current approved sources. Actual casting/look assets, voice auditions, generated storyboard frames and a playable timed animatic remain incomplete. Point 5’s targeted dependency invalidation and actual production evidence are still required. The tracker must retain missing/partial status until the corresponding end-to-end evidence exists.
+These remain mandatory production requirements. Points 4–5 supply all 17 typed department plans, versioned rule/manual records, exact dependency-version review holds, guarded scoped model proposals and planning-only approvals. Actual casting/look assets, voice auditions, generated storyboard frames and a playable timed animatic remain incomplete. Broader media-artifact dependencies and actual production evidence are still required. The tracker must retain missing/partial status until the corresponding end-to-end evidence exists.
 
 ## Per-user, per-creation cost visibility and economical routing — 18 October 2026
 
@@ -719,7 +733,7 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 #### F014 Script breakdown and production plan
 
 - **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
-- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
+- **Execution binding:** free versioned rule/manual path, reviewed registry-selected `department_planning` under v4 for the initial full plan, or separately authorized `department_revision` under v5 for an explicit targeted request. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** script version → cast/locations/props/tasks/dependencies.
 - **Acceptance/limits:** Current subset: typed source-linked breakdown/production requirements, applicability and handoffs from all approved scenes; exact references and bounds are validated. An executable production schedule, media execution and complete workflow estimates are not established by the plan.
 - **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
@@ -730,7 +744,7 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 #### F015 Direct scene blocking and performance
 
 - **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
-- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
+- **Execution binding:** free versioned rule/manual path, reviewed registry-selected `department_planning` under v4 for the initial full plan, or separately authorized `department_revision` under v5 for an explicit targeted request. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** scene objective; intended state → blocking; emotional beats; performance contract.
 - **Acceptance/limits:** Current subset: reviewable scene-purpose, blocking and performance requirements; source facts and proposed choices remain distinct. Mandatory behavior needs later shot contracts and observed performance review.
 - **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
@@ -741,7 +755,7 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 #### F016 Plan camera, lighting and coverage
 
 - **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
-- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
+- **Execution binding:** free versioned rule/manual path, reviewed registry-selected `department_planning` under v4 for the initial full plan, or separately authorized `department_revision` under v5 for an explicit targeted request. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** blocking; world; dramatic purpose → shot specs and coverage rationale.
 - **Acceptance/limits:** Current subset: source-linked camera/light/coverage requirements and handoffs. Descriptive lens/motion/light intent is separate from verified endpoint controls and actual generated coverage.
 - **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
@@ -752,9 +766,9 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 #### F017 Plan continuity and character knowledge
 
 - **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
-- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
+- **Execution binding:** free versioned rule/manual path, reviewed registry-selected `department_planning` under v4 for the initial full plan, or separately authorized `department_revision` under v5 for an explicit targeted request. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** approved script; intended state → intended start/end states and dependencies.
-- **Acceptance/limits:** Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Automatic targeted interdepartment/downstream invalidation remains Point 5 work.
+- **Acceptance/limits:** Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Declared department-version pins now derive transitive review holds; semantic source impact and complete later media-artifact wiring remain incomplete.
 - **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
 - **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
 - **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
@@ -763,7 +777,7 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 #### F018 Create sound/music cue plan
 
 - **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
-- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
+- **Execution binding:** free versioned rule/manual path, reviewed registry-selected `department_planning` under v4 for the initial full plan, or separately authorized `department_revision` under v5 for an explicit targeted request. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** scene/shot plan; approved audio → timed cue intentions and silence.
 - **Acceptance/limits:** Current subset: source-linked sound/music intentions, source decisions, cue requirements and silence. Exact cue timing, song analysis, measured speech and audiovisual quality require separate media evidence.
 - **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
@@ -784,33 +798,33 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F020 Interpret natural-language revision
 
-- **Application operation, proposed:** `POST /api/projects/:id/revisions/interpret`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `POST /api/projects/:id/department-plans (request_revision); POST /api/projects/:id/department-plans/apply-proposal; paid revise_departments through scoped planning calls`.
+- **Execution binding:** Deterministic saved scoped request plus reviewed registry-selected OpenAI Responses department_revision operation under director-planning-v5.
 - **Input → output:** selected artifact; user change request → scoped change proposal and impact.
-- **Acceptance/limits:** No autonomous spend or approval override.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Saving the explicit targeted revision request is deterministic and free. Paid revise_departments returns exactly the catalog-ordered selected subset under its v5 contract; explicitly targeted approved documents may change, all user_selected choices remain protected and nonselected content/history is preserved. No model-chosen scope, autonomous spend, automatic approval or hidden paid retry. Real semantic revision quality remains unvalidated.
+- **Prerequisite:** Current owner-scoped project, current source/version/review context and the action-specific acknowledgement; paid revisions additionally require an exact current request and separate operation allowance. **Cost basis:** Deterministic review/request operations invoke no model; paid reasoning uses reviewed registry token rates and the authorized reservation.
+- **Recovery:** Preserve source, accepted content/history and explicit choices; reject stale context rather than overwriting it. Reconcile known/uncertain paid calls before another submission. **Release gate:** Broader media dependencies, deployed-account concurrency, actual media approval and real revision-quality/cost validation remain incomplete.
+- **Alternative:** Manual focused edits and explicit dependency review remain available without a provider call; no automatic alternate model is enabled.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F021 Approve creative version
 
-- **Application operation, proposed:** `POST /api/approvals`.
-- **Execution binding:** `Supabase Postgres approval transaction`. D: documented dependency.
+- **Application operation:** `POST /api/projects/:id/approvals`.
+- **Execution binding:** Owner-scoped application and guarded Supabase Postgres approval transaction.
 - **Input → output:** artifact/version; scope; user identity → immutable approval event.
-- **Acceptance/limits:** Separate creative approval from cost authorization.
-- **Prerequisite:** Permission and current revision. **Cost basis:** Service/compute/storage usage; quote/configuration pending.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Acceptance/limits:** Department approval binds the current source, dependency policy/pins and exact version with a planning-only acknowledgement. Stale or legacy missing-pin units cannot be approved as current. Upstream approval order is not required; fresh upstream dependency chains and the separate all-17 production/spending approval gate remain required. Approval does not select or clear media, rights or charges.
+- **Prerequisite:** Current owner-scoped project, current source/version/review context and the action-specific acknowledgement; paid revisions additionally require an exact current request and separate operation allowance. **Cost basis:** Deterministic review/request operations invoke no model; paid reasoning uses reviewed registry token rates and the authorized reservation.
+- **Recovery:** Preserve source, accepted content/history and explicit choices; reject stale context rather than overwriting it. Reconcile known/uncertain paid calls before another submission. **Release gate:** Broader media dependencies, deployed-account concurrency, actual media approval and real revision-quality/cost validation remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F022 Invalidate dependent approvals on change
 
-- **Application operation, proposed:** `POST /api/revisions/:id/commit`.
-- **Execution binding:** `Application dependency graph plus database transaction`. P: proposed implementation contract.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans (including review_dependencies) and versioned department edits/revision application`.
+- **Execution binding:** Versioned fixed department DAG, server-stamped dependency contexts and guarded persistence.
 - **Input → output:** approved change proposal → new version; affected descendants.
-- **Acceptance/limits:** Preserve existing source/accepted history; only affected work marked stale.
-- **Prerequisite:** Explicit creative edit. **Cost basis:** Service/compute/storage usage; quote/configuration pending.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Adapter implementation, execution test and task-specific acceptance pending.
+- **Acceptance/limits:** Exact declared upstream department-version pins derive transitive source/dependency review holds without deleting documents or approval history. review_dependencies explicitly preserves the document/choices in a new unapproved revision; graph descendants remain held until reviewed. Whole brief/script changes conservatively hold all source plans. Semantic field/scene impact and complete media-artifact dependency wiring remain incomplete.
+- **Prerequisite:** Current owner-scoped project, current source/version/review context and the action-specific acknowledgement; paid revisions additionally require an exact current request and separate operation allowance. **Cost basis:** Deterministic review/request operations invoke no model; paid reasoning uses reviewed registry token rates and the authorized reservation.
+- **Recovery:** Preserve source, accepted content/history and explicit choices; reject stale context rather than overwriting it. Reconcile known/uncertain paid calls before another submission. **Release gate:** Broader media dependencies, deployed-account concurrency, actual media approval and real revision-quality/cost validation remain incomplete.
 - **Responsibility/source:** Backend/platform; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 ### Song and audio intelligence
@@ -2833,10 +2847,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "historical_candidate_reference": "O01",
       "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
       "planning_operations": [
-        "plan_departments"
+        "plan_departments",
+        "revise_departments"
       ],
       "request_version": "director-planning-v4",
-      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated",
+      "revision_request_version": "director-planning-v5",
+      "revision_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F015",
@@ -2861,10 +2878,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "historical_candidate_reference": "O01",
       "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
       "planning_operations": [
-        "plan_departments"
+        "plan_departments",
+        "revise_departments"
       ],
       "request_version": "director-planning-v4",
-      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated",
+      "revision_request_version": "director-planning-v5",
+      "revision_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F016",
@@ -2889,10 +2909,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "historical_candidate_reference": "O01",
       "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
       "planning_operations": [
-        "plan_departments"
+        "plan_departments",
+        "revise_departments"
       ],
       "request_version": "director-planning-v4",
-      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated",
+      "revision_request_version": "director-planning-v5",
+      "revision_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F017",
@@ -2905,7 +2928,7 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "approved script; intended state",
       "expected_output": "intended start/end states and dependencies",
-      "limits_and_quality_rule": "Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Automatic targeted interdepartment/downstream invalidation remains Point 5 work.",
+      "limits_and_quality_rule": "Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Declared department-version pins now derive transitive review holds; semantic source impact and complete later media-artifact wiring remain incomplete.",
       "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
       "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
@@ -2917,10 +2940,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "historical_candidate_reference": "O01",
       "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
       "planning_operations": [
-        "plan_departments"
+        "plan_departments",
+        "revise_departments"
       ],
       "request_version": "director-planning-v4",
-      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated",
+      "revision_request_version": "director-planning-v5",
+      "revision_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F018",
@@ -2945,10 +2971,13 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "historical_candidate_reference": "O01",
       "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
       "planning_operations": [
-        "plan_departments"
+        "plan_departments",
+        "revise_departments"
       ],
       "request_version": "director-planning-v4",
-      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated",
+      "revision_request_version": "director-planning-v5",
+      "revision_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F019",
@@ -2975,64 +3004,73 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F020",
       "category": "Story and filmmaking intelligence",
       "functionality": "Interpret natural-language revision",
-      "application_operation": "POST /api/projects/:id/revisions/interpret",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "POST /api/projects/:id/department-plans (request_revision); POST /api/projects/:id/department-plans/apply-proposal; paid revise_departments through scoped planning calls",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Deterministic saved scoped request plus reviewed registry-selected OpenAI Responses department_revision operation under director-planning-v5",
+      "execution_type": "application/database plus optional reviewed OpenAI revision model",
+      "evidence": "Implemented typed planning/revision/dependency contract; real media and model quality are separate unvalidated evidence",
       "required_input": "selected artifact; user change request",
       "expected_output": "scoped change proposal and impact",
-      "limits_and_quality_rule": "No autonomous spend or approval override",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Saving the explicit targeted revision request is deterministic and free. Paid revise_departments returns exactly the catalog-ordered selected subset under its v5 contract; explicitly targeted approved documents may change, all user_selected choices remain protected and nonselected content/history is preserved. No model-chosen scope, autonomous spend, automatic approval or hidden paid retry. Real semantic revision quality remains unvalidated.",
+      "prerequisite": "Current project/source/version/review context and action-specific acknowledgement; paid revisions require explicit selected targets and separate scoped allowance",
+      "billing_basis": "No model call for deterministic review/request edits; optional paid department revision uses reviewed registry token rates and exact bounded reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Semantic source impact, complete later media dependencies, deployed-account concurrency and real media/model-quality acceptance remain incomplete",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Manual focused edits/dependency review; no automatic alternate provider",
+      "implementation_status": "Partial: declared department dependency/revision controls implemented; full production acceptance remains incomplete",
+      "historical_candidate_reference": "O01",
+      "planning_operations": [
+        "revise_departments"
+      ],
+      "request_version": "director-planning-v5",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal"
     },
     {
       "id": "F021",
       "category": "Story and filmmaking intelligence",
       "functionality": "Approve creative version",
-      "application_operation": "POST /api/approvals",
+      "application_operation": "POST /api/projects/:id/approvals",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Supabase Postgres approval transaction",
-      "execution_type": "application/service/worker",
-      "evidence": "D: documented dependency",
+      "external_endpoint_or_tool": "Owner-scoped application and guarded Supabase Postgres approval transaction",
+      "execution_type": "application/database",
+      "evidence": "Implemented typed planning/revision/dependency contract; real media and model quality are separate unvalidated evidence",
       "required_input": "artifact/version; scope; user identity",
       "expected_output": "immutable approval event",
-      "limits_and_quality_rule": "Separate creative approval from cost authorization",
-      "prerequisite": "Permission and current revision",
-      "billing_basis": "Service/compute/storage usage; quote/configuration pending",
+      "limits_and_quality_rule": "Department approval binds the current source, dependency policy/pins and exact version with a planning-only acknowledgement. Stale or legacy missing-pin units cannot be approved as current. Upstream approval order is not required; fresh upstream dependency chains and the separate all-17 production/spending approval gate remain required. Approval does not select or clear media, rights or charges.",
+      "prerequisite": "Current project/source/version/review context and action-specific acknowledgement; paid revisions require explicit selected targets and separate scoped allowance",
+      "billing_basis": "No model call for deterministic review/request edits; optional paid department revision uses reviewed registry token rates and exact bounded reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "release_gate_or_blocker": "Semantic source impact, complete later media dependencies, deployed-account concurrency and real media/model-quality acceptance remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Supabase Postgres approval transaction",
-      "alternative_route": ""
+      "alternative_route": "",
+      "implementation_status": "Partial: declared department dependency/revision controls implemented; full production acceptance remains incomplete"
     },
     {
       "id": "F022",
       "category": "Story and filmmaking intelligence",
       "functionality": "Invalidate dependent approvals on change",
-      "application_operation": "POST /api/revisions/:id/commit",
+      "application_operation": "GET/POST /api/projects/:id/department-plans (including review_dependencies) and versioned department edits/revision application",
       "execution_reference": "",
-      "external_endpoint_or_tool": "Application dependency graph plus database transaction",
-      "execution_type": "application/service/worker",
-      "evidence": "P: proposed implementation contract",
+      "external_endpoint_or_tool": "Versioned fixed department DAG, server-stamped dependency contexts and guarded persistence",
+      "execution_type": "application/database",
+      "evidence": "Implemented typed planning/revision/dependency contract; real media and model quality are separate unvalidated evidence",
       "required_input": "approved change proposal",
       "expected_output": "new version; affected descendants",
-      "limits_and_quality_rule": "Preserve existing source/accepted history; only affected work marked stale",
-      "prerequisite": "Explicit creative edit",
-      "billing_basis": "Service/compute/storage usage; quote/configuration pending",
+      "limits_and_quality_rule": "Exact declared upstream department-version pins derive transitive source/dependency review holds without deleting documents or approval history. review_dependencies explicitly preserves the document/choices in a new unapproved revision; graph descendants remain held until reviewed. Whole brief/script changes conservatively hold all source plans. Semantic field/scene impact and complete media-artifact dependency wiring remain incomplete.",
+      "prerequisite": "Current project/source/version/review context and action-specific acknowledgement; paid revisions require explicit selected targets and separate scoped allowance",
+      "billing_basis": "No model call for deterministic review/request edits; optional paid department revision uses reviewed registry token rates and exact bounded reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Adapter implementation, execution test and task-specific acceptance pending",
+      "release_gate_or_blocker": "Semantic source impact, complete later media dependencies, deployed-account concurrency and real media/model-quality acceptance remain incomplete",
       "owner": "Backend/platform",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "Application dependency graph plus database transaction",
-      "alternative_route": ""
+      "alternative_route": "",
+      "implementation_status": "Partial: declared department dependency/revision controls implemented; full production acceptance remains incomplete"
     },
     {
       "id": "F023",

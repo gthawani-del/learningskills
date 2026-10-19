@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-19",
+  "scope": "Native additive migration and read-only metadata/security verification; not real application account or concurrency tests",
+  "project": "Director",
+  "projectId": "ygyjqubrpqwfgbquwqeo",
+  "migrationSha256": "e2dddb4839e35be36cf14952d1bccb3a504a4651a01efaed8961fbfbfc32381c",
+  "rls": {
+    "director_projects": true,
+    "director_approvals": true,
+    "director_artifacts": true,
+    "director_audit_events": true,
+    "director_planning_consents": true,
+    "director_planning_reservations": true
+  },
+  "functions": [
+    {
+      "name": "director_department_dependencies_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_dependency_ids",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_revision_request_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_revision_source_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_snapshot_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_source_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_guard_department_revision_request",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    }
+  ],
+  "migration": "20261019115348_director_department_revisions",
+  "activeFalModels": 0,
+  "generationPaused": true,
+  "activeOpenAIModels": 0,
+  "departmentArchives": 0,
+  "planningReservations": 0,
+  "securityAdvisories": [],
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "customerAccountsTested": false
+}

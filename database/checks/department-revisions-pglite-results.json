@@ -1,0 +1,33 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "all 16 prior increments plus new dependency/revision increment install; SQL dependency DAG exactly matches reviewed 17-department catalog; no route activates or generation resumes",
+    "legacy approved documents and approvals remain intact; missing pins including an empty-dependency root require explicit review and new version without synthesized approval",
+    "all new rule-plan snapshots carry exact pins; a fresh downstream plan may be approved before upstream approval, while the all-17 spending gate remains separate",
+    "camera-only edit preserves unrelated voice/music documents and approval history; only camera descendants lose freshness recursively without deleting content",
+    "direct and RPC approval cannot override stale dependency pins; explicit ordered chain review preserves each document and creates fresh version/pins without requiring upstream approval order",
+    "missing/malformed policy, ordered pins, self/unknown/cyclic edges, future/noninteger versions and extra binding fields all fail closed; upstream corruption propagates",
+    "new traversal independently rejects text/fractional/out-of-range current versions and fractional/out-of-range source versions, even when the unchanged historical source-only predicate accepts their signature binding",
+    "bounded traversal validates each reachable department/version once and retains exact recursive freshness; local before/after timing recorded",
+    "explicit revision request binds selected known departments, current source and exact versions of all 17 units; malformed/missing/future/order/source variants cannot become current",
+    "new operation requires its exact v5 request, current archived request and full current department snapshots; forged selection, eligibility or hidden document context cannot reserve",
+    "changing a revision request holds new claim; exact response-lost reservation replay recovers original evidence; v5 submission is claimed once",
+    "applying a scoped revision changes only selected unit; saved request becomes stale; known response recovery and exact settlement remain possible after changed plans, global pause and disabled model",
+    "a fresh allowance cannot bypass a stale archived revision request; unknown submission retains its hold and blocks replacement until known-ID recovery and settlement",
+    "existing writing v3 and department planning v4 financial request contracts remain accepted without rewriting saved requests",
+    "real approved/quoted/budgeted media reserve succeeds only with fresh all-17 graph; later dependency edit (even forged unchanged project revision) or approval revocation holds dispatch while submitted accounting remains possible",
+    "new helper and trigger functions are service-only SECURITY INVOKER with empty search_path; existing append-only evidence controls persist",
+    "rollback removes all synthetic projects, dependency reviews, approvals, requests, charges and models; 20 inactive historical registry seeds remain"
+  ],
+  "timing": {
+    "repeatedRecursionAll17Ms": 798,
+    "boundedTraversalAll17Ms": 74,
+    "note": "One local PostgreSQL/WASM sample on the same actual application archive; not a production latency benchmark."
+  },
+  "productionApplied": false,
+  "limitations": [
+    "sequential single-connection proof simulates stale reads; true concurrent-session lock races remain untested",
+    "actual application archives and deterministic commands with synthetic model/request/media fixtures; no real creative-output or provider transport validation",
+    "observed WASM timings are local samples and do not establish production PostgreSQL latency"
+  ]
+}

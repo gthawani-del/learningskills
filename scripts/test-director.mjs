@@ -66,4 +66,6 @@ await import('../apps/director/tests/department-provider.test.mjs');
 await import('../apps/director/tests/department-plan.test.mjs');
 await import('../apps/director/tests/department-guidance.test.mjs');
 await import('../apps/director/tests/department-cloud.test.mjs');
+await import('../apps/director/tests/department-revision-api.test.mjs');
+await import('../apps/director/tests/department-revision.test.mjs');
 

@@ -63,7 +63,7 @@ export function createPlanningController({store,provider,env=process.env,now=()=
    if(typeof grant.modelId!=='string'||!grant.modelId)fail(409,'The saved planning allowance has no bound model. Review a new limit.');
    if(grant.operation!==undefined&&grant.operation!==null&&grant.operation!==c.operation)fail(409,'This planning allowance covers a different operation. Review a limit for the requested task.');
    const ctx=await context(c.actorId,c.projectId,c.operation,grant.modelId);
-   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments']}});
+   const policy=decidePlanningPath({operation:c.operation,requestHash:ctx.request.requestHash,scope:ctx.scope,policy:{creativePlanningEnabled:true,allowedOperations:['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments']}});
    if(policy.path!=='llm')fail(409,'This operation does not require a new creative planning call.');
    const call=replay?.reservation||await store.planningCommand('reserve_planning',{...c,requestHash:ctx.request.requestHash,quotedMicroUsd:ctx.quote.totalMicroUsd},{...ctx,apiRequest:c});
    return dispatch(c,call,ctx);

@@ -3,7 +3,7 @@ import {applyDepartmentCommand,departmentPlanningContext,departmentPlanningInput
 import {planningCreativeContext} from './planning-profile.mjs';
 import {validatePlanningResult} from './planning-provider.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const fields={prepare:[],refresh:['departmentId','acknowledgeSourceChange'],update:['departmentId','document']};
+const fields={prepare:[],refresh:['departmentId','acknowledgeSourceChange'],update:['departmentId','document'],review_dependencies:['departmentId','acknowledgeDependencies'],request_revision:['departmentIds','instruction']};
 
 // Model provenance can only come from a completed, saved provider call owned by
 // this project. Device or client documents never create approvals or spend rights.
@@ -16,11 +16,11 @@ export async function changeDepartmentPlans({project,body,actorId,store,applying
  if(applying){
   if(!uuid.test(body.callId||''))fail(400,'Choose a saved department proposal.');
   const saved=await store.readPlanningCall(actorId,project.id,body.callId),document=saved.result?.departments,operation=saved.reservation?.operation;
-  if(operation!=='plan_departments'||saved.result?.providerStatus!=='completed'||!document||saved.result.planError)fail(409,'This call has no completed department proposal to review.');
+  if(!['plan_departments','revise_departments'].includes(operation)||saved.result?.providerStatus!=='completed'||!document||saved.result.planError)fail(409,'This call has no completed department proposal to review.');
   validatePlanningResult(document,saved.request);
   const input=JSON.parse(saved.request.body.input),signature=departmentPlanningInputSignature(project,approvals);
   if(hash(input.context)!==hash(planningCreativeContext(project,approvals,operation))||input.context?.departmentPlanning?.inputSignature!==hash(signature))fail(409,'The brief, script, department choices or reviewed decisions changed. Keep the current plans and review a fresh proposal.');
-  command={expectedVersion:project.version,action:'apply_proposal',proposal:{inputSignature:signature,departments:document.departments,modelCallId:body.callId}};
+  command={expectedVersion:project.version,action:operation==='revise_departments'?'apply_revision':'apply_proposal',proposal:{inputSignature:signature,departments:document.departments,modelCallId:body.callId,...(operation==='revise_departments'?{revisionRequestVersion:input.context?.departmentPlanning?.revision?.request?.version}:{})}};
  }
  // Approval writes have their own append-only ordering and do not advance the
  // project version. Bind both under the store's transaction so a newly reviewed

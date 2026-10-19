@@ -4,9 +4,9 @@ import {randomUUID} from 'node:crypto';
 import {hash} from '../domain.mjs';
 import {applyBriefCommand} from '../public/creative-brief-core.js';
 import {applyScreenplayCommand} from '../public/screenplay-core.js';
-import {applyDepartmentCommand,departmentPlanningContext,DEPARTMENT_IDS} from '../public/department-plan-core.js';
-import {preparePlanningRequest,planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,planningProfile} from '../planning-profile.mjs';
-import {buildPlanningRequest,validatePlanningResult,createPlanningProvider,PLANNING_VERSION,DEPARTMENT_PLANNING_VERSION} from '../planning-provider.mjs';
+import {applyDepartmentCommand,departmentPlanningContext,DEPARTMENT_IDS,departmentRevisionContext,departmentPlanningInputSignature,DEPARTMENT_DEPENDENCY_POLICY_VERSION,departmentDependencyPolicy} from '../public/department-plan-core.js';
+import {preparePlanningRequest,planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,departmentRevisionSchemaHash,planningProfile} from '../planning-profile.mjs';
+import {buildPlanningRequest,validatePlanningResult,createPlanningProvider,PLANNING_VERSION,DEPARTMENT_PLANNING_VERSION,DEPARTMENT_REVISION_VERSION} from '../planning-provider.mjs';
 import {routePlanning} from '../planning-router.mjs';
 import {planningScope,decidePlanningPath} from '../planning-policy.mjs';
 import {grantPlanningConsent,reservePlanningCall,claimPlanningCall} from '../planning-consent.mjs';
@@ -26,13 +26,19 @@ const approvals=p=>[{id:'brief_review',artifactId:'brief',version:p.creativeBrie
 function plannedProject(){const p=sourceProject();return applyDepartmentCommand(p,{expectedVersion:p.version,action:'prepare'},approvals(p));}
 function model(operations=['plan_departments']){
   const endpoint='https://api.openai.com/v1/responses',version='synthetic-department-model';
-  const profile={id:'O-department-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'department-test',background:true,providerRetentionAcknowledged:true,contextWindowTokens:100000,maxOutputTokens:4000,maxRequestBytes:200000,tokenBoundEvidence:{verified:true,type:'context-window-upper-bound',model:version,contextWindowTokens:100000,tokenizerVersion:'synthetic-reviewed-window',sourceUrl:'https://example.test/tokens',expiresAt}}},schema_evidence:{verified:true,version:'department-schema',sourceUrl:'https://example.test/schema',expiresAt,endpoint,modelVersion:version,inputSchemaHash:operations.includes('plan_departments')?departmentPlanningSchemaHash:planningSchemaHash},price_version:'department-price',price_evidence:{verified:true,version:'department-price',model:version,currency:'USD',sourceUrl:'https://example.test/pricing',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}};
+  const profile={id:'O-department-test',provider:'openai',endpoint,model_version:version,active:true,execution_tested:true,quality_validated:true,capabilities:{planning:{enabled:true,version:'department-test',background:true,providerRetentionAcknowledged:true,contextWindowTokens:100000,maxOutputTokens:4000,maxRequestBytes:200000,tokenBoundEvidence:{verified:true,type:'context-window-upper-bound',model:version,contextWindowTokens:100000,tokenizerVersion:'synthetic-reviewed-window',sourceUrl:'https://example.test/tokens',expiresAt}}},schema_evidence:{verified:true,version:'department-schema',sourceUrl:'https://example.test/schema',expiresAt,endpoint,modelVersion:version,inputSchemaHash:operations.includes('revise_departments')?departmentRevisionSchemaHash:operations.includes('plan_departments')?departmentPlanningSchemaHash:planningSchemaHash},price_version:'department-price',price_evidence:{verified:true,version:'department-price',model:version,currency:'USD',sourceUrl:'https://example.test/pricing',expiresAt,input:{numeratorMicroUsd:1,denominatorTokens:1},cachedInput:{numeratorMicroUsd:0,denominatorTokens:1},output:{numeratorMicroUsd:2,denominatorTokens:1}}};
   return reviewedPlanningFixture(profile,{operations});
 }
 const prepare=(p=plannedProject(),m=model(),a=approvals(p))=>preparePlanningRequest(p,m,'plan_departments',now,a);
 const proposal=p=>({departments:departmentPlanningContext(p,approvals(p)).departments.map(unit=>({id:unit.id,document:structuredClone(unit.current.document)}))});
 const complete=output=>({id:'resp_departments',status:'completed',usage:{input_tokens:100,output_tokens:200,input_tokens_details:{cached_tokens:10}},output:[{content:[{type:'output_text',text:JSON.stringify(output)}]}]});
 const denied=error=>error.status===409;
+const departmentApprovals=p=>[...approvals(p),...departmentPlanningContext(p,approvals(p)).departments.map((unit,index)=>({id:'review_'+unit.id,artifactId:'department:'+unit.id,version:unit.current.version,decision:'approved',ordinal:index+3}))];
+function revisionProject(ids=['camera'],instruction='Make the camera coverage quieter; preserve the existing approved story and other departments.'){
+  const p=plannedProject();return applyDepartmentCommand(p,{expectedVersion:p.version,action:'request_revision',departmentIds:ids,instruction},departmentApprovals(p));
+}
+const prepareRevision=(p=revisionProject(),m=model(['revise_departments']),a=departmentApprovals(p))=>preparePlanningRequest(p,m,'revise_departments',now,a);
+const revisionProposal=p=>{const c=departmentPlanningContext(p,departmentApprovals(p));return {departments:c.revision.selectedDepartmentIds.map(id=>({id,document:structuredClone(c.departments.find(unit=>unit.id===id).current.document)}))};};
 
 test('department planning has a separate v4 schema and reviewed operation without changing existing v3 requests',()=>{
   const p=plannedProject(),prepared=prepare(p),request=prepared.request;
@@ -185,4 +191,87 @@ test('department cost consent is operation-specific and stale source changes can
   const first=claimPlanningCall(state,{...base(),reservationId:reservation.id},{profile:prepared.profile,scope,now});assert.equal(first.claimed,true);
   assert.throws(()=>claimPlanningCall(state,{...base(),reservationId:reservation.id},{profile:prepared.profile,scope,now}),denied);
   assert.equal(decidePlanningPath({operation:'plan_departments',requestHash:prepared.request.requestHash,scope,policy:{creativePlanningEnabled:true,allowedOperations:['plan_departments']}}).path,'llm');
+});
+
+test('targeted department revision is an explicitly reviewed v5 operation with a selected-only schema and unchanged cost bound',t=>{
+  const p=revisionProject(['camera','voice']),a=departmentApprovals(p),prepared=prepareRevision(p),context=JSON.parse(prepared.request.body.input).context;
+  assert.equal(DEPARTMENT_REVISION_VERSION,'director-planning-v5');assert.equal(prepared.request.version,DEPARTMENT_REVISION_VERSION);assert.equal(prepared.request.operation,'revise_departments');
+  assert.equal(prepared.request.body.text.format.name,'department_revision_proposal');assert.equal(prepared.request.body.text.format.schema.properties.departments.minItems,2);assert.equal(prepared.request.body.text.format.schema.properties.departments.maxItems,2);assert.deepEqual(prepared.request.body.text.format.schema.properties.departments.items.properties.id.enum,['camera','voice']);
+  assert.deepEqual(context.departmentPlanning.revision,departmentRevisionContext(p));assert.deepEqual(context.departmentPlanning.revision.selectedDepartmentIds,['camera','voice']);
+  assert.deepEqual(context.departmentPlanning.departments,departmentPlanningContext(p,a).departments);assert.equal(context.departmentPlanning.departments.length,17);assert(context.departmentPlanning.departments.every(unit=>unit.approved));
+  assert.deepEqual(context.screenplay.current.document,script());assert.deepEqual(context.departmentPlanning.dependencyPolicy,departmentDependencyPolicy);assert.equal(context.departmentPlanning.dependencyPolicyVersion,DEPARTMENT_DEPENDENCY_POLICY_VERSION);
+  assert.equal(context.approvedArtifacts.some(artifact=>artifact.artifactId.startsWith('department:')),false);assert(context.approvedArtifacts.some(artifact=>artifact.artifactId==='screenplay'));
+  const bytes=Buffer.byteLength(JSON.stringify(prepared.request.body),'utf8');assert(bytes<=200000);assert.equal(prepared.quote.totalMicroUsd,108000);assert.equal(model(['revise_departments']).capabilities.planning.maxRequestBytes,200000);
+  t.diagnostic(`Targeted revision with all seventeen complete approved department plans, complete source script, saved request and dependency policy: ${bytes} request bytes; reviewed cap remains 200000 bytes.`);
+  assert.deepEqual(validatePlanningResult(revisionProposal(p),prepared.request),revisionProposal(p));
+});
+
+test('department revision admission rejects missing, stale or malformed saved requests instead of expanding the selected scope',()=>{
+  assert.throws(()=>prepareRevision(plannedProject()),denied);const p=revisionProject(),prepared=prepareRevision(p),original=JSON.parse(prepared.request.body.input).context;
+  for(const mutate of [
+    c=>{c.departmentPlanning.revision.valid=false;},c=>{c.departmentPlanning.revision.status='stale';},c=>{delete c.departmentPlanning.revision.selectedDepartmentIds;},c=>{c.departmentPlanning.revision.request.instruction='';},c=>{c.departmentPlanning.revision.request.departmentIds=[];},c=>{c.departmentPlanning.revision.request.departmentIds=['camera','unknown'];},
+    c=>{c.departmentPlanning.revision.request.departmentIds=['voice','camera'];c.departmentPlanning.revision.selectedDepartmentIds=['voice','camera'];},
+    c=>{c.departmentPlanning.revision.request.sourceVersion++;},c=>{c.departmentPlanning.revision.request.departmentVersions.pop();},c=>{c.departmentPlanning.revision.request.departmentVersions[0].version++;},
+    c=>{c.departmentPlanning.revision.request.departmentVersions[0].departmentId='camera';},c=>{c.departmentPlanning.revision.request.paidAuthorization=true;},c=>{c.departmentPlanning.dependencyPolicy.pop();},
+  ]){const context=structuredClone(original);mutate(context);assert.throws(()=>buildPlanningRequest({brief:'Only the saved target may change.',duration:60,model:prepared.request.model,maxOutputTokens:4000,operation:'revise_departments',context}),denied);}
+  const voice=structuredClone(departmentPlanningContext(p,departmentApprovals(p)).departments.find(unit=>unit.id==='voice').current.document);voice.summary+=' A later saved voice correction.';
+  const altered=applyDepartmentCommand(p,{expectedVersion:p.version,action:'update',departmentId:'voice',document:voice},departmentApprovals(p));assert.throws(()=>prepareRevision(altered),denied);
+});
+
+test('selected approved department documents can change while every unselected department and recorded user choice stays protected',()=>{
+  let p=plannedProject();const voice=structuredClone(departmentPlanningContext(p,approvals(p)).departments.find(unit=>unit.id==='voice').current.document);
+  voice.choices.push({id:'voice_performance_choice',label:'User chosen performance direction',value:'Keep the existing restrained Hinglish line delivery.',status:'user_selected',sceneIds:['station'],characterIds:['mira']});
+  p=applyDepartmentCommand(p,{expectedVersion:p.version,action:'update',departmentId:'voice',document:voice},approvals(p));
+  p=applyDepartmentCommand(p,{expectedVersion:p.version,action:'request_revision',departmentIds:['camera','voice'],instruction:'Let the camera settle earlier and suggest a more patient pause. Preserve the recorded voice choice.'},departmentApprovals(p));
+  const request=prepareRevision(p).request,good=revisionProposal(p);good.departments[0].document.summary+=' Let the camera settle before the letter is unfolded.';
+  assert.deepEqual(validatePlanningResult(good,request),good);
+  for(const mutate of [x=>x.departments.pop(),x=>x.departments.reverse(),x=>x.departments[0].id='lighting',x=>x.departments.push({id:'lighting',document:good.departments[0].document}),x=>x.departments[0].document.dependencyContext={policyVersion:'forged',bindings:[]},x=>x.departments[1].document.choices.pop(),x=>x.departments[1].document.choices.at(-1).value='A new silently selected voice.',x=>x.departments[0].document.choices.push({id:'new_cast_choice',label:'A selected performer',value:'Never selected by the user.',status:'user_selected',sceneIds:[],characterIds:['mira']})]){
+    const invalid=structuredClone(good);mutate(invalid);assert.throws(()=>validatePlanningResult(invalid,request));
+  }
+});
+
+test('broad department planning cannot rewrite source-fresh approved direction held by a changed upstream dependency',()=>{
+  let p=plannedProject();const a=departmentApprovals(p),camera=structuredClone(departmentPlanningContext(p,a).departments.find(unit=>unit.id==='camera').current.document);camera.summary+=' An intentional manual camera correction.';
+  p=applyDepartmentCommand(p,{expectedVersion:p.version,action:'update',departmentId:'camera',document:camera},a);
+  const request=prepare(p,model(),a).request,context=JSON.parse(request.body.input).context,lighting=context.departmentPlanning.departments.find(unit=>unit.id==='lighting');
+  assert.equal(lighting.sourceStale,false);assert.equal(lighting.dependencyStale,true);assert.equal(lighting.approved,false);assert.equal(lighting.approvalDecision,'approved');
+  const invalid=proposal(p);invalid.departments.find(unit=>unit.id==='lighting').document.summary+=' An unrequested replacement.';assert.throws(()=>validatePlanningResult(invalid,request),denied);
+  p=applyDepartmentCommand(p,{expectedVersion:p.version,action:'request_revision',departmentIds:['lighting'],instruction:'Adjust only the lighting plan for the revised camera direction.'},a);
+  const targeted=revisionProposal(p);targeted.departments[0].document.summary+=' A selected proposal following the camera change.';
+  assert.doesNotThrow(()=>validatePlanningResult(targeted,prepareRevision(p,model(['revise_departments']),a).request));
+});
+
+test('revision operation, schema, execution and quality reviews never inherit from broad department planning',()=>{
+  const p=revisionProject(),old=model();assert.throws(()=>prepareRevision(p,old),denied);
+  const staleSchema=model(['revise_departments']);staleSchema.schema_evidence.inputSchemaHash=departmentPlanningSchemaHash;assert.throws(()=>prepareRevision(p,staleSchema),denied);
+  const noQuality=model(['revise_departments']);noQuality.capabilities.reviewEvidence.quality.operations=[];assert.throws(()=>prepareRevision(p,noQuality),denied);
+  assert.notEqual(departmentRevisionSchemaHash,departmentPlanningSchemaHash);assert.notEqual(departmentRevisionSchemaHash,planningSchemaHash);
+  const route=routePlanning({project:p,approvals:departmentApprovals(p),models:[model(['revise_departments'])],operation:'revise_departments',now});assert.equal(route.task,'department_revision');assert.equal(route.selectedModelId,'O-department-test');
+  const multi=model(['interpret_brief','initial_plan','revise_plan','write_script','revise_script','plan_departments','revise_departments']),{id,active,execution_tested,quality_validated,...draft}=structuredClone(multi),review=draft.capabilities.reviewEvidence;delete draft.capabilities.reviewEvidence;
+  assert.doesNotThrow(()=>validateModelPublication({modelId:id,profile:draft,review:{schemaVerified:true,pricingVerified:true,executionTested:true,qualityValidated:true,execution:review.execution,quality:review.quality,notes:'Synthetic offline seven-operation evidence, never real model validation.'},now}));
+});
+
+test('complete revision request, source, approval history and all department pins bind cost consent and invalidate changed requests',()=>{
+  const p=revisionProject(),a=departmentApprovals(p),prepared=prepareRevision(p),scope=planningScope(p,a),state={projects:[p],planningConsents:[],planningReservations:[],planningCommands:[]};
+  const base=()=>({actorId:p.ownerId,projectId:p.id,expectedVersion:p.version,requestId:randomUUID()});
+  const grant=grantPlanningConsent(state,{...base(),operation:'revise_departments',maxMicroUsd:300000,finishReserveMicroUsd:10000,maxCalls:2},{profile:prepared.profile,scope,now});
+  assert.throws(()=>reservePlanningCall(state,{...base(),operation:'plan_departments',consentId:grant.id,requestHash:prepared.request.requestHash,quotedMicroUsd:prepared.quote.totalMicroUsd},{profile:prepared.profile,scope,now}),denied);
+  const call=reservePlanningCall(state,{...base(),operation:'revise_departments',consentId:grant.id,requestHash:prepared.request.requestHash,quotedMicroUsd:prepared.quote.totalMicroUsd},{profile:prepared.profile,scope,now});
+  const changed=applyDepartmentCommand(p,{expectedVersion:p.version,action:'request_revision',departmentIds:['camera'],instruction:'A different explicit direction for the same selected department.'},a);state.projects=[changed];
+  assert.notEqual(prepareRevision(changed).request.requestHash,prepared.request.requestHash);assert.notEqual(hash(departmentPlanningInputSignature(changed,a)),hash(departmentPlanningInputSignature(p,a)));
+  assert.throws(()=>claimPlanningCall(state,{...base(),expectedVersion:changed.version,reservationId:call.id},{profile:prepared.profile,scope:planningScope(changed,a),now}),denied);
+  const later=[...a,{id:'later_revoke',artifactId:'department:rights',version:1,decision:'revoked',ordinal:100}];assert.notEqual(prepareRevision(p,model(['revise_departments']),later).request.requestHash,prepared.request.requestHash);
+  assert.equal(decidePlanningPath({operation:'revise_departments',requestHash:prepared.request.requestHash,scope,policy:{creativePlanningEnabled:true,allowedOperations:['revise_departments']}}).path,'llm');
+});
+
+test('v5 selected proposals retain usage and saved identity, while v3 and older v4 saved contexts remain recoverable',async()=>{
+  const p=revisionProject(),request=prepareRevision(p).request,good=revisionProposal(p),methods=[];
+  const provider=createPlanningProvider({env:{OPENAI_API_KEY:'test-secret'},fetcher:async(url,options)=>{methods.push(options.method);return {ok:true,json:async()=>complete(good)};}});
+  const saved=await provider.submit({request,authorized:true});assert.deepEqual(saved.departments,good);assert.equal(saved.usage.outputTokens,200);assert.deepEqual((await provider.poll({responseId:saved.id,request})).departments,good);assert.deepEqual(methods,['POST','GET']);
+  for(const version of [PLANNING_VERSION,DEPARTMENT_PLANNING_VERSION]){const forged={...request,version};forged.requestHash=hash({version,body:forged.body});await assert.rejects(provider.poll({responseId:saved.id,request:forged}),denied);}assert.deepEqual(methods,['POST','GET']);
+  const broad=plannedProject(),current=prepare(broad).request,input=JSON.parse(current.body.input),context=input.context;
+  delete context.departmentPlanning.dependencyPolicy;delete context.departmentPlanning.dependencyPolicyVersion;delete context.departmentPlanning.revision;delete context.departmentPlanning.currentSourceVersion;
+  for(const unit of context.departmentPlanning.departments){delete unit.sourceStale;delete unit.dependencyStale;delete unit.dependencyChanges;delete unit.current.dependencyContext;}
+  const legacy=buildPlanningRequest({brief:input.brief,duration:input.durationSeconds,model:current.model,maxOutputTokens:4000,operation:'plan_departments',context}),older=createPlanningProvider({env:{OPENAI_API_KEY:'test-secret'},fetcher:async()=>({ok:true,json:async()=>complete(proposal(broad))})});
+  assert.equal(legacy.version,DEPARTMENT_PLANNING_VERSION);assert.deepEqual((await older.poll({responseId:'resp_departments',request:legacy})).departments,proposal(broad));
 });

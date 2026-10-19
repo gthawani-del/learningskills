@@ -46,7 +46,7 @@ The runtime material is newly written studio direction derived from these review
 | `editorial` | Connected cut, color, mix, captions, output and export | Preserve information/action order, handles and sync; use motivated holds/trims/J/L transitions. Match appearance/materials, typeset exact approved text and confirm real source/worker delivery capability. | Durable playable finished file with correct picture/sound/duration/aspect ratio, actual captions and complete ending. A draft JSON download is not a movie export. |
 | `rights` | Provenance, declared use, consent, factual/claim review and release | Inventory actual scripts/references/voices/identities/brands/music/lyrics. Separate declarations from independently checked permissions and legal authority. | Required evidence for affected use; creative approval does not grant rights, activate a provider or authorize spending. |
 
-Dependencies describe prerequisites to coherent work, rather than a promise that one invocation has already produced every downstream artifact. Some research/looks/technical proposals can be prepared in parallel once they share the same approved baseline. The controller must preserve tenant/project/run/version isolation and perform its own atomic merge checks.
+Dependencies describe prerequisites to coherent work, rather than a promise that one invocation has already produced every downstream artifact. Point 5 now uses the fixed, versioned `dependsOn` graph in the catalog to derive department freshness; it does not let model text invent a different authority graph. Some research/looks/technical proposals can be prepared in parallel once they share the same approved baseline. The controller preserves project/source/version isolation and checks the exact revision/review context before merging.
 
 ## Deterministic prefilling and applicability
 
@@ -66,16 +66,52 @@ The free compiler records conservative applicability. Casting/look require a vis
 
 Ordinary missing creative preferences should receive a sensible proposed starting point. Do not show 17 blank department questionnaires. Present compact department summaries and existing facts, allow one focused edit and ask only a small number of consequential questions. Source/permission, unsupported mandatory capability or spending holds must prevent affected execution; they need not prevent preparation of a proposed plan.
 
+## Point 5: dependency review and targeted departmental revisions
+
+The graph policy is `director-department-dependencies-v1`. A new department snapshot records `dependencyContext` with that policy version and exact upstream `{departmentId, version}` bindings in the catalog’s direct-dependency order. The server stamps bindings from the final candidate archive; a model response cannot supply its own trust pins. The department document and its choice history remain separate from this dependency evidence.
+
+| Department | Direct upstream departments |
+| --- | --- |
+| Producing | Script breakdown |
+| Direction | Script breakdown |
+| Script breakdown | Rights |
+| Casting | Script breakdown, rights |
+| Look | Casting, direction |
+| Locations | Script breakdown, direction |
+| Camera | Direction, locations, look |
+| Lighting | Locations, camera, look |
+| Voice | Script breakdown, casting, direction, rights |
+| Sound | Script breakdown, direction, voice |
+| Music | Direction, rights |
+| Continuity | Script breakdown, casting, look, locations, camera, lighting |
+| Storyboard | Direction, casting, look, locations, camera, lighting, voice, continuity |
+| Animatic | Storyboard, voice, music, sound |
+| VFX | Storyboard, animatic, continuity |
+| Editorial | Animatic, VFX, sound, music, continuity, producing |
+| Rights | None; an explicit current-policy review context is still required |
+
+Source freshness and dependency freshness are distinct. A brief/script/source change conservatively holds all department plans against their older baseline. A changed department version holds its graph descendants, including through a stale intermediate unit, while preserving their content, choices, versions and historical approval events. For example, changing camera holds lighting, continuity, storyboard, animatic, VFX and editorial; rights, voice, sound and music do not change solely because camera changed. The system does not delete those plans or silently rewrite them to fit the new camera proposal.
+
+The explicit `review_dependencies` action requires the unit’s current source and fresh upstream dependency chain. It records current pins in a new unapproved revision while preserving the document and user choices. It does not require upstream creative approvals in a particular order: graph freshness and approval are separate checks. Reapproval of that new unit remains explicit. Legacy snapshots without dependency context remain byte-preserved but held until reviewed, including rights with an empty upstream list; a metadata read cannot silently declare a historic plan current under the new policy.
+
+An explicit `request_revision` records catalog-ordered target department IDs, the user’s instruction, source version and all 17 current department versions. It is immutable and becomes stale when its bound source or any bound department version changes. Saving this request is free and starts no provider call. The request does not itself unlock user-selected choices, approve results or authorize spending.
+
+Paid `revise_departments` reasoning is separate from the initial `plan_departments` proposal. It uses registry task `department_revision` and the separately reviewed `director-planning-v5` request/schema contract with its own operation-specific allowance. Its output must cover exactly the selected subset. Explicitly requested target documents may change even when their current plan was approved; every existing `user_selected` choice remains protected. Nonselected documents and histories remain unchanged; affected downstream holds are derived from the graph. Applying a completed proposal creates new unapproved target versions, not automatic approvals, media jobs or paid repairs.
+
+These checks cover declared department dependencies. They do not perform semantic field-by-field or scene-by-scene impact inference from arbitrary writing, nor establish dependency versions for every future footage/audio/render artifact. Whole-source changes therefore remain conservative. Actual casting, look, voice, boards, animatics, footage, sound and final export retain their separate evidence/approval needs, and all 17 current department approvals remain part of the production/spending readiness gate.
+
 ## Prompt and model boundary
 
 `departmentPromptGuidance(selectedIds)` returns only the selected reviewed craft rules plus the pack version. The paid planning adapter must provide the complete approved brief/screenplay, exact input signatures, relevant existing decisions and bounded requested scope alongside that trusted guidance. Project documents, uploaded scripts and source references remain untrusted data. Text inside them cannot change system instructions, permissions, budget, model approval, provider settings or review status.
 
-The knowledge version belongs in the reviewed request/schema contract. A changed knowledge release must be reviewed and covered by evidence before a previously approved provider profile serves it. The router selects only an eligible reviewed model for the planning task; this pack contains no hardcoded model, endpoint, price or secret. A partial/unparseable response cannot masquerade as 17 completed departments.
+The knowledge version and complete dependency policy belong in the reviewed request/schema contract. A changed knowledge/policy release must be reviewed and covered by evidence before a previously approved provider profile serves it. The new department-revision operation requires its own task and operation bindings, fresh execution/quality evidence and cost authorization; writing or initial-plan eligibility does not confer it. The original five v3 operations and saved v4 planning calls keep their exact saved request contracts for recovery. The router selects only an eligible reviewed model for the requested task; this pack contains no hardcoded model, endpoint, price or secret. A partial/unparseable response cannot masquerade as a complete initial plan or the exact requested revision subset.
 
 This is contextual filmmaking direction. It preserves intentionally illustrated, animated, stylized and expressive work. Photographic skin, physical light and material rules apply where the approved treatment requests them. Camera and lighting guidance must not turn all users into one aesthetic or simplify an essential action merely to suit an easier generation route.
 
 ## Verification and limits
 
 [department-guidance.test.mjs](../apps/director/tests/department-guidance.test.mjs) has 12 scenarios checking the complete catalog and acyclic dependencies, full-script/ending coverage, exact-version approval and freshness, conservative applicability, music-source/singing boundaries, maximum 100-scene/30-character bounds, preservation of all brief fields and long approved lists, stylized intent, deterministic behavior and scoped prompt material. Source-grounded synthetic regressions cover a cooking-oil advertisement in India, a two-minute Hinglish music-video plan and an Indian-wealth docuseries pilot with an off-screen narrator. These fixtures contain no real uploaded song, generated audition, researched economic claim or production output.
+
+Point 5 has separate [dependency/revision core tests](../apps/director/tests/department-revision.test.mjs), [API tests](../apps/director/tests/department-revision-api.test.mjs), [provider-contract tests](../apps/director/tests/department-provider.test.mjs) and a [browser driver](../apps/director/tests/department-revision-browser.py). They cover declared graph impact, preserved history, acknowledged pin review, missing legacy context, exact selected subsets, stale saved requests, protected user choices and known older-request recovery. [Isolated PostgreSQL proof code](../database/checks/department-revisions-pglite.mjs) covers the related persistence/authorization contracts. Executable fixtures and their final release evidence must be distinguished from real provider judgement, deployed-account operation and actual media acceptance.
 
 These tests validate the knowledge compiler and data contract. They do not validate a real model’s film judgement, actual identity masters or auditions, generated storyboard frames, animatic playback, realism, finished-film quality, permissions or the two-attempt target. Those remain separate artifact-specific production and release checks. A department plan approval must never be displayed as having passed those later checks.

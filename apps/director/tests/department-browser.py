@@ -153,6 +153,7 @@ try:
         assert max(row['height'] for row in overview['rows']) <= 120, overview
         assert overview['workspaceHeight'] <= 2000, overview
         page.screenshot(path=str(out / 'departments-mobile-overview.png'), full_page=True)
+        voice_version = unit('voice')['current']['version']
         open_unit('voice')
         page.locator('[data-edit-department=voice]').click()
         editor = page.locator('#department-editor')
@@ -160,7 +161,7 @@ try:
         editor.locator('[name=value]').fill('A quiet, conversational voice; listen to actual voice samples before approving the performance.')
         editor.locator('button[type=submit]').click()
         expect(editor).to_have_count(0)
-        assert unit('voice')['current']['version'] == 2
+        assert unit('voice')['current']['version'] == voice_version + 1
         assert page.locator('#department-workspace details[data-department-card][open]').count() == 1
         geometry = page.evaluate('''()=>{const r=document.querySelector('#department-workspace').getBoundingClientRect();const cards=[...document.querySelectorAll('[data-department-card]')].map(e=>{const a=e.getBoundingClientRect();return{left:a.left,right:a.right}});return{width:innerWidth,height:innerHeight,left:r.left,right:r.right,cards,overflow:document.documentElement.scrollWidth>innerWidth};}''')
         assert not geometry['overflow'] and geometry['left'] >= -1 and geometry['right'] <= geometry['width'] + 1, geometry

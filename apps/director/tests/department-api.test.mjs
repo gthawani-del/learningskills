@@ -163,7 +163,7 @@ test('refresh explicitly rebuilds one stale department, preserves recorded valid
   const body = { expectedVersion: f.p.version, action: 'refresh', departmentId: 'casting', acknowledgeSourceChange: false };
   assert.equal((await call(f.handler, base(f) + '/department-plans', body)).status, 400);
   const refreshed = await call(f.handler, base(f) + '/department-plans', { ...body, acknowledgeSourceChange: true }); ok(refreshed); f.p = refreshed.json.project;
-  const current = unit(refreshed.json.departmentContext, 'casting'); assert.equal(current.stale, false); assert.equal(current.approved, false); assert.equal(current.current.version, 3); assert(current.current.document.choices.some(c => JSON.stringify(c) === JSON.stringify(choice)));
+  const current = unit(refreshed.json.departmentContext, 'casting'); assert.equal(current.sourceStale, false); assert.equal(current.dependencyStale, true); assert.equal(current.approved, false); assert.equal(current.current.version, 3); assert(current.current.document.choices.some(c => JSON.stringify(c) === JSON.stringify(choice)));
   assert.notEqual(current.current.document.summary, document.summary);
   for (const id of ids.filter(id => id !== 'casting')) assert.equal(unit(refreshed.json.departmentContext, id).stale, true);
   const history = f.p.departmentPlanning.departments.find(d => d.id === 'casting').versions; assert.deepEqual(history[1].document, document); assert.equal(f.p.departmentPlanning.sources.length, 2); assert.equal(f.counters().submits, 0);
@@ -183,7 +183,7 @@ test('removed screenplay references block silent refresh until a focused user re
   const repairedDocument = structuredClone(document);
   for (const item of [...repairedDocument.requirements, ...repairedDocument.choices]) item.sceneIds = item.sceneIds.filter(id => id !== 'waiting-room');
   const repaired = await call(f.handler, base(f) + '/department-plans', { expectedVersion: f.p.version, action: 'update', departmentId: 'voice', document: repairedDocument }); ok(repaired);
-  assert.equal(unit(repaired.json.departmentContext, 'voice').stale, false); assert.equal(unit(repaired.json.departmentContext, 'voice').approved, false); assert.deepEqual(unit(repaired.json.departmentContext, 'voice').current.document.choices.find(c => c.id === 'waiting-performance').sceneIds, []);
+  assert.equal(unit(repaired.json.departmentContext, 'voice').sourceStale, false); assert.equal(unit(repaired.json.departmentContext, 'voice').dependencyStale, true); assert.equal(unit(repaired.json.departmentContext, 'voice').approved, false); assert.deepEqual(unit(repaired.json.departmentContext, 'voice').current.document.choices.find(c => c.id === 'waiting-performance').sceneIds, []);
   assert.deepEqual(repaired.json.project.departmentPlanning.departments.find(d => d.id === 'voice').versions[1].document, document); assert.equal(f.counters().submits, 0);
 });
 
@@ -243,4 +243,17 @@ test('media spending needs all seventeen current department reviews and a later 
   ok(await call(f.handler, base(f) + '/approvals', approveBody(f, prepared.json.departmentContext, 'camera', { decision: 'revoked', ackPlanningOnly: false })));
   assert.equal((await call(f.handler, base(f) + '/spending-authorizations', { ...body, requestId: randomUUID() })).status, 409);
   assert.equal(f.store.state.spendingAuthorizations.length, 1); assert.equal(f.counters().submits, 0); assert.equal(f.store.state.jobs.length, 0);
+});
+
+test('fresh media quotes cannot authorize production through old downstream approvals after an upstream department changes', async t => {
+  const f = await fixture(t), prepared = await prepare(f); ok(prepared); f.store.state.models.push(mediaModel());
+  for (const id of ids) ok(await call(f.handler, base(f) + '/approvals', approveBody(f, prepared.json.departmentContext, id)));
+  const document = { ...structuredClone(unit(prepared.json.departmentContext, 'camera').current.document), summary: 'Use a measured move tied to the ticket exchange.' };
+  const changed = await call(f.handler, base(f) + '/department-plans', { expectedVersion: f.p.version, action: 'update', departmentId: 'camera', document }); ok(changed); f.p = changed.json.project;
+  ok(await call(f.handler, base(f) + '/approvals', approveBody(f, changed.json.departmentContext, 'camera')));
+  const current = (await call(f.handler, base(f) + '/department-plans')).json.departmentContext;
+  assert.equal(unit(current, 'camera').approved, true); assert.equal(unit(current, 'lighting').approvalDecision, 'approved'); assert.equal(unit(current, 'lighting').dependencyStale, true); assert.equal(unit(current, 'lighting').approved, false);
+  const quoted = await call(f.handler, base(f) + '/quotes', mediaQuote(f, { requestId: randomUUID() })); ok(quoted);
+  const denied = await call(f.handler, base(f) + '/spending-authorizations', { requestId: randomUUID(), expectedVersion: f.p.version, quoteId: quoted.json.quote.id, maxMicroUsd: 30000, finishReserveMicroUsd: 5000 });
+  assert.equal(denied.status, 409); assert.equal(f.store.state.spendingAuthorizations?.length || 0, 0); assert.equal(f.counters().submits, 0); assert.equal(f.store.state.jobs.length, 0);
 });
