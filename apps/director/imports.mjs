@@ -1,3 +1,4 @@
+import {MUSIC_VIDEO_KIND,normalizeMusicVideoDocument} from './public/music-video-core.js';
 import {normalizeProductionArchive} from './production-records.mjs';
 import {normalizeBriefArchive} from './public/creative-brief-core.js';
 import {normalizeScreenplayArchive,currentScreenplay} from './public/screenplay-core.js';
@@ -71,7 +72,7 @@ export function createImportController({store,storage}){
  if(project.version!==2)fail(409,'The cloud copy was edited before its import finished. Keep this device draft and review the cloud copy.');
  const assets=await store.records('assets',id),mapping=new Map();
  for(const a of state.assets){const expectedId=stableImportId({projectId:id,sourceId:a.sourceId});if(!assets.some(x=>x.id===expectedId&&x.sourceAssetId===a.sourceId&&x.checksum===a.checksum))fail(409,'Some references are still pending. Resume saving this device draft.');mapping.set(a.sourceId,expectedId);}
- const archive=structuredClone(state.productionArchive||{records:[]});for(const record of archive.records)for(const version of record.versions)version.references=version.references.map(r=>({...r,assetId:mapping.get(r.assetId)}));
+ const archive=structuredClone(state.productionArchive||{records:[]});for(const record of archive.records)for(const version of record.versions){version.references=version.references.map(r=>({...r,assetId:mapping.get(r.assetId)}));if(version.content?.kind===MUSIC_VIDEO_KIND){const document=normalizeMusicVideoDocument(version.content);document.master.assetId=mapping.get(document.master.assetId);if(!document.master.assetId)fail(400,'The imported song source is missing.');version.content=document;}}
  const production=normalizeProductionArchive(archive,id,assets);
  const shots=project.shots.map(s=>{const link=state.links.find(l=>l.shotId===s.id);return {...s,clipAssetId:mapping.get(link?.clip)||null,referenceAssetId:mapping.get(link?.image)||null,productionBindings:link?.bindings||[]};});
  const next={...patchProject({...project,production},{expectedVersion:2,shots}),importState:{...state,status:'ready',completedAt:new Date().toISOString()}};

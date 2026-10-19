@@ -93,3 +93,11 @@
 .animatic-screen{margin:16px 0}.animatic-screen img{display:block;width:100%;max-height:480px;object-fit:contain;background:#111827;border-radius:8px}.animatic-workspace input[type=range]{width:100%}.animatic-editor{padding:12px;border:1px solid var(--line,#d1d5db);border-radius:8px;margin:12px 0}.animatic-editor label{display:block;margin:10px 0}.animatic-editor input[type=number],.animatic-editor select{width:100%}.animatic-workspace{scroll-margin-bottom:110px;padding-bottom:24px}
 
 .animatic-editor input[type=checkbox]{width:auto;display:inline-block;margin-right:6px}
+
+/* Compact song planning uses the existing panels and responsive form controls. */
+.music-video-workspace{min-width:0;flex-shrink:0;overflow-wrap:anywhere}
+.music-video-workspace fieldset{min-inline-size:0;margin:12px 0;padding:12px;border:1px solid var(--border);border-radius:8px}
+.music-video-workspace select{max-width:100%}
+.music-video-workspace input[type=checkbox]{width:auto}
+.music-video-workspace details{margin:12px 0}
+.music-video-workspace summary{cursor:pointer;min-height:32px}
