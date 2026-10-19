@@ -28,11 +28,12 @@ export function syntheticDepartmentRevisionModel() {
   return reviewedPlanningFixture(model, { operations: ['revise_departments'] });
 }
 
-export async function departmentFixture({ file, queued = false, malformed = false, paused = false, approvedScript = true, revisionEnabled = false, prepared = false, approveDepartments = false } = {}) {
+export async function departmentFixture({ projectSettings = {}, file, queued = false, malformed = false, paused = false, approvedScript = true, revisionEnabled = false, prepared = false, approveDepartments = false } = {}) {
   const store = await new LocalStore(file).init();
   store.state.models = [syntheticDepartmentModel(), ...(revisionEnabled ? [syntheticDepartmentRevisionModel()] : [])];
   store.state.operationalControl.generationPaused = paused;
   let project = newProject({ title: 'Department planning proof', premise: 'Mira, a station attendant, keeps a promise to a stranger.', direction: 'Natural skin texture, motivated practical lighting and restrained performance.' }, 'demo-user');
+  if(Object.keys(projectSettings).length)project=patchProject(project,{expectedVersion:project.version,...projectSettings});
   project = applyBriefCommand(project, { expectedVersion: project.version, action: 'suggest' });
   project = applyScreenplayProjectCommand(project, { expectedVersion: project.version, action: 'apply_proposal', proposal: { inputSignature: screenplayInputSignature(project), document: screenplayDocument, modelCallId: 'saved_fixture_screenplay' } });
   project = patchProject(project, { expectedVersion: project.version, stage: 'cast' });

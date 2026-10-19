@@ -27,5 +27,5 @@ test('production review graph carries song and performer holds into affected sho
  const {productionState}=await import('../production-state.mjs'),{newProject}=await import('../domain.mjs');
  const f=fixture(),p=save(f);p.shots=p.shots.map(s=>({...s,description:'Reviewed shot direction',productionBindings:[]}));
  const project=applyProductionRecord({...newProject({title:'Song',format:'music_video'},'owner'),...p},{expectedVersion:p.version,id:f.characterId,content:{description:'New identity'}},f.assets);
- const state=productionState(project,f.assets,[]),song=state.nodes.find(n=>n.id==='music_video_plan'),shot=state.nodes.find(n=>n.id==='one');assert(song.holds.length);assert(shot.dependencies.includes('music_video_plan'));assert(shot.holds.some(h=>h.includes('performer')));assert.equal(state.generationAuthorized,false);
+ const state=productionState(project,f.assets,[]),song=state.nodes.find(n=>n.id==='music_video_plan'),shot=state.nodes.find(n=>n.id==='one');assert(song.shotReviewHolds.length);assert(shot.dependencies.includes('music_video_plan'));assert(shot.holds.some(h=>h.includes('performer')));assert.equal(state.generationAuthorized,false);
 });

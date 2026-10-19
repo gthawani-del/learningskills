@@ -1,0 +1,395 @@
+{
+  "date": "2026-10-19",
+  "baselineCommit": "02120b450e5be89ef8133ae890657b52600249e6",
+  "scope": "Adversarial music-video integration with existing project settings, production records and shared animatic; synthetic media/provider fixtures",
+  "beforeFix": {
+    "initialAdversarialCases": 6,
+    "initialFailures": 6,
+    "separateSharedFormatChangeReproduced": true,
+    "uiIssuesEstablishedBy": "baseline code review, validated by actual post-fix API/browser scenarios"
+  },
+  "fastQA": {
+    "mode": "fast",
+    "changed": [
+      "apps/director/tests/music-video-redteam.test.mjs"
+    ],
+    "selected": {
+      "tests": [
+        "apps/director/tests/music-video-redteam.test.mjs"
+      ],
+      "browsers": [
+        "music-video-browser",
+        "music-video-redteam-browser"
+      ],
+      "sql": false,
+      "reason": "Existing checks selected from module imports and affected browser surfaces."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.38,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 0.17,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.52,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 4.8,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 6.71,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "fullLocalQA": {
+    "mode": "full",
+    "changed": [],
+    "selected": {
+      "tests": [
+        "apps/director/tests/music-video-redteam.test.mjs",
+        "apps/director/tests/music-video.test.mjs",
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs"
+      ],
+      "browsers": [
+        "music-video-redteam-browser",
+        "music-video-browser",
+        "creative-brief-browser",
+        "v2-workspace",
+        "mobile-footer-browser",
+        "compact-proposal-browser",
+        "registry-browser",
+        "writing-browser",
+        "planning-ui-browser",
+        "department-browser",
+        "department-revision-browser",
+        "storyboard-browser",
+        "reference-browser",
+        "storyboard-production-browser",
+        "animatic-browser",
+        "animatic-audio-browser",
+        "animatic-audio-mp3-browser"
+      ],
+      "sql": true,
+      "reason": "Full release checks."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.36,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 81.58,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.43,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 6.99,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 6.76,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 3.91,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 6.55,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 8.9,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.71,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 3.79,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 6.67,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.4,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5.07,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 6.5,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 6.78,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 9.35,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 8.4,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.52,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.87,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 7.16,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 33.38,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "automatedCases": 738,
+  "adversarialCases": 11,
+  "browserFlows": 17,
+  "adversarialBrowser": {
+    "passed": true,
+    "excerptStartSeconds": 1,
+    "excerptEndSeconds": 2.5,
+    "audioClock": {
+      "time": 1.066809,
+      "frame": 1
+    },
+    "excerptStop": {
+      "time": 2.506398,
+      "paused": true,
+      "ended": false
+    },
+    "unreviewedSectionsPreserved": true,
+    "multiplePerformersPreserved": true,
+    "stalePerformerNotUpgraded": true,
+    "crossComponentSaveSucceeded": true,
+    "explicitShotRebindRequired": true,
+    "pendingSourceGuard": true,
+    "physicalMobileDevice": false,
+    "consoleErrors": [],
+    "httpErrors": [],
+    "paidCalls": 0
+  },
+  "standardMusicBrowser": {
+    "passed": true,
+    "desktopViewport": true,
+    "mobileViewport": true,
+    "physicalMobileDevice": false,
+    "deviceDraftSongSaveAndReload": true,
+    "savedAcrossReload": true,
+    "sourceUnchanged": true,
+    "missingSingerHeld": true,
+    "mobileEditorGeometry": {
+      "overflow": false,
+      "footerTop": 786,
+      "buttons": [
+        {
+          "text": "Save timing & roles",
+          "bottom": 428.3125,
+          "hit": true
+        },
+        {
+          "text": "Cancel edits",
+          "bottom": 428.3125,
+          "hit": true
+        }
+      ]
+    },
+    "consoleErrors": [],
+    "httpErrors": [],
+    "paidGenerations": 0
+  },
+  "sourceSha256": {
+    "apps/director/domain.mjs": "6f7ea2d1caae84432907a1a28d5c0e05fa491e4744c8bbaa886f8118bc388e27",
+    "apps/director/production-state.mjs": "8bcf1ef174128cd1220ad34e6994a10a1975b051e83d4151f95f4cbdae1c0387",
+    "apps/director/public/app.js": "b09a171d86fcae87b47f7d02645873299455766565edb3bf9fa675eaee3e4aab",
+    "apps/director/public/music-video-core.js": "ef5068a93b2996df0bb25139670e0c89479e52f00a26b3411165b6b731aa2045",
+    "apps/director/public/music-video-workspace.js": "704f29445aee946f5c4dd3c0c9a4eee78f25e0521d969ab216919ebec85f2b9b",
+    "apps/director/public/animatic-core.js": "b30581adc0487ade93e0fa0a5af7538166f05ae707c824215f8c1d27260f542d",
+    "apps/director/public/animatic-player.js": "4ef3aff6cf26a588c65c1e584b9b21209946c79e231ce1a92cee2d8ac4702100",
+    "apps/director/tests/department-fixture-server.mjs": "d35216ba58f38bb65608447288be44dc534a168d152a612048c4bba21b8bd4c1",
+    "apps/director/tests/storyboard-fixture-server.mjs": "9b6f58d10b281e648e256ae9cc9aa664f3c01e651d7fc6d79383c76002bad2eb",
+    "apps/director/tests/reference-fixture-server.mjs": "0b7d61d12291121d0f3346bbb54922165f344c76c6d0bf24e80c567b20e3248d",
+    "apps/director/tests/storyboard-production-fixture-server.mjs": "51071689c36c5efb68e2cf16492cd7ec589cc5f15541e842cdc6c5ae25cf5672",
+    "apps/director/tests/music-video-fixture-server.mjs": "59e880717741a2158ed99b5125c900e45ba071d4339cd7ec1911732c98f3ae6a",
+    "apps/director/tests/music-video.test.mjs": "070403f193ee273cb774e10fb08b50a7f05750f5d6b2574230a1afb399ffa573",
+    "apps/director/tests/music-video-redteam.test.mjs": "34ed0ea8c4ea800b6d188c11f21e6aa8ea95f1f3f3615090ce9eb468251a58e9",
+    "apps/director/tests/music-video-redteam-browser.py": "39d3aee1741c3299b018b88c670629203c4e15997c3972560ce482cebe77302f",
+    "scripts/test-director.mjs": "6673e7908e9163be80b367f038ec73077a1862a84fef908e27d951ce32eb1583",
+    "scripts/qa-director.mjs": "a48d2dd2076bf2f436df610214c374b8d132cde907e88c92009bf6a8bff5c30e",
+    "docs/MUSIC_VIDEO_PRODUCTION_ACCEPTANCE.md": "257e2a39bb3a7ec81ba2fd1223e9f19cefb2cc4e1ca0cab661e953148215baf2",
+    "docs/MUSIC_VIDEO_RED_TEAM_REVIEW_2026-10-19.md": "0c836ace9734c0cf72e7d6cc81d1c7f07469568e4952e9d4b13f5f85c3bdcd45"
+  },
+  "screenshotSha256": {
+    "music-video-song-mobile.png": "84ba6a5401ff5a2e6c1442ace44677cf77253df19779b9957364a0cd17976a88",
+    "music-video-song-mobile-editor.png": "cb81c494102556ebcddc4dcbd9cc8e248003b5c853c732b7decc4b56c0a7f2f4",
+    "music-video-current-brief-mobile.png": "e84055acb21a902754de4bd083a120bf713582a78746af243d7953586701c79b",
+    "music-video-redteam-mobile.png": "13280eb30eb3d4d27702df5c3542380ce3948eff280bc6a87cc97b8d06fb3bb6"
+  },
+  "newDependencies": 0,
+  "newMigrations": 0,
+  "paidCalls": 0,
+  "securitySettingsChanged": false,
+  "newAgentsSpawned": 0,
+  "deployedAccountVerified": false,
+  "physicalMobileDeviceVerified": false,
+  "actualGeneratedSingingQualityVerified": false,
+  "finishedMovieExportVerified": false,
+  "knownLimits": [
+    "Original duration remains explicitly user-reviewed browser metadata, not backend acoustic analysis.",
+    "No automatic song structure, vocal attribution, beat grid or singing alignment was added.",
+    "No real paid generation or final movie export quality is claimed.",
+    "Existing upload and record limits remain; below-one-second projects and above-900-second individual shots are rejected consistently.",
+    "Live configuration/account access and browser certificate trust require separate verification."
+  ]
+}

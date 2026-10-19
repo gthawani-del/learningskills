@@ -48,8 +48,8 @@ export function syntheticReferenceModel({ look = false } = {}) {
   };
 }
 
-export async function referenceFixture({ file, submitThrows = false, pollThrows = false, downloadFailures = 0, outputBytes, malformedOutput = false, terminalStatus = 'COMPLETED' } = {}) {
-  const f = await storyboardFixture({ file }), { store } = f;
+export async function referenceFixture({ projectSettings = {}, file, submitThrows = false, pollThrows = false, downloadFailures = 0, outputBytes, malformedOutput = false, terminalStatus = 'COMPLETED' } = {}) {
+  const f = await storyboardFixture({ projectSettings, file }), { store } = f;
   let project = patchProject(f.project, { expectedVersion: f.project.version, stage: 'cast' });
   project = await store.save(project, f.project.version);
   store.state.models = [syntheticReferenceModel(), syntheticReferenceModel({ look: true })];

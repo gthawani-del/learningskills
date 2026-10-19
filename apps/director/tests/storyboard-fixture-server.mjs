@@ -15,8 +15,8 @@ export function syntheticStoryboardModel() {
   return reviewedPlanningFixture(model, { operations: ['plan_storyboard'] });
 }
 
-export async function storyboardFixture({ file, queued = false, malformed = false, prepared = false, approveHandoff = false } = {}) {
-  const f = await departmentFixture({ file, approveDepartments: true }), { store } = f;
+export async function storyboardFixture({ projectSettings = {}, file, queued = false, malformed = false, prepared = false, approveHandoff = false } = {}) {
+  const f = await departmentFixture({ projectSettings, file, approveDepartments: true }), { store } = f;
   store.state.models = [syntheticStoryboardModel()];
   let project = patchProject(f.project, { expectedVersion: f.project.version, stage: 'storyboard' });
   await store.save(project, f.project.version);
