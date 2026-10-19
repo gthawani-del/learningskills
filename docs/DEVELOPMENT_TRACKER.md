@@ -42,6 +42,10 @@ The fixed bottom navigation covered the composer note by 17–32 pixels at narro
 
 [Evidence](evidence/MOBILE_FOOTER_FIX_2026-10-19.json): actual local Chromium geometry and interactions pass at 390×880, 390×844, 375×812, 360×640 and 390×520, with zero console/HTTP errors; 258 tests and the production build pass. Physical mobile devices and actual on-screen keyboards remain unverified.
 
+## User clarification: LLM writing is the default — 19 October 2026
+
+Most users should describe their idea and have the LLM write the treatment and script from the approved brief. Uploading a script is optional, never a prerequisite. Preserve uploaded originals and distinguish requested use, editing and adaptation. Track LLM-generated, user-supplied and mixed provenance without treating upload as proof of ownership. Both paths require the planned deterministic, version-bound originality/source-use checks; generated output is checked against permitted sources even with no uploaded reference. The LLM cannot approve its own originality. See the Bible's script entry/originality clarification and the blueprint user journey. Requirements recorded only: writing, the comparison corpus/scanner and approval gate remain unimplemented; no completion count changes.
+
 ## Current batch and dependencies
 
 - Audit: complete as an initial baseline; refine each row while implementing. Broad section coverage is not line-by-line certification.
@@ -92,7 +96,7 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | F010 | Interpret brief and ask necessary questions | 6 | partial | Compact proposal reuses the actual idea/settings and reviewed choices with optional one-field edits; missing optional details do not require a questionnaire. Bounded AI interpretation supports read-only actual deltas. Real LLM interpretation/question quality, attachment analysis, deadline/control coverage and deployed account checks remain unverified. |
 | F011 | Research and source-backed creative context | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F012 | Develop treatment and story arc | 6 | partial | Manual story editing and mock-tested planning adapter; no live allowance-backed AI planning workflow. |
-| F013 | Write screenplay and dialogue | 6 | missing | No complete executable workflow found; implement and verify before activation. |
+| F013 | Write screenplay and dialogue | 6 | missing | Default LLM writing from the approved brief; optional uploaded-script use/edit/adaptation with originals preserved. Implement versioned writing/review and deterministic originality/source-use checks for both paths; corpus, scanner, gate and live writing quality remain unverified. |
 | F014 | Script breakdown and production plan | 6 | partial | Structured scene/shot planning adapter only; no executed production breakdown or scheduling. |
 | F015 | Direct scene blocking and performance | 6 | missing | No complete executable workflow found; implement and verify before activation. |
 | F016 | Plan camera, lighting and coverage | 6 | partial | Manual camera/framing controls and isolated craft validator; contextual Director orchestration not connected. |

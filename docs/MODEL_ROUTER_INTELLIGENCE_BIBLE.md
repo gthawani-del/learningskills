@@ -1,12 +1,18 @@
 # Model Router Intelligence Bible
 
-Revision 2 • As of 17 October 2026 UTC • Review draft
+Revision 3 • As of 19 October 2026 UTC • Review draft
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
 This bible is a decision specification, not a deployed model router. No paid model execution, database change, application integration or deployment was performed to create it. No candidate has passed our execution or creative-quality tests. Official documentation, a valid schema, a connected account and a finished film are different evidence levels.
 
 Realism-specific production rules, original prompt templates, voice and character direction, evidence gates and the two-attempt policy are specified in the [Realism Intelligence Layer](REALISM_INTELLIGENCE_LAYER.md), incorporated here by reference. This companion is a planning specification; its media quality remains unvalidated.
+
+## Script entry and originality — user clarification, 19 October 2026
+
+The primary writing path is approved user brief → LLM treatment and screenplay → deterministic checks → user review → department planning. No script upload is required. Uploaded scripts are an optional alternative: preserve the supplied original and perform only requested editing or adaptation. Ask a focused question only if that intended use is unclear.
+
+Record LLM-generated, user-supplied and mixed provenance per version. User-supplied does not prove ownership. Both generated and supplied scripts require the planned originality/source-use gate before downstream production approval. Generated scripts need comparison against permitted sources even without uploaded references; an instruction to write originally or a model's self-assessment is not a check. Reports must bind exact script, corpus and policy versions, show coverage and unresolved findings, and become stale after relevant changes. Do not index other customers' private scripts in a shared corpus. No match detected within coverage is not universal originality certification. Semantic, translated and plot-level similarity remain limited and can require review. This records requirements only; the scanner, corpus and gate are not implemented by this update.
 
 ## Runtime routing/spending advancement — 18 October 2026
 
@@ -683,8 +689,8 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 - **Application operation, proposed:** `POST /api/projects/:id/scripts`.
 - **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
-- **Input → output:** treatment; cast; language; runtime → scene/action/dialogue script.
-- **Acceptance/limits:** Timing must later use measured audio; language quality test.
+- **Input → output:** approved brief; treatment; cast; language; runtime; optional supplied script → versioned scene/action/dialogue script; LLM writing is the default and upload is optional.
+- **Acceptance/limits:** Timing must later use measured audio; language quality test; deterministic version-bound originality/source-use checks for generated and supplied scripts with explicit comparison coverage and unresolved findings; no model self-clearance or universal originality claim.
 - **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
 - **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
 - **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
@@ -1645,8 +1651,8 @@ This JSON is the canonical machine-readable companion inside the same document: 
 ```json
 {
   "document": "Model Router Intelligence Bible",
-  "revision": 1,
-  "as_of": "2026-10-17 UTC",
+  "revision": 3,
+  "as_of": "2026-10-19 UTC",
   "status": "planning; no deployed router or approved production defaults",
   "provider_policy": {
     "fal": "agreed foundation; deployed credential execution untested",
@@ -2766,9 +2772,9 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
       "execution_type": "fal model",
       "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
-      "required_input": "treatment; cast; language; runtime",
-      "expected_output": "scene/action/dialogue script",
-      "limits_and_quality_rule": "Timing must later use measured audio; language quality test",
+      "required_input": "approved brief; treatment; cast; language; runtime; optional supplied script",
+      "expected_output": "versioned scene/action/dialogue script; LLM writing is the default and upload is optional",
+      "limits_and_quality_rule": "Timing must later use measured audio; language quality test; deterministic version-bound originality/source-use checks for generated and supplied scripts with explicit comparison coverage and unresolved findings; no model self-clearance or universal originality claim",
       "prerequisite": "Authorized saved project/version",
       "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",

@@ -1,6 +1,6 @@
 # Film Studio Blueprint Review Draft
 
-Revision: 2, reviewed 2026-10-17 UTC. Status: proposed design for discussion. Application implementation, database migrations, paid model tests and deployment require a later decision. This draft supersedes the local prototype as a proposed design basis; it does not represent implemented capabilities.
+Revision: 3, reviewed 2026-10-19 UTC. Status: proposed design for discussion. Application implementation, database migrations, paid model tests and deployment require a later decision. This draft supersedes the local prototype as a proposed design basis; it does not represent implemented capabilities.
 
 ## 1. Product decision
 
@@ -44,7 +44,7 @@ Public reference-product investigation has not exposed proprietary backend orche
 ## 4. User journey
 
 1. Create a film project: premise, audience, language, format, runtime and budget preference. Ask follow-up questions only for material ambiguities.
-2. Develop the story: treatment, dramatic progression, characters, screenplay and dialogue. Users can bring an existing script.
+2. Develop the story: the default path is LLM-written treatment, dramatic progression, characters, screenplay and dialogue from the user's approved brief. An uploaded script is an optional alternative, never a prerequisite for film creation.
 3. Approve cast and world: reference identities, voices, wardrobe, locations, props and visual language.
 4. Plan coverage: scene objectives, blocking, shots, camera/light intent, performance, sound and editorial relationships.
 5. Review a timed storyboard or animatic. Confirm whether the story reads before expensive motion work.
@@ -52,6 +52,8 @@ Public reference-product investigation has not exposed proprietary backend orche
 7. Review clips. Diagnose and replace the failed shot or segment while retaining accepted work.
 8. Assemble and refine the timeline, dialogue, music, ambience and effects.
 9. Review the cut, finish colour/captions/titles, verify the export and deliver a playable file.
+
+Script workflow clarification — user decision, 19 October 2026: most users are expected to describe their idea and have the LLM write the script. For optional uploaded scripts, preserve the original and distinguish use unchanged, requested editing and adaptation; ask only when the requested treatment is unclear. Record provenance as LLM-generated, user-supplied or mixed; user-supplied does not establish authorship or ownership. Both paths require version-bound deterministic originality checks and source-use review before downstream production approval. LLM-written scripts must be checked against permitted comparison sources even when the user supplied no reference script; an LLM's originality claim cannot clear its own output. Comparison coverage and unresolved findings must be visible, with no promise of universal plagiarism detection. These are planning requirements, not implemented checks.
 
 Users should see Story, Cast & World, Storyboard, Production, Edit, and Review & Export. Each view shows the current artifact/version, approval status, next required decision and relevant spending state. Production activity is closed by default and opens on request. The detailed desktop/mobile interaction contract is in [Product Experience Specification](PRODUCT_EXPERIENCE_SPEC.md). Departments work behind these task-based views. Advanced controls expose shot specifications and model choice without requiring a public node editor.
 

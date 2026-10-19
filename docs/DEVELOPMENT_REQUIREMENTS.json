@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18",
+  "updated": "2026-10-19",
   "baselineCommit": "76960d5e594907fd3792ca6df79276bf54f01249",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
   "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100\u2013F105 remain explicit non-promises.",
@@ -270,7 +270,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "gap": "Default LLM writing from the approved brief; optional uploaded-script use/edit/adaptation with originals preserved. Implement versioned writing/review and deterministic originality/source-use checks for both paths; corpus, scanner, gate and live writing quality remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F013",
       "dependencies": [
         "versioned-project-records",
@@ -3842,9 +3842,9 @@
     "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md": "0317e32bebb1216ea90aad2febc42169035c4c37154227afd79c293faea996af",
     "REALISM_INTELLIGENCE_LAYER.md": "52eaadf19e4b6b08de1e6bbb94b5d0325f89b2672fc9e90aa46584bfd352df37",
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "21700a974f1efc64f891aac5405b176b1cbf3209fac4a62e4fea161206b5e529",
-    "FILM_STUDIO_BLUEPRINT.md": "52bbfe2ae5b69745dd4b23e730144e18a2ba94a0e820635c8aac60ae97945be0",
+    "FILM_STUDIO_BLUEPRINT.md": "773f9c38e138d1ffa5e628b9a7b953e6cf29e8e3de9bbcf76d1cd30f51828830",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "1f24cdef08dc1358948b5a979c576d2224f6a4ef181881ec262a4cd1673e5099"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "ce81a00f51f984db76605549098baa7eebc7836b3963ab02d3498eab59774ffb"
   },
   "currentBatch": "Compact prefilled briefing UX correction:258 tests/build pass; actual local device, v2 workspace and simulated-provider delta-review browsers pass. Optionalsettingsdrawer, one editor, no16fieldquestionnaire, protectedapproval/recovery. No new DBmigration, paidcalls or production acceptance."
 }
