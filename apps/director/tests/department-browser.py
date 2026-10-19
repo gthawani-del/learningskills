@@ -1,3 +1,4 @@
+import os
 """Actual local Chromium + API interactions, with server-side simulated AI only.
 Mobile viewport coverage is not physical-device or virtual-keyboard verification.
 """
@@ -17,7 +18,7 @@ try:
         raise AssertionError('Department fixture failed to start: ' + line + server.stdout.read())
     base = 'http://127.0.0.1:' + str(info['port'])
     with sync_playwright() as p:
-        browser = p.chromium.launch(executable_path='/usr/bin/chromium', args=['--no-sandbox', '--disable-dev-shm-usage'])
+        browser = p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'), args=['--no-sandbox', '--disable-dev-shm-usage'])
         page = browser.new_page(viewport={'width': 1440, 'height': 1000})
         page.set_default_timeout(15000)
         errors, http, passed = [], [], []

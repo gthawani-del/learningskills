@@ -7,7 +7,7 @@ out=Path('test-results'); out.mkdir(exist_ok=True)
 clip=out/'qa-reference.mp4'
 subprocess.run(['ffmpeg','-y','-f','lavfi','-i','testsrc2=size=640x360:rate=24','-t','3','-c:v','libx264','-pix_fmt','yuv420p',str(clip)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+ b=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
  c=b.new_context(viewport={'width':1440,'height':1000},ignore_https_errors=False)
  page=c.new_page(); page.set_default_timeout(12000); errors=[]; console=[]; failed=[]; page.on('console',lambda m: console.append({'type':m.type,'text':m.text}) if m.type in ['error','warning'] else None); page.on('response',lambda r: failed.append({'status':r.status,'url':r.url}) if r.status>=400 else None); page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(base); page.locator('#premise').fill('A station keeper finds a letter from tomorrow.'); page.locator('#start-form button[type=submit]').click()

@@ -8,7 +8,7 @@ server=subprocess.Popen(['node','--input-type=module','-e',code],cwd=root,stdout
 try:
  info=json.loads(server.stdout.readline());url='http://127.0.0.1:'+str(info['port'])
  with sync_playwright() as p:
-  browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
+  browser=p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--disable-dev-shm-usage'])
   page=browser.new_page(viewport={'width':390,'height':880});page.set_default_timeout(12000);errors=[];http=[]
   page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None);page.on('response',lambda r:http.append({'status':r.status,'url':r.url}) if r.status>=400 else None)
   page.goto(url);page.locator('#premise').fill('A station keeper finds a letter from tomorrow.');page.locator('#start-form button[type=submit]').click();page.locator('[data-edit-brief-field=purpose]').first.click();page.locator('#compact-field-editor [name=value]').fill('A restrained story about choosing whether to trust tomorrow.');page.locator('#compact-field-editor button[type=submit]').click();page.locator('#approve-direction').click();expect(page.locator('#continue-direction')).to_be_visible()

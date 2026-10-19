@@ -1,3 +1,4 @@
+import os
 """Local HTTP/Chromium storyboard frames with server-side simulated output.
 No main API interception or paid generation; viewport checks are not phone tests.
 """
@@ -17,7 +18,7 @@ try:
         raise AssertionError('Storyboard production fixture failed: ' + line + server.stdout.read())
     base = 'http://127.0.0.1:' + str(info['port'])
     with sync_playwright() as p:
-        browser = p.chromium.launch(executable_path='/usr/bin/chromium', args=['--no-sandbox', '--disable-dev-shm-usage'])
+        browser = p.chromium.launch(executable_path=os.environ.get('DIRECTOR_CHROMIUM_PATH','/usr/bin/chromium'), args=['--no-sandbox', '--disable-dev-shm-usage'])
         context = browser.new_context(viewport={'width': 1440, 'height': 1000})
         context.add_cookies([{'name': 'director_session', 'value': info['session'], 'url': base, 'httpOnly': True, 'sameSite': 'Strict'}])
         page = context.new_page()
