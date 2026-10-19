@@ -2,6 +2,7 @@ import {randomUUID} from 'node:crypto';
 import {hash, fail} from './domain.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
+import {departmentPlanningContext} from './public/department-plan-core.js';
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const positive = n => Number.isSafeInteger(n) && n > 0;
@@ -64,6 +65,7 @@ export function authorizeSpending(state, command, {model, now}) {
  current(project, command.expectedVersion);
  const record = (state.quotes || []).find(q => q.id === command.quoteId && q.projectId === project.id && q.actorId === command.actorId);
  if (!record) fail(404, 'Persisted quote not found.');
+ if(project.departmentPlanning&&departmentPlanningContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).departments.some(unit=>!unit.approved))fail(409,'Review the current department plans before authorizing media production. Planning approval does not approve generated assets.');
  const time = checkQuote(project, record.quote, record.input, model, now);
  const finish = command.finishReserveMicroUsd;
  if (!positive(command.maxMicroUsd) || !Number.isSafeInteger(finish) || finish < 0 || finish > command.maxMicroUsd || !Number.isSafeInteger(record.quote.totalMicroUsd + finish) || command.maxMicroUsd < record.quote.totalMicroUsd + finish) fail(400, 'The generation cost cap must cover the quote and finish reserve in integer USD micro-units.');

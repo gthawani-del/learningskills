@@ -1,5 +1,5 @@
 import {hash, fail} from './domain.mjs';
-const operations = new Set(['initial_plan', 'revise_plan', 'interpret_brief', 'write_script', 'revise_script']);
+const operations = new Set(['initial_plan', 'revise_plan', 'interpret_brief', 'write_script', 'revise_script', 'plan_departments']);
 const digest = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
 export function planningScope(project, approvals = []) {
  if (!project || typeof project !== 'object' || !Array.isArray(approvals)) fail(400, 'A project and approved decisions are required.');
@@ -7,6 +7,7 @@ export function planningScope(project, approvals = []) {
  if (project.creativeBrief) brief.creativeBrief = project.creativeBrief;
  if (project.briefExplicitFields) brief.briefExplicitFields = project.briefExplicitFields;
  if (project.screenplay) brief.screenplay = project.screenplay;
+ if (project.departmentPlanning) brief.departmentPlanning = project.departmentPlanning;
  const latest = new Map();
  for (const decision of approvals) {
   if (typeof decision?.artifactId !== 'string' || !Number.isSafeInteger(decision.version) || decision.version < 1) continue;

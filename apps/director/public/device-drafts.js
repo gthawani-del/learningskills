@@ -1,3 +1,4 @@
+import {applyDepartmentCommand} from './department-plan-core.js';
 import {sceneChanged,briefChanged} from './revision-impact.js';
 import {applyScreenplayProjectCommand} from './screenplay-project.js';
 // Explicit browser-only drafts. These records never grant cloud access or authorize spending.
@@ -21,3 +22,5 @@ export async function patchDevice(previous,fields){return saveDevice(draftRevisi
 export async function commandScreenplayDevice(previous,command){const next=applyScreenplayProjectCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}
 export async function addDeviceAsset(project,file,metadata){const d=await db();const asset={id:crypto.randomUUID(),projectId:project.id,name:file.name,mime:file.type||(file.name.endsWith('.md')?'text/markdown':'application/octet-stream'),size:file.size,version:1,...metadata,blob:file};return new Promise((resolve,reject)=>{const tx=d.transaction('assets','readwrite');tx.objectStore('assets').put(asset);tx.oncomplete=()=>resolve(asset);tx.onabort=tx.onerror=()=>reject(Error('Could not store this file on your device.'));});}
 export async function deviceAssets(projectId){return (await all('assets')).filter(a=>a.projectId===projectId);}
+
+export async function commandDepartmentsDevice(previous,command){const next=applyDepartmentCommand(previous,command,previous.approvals||[]);return next.version===previous.version?previous:saveDevice(next,previous.version);}

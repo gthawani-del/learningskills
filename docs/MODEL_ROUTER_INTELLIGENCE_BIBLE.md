@@ -1,16 +1,30 @@
 # Model Router Intelligence Bible
 
-Revision 4 • As of 19 October 2026 UTC • Review draft
+Revision 5 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
-This bible is a decision specification, not a deployed model router. No paid model execution, database change, application integration or deployment was performed to create it. No candidate has passed our execution or creative-quality tests. Official documentation, a valid schema, a connected account and a finished film are different evidence levels.
+This bible separates the decision specification and historical candidate research from the implemented contracts recorded in the current advancement sections below. The original research did not execute paid models or validate creative outputs; documentation updates do not activate candidates or certify production quality. Official documentation, a valid schema, implemented request handling, a connected account and a finished film are different evidence levels.
 
 Realism-specific production rules, original prompt templates, voice and character direction, evidence gates and the two-attempt policy are specified in the [Realism Intelligence Layer](REALISM_INTELLIGENCE_LAYER.md), incorporated here by reference. This companion is a planning specification; its media quality remains unvalidated.
 
 ## Current provider configuration contract — 19 October 2026
 
 The current user instruction applies uniformly to OpenAI and fal: Vercel stores server-only provider keys; the admin/Supabase registry stores reviewed models, task bindings, capabilities, prices and evidence; the router selects a suitable reviewed route using task, quality, cost and project constraints. A deployment-wide OpenAI model name is no longer used. See [Model Registry Architecture](MODEL_REGISTRY_ARCHITECTURE.md) for the implemented draft/publication lifecycle, exact task coverage, scoped authorizations and remaining adapter limits. Historical endpoint candidates below are research records, not activated routes.
+
+## Point 4 department-planning implementation — 19 October 2026
+
+The current approved structured brief and source-current approved screenplay now support versioned typed department plans. The complete coverage is producing; direction; script breakdown/research; casting/identity; look/wardrobe/grooming; locations/sets/props/product; camera; lighting; voice/performance; sound; music; continuity; storyboard; animatic; production/animation/VFX; editorial/color/mix/captions/delivery; and rights/consent/factual review. These are 17 responsibilities sharing one project baseline, not a requirement for 17 paid calls or separately deployed agents.
+
+Each plan records applicability and rationale, practical requirements and proposed/user decisions scoped to existing scene/character IDs, handoffs and acceptance checks. All known reviewed brief fields reach the relevant units with their explicit/inferred provenance preserved; general constraints reach every unit. The whole script, including its ending, remains authoritative. A role may be an off-screen narrator, so written-character presence alone cannot mandate on-screen identity/wardrobe generation. Explicit original-vocal, product/claim and no-on-screen-host constraints remain visible. No demographic appearance/accent, song analysis, asset, right, real timing or cost is invented from a name, filename or stereotype. Craft guidance and its limits are recorded in [Department Planning Knowledge](DEPARTMENT_PLANNING_KNOWLEDGE.md).
+
+The current endpoints are `GET/POST /api/projects/:id/department-plans` for free rule preparation, manual updates and acknowledged one-unit source refresh, plus `POST /api/projects/:id/department-plans/apply-proposal` for explicit application of a completed saved project-owned model proposal. Preparation fills missing plans without overwriting existing work. The proposal application checks exact project/source/review context; generated proposals preserve currently approved department documents and existing user-selected choices. Plan approval binds `department:<id>` and its exact version, current source and a planning-only acknowledgement.
+
+Paid department reasoning is a separate sixth planning operation: `plan_departments`, mapped to registry task `department_planning`. Its `director-planning-v4` request/schema/guidance contract is opt-in through a reviewed model profile and fresh operation-specific execution/quality evidence. The previous five operations retain their v3 request contracts; writing eligibility does not grant department eligibility. Preview the route and estimate at `GET /api/projects/:id/planning/plan_departments`, then use the existing operation-specific consent/reservation/call lifecycle. No automatic model switch, paid retry, new asset approval or generation authorization follows from plan preparation or approval. Full request/context bounds remain enforced; duplicate opaque source/decision signatures use SHA-256 bindings without removing the full screenplay, supplied sources, plans or knowledge from context. Existing paid calls retain their exact saved request/knowledge contract for recovery.
+
+Source changes mark earlier plans stale and retain their history. Focused edits version the selected unit and preserve neighboring work. **Point 5’s automatic targeted interdepartment and downstream-production invalidation remains pending:** these conservative source checks and explicit refreshes do not yet provide that dependency-aware behavior.
+
+This implementation creates reviewable plans and guarded reasoning proposals. It does not create or approve actual casting/look images, voice auditions, storyboard frames, playable animatics, song analysis, footage or finished films. Those outputs, real-model judgement/cost, quality pilots and the two-attempt target remain separate production/release work. The functions below retain their full product requirements; F014–F018’s current planning subset shares this department endpoint/operation rather than the earlier proposed dedicated paths.
 
 ## Script entry and originality — user clarification, 19 October 2026
 
@@ -79,7 +93,7 @@ The two-attempt quality target must be reported both per defined work unit and a
 
 ### Implementation status
 
-These are mandatory requirements, not a claim that all departments are operational. Generated casting/look choices, voice auditions, generated storyboards and a timed animatic remain incomplete in the current application. Existing record/version and review controls are foundations. The tracker must retain missing/partial status until corresponding end-to-end evidence exists.
+These remain mandatory production requirements. Point 4 now supplies all 17 typed department plans, versioned rule/manual records, guarded model proposals and planning-only approvals from the current approved sources. Actual casting/look assets, voice auditions, generated storyboard frames and a playable timed animatic remain incomplete. Point 5’s targeted dependency invalidation and actual production evidence are still required. The tracker must retain missing/partial status until the corresponding end-to-end evidence exists.
 
 ## Per-user, per-creation cost visibility and economical routing — 18 October 2026
 
@@ -549,7 +563,7 @@ The matrix covers all 105 previously inventoried functions and explicitly retain
 
 Priority checks before choosing production defaults:
 
-- OpenAI credential/model entitlement, structured artifact handling and comparative screenplay/department tests.
+- Production OpenAI credential/model entitlement and real comparative screenplay/department quality/cost tests; implemented typed artifact handling and synthetic tests do not provide this evidence.
 - Direct fal song understanding versus an approved alternative; actual full-song limits, singing transcription/alignment and reference continuity.
 - Hardest mandatory shot/performance and exact voice/audio timing; visible singing is a separate release gate.
 - Actual hosted render, media retrieval/storage, cost/finishing reserve and interruption reconciliation.
@@ -704,57 +718,57 @@ Common recovery reference used below: R1 saved-version/permission authority; R2 
 
 #### F014 Script breakdown and production plan
 
-- **Application operation, proposed:** `POST /api/projects/:id/breakdown`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
+- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** script version → cast/locations/props/tasks/dependencies.
-- **Acceptance/limits:** App validates references and DAG; model does not schedule money.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Current subset: typed source-linked breakdown/production requirements, applicability and handoffs from all approved scenes; exact references and bounds are validated. An executable production schedule, media execution and complete workflow estimates are not established by the plan.
+- **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
+- **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
+- **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F015 Direct scene blocking and performance
 
-- **Application operation, proposed:** `POST /api/projects/:id/direction`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
+- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** scene objective; intended state → blocking; emotional beats; performance contract.
-- **Acceptance/limits:** Mandatory behavior distinct from creative variation.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Current subset: reviewable scene-purpose, blocking and performance requirements; source facts and proposed choices remain distinct. Mandatory behavior needs later shot contracts and observed performance review.
+- **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
+- **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
+- **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F016 Plan camera, lighting and coverage
 
-- **Application operation, proposed:** `POST /api/projects/:id/coverage`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
+- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** blocking; world; dramatic purpose → shot specs and coverage rationale.
-- **Acceptance/limits:** Executable controls separate from descriptive cues.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Current subset: source-linked camera/light/coverage requirements and handoffs. Descriptive lens/motion/light intent is separate from verified endpoint controls and actual generated coverage.
+- **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
+- **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
+- **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F017 Plan continuity and character knowledge
 
-- **Application operation, proposed:** `POST /api/projects/:id/continuity/plan`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
+- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** approved script; intended state → intended start/end states and dependencies.
-- **Acceptance/limits:** Generated discrepancy never edits intended state.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Automatic targeted interdepartment/downstream invalidation remains Point 5 work.
+- **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
+- **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
+- **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F018 Create sound/music cue plan
 
-- **Application operation, proposed:** `POST /api/projects/:id/sound/plan`.
-- **Execution binding:** `POST https://api.openai.com/v1/responses; model=gpt-6.1-sol` (O01). D: official OpenAI documentation inspected; account access/execution/quality untested.
+- **Application operation:** `GET/POST /api/projects/:id/department-plans`; saved model-proposal application at `POST /api/projects/:id/department-plans/apply-proposal`; paid reasoning uses planning operation `plan_departments`.
+- **Execution binding:** free versioned rule/manual path, or a separately reviewed registry-selected OpenAI Responses model for `department_planning` using the v4 contract. O01 remains a historical research candidate, not an activated or hardcoded model.
 - **Input → output:** scene/shot plan; approved audio → timed cue intentions and silence.
-- **Acceptance/limits:** Actual timing requires measurement; not speculative precision.
-- **Prerequisite:** Authorized saved project/version. **Cost basis:** OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply.
-- **Recovery:** Common recovery contract R1–R6; preserve accepted work; reconcile paid unknowns before resubmit. **Release gate:** Direct OpenAI access, structured artifact validation and writing/department evaluations pending.
-- **Alternative:** M01 only if OpenRouter-through-fal is explicitly approved.
+- **Acceptance/limits:** Current subset: source-linked sound/music intentions, source decisions, cue requirements and silence. Exact cue timing, song analysis, measured speech and audiovisual quality require separate media evidence.
+- **Prerequisite:** Current approved structured brief and source-current approved screenplay; exact project/review context. **Cost basis:** Free rule/manual preparation; paid reasoning uses current reviewed registry token rates and a separately authorized bounded reservation, not the historical O01 price.
+- **Recovery:** Preserve accepted plans and user choices; reconcile known/uncertain paid calls before any new authorization. **Release gate:** Reviewed production department model and actual department-quality/cost evaluation pending. Typed plans do not establish identity/look/voice, media, rights or complete downstream-production acceptance.
+- **Alternative:** Historical M01 intermediary research remains optional and unactivated; no fal department-reasoning adapter or automatic fallback is implied.
 - **Responsibility/source:** Media/AI backend; FILM_STUDIO_BLUEPRINT.md sections 4–9; PRODUCT_EXPERIENCE_SPEC.md sections 6,10.
 
 #### F019 Translate/localize approved dialogue
@@ -2800,106 +2814,141 @@ This JSON is the canonical machine-readable companion inside the same document: 
       "id": "F014",
       "category": "Story and filmmaking intelligence",
       "functionality": "Script breakdown and production plan",
-      "application_operation": "POST /api/projects/:id/breakdown",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "GET/POST /api/projects/:id/department-plans",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free versioned rule/manual path or reviewed registry-selected OpenAI Responses profile for plan_departments",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "script version",
       "expected_output": "cast/locations/props/tasks/dependencies",
-      "limits_and_quality_rule": "App validates references and DAG; model does not schedule money",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Current subset: typed source-linked breakdown/production requirements, applicability and handoffs from all approved scenes; exact references and bounds are validated. An executable production schedule, media execution and complete workflow estimates are not established by the plan.",
+      "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
+      "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production department model, real-output/cost validation and actual downstream artifact evidence remain pending; planning-only approvals do not clear media or rights",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Historical M01 optional intermediary candidate; no department adapter or automatic fallback enabled",
+      "historical_candidate_reference": "O01",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
+      "planning_operations": [
+        "plan_departments"
+      ],
+      "request_version": "director-planning-v4",
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
     },
     {
       "id": "F015",
       "category": "Story and filmmaking intelligence",
       "functionality": "Direct scene blocking and performance",
-      "application_operation": "POST /api/projects/:id/direction",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "GET/POST /api/projects/:id/department-plans",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free versioned rule/manual path or reviewed registry-selected OpenAI Responses profile for plan_departments",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "scene objective; intended state",
       "expected_output": "blocking; emotional beats; performance contract",
-      "limits_and_quality_rule": "Mandatory behavior distinct from creative variation",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Current subset: reviewable scene-purpose, blocking and performance requirements; source facts and proposed choices remain distinct. Mandatory behavior needs later shot contracts and observed performance review.",
+      "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
+      "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production department model, real-output/cost validation and actual downstream artifact evidence remain pending; planning-only approvals do not clear media or rights",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Historical M01 optional intermediary candidate; no department adapter or automatic fallback enabled",
+      "historical_candidate_reference": "O01",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
+      "planning_operations": [
+        "plan_departments"
+      ],
+      "request_version": "director-planning-v4",
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
     },
     {
       "id": "F016",
       "category": "Story and filmmaking intelligence",
       "functionality": "Plan camera, lighting and coverage",
-      "application_operation": "POST /api/projects/:id/coverage",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "GET/POST /api/projects/:id/department-plans",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free versioned rule/manual path or reviewed registry-selected OpenAI Responses profile for plan_departments",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "blocking; world; dramatic purpose",
       "expected_output": "shot specs and coverage rationale",
-      "limits_and_quality_rule": "Executable controls separate from descriptive cues",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Current subset: source-linked camera/light/coverage requirements and handoffs. Descriptive lens/motion/light intent is separate from verified endpoint controls and actual generated coverage.",
+      "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
+      "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production department model, real-output/cost validation and actual downstream artifact evidence remain pending; planning-only approvals do not clear media or rights",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Historical M01 optional intermediary candidate; no department adapter or automatic fallback enabled",
+      "historical_candidate_reference": "O01",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
+      "planning_operations": [
+        "plan_departments"
+      ],
+      "request_version": "director-planning-v4",
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
     },
     {
       "id": "F017",
       "category": "Story and filmmaking intelligence",
       "functionality": "Plan continuity and character knowledge",
-      "application_operation": "POST /api/projects/:id/continuity/plan",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "GET/POST /api/projects/:id/department-plans",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free versioned rule/manual path or reviewed registry-selected OpenAI Responses profile for plan_departments",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "approved script; intended state",
       "expected_output": "intended start/end states and dependencies",
-      "limits_and_quality_rule": "Generated discrepancy never edits intended state",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Current subset: versioned intended-state/continuity requirements and review checks. Generated discrepancies cannot silently rewrite intent. Automatic targeted interdepartment/downstream invalidation remains Point 5 work.",
+      "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
+      "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production department model, real-output/cost validation and actual downstream artifact evidence remain pending; planning-only approvals do not clear media or rights",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Historical M01 optional intermediary candidate; no department adapter or automatic fallback enabled",
+      "historical_candidate_reference": "O01",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
+      "planning_operations": [
+        "plan_departments"
+      ],
+      "request_version": "director-planning-v4",
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
     },
     {
       "id": "F018",
       "category": "Story and filmmaking intelligence",
       "functionality": "Create sound/music cue plan",
-      "application_operation": "POST /api/projects/:id/sound/plan",
-      "execution_reference": "O01",
-      "external_endpoint_or_tool": "POST https://api.openai.com/v1/responses; model=gpt-6.1-sol",
-      "execution_type": "fal model",
-      "evidence": "D: official OpenAI documentation inspected; account access/execution/quality untested",
+      "application_operation": "GET/POST /api/projects/:id/department-plans",
+      "execution_reference": "",
+      "external_endpoint_or_tool": "Free versioned rule/manual path or reviewed registry-selected OpenAI Responses profile for plan_departments",
+      "execution_type": "application plus optional reviewed OpenAI planning model",
+      "evidence": "Implemented typed/versioned planning and guarded synthetic-provider contract checks; real department model execution/quality unvalidated",
       "required_input": "scene/shot plan; approved audio",
       "expected_output": "timed cue intentions and silence",
-      "limits_and_quality_rule": "Actual timing requires measurement; not speculative precision",
-      "prerequisite": "Authorized saved project/version",
-      "billing_basis": "OpenAI standard short-context input USD 2 and output USD 10 per 1M tokens; context/cache/tools/modifiers apply",
+      "limits_and_quality_rule": "Current subset: source-linked sound/music intentions, source decisions, cue requirements and silence. Exact cue timing, song analysis, measured speech and audiovisual quality require separate media evidence.",
+      "prerequisite": "Current approved structured brief and source-current approved screenplay; exact project/review context",
+      "billing_basis": "Free rule/manual preparation; paid department reasoning uses reviewed registry token rates and separately authorized complete-request reservation",
       "recovery": "Common recovery contract R1\u2013R6; preserve accepted work; reconcile paid unknowns before resubmit",
-      "release_gate_or_blocker": "Direct OpenAI access, structured artifact validation and writing/department evaluations pending",
+      "release_gate_or_blocker": "Reviewed production department model, real-output/cost validation and actual downstream artifact evidence remain pending; planning-only approvals do not clear media or rights",
       "owner": "Media/AI backend",
       "requirement_source": "FILM_STUDIO_BLUEPRINT.md sections 4\u20139; PRODUCT_EXPERIENCE_SPEC.md sections 6,10",
       "previous_candidate_binding": "openrouter/router",
-      "alternative_route": "M01 only if OpenRouter-through-fal is explicitly approved"
+      "alternative_route": "Historical M01 optional intermediary candidate; no department adapter or automatic fallback enabled",
+      "historical_candidate_reference": "O01",
+      "proposal_application_operation": "POST /api/projects/:id/department-plans/apply-proposal",
+      "planning_operations": [
+        "plan_departments"
+      ],
+      "request_version": "director-planning-v4",
+      "implementation_status": "Typed planning subset implemented and locally tested; media production and real-model quality unvalidated"
     },
     {
       "id": "F019",
@@ -4755,7 +4804,7 @@ The proposed screenplay process, task assignments, recipe choices, cost examples
 
 Change procedure: update this document's revision, checked-at date and provenance; refresh affected schema/prices; revise route/task bindings and limitations; update the embedded JSON in the same change; verify counts, references and arithmetic; review capability/quality changes separately from metadata changes. Never silently convert an untested candidate into an approved production default. Reinspect live rates and permissions before answering a scenario as a current executable quote.
 
-No application or database changes, paid API calls or deployment were performed for this document.
+The original research snapshot performed no application/database changes, paid API calls or deployment. Later implementation deltas are explicitly identified near the beginning; none promotes an untested candidate or replaces actual generated-output review.
 
 
 ## 14. Incorporated filmmaking craft — revision 2

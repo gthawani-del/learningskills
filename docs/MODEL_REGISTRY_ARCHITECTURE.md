@@ -35,10 +35,30 @@ An OpenAI planning estimate is operation-specific:
 | `revise_plan` | `film_plan_revision` | OpenAI Responses, plan revision proposal |
 | `write_script` | `screenplay_writing` | OpenAI Responses, screenplay proposal |
 | `revise_script` | `screenplay_revision` | OpenAI Responses, scoped screenplay proposal |
+| `plan_departments` | `department_planning` | OpenAI Responses, all-17-department plan proposal; separately reviewed v4 contract |
 
 `GET /api/projects/:id/planning/:operation` previews that task. The existing `/planning` route defaults to brief interpretation. Planning allowances record the operation and selected model/profile. The UI sends the displayed model ID and fingerprint as expectations; a changed route requires a refreshed review. New allowances are for one operation; historical operation-less allowances retain their original scope. A future multi-operation or multi-model allowance needs its own explicit authorization contract.
 
 Starting or resuming a call uses its authorized model, not whichever candidate now ranks first. A price/profile/scope change holds new submission. A failed or uncertain request never triggers a hidden model switch or paid retry. Known provider requests remain inspectable and reconcilable using their saved request/profile snapshots.
+
+## Point 4: department planning
+
+The five earlier operations retain their `director-planning-v3` request contracts and schema hash. `plan_departments` is an additive sixth operation using `director-planning-v4`. A registry profile does not inherit eligibility by supporting writing or film planning: it must explicitly declare `plan_departments` and `department_planning`, the separate reviewed schema fingerprint, a fresh operation binding, execution/quality evidence and the existing token/price/retention controls. Profiles declaring the new operation use the department schema fingerprint, which covers its typed schema, complete versioned craft guidance and request-context digest format. The Backoffice registry read response exposes both implemented contract hashes; those hashes establish compatibility, not benchmark approval. Earlier saved v3 calls retain their exact requests for recovery.
+
+The current approved structured brief and approved, source-current screenplay are prerequisites. The source-comparison review has its existing limited-coverage boundary; it is not legal or universal originality clearance. The planner reads the whole script and all known reviewed brief fields, including explicit/inferred provenance, supplied product restrictions, original-vocal decisions and casting constraints. It covers these stable responsibilities:
+
+`producing`, `direction`, `script_breakdown`, `casting`, `look`, `locations`, `camera`, `lighting`, `voice`, `sound`, `music`, `continuity`, `storyboard`, `animatic`, `vfx`, `editorial`, `rights`.
+
+Each typed document has applicability and rationale, a summary, source-linked requirements/choices, handoffs and acceptance checks. Source IDs must exist in the bound screenplay. New model choices remain proposed or need a decision; the model cannot select an identity/voice, invent assets/permissions or replace explicit user choices. Casting/look start with conditional visibility review because the script schema does not distinguish an off-screen narrator from an on-screen character through a structured field. All units remain represented, including those requiring an explicit non-applicability reason. See [Department Planning Knowledge](DEPARTMENT_PLANNING_KNOWLEDGE.md).
+
+Two paths remain distinct:
+
+- **Free rules and manual editing:** `GET/POST /api/projects/:id/department-plans` supports `prepare`, `update` and acknowledged `refresh`. Preparation fills missing units from grounded facts and reviewed craft rules; it does not overwrite existing plans. An explicit refresh updates one unit against the new source and retains still-valid user-selected planning choices. No provider call or media generation is started.
+- **Paid reasoning proposal:** preview `GET /api/projects/:id/planning/plan_departments`, obtain the operation-specific estimate/allowance, then use the existing planning-call lifecycle. Apply a completed project-owned saved proposal through `POST /api/projects/:id/department-plans/apply-proposal` with the expected project version and call ID. Exact current source/decision context is checked before application; persistence also binds approval ordering. Currently approved plans and existing explicit user choices must remain unchanged in a generated proposal.
+
+The request retains the complete brief, screenplay, raw supplied sources, current department documents and guidance. Duplicate opaque department source/decision signatures are sent as SHA-256 bindings, rather than repeating their full canonical content. Complete-request byte/token bounds still hold; oversize input is held without silently deleting source material or increasing authorization. A known paid call is recovered against its saved knowledge pack, never silently reinterpreted under a newer one.
+
+Plan approvals bind `department:<id>` and its exact version, require current approved source and an explicit planning-only acknowledgement, and remain separate from media/identity/voice/rights/cost approvals. Source changes preserve earlier plans as stale; they do not regenerate them. A focused department edit changes that unit’s version and leaves neighboring records intact. **Point 5’s automatic targeted invalidation of dependent departments and later production artifacts remains pending.** The existing conservative source-staleness checks do not complete that work.
 
 ## Cost and recovery
 
@@ -56,6 +76,8 @@ This batch manages both providers through one reviewed registry lifecycle. It do
 | `bytedance/seedream/v5/pro/edit` | `image_edit` |
 | `elevenlabs/tts/eleven-v4` | `speech_synthesis` |
 
-Other valid fal endpoint identities can be researched and saved as drafts. Publication for execution requires a reviewed implemented adapter, exact schema hash, supported task/input configuration and actual test/quality evidence. OpenAI functions outside the five implemented planning operations, including separate department planning, also need their own schemas, adapters and acceptance checks. Nothing in this document declares them complete.
+Other valid fal endpoint identities can be researched and saved as drafts. Publication for execution requires a reviewed implemented adapter, exact schema hash, supported task/input configuration and actual test/quality evidence. OpenAI functions outside the six listed planning operations still need their own schemas, adapters and acceptance checks.
+
+Point 4 implements department **planning records, review and proposal handling**. It does not produce selected casting images, look/reference assets, voice auditions, actual storyboard frames, a playable animatic, footage, song analysis or a finished film. The plans identify those tasks and later approval evidence. Real-model department judgement, media quality and the two-attempt target require separate controlled production validation.
 
 No real paid call or model-quality pilot is implied by local synthetic tests. Vercel/deployed account checks remain deferred; physical mobile and real generated-output review remain outstanding. Default generation pause and inactive native model records remain unchanged by installing the migration.

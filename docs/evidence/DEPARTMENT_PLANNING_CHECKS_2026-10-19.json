@@ -1,0 +1,703 @@
+{
+  "date": "2026-10-19",
+  "scope": "Step 6 Point 4 department planning; local application/browser, simulated providers, isolated SQL and separate native metadata verification",
+  "tests": {
+    "command": "npm test",
+    "tests": 427,
+    "passed": 427,
+    "failed": 0,
+    "logSha256": "ece49a5a526dfc90d163fbf21f5e3b6ee3b17bba902209560f4c8486b3508de4"
+  },
+  "syntax": {
+    "command": "npm run check",
+    "passed": true,
+    "logSha256": "656f2d52daaa92148c6876a11243eee2588518f8d98e04713256654111e36f1f"
+  },
+  "productionBuild": {
+    "command": "npm run build",
+    "passed": true,
+    "logSha256": "f17867356b951a1a81983dee7bf6e056483fa9a041a1df1b9e27cc20c41dd628"
+  },
+  "sql": {
+    "command": "node database/checks/department-planning-pglite.mjs",
+    "passedGroups": 18,
+    "environment": "isolated single-connection PGlite",
+    "resultSha256": "70b5a6e8414251da85e9954e392e2bc31e84e07e1885e8a928dfc01d3c7b4f2a"
+  },
+  "nativeEvidence": "DEPARTMENT_PLANNING_NATIVE_CHECKS_2026-10-19.json",
+  "browser": {
+    "department-browser-results.json": {
+      "sha256": "7963aa19878648ebce4ee2f15527b934945abd180cac2439bb9d24635ba2ec9e",
+      "result": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium; deterministic server-side simulated OpenAI responses; no browser request interception",
+        "passed": [
+          "Approved script prepares all seventeen department plans for free in a collapsed overview, including casting, look, voice, storyboard and animatic; no model calls or default text-box wall",
+          "Planning-only acknowledgement is required; one focused edit blocks accidental navigation, versions only Camera and preserves Rights approval and other department documents",
+          "An explicit creative choice survives reload, remains separate from performer/media approval and does not authorize generation",
+          "Department AI has its own displayed operation allowance, never runs on consent alone, persists a queued simulated call and applies only after review while preserving approved plans and user choices",
+          "390px Chromium viewport shows seventeen compact collapsed rows within a bounded overview; opening one closes the others, focused editing works without horizontal overflow; physical mobile and virtual keyboards remain untested"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "geometry": {
+          "width": 390,
+          "height": 844,
+          "left": 17,
+          "right": 373,
+          "cards": [
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            },
+            {
+              "left": 36,
+              "right": 354
+            }
+          ],
+          "overflow": false
+        },
+        "mobileOverview": {
+          "width": 390,
+          "height": 844,
+          "workspaceHeight": 1885.515625,
+          "rows": [
+            {
+              "id": "producing",
+              "height": 74
+            },
+            {
+              "id": "direction",
+              "height": 74
+            },
+            {
+              "id": "script_breakdown",
+              "height": 74
+            },
+            {
+              "id": "casting",
+              "height": 74
+            },
+            {
+              "id": "look",
+              "height": 74
+            },
+            {
+              "id": "locations",
+              "height": 74
+            },
+            {
+              "id": "camera",
+              "height": 74
+            },
+            {
+              "id": "lighting",
+              "height": 74
+            },
+            {
+              "id": "voice",
+              "height": 74
+            },
+            {
+              "id": "sound",
+              "height": 74
+            },
+            {
+              "id": "music",
+              "height": 74
+            },
+            {
+              "id": "continuity",
+              "height": 74
+            },
+            {
+              "id": "storyboard",
+              "height": 74
+            },
+            {
+              "id": "animatic",
+              "height": 74
+            },
+            {
+              "id": "vfx",
+              "height": 74
+            },
+            {
+              "id": "editorial",
+              "height": 74
+            },
+            {
+              "id": "rights",
+              "height": 74
+            }
+          ],
+          "openCount": 0
+        },
+        "simulatedDepartmentCalls": 1,
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real model-output or filmmaking-quality evaluation",
+          "No paid OpenAI or fal calls",
+          "No physical mobile device or virtual keyboard",
+          "No deployed account/isolation testing",
+          "Plans are not generated characters, voice samples, storyboards, animatics or finished films"
+        ]
+      }
+    },
+    "creative-brief-browser-results.json": {
+      "sha256": "6afd7a32a34a1107aced506df5ea3c963566a4a587d9ab920bf32b19b424d18c",
+      "result": {
+        "scope": "actual local device draft UI, not live Supabase or paid model output",
+        "passed": [
+          "compact inline proposal",
+          "prefilled purpose premise runtime language",
+          "original settings collapsed",
+          "one default composer textarea",
+          "choices disclosure without empty-field wall",
+          "one prefilled field editor",
+          "cancel restores content and focus",
+          "unsaved edit survives stage navigation and stays scoped when switching projects",
+          "approval and field switching blocked during edits",
+          "pending write controls disabled",
+          "targeted correction preserves unrelated settings",
+          "controlled IndexedDB failure preserves input",
+          "explicit approve and continue",
+          "source edit requires renewed approval",
+          "device persistence",
+          "390px viewport review"
+        ],
+        "fixtureChecks": [
+          "Controlled one-time IndexedDB write failure; not an observed infrastructure outage",
+          "Controlled IndexedDB completion delay for pending-control checks"
+        ],
+        "pageErrors": [],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "postRequests": [],
+        "physicalMobileTested": false
+      }
+    },
+    "v2-workspace-results.json": {
+      "sha256": "20acf5f6a07925d092afcf37514734dc6266cc6f137a8c565ae37d498b7bcea3",
+      "result": {
+        "url": "http://127.0.0.1:39555",
+        "passed": [
+          "brief editing",
+          "story version and approval",
+          "shot editing",
+          "image preview and alternate image selection",
+          "video playback pause seek",
+          "draft and media reload persistence",
+          "direction notes and saved-project picker",
+          "truthful cloud gate",
+          "draft JSON download",
+          "390px viewport drawers and overflow"
+        ],
+        "pageErrors": [],
+        "console": [],
+        "httpErrors": [],
+        "physicalMobileTested": false
+      }
+    },
+    "mobile-footer-results.json": {
+      "sha256": "5b3cde074059c5d2eda220e91f294342bc2ec715cc5cb554ca72bda2a8e7f626",
+      "result": {
+        "scope": "actual local Chromium viewport geometry and controls",
+        "geometry": [
+          {
+            "viewport": {
+              "width": 390,
+              "height": 880
+            },
+            "composer": {
+              "top": 606.8125,
+              "bottom": 741,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 741,
+              "bottom": 762,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 774,
+              "bottom": 839,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 597.8125,
+              "left": 17,
+              "right": 373,
+              "height": 379.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "composer": {
+              "top": 570.8125,
+              "bottom": 705,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 705,
+              "bottom": 726,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 738,
+              "bottom": 803,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 561.8125,
+              "left": 17,
+              "right": 373,
+              "height": 343.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 375,
+              "height": 812
+            },
+            "composer": {
+              "top": 538.8125,
+              "bottom": 673,
+              "left": 17,
+              "right": 358,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 673,
+              "bottom": 694,
+              "left": 17,
+              "right": 358,
+              "height": 21
+            },
+            "footer": {
+              "top": 706,
+              "bottom": 771,
+              "left": 0,
+              "right": 375,
+              "height": 65
+            },
+            "transcript": {
+              "top": 277.5625,
+              "bottom": 529.8125,
+              "left": 17,
+              "right": 358,
+              "height": 252.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 360,
+              "height": 640
+            },
+            "composer": {
+              "top": 366.8125,
+              "bottom": 501,
+              "left": 17,
+              "right": 343,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 501,
+              "bottom": 522,
+              "left": 17,
+              "right": 343,
+              "height": 21
+            },
+            "footer": {
+              "top": 534,
+              "bottom": 599,
+              "left": 0,
+              "right": 360,
+              "height": 65
+            },
+            "transcript": {
+              "top": 277.5625,
+              "bottom": 357.8125,
+              "left": 17,
+              "right": 343,
+              "height": 80.25
+            },
+            "overflow": false
+          },
+          {
+            "viewport": {
+              "width": 390,
+              "height": 520
+            },
+            "composer": {
+              "top": 246.8125,
+              "bottom": 381,
+              "left": 17,
+              "right": 373,
+              "height": 134.1875
+            },
+            "note": {
+              "top": 381,
+              "bottom": 402,
+              "left": 17,
+              "right": 373,
+              "height": 21
+            },
+            "footer": {
+              "top": 414,
+              "bottom": 479,
+              "left": 0,
+              "right": 390,
+              "height": 65
+            },
+            "transcript": {
+              "top": 218.5625,
+              "bottom": 237.8125,
+              "left": 17,
+              "right": 373,
+              "height": 19.25
+            },
+            "overflow": false
+          }
+        ],
+        "noFeedbackGeometry": {
+          "noteBottom": 803,
+          "footerTop": 815,
+          "footerBottom": 880,
+          "viewportHeight": 880
+        },
+        "consoleErrors": [],
+        "httpErrors": [],
+        "physicalMobileTested": false,
+        "captureOnly": false
+      }
+    },
+    "compact-proposal-browser-results.json": {
+      "sha256": "b5f76924d0afddc73728c0c95c2940cc8d5232d0f07faeef60062d1a54a7dfa5",
+      "result": {
+        "scope": "Real local browser/API with in-memory store and server-side simulated planning provider; no browser request interception",
+        "passed": [
+          "explicit allowance without automatic submission",
+          "one saved interpretation call survives reload",
+          "read-only compact delta review",
+          "unknown fields omitted",
+          "protected purpose and tone omitted from proposed changes",
+          "explicit apply returns to inline review",
+          "new known look visible in main proposal",
+          "applied result remains unapproved",
+          "story and approved choices preserved",
+          "single simulated call with usage accounting"
+        ],
+        "realPaidCalls": 0,
+        "consoleErrors": [],
+        "httpErrors": [],
+        "physicalMobileTested": false
+      }
+    },
+    "registry-browser-results.json": {
+      "sha256": "daa8c8c3d8ec8784677aedad278d2f126aed350f9d42004bb1a281c640a4449f",
+      "result": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium; server-side synthetic auth lookup and reviewed model evidence; no browser request interception",
+        "passed": [
+          "Owner saves a credential-free inactive draft; no serving model, quote route, customer allowance or provider call changes",
+          "Publication requires explicit evidence acknowledgement, creates one release and admits the reviewed operation-specific route without starting generation",
+          "Reviewer sees registry evidence and release history with no editing, publication or disable controls; 390px viewport has no horizontal overflow",
+          "Studio displays exact operation/model/version/maximum reservation; approving the displayed route binds its fingerprint and operation, and switching operations does not reuse that allowance or start a call"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "realPaidCalls": 0,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real Supabase identity/account-isolation test",
+          "No live provider execution or quality assessment",
+          "No physical mobile or virtual keyboard test"
+        ]
+      }
+    },
+    "writing-stage-recovery-results.json": {
+      "sha256": "a8bc41b8db1ffb76ba19fff0b799dcdca78966a5d5907c787078877ad7b0d3c9",
+      "result": {
+        "scope": "Actual local HTTP APIs, LocalStore and Chromium interactions; server-side simulated OpenAI responses; no browser request interception",
+        "passed": [
+          "Original writing is the default; neither viewing the workspace nor approving a limit starts a model call",
+          "Controlled store failure after successful script apply closes the proposal, retains saved script once and recovers through manual Story navigation without a paid retry",
+          "Saved queued call survives reload; review is read-only; explicit apply creates an unapproved version with model-call provenance and accounted simulated usage",
+          "Coverage limitations are visible and explicit acknowledgement is required before script approval",
+          "Unsaved screenplay field text survives in-app stage navigation; its selector remains locked and cancel leaves saved script unchanged",
+          "Saved targeted revision is free until explicitly run; applying changes the selected scene, preserves other scene and characters, retains history and requires renewed approval",
+          "390px Chromium viewport renders screenplay without horizontal overflow; this is not physical mobile verification",
+          "Optional .txt upload preserves exact UTF-8 BOM, leading newline, CRLF source text and declared provenance, never calls a model, exposes deterministic matches and requires passage-use explanations before approval; source and review survive reload",
+          "Briefing composer, note and footer remain separated across five desktop-emulated mobile viewport sizes"
+        ],
+        "consoleErrors": [],
+        "httpErrors": [],
+        "controlledStageFailure": true,
+        "expectedInjectedConsoleErrors": [
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        ],
+        "expectedInjectedHttpErrors": [
+          {
+            "status": 503,
+            "url": "http://127.0.0.1:42913/api/projects/ff89a4fb-2dfd-4413-b140-77157508482b"
+          }
+        ],
+        "mobileScriptGeometry": {
+          "width": 390,
+          "height": 844,
+          "workspaceLeft": 17,
+          "workspaceRight": 373,
+          "approvalTop": 686.609375,
+          "approvalBottom": 738.609375,
+          "overflow": false
+        },
+        "footerGeometry": [
+          {
+            "width": 390,
+            "height": 880,
+            "composer": {
+              "top": 647.8125,
+              "bottom": 782
+            },
+            "note": {
+              "top": 782,
+              "bottom": 803
+            },
+            "footer": {
+              "top": 815,
+              "bottom": 880
+            },
+            "overflow": false
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "composer": {
+              "top": 611.8125,
+              "bottom": 746
+            },
+            "note": {
+              "top": 746,
+              "bottom": 767
+            },
+            "footer": {
+              "top": 779,
+              "bottom": 844
+            },
+            "overflow": false
+          },
+          {
+            "width": 375,
+            "height": 812,
+            "composer": {
+              "top": 579.8125,
+              "bottom": 714
+            },
+            "note": {
+              "top": 714,
+              "bottom": 735
+            },
+            "footer": {
+              "top": 747,
+              "bottom": 812
+            },
+            "overflow": false
+          },
+          {
+            "width": 360,
+            "height": 640,
+            "composer": {
+              "top": 407.8125,
+              "bottom": 542
+            },
+            "note": {
+              "top": 542,
+              "bottom": 563
+            },
+            "footer": {
+              "top": 575,
+              "bottom": 640
+            },
+            "overflow": false
+          },
+          {
+            "width": 390,
+            "height": 520,
+            "composer": {
+              "top": 287.8125,
+              "bottom": 422
+            },
+            "note": {
+              "top": 422,
+              "bottom": 443
+            },
+            "footer": {
+              "top": 455,
+              "bottom": 520
+            },
+            "overflow": false
+          }
+        ],
+        "realPaidCalls": 0,
+        "simulatedWritingCalls": 2,
+        "physicalMobileTested": false,
+        "deployedWebsiteTested": false,
+        "limitations": [
+          "No real OpenAI writing or quality evaluation",
+          "No external originality corpus",
+          "No physical phone or virtual keyboard testing",
+          "No Supabase account or deployed-site tests"
+        ]
+      }
+    },
+    "planning-ui-results.json": {
+      "sha256": "aac80750bbb29cf25225634effa4c7102d369b77d4e8902c0a753f0ec6d78e69",
+      "result": {
+        "scope": "browser UI with intercepted planning API fixtures; no paid models or live consent backend",
+        "passed": [
+          "unavailable route gate",
+          "one-call minimum plus protected finish",
+          "maxCalls is upper limit",
+          "ambiguous response UUID reuse",
+          "consent never auto starts call",
+          "unknown call blocks replacement",
+          "explicit polling",
+          "reserved resume reuses hold",
+          "reserved cancellation",
+          "unknown cannot resume or cancel",
+          "explicit revoke",
+          "390px viewport overflow check"
+        ],
+        "pageErrors": [],
+        "injectedNetworkFailure": true,
+        "physicalMobileTested": false
+      }
+    }
+  },
+  "screenshots": {
+    "departments-mobile-viewport.png": {
+      "sha256": "0cb6ac7b300f15050c34b2cca606351a8be05204fcceab839a31f2ec126bff83",
+      "inspected": false
+    },
+    "departments-overview-desktop.png": {
+      "sha256": "bca5dffd7a6b65fb03aaf6a3cea5bec5b64707e10b295517799731342e68f39d",
+      "inspected": true
+    },
+    "departments-mobile-overview.png": {
+      "sha256": "24d40601596914f2d7035c29f87c82d70b0e883d839c54d6d4b1162000733a86",
+      "inspected": true
+    },
+    "departments-proposal-desktop.png": {
+      "sha256": "078d193cf4358196e086383dfca7ca294dfce86c60f2a6137d6b286e7793e3ed",
+      "inspected": false
+    }
+  },
+  "reviewedRequestSize": {
+    "measuredBytes": 155287,
+    "withoutSignatureDeduplicationBytes": 253020,
+    "unchangedLimitBytes": 200000,
+    "factsTruncated": false,
+    "canonicalSignaturesReplacedWithSha256": 2
+  },
+  "sourceScenarioFixtures": [
+    "Cooking-oil advertisement in India",
+    "Two-minute Hinglish music-video plan with original vocals",
+    "Indian-wealth documentary pilot with off-screen narrator"
+  ],
+  "realPaidCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "deployedWebsiteTested": false,
+  "customerAccountsTested": false,
+  "physicalMobileTested": false,
+  "virtualKeyboardTested": false,
+  "interdepartmentTargetedInvalidationImplemented": false,
+  "limitations": [
+    "Provider outputs, authorization identities and financial amounts in local fixtures are simulated; no live filmmaking quality, provider billing or two-attempt acceptance proof.",
+    "Writing recovery deliberately injects one 503 and planning UI injects a network failure with intercepted API fixtures; no unexpected browser errors observed.",
+    "SQL proof is single-connection, not a true concurrent native session race test.",
+    "Department planning does not generate or approve actual performers, identity references, voices, storyboard frames, animatics or finished exports.",
+    "Actual interdepartment dependency version pins and selective downstream invalidation are the next Point 5 increment."
+  ]
+}

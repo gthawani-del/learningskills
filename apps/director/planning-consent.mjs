@@ -3,7 +3,7 @@ import {hash,fail} from './domain.mjs';
 export {planningScope} from './planning-policy.mjs';
 const digest = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
 const positive = x => Number.isSafeInteger(x) && x > 0;
-const planningOperations=['initial_plan','revise_plan','interpret_brief','write_script','revise_script'];
+const planningOperations=['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments'];
 const uuid = x => typeof x === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(x);
 function time(now) {const n=now instanceof Date?now.getTime():typeof now==='number'?now:typeof now==='string'?Date.parse(now):NaN;if(!Number.isSafeInteger(n)||Math.abs(n)>8.64e15)fail(400,'A valid operation time is required.');return n;}
 function context(state,c,operation,extra) {

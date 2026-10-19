@@ -2,7 +2,7 @@
   "updated": "2026-10-19",
   "baselineCommit": "76960d5e594907fd3792ca6df79276bf54f01249",
   "authority": "Current user instructions > Build Document Index precedence; v2 controls customer UI; Bible controls routing. Historical endpoint paths are planned contracts, not proof of runtime routes.",
-  "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100\u2013F105 remain explicit non-promises.",
+  "evidencePolicy": "Code presence, local/mock tests, live integration and media-quality proofs are distinct. No full production acceptance claimed. Deferred F100–F105 remain explicit non-promises.",
   "requirements": [
     {
       "id": "F001",
@@ -319,16 +319,26 @@
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
         "apps/director/planning-consent.mjs",
-        "apps/director/planning-store.mjs"
+        "apps/director/planning-store.mjs",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs",
+        "apps/director/department-proposal.mjs"
       ],
       "tests": [
         "apps/director/tests/providers.test.mjs",
         "apps/director/tests/planning-api.test.mjs",
         "apps/director/tests/planning-consent.test.mjs",
-        "apps/director/tests/planning-cloud.test.mjs"
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Planning authorization and structured response foundations implemented. Full department breakdown, production scheduling and actual model-generated planning quality remain incomplete.",
+      "gap": "Seventeen versioned department plans now link to the current approved brief and complete screenplay. Free structured preparation and a separately authorized, reviewed AI proposal path are implemented. Production scheduling, real-model planning quality and production execution remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F014",
       "dependencies": [
         "versioned-project-records",
@@ -340,11 +350,22 @@
       "requirement": "Direct scene blocking and performance",
       "area": "Story and filmmaking intelligence",
       "step": 6,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "status": "partial",
+      "code": [
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
+      ],
+      "tests": [
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
+      ],
+      "verification": "local-and-simulated-provider-with-isolated-sql",
+      "gap": "Scene-linked direction and performance requirements cover dramatic purpose, observable behavior, blocking, eyelines and character knowledge as reviewable proposals. Actual staged/generated performances, measured timing and real model-output quality remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F015",
       "dependencies": [
         "versioned-project-records",
@@ -359,13 +380,23 @@
       "status": "partial",
       "code": [
         "apps/director/domain.mjs",
-        "apps/studio/intelligence/production-contract.mjs"
+        "apps/studio/intelligence/production-contract.mjs",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs",
+        "apps/director/planning-profile.mjs"
       ],
       "tests": [
-        "apps/studio/tests/production-contract.test.mjs"
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Manual camera/framing controls and isolated craft validator; contextual Director orchestration not connected.",
+      "gap": "Source-linked camera, lighting and coverage plans support focused versioned edits, current-source review and protected approved choices. Actual renderer control fidelity, complete shot contracts and generated coverage/lighting quality remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F016",
       "dependencies": [
         "versioned-project-records",
@@ -382,15 +413,24 @@
         "apps/director/domain.mjs",
         "apps/director/providers.mjs",
         "apps/director/production-records.mjs",
-        "apps/director/public/production-records-core.js"
+        "apps/director/public/production-records-core.js",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
       ],
       "tests": [
         "apps/director/tests/providers.test.mjs",
         "apps/director/tests/production-records.test.mjs",
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Versioned character/world library and explicit shot bindings implemented; observed generated-media continuity and intelligent planning remain missing.",
+      "gap": "Versioned continuity plans and character/world records preserve intended source state, explicit choices and earlier versions. Observed generated-media continuity, complete character-knowledge tracking and production quality remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F017",
       "dependencies": [
         "versioned-project-records",
@@ -402,11 +442,22 @@
       "requirement": "Create sound/music cue plan",
       "area": "Story and filmmaking intelligence",
       "step": 6,
-      "status": "missing",
-      "code": [],
-      "tests": [],
-      "verification": "not-verified",
-      "gap": "No complete executable workflow found; implement and verify before activation.",
+      "status": "partial",
+      "code": [
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
+      ],
+      "tests": [
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
+      ],
+      "verification": "local-and-simulated-provider-with-isolated-sql",
+      "gap": "Source-linked sound and music planning now separates dialogue, ambience, Foley/effects, music sources, provisional cues and actual listening/timing review. Audio generation, song analysis, measured cue timing, final mixing and real quality remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F018",
       "dependencies": [
         "versioned-project-records",
@@ -437,13 +488,22 @@
       "status": "partial",
       "code": [
         "apps/director/domain.mjs",
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Saved screenplay revision instructions and explicit scene scope bind paid requests; code rejects changes to untargeted scenes/characters, and reviewed application preserves history. Real semantic interpretation/repair quality and complete departmental revision orchestration remain unverified.",
+      "gap": "Screenplay scene-scoped revisions and focused department edits preserve untouched versions and approved decisions. The separate Point 5 task for context-aware departmental revisions and precise downstream invalidation remains pending; real semantic revision quality is unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F020",
       "dependencies": [
         "versioned-project-records",
@@ -461,15 +521,27 @@
         "apps/director/domain.mjs",
         "apps/director/production-state.mjs",
         "apps/director/production-records.mjs",
-        "apps/director/public/production-records-core.js"
+        "apps/director/public/production-records-core.js",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs",
+        "database/director-department-planning.sql"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
         "apps/director/tests/production-state.test.mjs",
-        "apps/director/tests/production-records.test.mjs"
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py",
+        "apps/director/tests/department-cloud.test.mjs",
+        "database/checks/department-planning-pglite.mjs"
       ],
-      "verification": "local-and-mock-only",
-      "gap": "Creative approval/history UI and APIs enforce current record/shot versions; transitive creative approvals govern review readiness. Atomic dispatch enforcement, media-quality acceptance and live account verification remain incomplete.",
+      "verification": "local-and-native-metadata-with-isolated-sql",
+      "gap": "Current-version department approvals explicitly cover plans only, require approved current brief/script and are separate from cast, look, voice, media and spending approval. Atomic approval-bound saves and guarded approval RPCs are locally/isolated-SQL tested. Deployed-account integration and actual media acceptance remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F021",
       "dependencies": [
         "versioned-project-records",
@@ -488,15 +560,24 @@
         "apps/director/production-state.mjs",
         "apps/director/public/revision-impact.js",
         "apps/director/production-records.mjs",
-        "apps/director/public/production-records-core.js"
+        "apps/director/public/production-records-core.js",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
         "apps/director/tests/production-state.test.mjs",
-        "apps/director/tests/production-records.test.mjs"
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Library revision and approval revocation propagate selective review holds; local/API tests pass. Atomic database enforcement of recursive approvals and live media acceptance remain incomplete.",
+      "gap": "Focused department edits version only the edited unit; changed brief/script sources conservatively hold earlier plans and dependent route readiness. Point 5 precise downstream invalidation and complete cross-department revision impact remain pending. Real media acceptance and deployed concurrency remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F022",
       "dependencies": [
         "versioned-project-records",
@@ -672,7 +753,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Mandatory character selection and world/prop concepts with agreed candidate quantity, actual outputs and identity-master approval; generation, selection UX and end-to-end review remain missing.",
+      "gap": "Reviewable casting/location/prop text requirements are implemented. Actual candidate generation, agreed quantities, selection UX, identity-master approval and end-to-end media review remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F033",
       "dependencies": [
         "versioned-project-records",
@@ -688,7 +769,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Mandatory look development from approved identity: angles/expressions, wardrobe, grooming and world references; actual generation and approved reference-pack workflow remain missing.",
+      "gap": "Look-development requirements are planned separately from identity and voice. Actual approved-identity angles/expressions, wardrobe/grooming references, generation and reference-pack approval remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F034",
       "dependencies": [
         "versioned-project-records",
@@ -750,15 +831,24 @@
       "code": [
         "apps/director/domain.mjs",
         "apps/director/public/app.js",
-        "apps/director/production-state.mjs"
+        "apps/director/production-state.mjs",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
       ],
       "tests": [
         "apps/director/tests/api.test.mjs",
         "apps/director/tests/v2-workspace.py",
-        "apps/director/tests/production-state.test.mjs"
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Text shot contracts/version records exist; a complete department manifest, explicit camera/lighting/performance plan and dependency orchestration remain incomplete. A shot list is not a storyboard.",
+      "gap": "All seventeen department plans include storyboard handoffs and camera/lighting/performance requirements. Complete scene-to-shot contracts, actual storyboard frames, timed animatics and their production dependency orchestration remain incomplete. Text plans do not constitute a storyboard.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F037",
       "dependencies": [
         "versioned-project-records",
@@ -774,7 +864,7 @@
       "code": [],
       "tests": [],
       "verification": "not-verified",
-      "gap": "Mandatory actual storyboard/keyframe generation from approved identity/look references, stable shot IDs, annotations and sequence approval; generation and review UX remain missing.",
+      "gap": "Department storyboard requirements and handoffs are text plans only. Actual storyboard/keyframe generation from approved identity/look references, stable shot IDs, annotations and sequence approval remain missing.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F038",
       "dependencies": [
         "versioned-project-records",
@@ -1333,7 +1423,8 @@
         "apps/director/model-registry.mjs",
         "apps/director/registry-store.mjs",
         "apps/director/planning-router.mjs",
-        "database/director-registry-management.sql"
+        "database/director-registry-management.sql",
+        "apps/director/department-proposal.mjs"
       ],
       "tests": [
         "apps/director/tests/model-router.test.mjs",
@@ -1347,10 +1438,11 @@
         "apps/director/tests/registry-cloud.test.mjs",
         "apps/director/tests/planning-registry-routing.test.mjs",
         "apps/director/tests/registry-browser.py",
-        "database/checks/registry-management-pglite.mjs"
+        "database/checks/registry-management-pglite.mjs",
+        "apps/director/tests/department-provider.test.mjs"
       ],
       "verification": "local-and-native-metadata-with-isolated-sql",
-      "gap": "Reviewed task/operation routing, exact quotes and pinned allowances implemented; complete sequence quotes, live prices/billing and real quality benchmarks remain unverified.",
+      "gap": "Reviewed task/operation routing, exact quotes and pinned allowances include a separately reviewed department-planning operation; existing models do not inherit it. Complete sequence quotes, live prices/billing and real quality benchmarks remain unverified.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F070",
       "dependencies": [
         "versioned-project-records",
@@ -1374,7 +1466,8 @@
         "apps/director/planning-profile.mjs",
         "apps/director/planning-provider.mjs",
         "apps/director/planning-consent.mjs",
-        "apps/director/planning-store.mjs"
+        "apps/director/planning-store.mjs",
+        "apps/director/cost-quotes.mjs"
       ],
       "tests": [
         "apps/director/tests/jobs.test.mjs",
@@ -1384,10 +1477,11 @@
         "database/checks/durable-quotes-pglite.mjs",
         "apps/director/tests/planning-api.test.mjs",
         "apps/director/tests/planning-consent.test.mjs",
-        "apps/director/tests/planning-cloud.test.mjs"
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs"
       ],
       "verification": "local-and-mock-only",
-      "gap": "Media and hybrid-planning grants/reservations, protected finishing amounts, replay, unknown holds and applied SQL guards implemented. True cross-session races, deployed customer account flow, provider billing settlement and full commercial accounting remain incomplete.",
+      "gap": "Media and hybrid-planning reservations protect finishing amounts, replay and unknown outcomes. Projects with department archives require all current department plans reviewed before new media spending; plan text cannot be a media-generation quote target. True cross-session races, deployed accounts, provider billing settlement and commercial accounting remain incomplete.",
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md (functionality contract); FUNCTIONALITY_ENDPOINT_MATRIX.csv F071",
       "dependencies": [
         "versioned-project-records",
@@ -2014,7 +2108,7 @@
     },
     {
       "id": "C01",
-      "requirement": "At homepage, choose Short Film \u2192 Brief starts without model selection",
+      "requirement": "At homepage, choose Short Film → Brief starts without model selection",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2027,14 +2121,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Entry uses no model selection; physical device usability untested.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C02",
-      "requirement": "Enter brief, navigate away and return \u2192 Draft restored when authorized",
+      "requirement": "Enter brief, navigate away and return → Draft restored when authorized",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2049,14 +2143,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Saved device drafts restore; inline unsaved edits remain scoped in memory across client navigation/projects and after controlled save failures. Full reload recovery of unsaved editor text and authenticated cloud restoration remain unverified.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C03",
-      "requirement": "Attach a JPEG \u2192 Preview and filename shown",
+      "requirement": "Attach a JPEG → Preview and filename shown",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2068,14 +2162,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "PNG preview tested; explicit JPEG browser fixture pending.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C04",
-      "requirement": "Assign Character Identity role \u2192 Binding stored with asset ID and scope",
+      "requirement": "Assign Character Identity role → Binding stored with asset ID and scope",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2087,14 +2181,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Role/scope stored; live cloud binding unverified.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C05",
-      "requirement": "Attach a script PDF \u2192 Document shown with script role",
+      "requirement": "Attach a script PDF → Document shown with script role",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2102,14 +2196,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C06",
-      "requirement": "Attach audio as Master Song \u2192 Timing anchor preserved in music-video route",
+      "requirement": "Attach audio as Master Song → Timing anchor preserved in music-video route",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2117,14 +2211,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C07",
-      "requirement": "Upload fails midway \u2192 Draft survives; Retry offered",
+      "requirement": "Upload fails midway → Draft survives; Retry offered",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2132,14 +2226,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C08",
-      "requirement": "MIME mismatch \u2192 Client/server reject gracefully",
+      "requirement": "MIME mismatch → Client/server reject gracefully",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2151,14 +2245,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Server MIME check tested; device-only validation currently trusts browser MIME.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C09",
-      "requirement": "Type `/` on a word boundary \u2192 Skill menu opens",
+      "requirement": "Type `/` on a word boundary → Skill menu opens",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2170,14 +2264,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Local demo picker; device and approved skill execution unverified.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C10",
-      "requirement": "Type `/sto` \u2192 Matching approved skill(s) filter",
+      "requirement": "Type `/sto` → Matching approved skill(s) filter",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2189,14 +2283,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Local keyboard filtering; active knowledge registry missing.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C11",
-      "requirement": "Arrow/Enter/Escape in menu \u2192 Focus and selection work predictably",
+      "requirement": "Arrow/Enter/Escape in menu → Focus and selection work predictably",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2208,14 +2302,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Local keyboard behavior; accessibility audit missing.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C12",
-      "requirement": "Select `/fix-shot` \u2192 Skill chip inserted; no job launched",
+      "requirement": "Select `/fix-shot` → Skill chip inserted; no job launched",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2227,14 +2321,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Chip selection causes no generation; actual fix-shot skill not implemented.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C13",
-      "requirement": "Remove skill chip \u2192 Message becomes ordinary text request",
+      "requirement": "Remove skill chip → Message becomes ordinary text request",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2242,14 +2336,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C14",
-      "requirement": "Type `@` \u2192 Only permitted project assets appear",
+      "requirement": "Type `@` → Only permitted project assets appear",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2261,14 +2355,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Project scoped reference validation exists; live multi-user test pending.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C15",
-      "requirement": "Mention asset \u2192 Stable asset/version ID included",
+      "requirement": "Mention asset → Stable asset/version ID included",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2276,14 +2370,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C16",
-      "requirement": "Switch selected shot \u2192 Visible context updates; unsent draft preserved safely",
+      "requirement": "Switch selected shot → Visible context updates; unsent draft preserved safely",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2295,14 +2389,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Local context warning/preserved draft; per-take identity missing.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C17",
-      "requirement": "Ask to fix selected take \u2192 Proposal references exact version and constraints",
+      "requirement": "Ask to fix selected take → Proposal references exact version and constraints",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2314,14 +2408,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Shot/version envelope only; selected generated take unavailable.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C18",
-      "requirement": "Cost estimate unavailable \u2192 Paid submission blocked",
+      "requirement": "Cost estimate unavailable → Paid submission blocked",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2336,14 +2430,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Costs panel shows saved verified estimates, explicit limits/finishing, revocation and existing reservation states. Real local browser/server checks and lost-response fixture pass. Complete sequence pricing, fees/credits/customer billing and live cloud-account browser checks remain incomplete.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C19",
-      "requirement": "Approve a repair \u2192 Only authorized affected job is queued",
+      "requirement": "Approve a repair → Only authorized affected job is queued",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2351,14 +2445,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C20",
-      "requirement": "Retry after unknown submission \u2192 Original request reconciled before resubmit",
+      "requirement": "Retry after unknown submission → Original request reconciled before resubmit",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2370,14 +2464,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Mock unknown-submission state tested; live callback/recovery unverified.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C21",
-      "requirement": "Approved neighboring shot exists \u2192 It survives unrelated correction",
+      "requirement": "Approved neighboring shot exists → It survives unrelated correction",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2385,14 +2479,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C22",
-      "requirement": "Click View Activity \u2192 Status summary appears; hidden by default",
+      "requirement": "Click View Activity → Status summary appears; hidden by default",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2404,26 +2498,28 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Toggle tested locally; durable production event stream missing.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C23",
-      "requirement": "Open mobile bottom sheet \u2192 Canvas and controls remain usable",
+      "requirement": "Open mobile bottom sheet → Canvas and controls remain usable",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
       "code": [
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/styles.css"
       ],
       "tests": [
-        "apps/director/tests/v2-workspace.py"
+        "apps/director/tests/v2-workspace.py",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "390px viewport drawer verified; real device untested.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "gap": "390px Chromium viewport checks cover compact collapsed department rows, one expanded unit, focused editing and horizontal overflow, alongside prior drawer checks. Physical devices and actual virtual keyboards remain unverified.",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows",
         "physical-device-access"
@@ -2431,7 +2527,7 @@
     },
     {
       "id": "C24",
-      "requirement": "Open mobile keyboard \u2192 Composer remains visible above keyboard",
+      "requirement": "Open mobile keyboard → Composer remains visible above keyboard",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2439,7 +2535,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows",
         "physical-device-access"
@@ -2447,7 +2543,7 @@
     },
     {
       "id": "C25",
-      "requirement": "Mic permission denied \u2192 Type-instead option shown, no false listening state",
+      "requirement": "Mic permission denied → Type-instead option shown, no false listening state",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2455,7 +2551,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows",
         "physical-device-access"
@@ -2463,7 +2559,7 @@
     },
     {
       "id": "C26",
-      "requirement": "Speech transcript returned \u2192 User can edit before sending consequential instruction",
+      "requirement": "Speech transcript returned → User can edit before sending consequential instruction",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2471,7 +2567,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows",
         "physical-device-access"
@@ -2479,7 +2575,7 @@
     },
     {
       "id": "C27",
-      "requirement": "Change orientation \u2192 Layout reflows, no clipped control",
+      "requirement": "Change orientation → Layout reflows, no clipped control",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2487,7 +2583,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows",
         "physical-device-access"
@@ -2495,7 +2591,7 @@
     },
     {
       "id": "C28",
-      "requirement": "Private asset of other tenant referenced \u2192 Denied server-side",
+      "requirement": "Private asset of other tenant referenced → Denied server-side",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2507,14 +2603,14 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Local owner isolation and scoped reference tests; live account proof pending.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C29",
-      "requirement": "Duplicate Send event \u2192 No duplicate paid requests",
+      "requirement": "Duplicate Send event → No duplicate paid requests",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
@@ -2526,33 +2622,38 @@
       ],
       "verification": "local-or-viewport-only",
       "gap": "Dispatch claims tested with mocks; paid live concurrency unverified.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C30",
-      "requirement": "Reviewer approves storyboard only \u2192 Motion approval remains outstanding",
+      "requirement": "Reviewer approves storyboard only → Motion approval remains outstanding",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "partial",
       "code": [
-        "apps/director/public/app.js"
+        "apps/director/public/app.js",
+        "apps/director/public/department-plan-core.js",
+        "apps/director/public/department-guidance.js",
+        "apps/director/department-plans.mjs"
       ],
       "tests": [
-        "apps/director/tests/api.test.mjs"
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-browser.py"
       ],
       "verification": "local-or-viewport-only",
-      "gap": "Specification reviews exist; storyboard, animatic, final-motion, voice-quality and spending approvals must remain separate. Actual media generation/review gates remain incomplete.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "gap": "Versioned department approval is explicitly planning-only and does not select or approve actors, look images, voice recordings or generated media, or authorize spending. Actual storyboard/animatic/motion/voice generation and review gates remain incomplete.",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C31",
-      "requirement": "Full export fails after accepted takes \u2192 Retry finishing, preserve source media",
+      "requirement": "Full export fails after accepted takes → Retry finishing, preserve source media",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2560,14 +2661,14 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
     },
     {
       "id": "C32",
-      "requirement": "Reduced motion / keyboard nav \u2192 Visible focus, no essential motion-only instructions",
+      "requirement": "Reduced motion / keyboard nav → Visible focus, no essential motion-only instructions",
       "area": "Frontend v2 acceptance",
       "step": 10,
       "status": "missing",
@@ -2575,7 +2676,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Acceptance evidence missing; implement or exercise this exact scenario.",
-      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md \u00a719",
+      "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md §19",
       "dependencies": [
         "production-domain-flows"
       ]
@@ -2590,7 +2691,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2607,7 +2708,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2624,7 +2725,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2641,7 +2742,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2658,7 +2759,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2679,7 +2780,7 @@
       ],
       "verification": "mock-or-local-only",
       "gap": "Targeted adapter/controller evidence only; full generated-media scenario remains unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2700,7 +2801,7 @@
       ],
       "verification": "mock-or-local-only",
       "gap": "Targeted adapter/controller evidence only; full generated-media scenario remains unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2717,7 +2818,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2734,7 +2835,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2751,7 +2852,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2772,7 +2873,7 @@
       ],
       "verification": "mock-or-local-only",
       "gap": "Targeted adapter/controller evidence only; full generated-media scenario remains unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2793,7 +2894,7 @@
       ],
       "verification": "mock-or-local-only",
       "gap": "Targeted adapter/controller evidence only; full generated-media scenario remains unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2814,7 +2915,7 @@
       ],
       "verification": "mock-or-local-only",
       "gap": "Targeted adapter/controller evidence only; full generated-media scenario remains unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2837,7 +2938,7 @@
       ],
       "verification": "not-verified",
       "gap": "Versioned reference bindings and transitive dependency holds tested locally; real voice/identity generations and quality review remain unverified.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2854,7 +2955,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2871,7 +2972,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2888,7 +2989,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2905,7 +3006,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Requires implementation and/or actual media benchmark; no prompt-only completion claim.",
-      "source": "REALISM_INTELLIGENCE_LAYER.md \u00a717",
+      "source": "REALISM_INTELLIGENCE_LAYER.md §17",
       "dependencies": [
         "versioned-references",
         "validated-production-routes",
@@ -2914,7 +3015,7 @@
     },
     {
       "id": "A01",
-      "requirement": "Lost provider response \u2192 Operator sees unknown submission, reconciles it and retains one billable request",
+      "requirement": "Lost provider response → Operator sees unknown submission, reconciles it and retains one billable request",
       "area": "Admin acceptance",
       "step": 4,
       "status": "partial",
@@ -2926,7 +3027,7 @@
       ],
       "verification": "mock-only",
       "gap": "Job uncertainty hold exists; full operator workflow and acceptance unverified.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -2935,7 +3036,7 @@
     },
     {
       "id": "A02",
-      "requirement": "Completed job with failed download \u2192 Retry retrieval recovers the same clip without generation spend",
+      "requirement": "Completed job with failed download → Retry retrieval recovers the same clip without generation spend",
       "area": "Admin acceptance",
       "step": 4,
       "status": "missing",
@@ -2943,7 +3044,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -2952,7 +3053,7 @@
     },
     {
       "id": "A03",
-      "requirement": "User requests shot revision \u2192 Accepted neighboring takes survive; new cost/approval scope is explicit",
+      "requirement": "User requests shot revision → Accepted neighboring takes survive; new cost/approval scope is explicit",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -2960,7 +3061,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -2969,7 +3070,7 @@
     },
     {
       "id": "A04",
-      "requirement": "Refund and credit restoration \u2192 Separate ledger effects reconcile without duplicate compensation",
+      "requirement": "Refund and credit restoration → Separate ledger effects reconcile without duplicate compensation",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -2977,7 +3078,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -2986,7 +3087,7 @@
     },
     {
       "id": "A05",
-      "requirement": "Support opens private project \u2192 Access denied by default; authorized case grant expires and is audited",
+      "requirement": "Support opens private project → Access denied by default; authorized case grant expires and is audited",
       "area": "Admin acceptance",
       "step": 4,
       "status": "missing",
@@ -2994,7 +3095,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3003,7 +3104,7 @@
     },
     {
       "id": "A06",
-      "requirement": "Skill release reduces consistency \u2192 Evaluation identifies regression; rollback preserves historical provenance",
+      "requirement": "Skill release reduces consistency → Evaluation identifies regression; rollback preserves historical provenance",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -3011,7 +3112,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3020,7 +3121,7 @@
     },
     {
       "id": "A07",
-      "requirement": "Admin endpoint pause \u2192 New submissions stop; ongoing jobs can still be reconciled and retrieved",
+      "requirement": "Admin endpoint pause → New submissions stop; ongoing jobs can still be reconciled and retrieved",
       "area": "Admin acceptance",
       "step": 4,
       "status": "partial",
@@ -3038,7 +3139,7 @@
       ],
       "verification": "local-and-database-fixtures",
       "gap": "Global pause, model disable and continued existing-request polling tested locally; SQL paused-insert proof passes. Live paid-provider and concurrent-session verification remain unrun.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3047,7 +3148,7 @@
     },
     {
       "id": "A08",
-      "requirement": "Tenant deletion request \u2192 Asset dependencies, retention exceptions and deletion evidence are tracked",
+      "requirement": "Tenant deletion request → Asset dependencies, retention exceptions and deletion evidence are tracked",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -3055,7 +3156,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3064,7 +3165,7 @@
     },
     {
       "id": "A09",
-      "requirement": "Rendering worker restart \u2192 Export resumes/retries without recreating accepted clips or duplicating delivery",
+      "requirement": "Rendering worker restart → Export resumes/retries without recreating accepted clips or duplicating delivery",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -3072,7 +3173,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3081,7 +3182,7 @@
     },
     {
       "id": "A10",
-      "requirement": "Founder checks margin \u2192 Rejected takes, unknown costs and intervention effort are visible",
+      "requirement": "Founder checks margin → Rejected takes, unknown costs and intervention effort are visible",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -3089,7 +3190,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3098,7 +3199,7 @@
     },
     {
       "id": "A11",
-      "requirement": "Backup restore rehearsal \u2192 Metadata and required media are recoverable under the tested procedure",
+      "requirement": "Backup restore rehearsal → Metadata and required media are recoverable under the tested procedure",
       "area": "Admin acceptance",
       "step": 11,
       "status": "missing",
@@ -3106,7 +3207,7 @@
       "tests": [],
       "verification": "not-verified",
       "gap": "Complete operational scenario, authorization and audit evidence missing.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3115,7 +3216,7 @@
     },
     {
       "id": "A12",
-      "requirement": "Duplicate callbacks or commands \u2192 Balances, artifacts and state transitions are not applied twice",
+      "requirement": "Duplicate callbacks or commands → Balances, artifacts and state transitions are not applied twice",
       "area": "Admin acceptance",
       "step": 4,
       "status": "partial",
@@ -3133,7 +3234,7 @@
       ],
       "verification": "local-and-database-fixtures",
       "gap": "Duplicate operational commands and stale-revision conflicts tested via local/API/browser recovery and rollback SQL proofs; financial/callback idempotency remains incomplete.",
-      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md \u00a720",
+      "source": "ADMIN_BACKOFFICE_BLUEPRINT.md §20",
       "dependencies": [
         "staff-permissions",
         "durable-jobs",
@@ -3147,756 +3248,756 @@
       "section": 1,
       "title": "Product decision",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 2,
       "title": "Confirmed environment and remaining dependencies",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 3,
       "title": "Scope and evidence hierarchy",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 4,
       "title": "User journey",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 5,
       "title": "Department responsibilities and contracts",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 6,
       "title": "Skill and knowledge system",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 7,
       "title": "Shared production record",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 8,
       "title": "Approval and revision rules",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 9,
       "title": "fal model router",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 10,
       "title": "Proposed application architecture",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 11,
       "title": "Durable jobs and spending",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 12,
       "title": "Quality and evaluation",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 13,
       "title": "Proof film and delivery gate",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 14,
       "title": "Implementation sequence after review",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 15,
       "title": "Resolved conflicts and deferred research",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 16,
       "title": "Review decisions",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "FILM_STUDIO_BLUEPRINT.md",
       "section": 17,
       "title": "Source map",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 1,
       "title": "Experience decision",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 2,
       "title": "Directions considered",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 3,
       "title": "First time user experience",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 4,
       "title": "Information architecture",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 5,
       "title": "Desktop composition",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 6,
       "title": "Stage interaction contracts",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 7,
       "title": "Mobile experience",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 8,
       "title": "Shared interaction and state rules",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 9,
       "title": "Progressive disclosure and control",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 10,
       "title": "Worked shot contract and UI journey",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 11,
       "title": "Visual system proposal",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "PRODUCT_EXPERIENCE_SPEC.md",
       "section": 12,
       "title": "Validation and definition of ready",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 1,
       "title": "Executive decision and design boundaries",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 2,
       "title": "UX principles and research interpretation",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 3,
       "title": "Users, journeys and FTUE",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 4,
       "title": "Information architecture and navigation",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 5,
       "title": "Visual design system",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 6,
       "title": "Desktop Production Studio: three-pane layout",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 7,
       "title": "Desktop Voice/Text Briefing",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 8,
       "title": "Mobile: focused canvas and Director bottom sheet",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 9,
       "title": "Universal multimodal composer: component specification",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 10,
       "title": "Slash-skill picker: exact interaction contract",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 11,
       "title": "`@` project references",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 12,
       "title": "Conversational voice UX and cost controls",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 13,
       "title": "Shot-level actions, approvals and pricing",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 14,
       "title": "Responsive behavior and breakpoints",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 15,
       "title": "Screen states and error-copy specification",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 16,
       "title": "Accessibility and performance",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 17,
       "title": "Suggested component tree and contracts for Codex",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 18,
       "title": "Codex implementation plan: smallest safe patches",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 19,
       "title": "Acceptance criteria and test matrix",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 20,
       "title": "Open decisions, dependencies and non-goals",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md",
       "section": 21,
       "title": "Visual handoff and files",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "C01\u2013C32"
+      "coverage": "C01–C32"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 1,
       "title": "Stack and authority",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 2,
       "title": "Routing intelligence",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 3,
       "title": "Who writes the screenplay",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 4,
       "title": "Model and tool catalog",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 5,
       "title": "Dated cost book",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 6,
       "title": "Production recipes",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 7,
       "title": "Quality, continuity and recovery",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 8,
       "title": "Scenario question protocol",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 9,
       "title": "Admin management and release",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 10,
       "title": "Readiness and next validation",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 11,
       "title": "Complete function contracts",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 12,
       "title": "Embedded machine registry and function records",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 13,
       "title": "Sources and change policy",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "MODEL_ROUTER_INTELLIGENCE_BIBLE.md",
       "section": 14,
-      "title": "Incorporated filmmaking craft \u2014 revision 2",
+      "title": "Incorporated filmmaking craft — revision 2",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "F001\u2013F105"
+      "coverage": "F001–F105"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 1,
       "title": "Purpose, authority and honest status",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 2,
       "title": "What the user should experience",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 3,
       "title": "The intelligence pipeline",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 4,
       "title": "The expectation contract",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 5,
       "title": "Casting: a person before a scene",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 6,
       "title": "Human appearance and material realism",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 7,
       "title": "World, B-roll and production design",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 8,
       "title": "Cinematography and temporal behavior",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 9,
       "title": "Voice, dialogue and emotional truth",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 10,
       "title": "Model routing and adapter precautions",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 11,
       "title": "Original reusable prompt library",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 12,
       "title": "Quality gates: observable acceptance",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 13,
       "title": "Two-attempt control and intelligent repair",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 14,
       "title": "Continuity, approvals and storage contracts",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 15,
       "title": "Admin backoffice: the controls that protect quality",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 16,
       "title": "Measurement and validation programme",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 17,
       "title": "Required acceptance scenarios before implementation release",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 18,
       "title": "Research evidence and limits",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 19,
       "title": "Release boundary and next concrete step",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "REALISM_INTELLIGENCE_LAYER.md",
       "section": 20,
-      "title": "Incorporated character knowledge \u2014 revision 2",
+      "title": "Incorporated character knowledge — revision 2",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "R01\u2013R18; F033\u2013F058"
+      "coverage": "R01–R18; F033–F058"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 1,
       "title": "Vision and founder objective",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 2,
       "title": "Scope and connection to the studio",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 3,
       "title": "Users and authority",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 4,
       "title": "Navigation and screen purposes",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 5,
       "title": "Today and founder operating view",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 6,
       "title": "Production command centre",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 7,
       "title": "Job control and failure recovery",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 8,
       "title": "Models, router and vendor operations",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 9,
       "title": "Skills and departmental knowledge administration",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 10,
       "title": "Quality operations and creative defect memory",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 11,
       "title": "Finance, credits and reconciliation",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 12,
       "title": "Customers, support and service recovery",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 13,
       "title": "Assets, rights and retention",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 14,
       "title": "Access, audit and emergency controls",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 15,
       "title": "Reliability and incident management",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 16,
       "title": "Founder advantage and commonly overlooked controls",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 17,
       "title": "Evidence-driven product experiments",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 18,
       "title": "Operating cadence",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 19,
       "title": "Implementation architecture and records",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 20,
       "title": "Concrete acceptance scenarios",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 21,
       "title": "Build order and release gates",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 22,
       "title": "Initial decisions for discussion",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 23,
       "title": "Source and proposal boundaries",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     },
     {
       "source": "ADMIN_BACKOFFICE_BLUEPRINT.md",
       "section": 24,
       "title": "Registry management and customer experience alignment",
       "review": "reviewed; implementation coverage is partial or absent, see linked acceptance/function rows",
-      "coverage": "A01\u2013A12; F080\u2013F099"
+      "coverage": "A01–A12; F080–F099"
     }
   ],
   "sourceHashes": {
@@ -3906,7 +4007,7 @@
     "ADMIN_BACKOFFICE_BLUEPRINT.md": "7ef1a258cec10017c9ca13c04ebdbf87cc19d9307ea632f87b9064e3c0a6f9a1",
     "FILM_STUDIO_BLUEPRINT.md": "5ab58a4ed995df8507a3c121bab50ef500dc4da4f944e23dff4fae6532a719a1",
     "PRODUCT_EXPERIENCE_SPEC.md": "5dc940885e66e3f395e0b475ee35cbb0cf8b9a2fe2c9fd84c955b01ac3717a7f",
-    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "7202f8ab4e1f17c09eec0e1b732fd7967901f7cd0d006b318b067839b3d29cc9"
+    "MODEL_ROUTER_INTELLIGENCE_BIBLE.md": "6fe80bdebb0e4d8d6e3d9ac154b8d0d9ead57b70e6588f24066b03c38999869f"
   },
-  "currentBatch": "Reviewed OpenAI/fal registry: 360 tests, syntax/build and eight local browser scenarios pass; actual local APIs, intercepted fixtures and injected recovery errors distinguished. Thirteen isolated SQL groups pass; native migration 20261019102343, service-only/RLS and security advisor verified. No paid calls, key changes or active native models. F085 advances to partial; real quality/billing, extra adapters, sequence management, physical devices and deferred deployed-account checks remain outstanding."
+  "currentBatch": "Point 4 department planning: seventeen source-bound, versioned units; free preparation, focused edits, planning-only approvals, explicit stale-source refresh/repair and separately authorized AI proposals implemented. 427 automated tests, syntax and production build pass. Five compact department-browser scenario groups and seven browser regression scripts pass; no physical-device or deployed-account claim. Eighteen isolated SQL groups pass. Native migration 20261019112531_director_department_planning is applied; ten functions are service-only/security-invoker, six tables have RLS, security advisories are empty, zero OpenAI/fal models are active and generation remains paused. F015/F018 advance to partial; real-model quality, actual media and Point 5 precise targeted downstream invalidation remain pending. See DEPARTMENT_PLANNING_ACCEPTANCE.md."
 }

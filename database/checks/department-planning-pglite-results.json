@@ -1,0 +1,29 @@
+{
+  "environment": "isolated PGlite PostgreSQL/WASM; no native/provider/network transport",
+  "passed": [
+    "all 15 prior SQL increments including persistence, storage bucket, access and inactive registry seeds install before additive department migration; generation stays paused with zero active models",
+    "exact department artifact/source recognized; current approved brief and screenplay are mandatory before department approval",
+    "owner/revision/archive/known department checks and explicit planning-only acknowledgement protect direct and RPC approval paths",
+    "editing one department supersedes only that department version; another unchanged approved department remains approved",
+    "department save locks exact project and latest approval ID: approval-after-read, missing identity, foreign actor, stale version and unrelated field changes reject; valid save is atomic with full artifact/audit rollback on conflict",
+    "parsed source signatures independently fence premise, brief, character, script and signature changes; latest revocation holds plans",
+    "artifact identity alone does not make an absent/altered department snapshot current",
+    "reviewed registry operation allowlist supports all existing operations plus departments and still rejects unknown operations",
+    "department allowance is operation/model-bound and exactly replayable; pause, foreign actor and v3 request reject before department reservation",
+    "exact department archive change holds new reserve/claim despite forged unchanged JS scope; exact prior reservation replay recovers evidence; claim occurs once",
+    "known response recording, owner-bound recovery and exact usage settlement remain possible after source edits, global pause and model disable",
+    "a fresh allowance cannot bypass revoked script approval; legacy NULL-operation allowances cannot authorize the new department operation",
+    "existing writing operation keeps exact v3 request support; new v4 support does not rewrite or invalidate old transport contracts",
+    "actual media reservation waits for all 17 current department approvals; one revocation blocks dispatch; restoring approval permits claim; known submitted job accounting can finish after another revocation",
+    "a not-applicable department still requires a nonempty reviewed rationale; it cannot silently bypass the all-department gate",
+    "department-plan approval cannot be used as a media target: new quote, legacy quote authorization and legacy authorized job reservation all reject",
+    "new functions are security invoker, empty-search-path and service-only; approvals remain append-only",
+    "rollback removes all synthetic plans, approvals, models, requests and financial transitions while preserving 20 inactive historical seeds"
+  ],
+  "productionApplied": false,
+  "limitations": [
+    "single-connection sequential proof; true concurrent-session locking remains untested",
+    "actual application rule-plan archives with synthetic project/model/request fixtures exercise database contracts; creative quality and provider transport are not tested",
+    "department planning approval does not prove media generation, voice casting, actual rights clearance or production quality"
+  ]
+}

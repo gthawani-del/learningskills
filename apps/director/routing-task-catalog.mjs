@@ -37,6 +37,7 @@ export const routingTasks = Object.freeze([
   task('film_plan_revision', 'Propose a scoped film-plan revision', []),
   task('screenplay_writing', 'Write a structured screenplay from an approved brief', []),
   task('screenplay_revision', 'Revise the current screenplay within its saved scope', []),
+  task('department_planning', 'Coordinate filmmaking departments from an approved brief and screenplay', []),
   task('story_reasoning', 'Story, screenplay and filmmaking reasoning', ['M01']),
   task('audio_analysis', 'Audio interpretation', ['M02', 'M05']),
   task('song_analysis', 'Song mood, instrumentation and development analysis', ['M05', 'M02']),
@@ -63,6 +64,7 @@ export const routingTasks = Object.freeze([
 export const planningOperationTasks = Object.freeze({
   interpret_brief: 'brief_interpretation', initial_plan: 'film_planning',
   revise_plan: 'film_plan_revision', write_script: 'screenplay_writing', revise_script: 'screenplay_revision',
+  plan_departments: 'department_planning',
 });
 export function planningOperationTask(operation) {
   return typeof operation === 'string' && Object.hasOwn(planningOperationTasks, operation) ? planningOperationTasks[operation] : null;

@@ -1,3 +1,13 @@
+# Department planning — 19 October 2026
+
+Step 6 Point 4 is implemented: 17 approved-source department plans, free deterministic prefilling, focused versioned editing, independent planning-only review, compact desktop/mobile-viewport overview and a separately reviewed/authorized AI proposal operation. Actual casting, voice auditions, generated boards and playable animatics remain subsequent media work.
+
+**427 automated tests, syntax checks and the production build pass.** Five department browser groups and seven regression browser scripts pass locally with labelled simulated providers/injected recovery failures. Eighteen isolated SQL groups pass. Native Director migration `20261019112531_director_department_planning` is applied; ten service-only invoker functions, RLS and clean security advisor verified. Zero active models; generation stays paused; no paid calls or provider-key changes. See [Department Planning Acceptance](DEPARTMENT_PLANNING_ACCEPTANCE.md).
+
+Tracker: 67 partial, 94 missing/unverified, 6 deferred and zero fully production-accepted. Next: Point 5, targeted interdepartment revisions and selective downstream invalidation. Deployed/account browser checks remain deferred; physical mobile and real model-quality validation remain untested. Historical sections below retain their evidence limits.
+
+---
+
 # Reviewed OpenAI and fal registry — 19 October 2026
 
 Both providers now follow the requested architecture: Vercel holds server-only keys; owner-managed registry drafts/publications hold reviewed models, tasks, capabilities, prices and evidence; routers select suitable eligible models. OpenAI no longer depends on a deployment-wide model name. Planning estimates/allowances bind the exact operation, model and profile; automatic paid switching is blocked.

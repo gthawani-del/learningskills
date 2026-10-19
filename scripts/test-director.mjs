@@ -60,3 +60,10 @@ await import('../apps/director/tests/planning-registry-routing.test.mjs');
 
 await import('../apps/director/tests/registry-cloud.test.mjs');
 
+await import('../apps/director/tests/department-api.test.mjs');
+await import('../apps/director/tests/department-integration.test.mjs');
+await import('../apps/director/tests/department-provider.test.mjs');
+await import('../apps/director/tests/department-plan.test.mjs');
+await import('../apps/director/tests/department-guidance.test.mjs');
+await import('../apps/director/tests/department-cloud.test.mjs');
+

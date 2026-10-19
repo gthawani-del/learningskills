@@ -1,6 +1,7 @@
 import {sceneChanged,briefChanged} from './public/revision-impact.js';
 import {briefArtifact} from './public/creative-brief-core.js';
 import {screenplayArtifact} from './public/screenplay-core.js';
+import {departmentPlanArtifacts} from './public/department-plan-core.js';
 import {randomUUID,createHash} from 'node:crypto';
 export const stages=['brief','story','cast','storyboard','production','edit','export'];
 export const skills=[
@@ -17,6 +18,7 @@ export function newProject(body,owner){
 }
 export function patchProject(previous,body){
  if(Object.hasOwn(body,'screenplay'))fail(400,'Use the screenplay editor to change scripts, sources or review records.');
+ if(Object.hasOwn(body,'departmentPlanning'))fail(400,'Use the department planner to change plans and their version history.');
  if(previous.screenplay?.currentVersion&&body.story!==undefined)fail(409,'Edit the current screenplay to update its treatment and scenes.');
  if(body.expectedVersion!==undefined&&body.expectedVersion!==previous.version)fail(409,'This project changed. Reopen it before saving your edit.');
  const next=structuredClone(previous);
@@ -47,6 +49,7 @@ export function patchProject(previous,body){
 export function artifacts(project){return [
  ...(briefArtifact(project)?[briefArtifact(project)]:[]),
  ...(screenplayArtifact(project)?[screenplayArtifact(project)]:[]),
+ ...departmentPlanArtifacts(project),
  {logical_key:'story',kind:'story',version:project.story.version,content:project.story},
  ...project.shots.map(s=>({logical_key:s.id,kind:'shot',version:s.version,content:s}))
 ].map(a=>({...a,content_hash:hash(a.content)}));}

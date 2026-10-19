@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-19",
+  "project": "Director",
+  "projectId": "ygyjqubrpqwfgbquwqeo",
+  "scope": "Native additive migration and read-only metadata/security verification; not customer account integration",
+  "migrationSha256": "e970299a74dc0f9c92cec6d637b8cb3ffba72a8b5872fefe5e2263149d03aa62",
+  "rls": {
+    "director_projects": true,
+    "director_approvals": true,
+    "director_artifacts": true,
+    "director_audit_events": true,
+    "director_planning_consents": true,
+    "director_planning_reservations": true
+  },
+  "columns": [
+    {
+      "table": "director_approvals",
+      "column": "department_evidence",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "table": "director_planning_consents",
+      "column": "department_planning_snapshot",
+      "default": "'null'::jsonb",
+      "nullable": "NO"
+    }
+  ],
+  "functions": [
+    {
+      "name": "director_approve_department",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_artifact_is_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_capture_planning_departments",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_current_department_approved",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_current_departments_approved",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_id_valid",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_department_snapshot_current",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_guard_department_approval",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_guard_planning_departments",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "director_save_departments",
+      "config": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "serviceExecute": true,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    }
+  ],
+  "migration": "20261019112531_director_department_planning",
+  "activeFalModels": 0,
+  "generationPaused": true,
+  "activeOpenAIModels": 0,
+  "departmentArchives": 0,
+  "planningReservations": 0,
+  "securityAdvisories": [],
+  "paidProviderCalls": 0,
+  "providerKeysInspectedOrChanged": false,
+  "customerAccountsTested": false,
+  "concurrentNativeSessionsTested": false
+}
