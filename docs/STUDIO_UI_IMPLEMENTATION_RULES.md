@@ -4,9 +4,11 @@ Applies to every new or modified customer screen across movie, advertising, docu
 
 ## Authority and layout
 
-Use the updated Studio shell released through PR #8, with [navigation and layout mapping](STUDIO_NAVIGATION_ASSETS_IMPLEMENTATION_2026-10-19.md), the [frontend v2 specification](frontend-v2/DIRECTOR_STUDIO_FRONTEND_UI_UX_V2_CODEX_SPEC.md) and subsequent explicit user corrections. Later explicit decisions govern overlapping layout details. The presence of an older component in the repository is not approval to reproduce it.
+The seven user-attached screens (01 desktop home, 02 upload, 03 sign-in, 04 generating, 05 preview, 06 revision and 07 mobile preview) are the frozen visual authority. They supersede the layout in PR #8 and older frontend-v2 screenshots wherever they differ. See [frozen UI implementation and UI-only evidence](FROZEN_UI_ACCEPTANCE_2026-10-20.md). Do not invent a replacement direction.
 
-Desktop production retains three frames: left navigation/project context, central creation/Director controls, and a large right preview/sequence. Do not add a fourth permanent pane. Other stages retain their task-appropriate review surface. Mobile uses focused content and contextual drawers/sheets, not compressed permanent desktop columns. Preserve the existing typography, blue/light controls, spacing, borders and media-canvas treatment.
+Home uses the unified Image / Video / Audio / Studio composer, a visible upload tile, settings, Review estimate, format shortcuts and photographic inspiration. Desktop creation uses three columns: navigation/project references; creation controls; the largest pane for preview, takes and the shot sequence. Mobile uses Create / Results tabs and normal document flow; no fixed bottom composer obscures content. Use the approved blue D symbol, light surfaces, sans-serif typography, thin borders and blue primary actions on every page, including backoffice.
+
+Project, approval, budget, data and provider contracts remain authoritative. A reference is not a generated take; UI fixtures are not production results. Existing format, character, cost and account destinations remain accessible through the shared sidebar.
 
 ## Interaction requirements
 

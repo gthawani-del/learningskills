@@ -2,6 +2,14 @@
 
 Updated 20 October 2026. Historical Studio UI release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
 
+## Frozen UI adaptation — 20 October 2026
+
+**Implemented:** the seven attached UI anchors now govern Home/upload/auth, the three-column desktop creation workspace, mobile Create/Results, preview/take cards, selected-shot revision and job-status presentation. The same brand/tokens/navigation apply to Projects, all Assets categories, characters, usage/account/help, all seven production stages and backoffice. Existing handlers and records are reused; forms are contextual and prompts prefill from saved direction.
+
+**UI-only verification:** one Chromium walkthrough at 1586×992 and 390×844, plus a 360×640 home check, recorded 64 page/state screenshots without document horizontal overflow, page errors, console errors or HTTP failures. Navigation, upload/remove, sign-in visibility/recovery, tabs, preview playback, revision controls and cost/attachment dialogs were exercised. [Evidence and scope](FROZEN_UI_ACCEPTANCE_2026-10-20.md). The backend/unit/SQL suite was not run for this UI-only request. Fixture takes, processing states and staff responses do not prove generation, financial settlement, cloud accounts or physical-device behavior. No production-readiness status is upgraded by this UI work.
+
+**Release scope:** UI files only. The separate unpublished automatic song-analysis increment, migrations, provider activation and unfinished media-production/export modules are excluded. Baseline/rollback: main `de7bc1a9302154b403b7e47fe82448a9aefb0928`. Exact publication/deployment evidence is recorded separately after release.
+
 ## Production release and source-publication increment — 20 October 2026
 
 Recovery PR #9 and attachment/ingestion/inspection PR #10 are **merged into main**. Production deployment `dpl_EaC3S6WGRsqoDSsZa3YkpP87b9EH` was READY at `c205c4050f95adc2b39b672d61e768925277b330`. Live Chromium navigation, ten format entries, device persistence and actual media previews passed at desktop/mobile viewport sizes with no recorded page/console/HTTP errors.

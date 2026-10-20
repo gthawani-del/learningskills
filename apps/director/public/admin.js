@@ -110,3 +110,8 @@ function bindRegistry(){
 document.querySelectorAll('[data-tab]').forEach(button=>{button.onclick=()=>{tab=button.dataset.tab;document.querySelectorAll('[data-tab]').forEach(t=>t.setAttribute('aria-pressed',String(t===button)));refresh();};});
 $('#refresh').onclick=()=>refresh();
 refresh();
+
+// Shared frozen shell: navigation only; operational permissions stay server-owned.
+const adminMenu=document.querySelector('#admin-menu-button');
+adminMenu?.addEventListener('click',()=>{const sidebar=document.querySelector('#admin-sidebar'),open=!sidebar.classList.contains('open');sidebar.classList.toggle('open',open);adminMenu.setAttribute('aria-expanded',String(open));});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){document.querySelector('#admin-sidebar')?.classList.remove('open');adminMenu?.setAttribute('aria-expanded','false');}});

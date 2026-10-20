@@ -1,0 +1,526 @@
+{
+  "scope": "UI only: layout, visible controls, navigation, dialogs, responsive bounds and preview interaction",
+  "screens": [
+    {
+      "platform": "desktop",
+      "view": "home",
+      "file": "desktop-home.jpg",
+      "horizontalOverflow": false,
+      "fixture": false,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "upload",
+      "file": "desktop-upload.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "sign-in",
+      "file": "desktop-sign-in.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "create-account",
+      "file": "desktop-create-account.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "recovery",
+      "file": "desktop-recovery.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "preview",
+      "file": "desktop-preview.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "revision",
+      "file": "desktop-revision.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "creation-controls",
+      "file": "desktop-creation-controls.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "cost-review",
+      "file": "desktop-cost-review.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "attachments",
+      "file": "desktop-attachments.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "generating",
+      "file": "desktop-generating.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-brief",
+      "file": "desktop-stage-brief.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-story",
+      "file": "desktop-stage-story.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-cast",
+      "file": "desktop-stage-cast.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-storyboard",
+      "file": "desktop-stage-storyboard.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-production",
+      "file": "desktop-stage-production.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-edit",
+      "file": "desktop-stage-edit.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "stage-export",
+      "file": "desktop-stage-export.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "projects",
+      "file": "desktop-projects.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "assets-images",
+      "file": "desktop-assets-images.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "assets-videos",
+      "file": "desktop-assets-videos.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "assets-characters",
+      "file": "desktop-assets-characters.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "assets-audio",
+      "file": "desktop-assets-audio.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "characters",
+      "file": "desktop-characters.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "usage",
+      "file": "desktop-usage.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "help",
+      "file": "desktop-help.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "account",
+      "file": "desktop-account.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "admin-jobs",
+      "file": "desktop-admin-jobs.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "admin-registry",
+      "file": "desktop-admin-registry.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "admin-controls",
+      "file": "desktop-admin-controls.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "desktop",
+      "view": "admin-audit",
+      "file": "desktop-admin-audit.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "home",
+      "file": "mobile-home.jpg",
+      "horizontalOverflow": false,
+      "fixture": false,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "upload",
+      "file": "mobile-upload.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "sign-in",
+      "file": "mobile-sign-in.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "create-account",
+      "file": "mobile-create-account.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "recovery",
+      "file": "mobile-recovery.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "preview",
+      "file": "mobile-preview.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "revision",
+      "file": "mobile-revision.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "creation-controls",
+      "file": "mobile-creation-controls.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "cost-review",
+      "file": "mobile-cost-review.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "attachments",
+      "file": "mobile-attachments.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "generating",
+      "file": "mobile-generating.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-brief",
+      "file": "mobile-stage-brief.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-story",
+      "file": "mobile-stage-story.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-cast",
+      "file": "mobile-stage-cast.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-storyboard",
+      "file": "mobile-stage-storyboard.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-production",
+      "file": "mobile-stage-production.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-edit",
+      "file": "mobile-stage-edit.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "stage-export",
+      "file": "mobile-stage-export.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "projects",
+      "file": "mobile-projects.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "assets-images",
+      "file": "mobile-assets-images.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "assets-videos",
+      "file": "mobile-assets-videos.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "assets-characters",
+      "file": "mobile-assets-characters.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "assets-audio",
+      "file": "mobile-assets-audio.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "characters",
+      "file": "mobile-characters.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "usage",
+      "file": "mobile-usage.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "help",
+      "file": "mobile-help.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "account",
+      "file": "mobile-account.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "navigation",
+      "file": "mobile-navigation.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "home-narrow",
+      "file": "mobile-home-narrow.jpg",
+      "horizontalOverflow": false,
+      "fixture": false,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "admin-jobs",
+      "file": "mobile-admin-jobs.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "admin-registry",
+      "file": "mobile-admin-registry.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "admin-controls",
+      "file": "mobile-admin-controls.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    },
+    {
+      "platform": "mobile",
+      "view": "admin-audit",
+      "file": "mobile-admin-audit.jpg",
+      "horizontalOverflow": false,
+      "fixture": true,
+      "status": "PASS"
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "paidProviderCalls": 0,
+  "cloudWrites": 0,
+  "physicalMobileTested": false,
+  "backendSuiteRun": false,
+  "productionWebsiteTested": false,
+  "passed": true
+}
