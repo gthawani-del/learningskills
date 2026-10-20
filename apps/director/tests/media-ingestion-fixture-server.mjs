@@ -9,7 +9,7 @@ f.storage.info=async()=>{if(!complete)throw Object.assign(Error('Transfer incomp
 const h=await createHandler(f);
 const server=http.createServer(async(req,res)=>{
  if(req.url==='/__ingestion-fixture'){
-  if(req.method==='POST'){let body='';for await(const c of req)body+=c;const v=JSON.parse(body);complete=v.complete;size=v.size;}
+  if(req.method==='POST'){let body='';for await(const c of req)body+=c;const v=JSON.parse(body);if(v.complete!==undefined)complete=v.complete;if(v.size!==undefined)size=v.size;if(v.inspected){const row=f.store.state.sourceUploads.find(r=>r.id===v.inspected);f.store.state.sourceInspections||=[];f.store.state.sourceInspections.push({uploadId:row.id,status:'passed',source:structuredClone(row),result:{status:'passed',inspectionVersion:'director-source-inspection-v1',sha256:row.manifest.sha256,size:row.manifest.size,mime:row.manifest.mime,durationSeconds:180,streams:[{type:'audio',codec:'pcm_s16le',sampleRate:48000,channels:2}],decodeVerified:true}});}}
   res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({uploads:f.store.state.sourceUploads||[],assets:f.store.state.assets.length,paidCalls:f.counters().submits}));
  }
  await h(req,res);

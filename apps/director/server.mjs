@@ -9,7 +9,8 @@ export async function createHandler(options={}){
  const path=new URL(req.url,'http://localhost').pathname;
  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');
  let storageOrigin='';if(env.DIRECTOR_RESUMABLE_UPLOADS==='1'){try{const u=new URL(env.SUPABASE_URL);if(u.protocol==='https:'&&/^[-a-z0-9]+\.supabase\.co$/.test(u.hostname)&&!u.port&&!u.username&&!u.password&&u.pathname==='/')storageOrigin=' https://'+u.hostname.replace('.supabase.co','.storage.supabase.co');}catch{}}
- res.setHeader('Content-Security-Policy',`default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'${storageOrigin}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`);
+ let playbackOrigin='';try{const u=new URL(env.SUPABASE_URL);if(u.protocol==='https:'&&/^[-a-z0-9]+\.supabase\.co$/.test(u.hostname)&&!u.port&&!u.username&&!u.password&&u.pathname==='/')playbackOrigin=' '+u.origin;}catch{}
+ res.setHeader('Content-Security-Policy',`default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:${playbackOrigin}; connect-src 'self'${storageOrigin}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`);
  if(!['GET','POST','PATCH'].includes(req.method)){res.writeHead(405,{'Allow':'GET, POST, PATCH'});return res.end();}
  if(req.method!=='GET'){
  const origin=req.headers.origin;const expected=env.APP_ORIGIN||`${env.VERCEL?'https':'http'}://${req.headers.host}`;

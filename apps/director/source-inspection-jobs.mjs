@@ -29,7 +29,7 @@ export const cloudSourceInspectionMethods={
  async finishSourceInspection(uploadId,claimToken,source,report){return this.request('/rest/v1/rpc/director_finish_source_inspection',{method:'POST',body:{p_upload:uploadId,p_token:claimToken,p_result:inspectionOutcome(report,source)}});}
 };
 
-export async function runSourceInspectionJob({store,uploadId,execute,enabled=false}){
+export async function runSourceInspectionJob({store,uploadId,execute,enabled=false,publish=false}){
  if(!enabled)fail(503,'Source inspection dispatch awaits runtime qualification.');
  if(typeof execute!=='function')fail(503,'A qualified isolated inspection executor is required.');
  const token=randomUUID(),claim=await store.claimSourceInspection(uploadId,token,600);
@@ -48,5 +48,6 @@ export async function runSourceInspectionJob({store,uploadId,execute,enabled=fal
   fail(503,'Inspection execution was not confirmed. Check the existing worker before retrying.');
  }
  const accepted=await store.finishSourceInspection(uploadId,token,source,report);
+ if(publish&&accepted.status==='passed'){const asset=await store.publishSourceUpload(claim.ownerId,claim.projectId,uploadId);return {claimed:true,uploadId,status:'passed',assetId:asset.id,assetPublished:true};}
  return {claimed:true,...accepted,assetPublished:false};
 }

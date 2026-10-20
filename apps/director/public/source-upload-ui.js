@@ -1,6 +1,6 @@
 import {sourceFileManifest,transferSourceFile} from './source-upload.js';
 
-export function createSourceUploadUI({api,getContext,host,notify}){
+export function createSourceUploadUI({api,getContext,host,notify,onPublished=async()=>{}}){
  let active=null,busy=false,abortController=null;
  const message=document.createElement('p'),list=document.createElement('ul'),pause=document.createElement('button'),progress=document.createElement('progress');
  progress.max=100;progress.value=0;progress.hidden=true;progress.setAttribute('aria-label','Source upload progress');
@@ -12,7 +12,9 @@ export function createSourceUploadUI({api,getContext,host,notify}){
   host.hidden=false;message.textContent='Source transfers · files become available after inspection.';
   const {uploads}=await api(root(captured.projectId));const current=getContext();if(current.projectId!==captured.projectId||current.ownerId!==captured.ownerId)return;
   list.replaceChildren();for(const receipt of uploads.filter(u=>u.status!=='cancelled')){
-   const row=document.createElement('li'),label=document.createElement('span');label.textContent=receipt.name+' — '+(receipt.status==='inspection_pending'?'Uploaded; inspection pending. Not available for production.':'Transfer incomplete. Reselect the original file, then resume.');row.append(label);
+   const row=document.createElement('li'),label=document.createElement('span');label.textContent=receipt.name+' — '+(receipt.ready?'Available in your asset library.':receipt.status==='inspection_pending'?'Uploaded; inspection pending. Not available for production.':'Transfer incomplete. Reselect the original file, then resume.');row.append(label);
+   if(receipt.ready){list.append(row);continue;}
+   if(receipt.status==='inspection_pending'){const check=document.createElement('button');check.type='button';check.textContent='Check inspection';check.onclick=async()=>{check.disabled=true;try{const current=context();if(current.ownerId!==captured.ownerId||current.projectId!==captured.projectId)throw Error('The project changed. Reopen attachments.');const result=await api(`${root(captured.projectId)}/${receipt.id}/publish`,{method:'POST',body:{}});const after=getContext();if(after.ownerId!==captured.ownerId||after.projectId!==captured.projectId)return;await onPublished(result.asset,captured);notify('Inspected source added to your asset library. No generation started.');await refresh();}catch(e){notify(e.message);}finally{check.disabled=false;}};row.append(check);}
    if(receipt.status==='uploading'){const resume=document.createElement('button');resume.type='button';resume.textContent='Resume';resume.onclick=()=>{const file=document.querySelector('#upload-file')?.files[0];if(!file)return notify('Select the original file in the file picker first.');start(file,receipt,receipt.id).catch(e=>notify(e.message));};row.append(resume);}
    const cancel=document.createElement('button');cancel.type='button';cancel.textContent='Cancel upload';cancel.onclick=async()=>{try{if(busy)throw Error('Pause the active transfer before cancelling.');const current=context();if(current.ownerId!==captured.ownerId||current.projectId!==captured.projectId)throw Error('The project changed. Reopen attachments.');await api(`${root(captured.projectId)}/${receipt.id}/cancel`,{method:'POST',body:{}});await refresh();}catch(e){notify(e.message);}};row.append(cancel);list.append(row);
   }

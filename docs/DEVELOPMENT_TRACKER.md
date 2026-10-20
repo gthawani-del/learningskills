@@ -1,6 +1,16 @@
 # Director Studio — Development Tracker
 
-Updated 20 October 2026. Current application release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
+Updated 20 October 2026. Historical Studio UI release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
+
+## Production release and source-publication increment — 20 October 2026
+
+Recovery PR #9 and attachment/ingestion/inspection PR #10 are **merged into main**. Production deployment `dpl_EaC3S6WGRsqoDSsZa3YkpP87b9EH` was READY at `c205c4050f95adc2b39b672d61e768925277b330`. Live Chromium navigation, ten format entries, device persistence and actual media previews passed at desktop/mobile viewport sizes with no recorded page/console/HTTP errors.
+
+**New implementation:** inspection-gated atomic source publication into the shared asset library, idempotent retry, preserved original storage object/raw checksum/measured duration, private authorized playback redirect, and the existing attachment sheet's inspection check/library handoff. Trusted dispatch can optionally publish only after an accepted result. [Acceptance and rollback](SOURCE_PUBLICATION_ACCEPTANCE.md).
+
+**Passed:** full local QA **823 automated tests, 22 browser groups, build and SQL**; 13 focused publication checks included. Chromium exercised interrupted upload/resume and the publication UI against labelled local storage/inspection fixtures. [Evidence](evidence/SOURCE_PUBLICATION_2026-10-20.json). New-commit CI and production deployment are tracked separately.
+
+**Live activation blocked:** automatic approval review rejected (1) a bounded temporary Vercel Sandbox because provisioning compute can incur cost and the planning budget is not spending permission, and (2) the additive source-media Supabase migration because it changes persistent production schema/security. Separate concrete approval requests are pending. Neither action executed; no migration, bucket or sandbox was created. Keep resumable uploads disabled until schema, actual isolated processing and cloud acceptance are verified. Generation/export and the wider music-video release are not complete.
 
 ## Durable inspection jobs checkpoint — 20 October 2026
 

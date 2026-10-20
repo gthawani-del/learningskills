@@ -134,7 +134,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(project.importState?.status==='awaiting_media'&&req.method!=='GET'&&action!=='import-complete'&&!/^import-assets\/[0-9a-f-]+$/.test(action||''))fail(409,'This cloud copy is still importing. Reopen the device draft and choose Save to workspace to finish before editing or approving it.');
  if(action==='source-uploads'&&req.method==='GET')return reply(200,await ingestion.list(user.id,project));
  if(action==='source-uploads'&&req.method==='POST')return reply(201,await ingestion.start(user.id,project,body));
- const sourceAction=action?.match(/^source-uploads\/([^/]+)\/(ticket|complete|cancel)$/);
+ const sourceAction=action?.match(/^source-uploads\/([^/]+)\/(ticket|complete|cancel|publish)$/);
  if(sourceAction&&req.method==='POST'){if(Object.keys(body).length)fail(400,'Upload actions do not accept file content or storage paths.');return reply(200,await ingestion[sourceAction[2]](user.id,project,sourceAction[1]));}
  if(!action&&req.method==='PATCH'){const next=patchProject(project,body);if(body.shots){const allowed=await store.records('assets',id);if(next.shots.some(s=>s.clipAssetId&&!allowed.some(a=>a.id===s.clipAssetId&&a.mime==='video/mp4')||s.referenceAssetId&&!allowed.some(a=>a.id===s.referenceAssetId&&a.mime.startsWith('image/'))))fail(400,'A selected clip is unavailable.');}return reply(200,{project:await store.save(next,project.version)});}
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
@@ -262,6 +262,12 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const asset=await store.add('assets',{id:assetId,projectId:id,name:body.name,mime,role:body.role,scope:body.scope,shotId:body.shotId||null,version:1,storageKey,size:bytes.length,checksum:hash(bytes.toString('base64'))});const {storageKey:unused,...visible}=asset;return reply(201,{asset:{...visible,url:`/api/projects/${id}/assets/${assetId}/content`}});}
  const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
  if(content&&req.method==='GET'){const asset=(await store.records('assets',id)).find(a=>a.id===content[1]);if(!asset)fail(404,'Reference not found.');let bytes;
+ if(asset.bucket==='director-source-media'){
+  if(asset.sourceUploadId!==asset.id||asset.decodeVerified!==true||asset.inspectionVersion!=='director-source-inspection-v1'||asset.checksumAlgorithm!=='sha256-bytes')fail(409,'Source inspection is required before playback.');
+  const expiresIn=Math.min(3600,Math.max(300,Math.ceil(asset.durationSeconds||0)+120));
+  const url=await mediaStorage.sign(asset.storageKey,{bucket:asset.bucket,expiresIn});
+  res.writeHead(302,{'Location':url,'Cache-Control':'private, no-store','Referrer-Policy':'no-referrer'});return res.end();
+ }
  bytes=await mediaStorage.get(asset.storageKey,{bucket:asset.bucket||'director-media'});
  const headers={'Content-Type':asset.mime.startsWith('image/')||asset.mime.startsWith('video/')||asset.mime.startsWith('audio/')?asset.mime:'application/octet-stream','Content-Disposition':`attachment; filename="reference-${asset.id}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'};
  if(asset.mime.startsWith('audio/')){

@@ -25,7 +25,7 @@ const state = {config:{capabilities:{}},projects:[],project:null,assets:[],appro
 const main = $('#main');
 const blobUrls=new Map();
 const local=()=>state.project?.isLocal===true;
-const sourceUploads=createSourceUploadUI({api:(...args)=>api(...args),getContext:()=>({enabled:!local()&&state.config.capabilities?.resumableUploads,ownerId:state.config.user?.id,projectId:state.project?.id}),host:$('#source-upload-status'),notify:message=>toast(message)});
+const sourceUploads=createSourceUploadUI({api:(...args)=>api(...args),getContext:()=>({enabled:!local()&&state.config.capabilities?.resumableUploads,ownerId:state.config.user?.id,projectId:state.project?.id}),host:$('#source-upload-status'),notify:message=>toast(message),onPublished:async(asset,captured)=>{if(state.project?.id!==captured.projectId||state.config.user?.id!==captured.ownerId)return;state.assets=state.assets.filter(a=>a.id!==asset.id);state.assets.push(asset);$('#upload-dialog').close();markActivity('Inspected source added to the library.');render();}});
 const attachments=mountAttachmentUI({dialog:$('#upload-dialog'),getContext:()=>({projectId:state.project?.id,format:state.project?.format,stage:stage(),shotId:state.shot,assets:state.assets,uploadMaxBytes:state.config.uploadMaxBytes||2*1024*1024,sourceUploadMaxBytes:state.config.sourceUploadMaxBytes||0,resumableUploads:!local()&&state.config.capabilities?.resumableUploads}),onUseAsset:asset=>{if(!state.refs.includes(asset.id))state.refs.push(asset.id);renderChips();$('#director')?.classList.add('open');toast('Reference selected in your message draft. No generation started.');}});
 let deviceProjects=[];
 let migrationBusy=false;

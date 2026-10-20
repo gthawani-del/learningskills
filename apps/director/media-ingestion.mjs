@@ -12,15 +12,16 @@ export function sourceUploadManifest(body,project){
  if(body.role==='master_song'&&(!body.mime.startsWith('audio/')||body.scope!=='project'))fail(400,'The master song must be project-scoped audio.');
  return {name:body.name,mime:body.mime,size:body.size,sha256:body.sha256,role:body.role,scope:body.scope,shotId:body.scope==='shot'?body.shotId:null};
 }
-export function visibleSourceUpload(row){
+export function visibleSourceUpload(row,asset){
  const {id,projectId,manifest,status,createdAt,expiresAt}=row;
- return {id,projectId,...manifest,status,createdAt,expiresAt,ready:false};
+ return {id,projectId,...manifest,status:asset?'published':status,createdAt,expiresAt,ready:!!asset,...(asset?{assetId:asset.id}:{})};
 }
 export function createMediaIngestion({store,storage,enabled=false,now=()=>Date.now()}){
  const held=()=>{if(!enabled)fail(503,'Resumable source uploads await private-storage and inspection setup. Existing references are unchanged.');};
  const current=async(owner,project,id)=>{if(!uuid.test(id||''))fail(400,'Invalid upload ID.');const row=await store.sourceUpload(owner,project.id,id);if(Date.parse(row.expiresAt)<=now())fail(409,'This transfer expired. Start a new upload; your original file is unchanged.');return row;};
  return {
-  async list(owner,project){held();return {uploads:(await store.sourceUploads(owner,project.id)).map(visibleSourceUpload)};},
+  async list(owner,project){held();const rows=await store.sourceUploads(owner,project.id),assets=await store.records('assets',project.id);return {uploads:rows.map(row=>visibleSourceUpload(row,assets.find(a=>a.sourceUploadId===row.id)))};},
+  async publish(owner,project,id){held();if(!uuid.test(id||''))fail(400,'Invalid upload ID.');const asset=await store.publishSourceUpload(owner,project.id,id);const {storageKey,...visible}=asset;return {asset:{...visible,url:`/api/projects/${project.id}/assets/${asset.id}/content`}};},
   async start(owner,project,body){
    held();const manifest=sourceUploadManifest(body,project),id=randomUUID();
    const row=await store.createSourceUpload(owner,project.id,{id,projectId:project.id,ownerId:owner,requestId:body.requestId,manifest,manifestHash:hash(manifest),bucket:SOURCE_UPLOAD_BUCKET,storageKey:`${owner}/${project.id}/${id}`,status:'uploading',createdAt:new Date(now()).toISOString(),expiresAt:new Date(now()+24*3600*1000).toISOString()});
@@ -39,6 +40,6 @@ export function createMediaIngestion({store,storage,enabled=false,now=()=>Date.n
    // hash and inspect the source before any normal director_assets row can exist.
    return {upload:visibleSourceUpload(await store.transitionSourceUpload(owner,project.id,id,'inspection_pending'))};
   },
-  async cancel(owner,project,id){held();await current(owner,project,id);return {upload:visibleSourceUpload(await store.transitionSourceUpload(owner,project.id,id,'cancelled'))};}
+  async cancel(owner,project,id){held();await current(owner,project,id);if((await store.records('assets',project.id)).some(a=>a.sourceUploadId===id))fail(409,'This source is in the asset library. Upload cancellation cannot remove published media.');return {upload:visibleSourceUpload(await store.transitionSourceUpload(owner,project.id,id,'cancelled'))};}
  };
 }

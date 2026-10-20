@@ -51,7 +51,18 @@ try:
    for r in fixture['uploads']:
     page.request.post(base+'/api/projects/'+info['projectId']+'/source-uploads/'+r['id']+'/cancel',data={})
    checks.append({'width':width,'reloadResumedWithHEAD':True,'creationRequests':transport['posts'],'byteIdentityVerified':True,'pendingNotAsset':True,'noStoredToken':True,'pageErrors':errors});context.close()
-  browser.close();result={'scope':'Real Chromium/TUS SDK with local API and simulated storage; not live Supabase','checks':checks,'paidCalls':0,'physicalMobileTested':False};(out/'results.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))
+  # Simulated trusted inspection tests the real UI/API publication handoff.
+  context=browser.new_context(viewport={'width':390,'height':844});context.add_cookies([{'name':'director_session','value':info['session'],'url':base}]);page=context.new_page();page.add_init_script('localStorage.setItem("director:lastProject",'+json.dumps(info['projectId'])+');');publication_errors=[];page.on('pageerror',lambda e:publication_errors.append(str(e)));page.goto(base)
+  root=base+'/api/projects/'+info['projectId']+'/source-uploads'
+  import uuid
+  created=page.request.post(root,data={'requestId':str(uuid.uuid4()),'name':'inspected-master.wav','mime':'audio/wav','size':len(file),'sha256':hashlib.sha256(file).hexdigest(),'role':'master_song','scope':'project','shotId':None}).json()['upload']
+  assert page.request.post(root+'/'+created['id']+'/complete',data={}).status==200
+  page.request.post(base+'/__ingestion-fixture',data={'inspected':created['id']})
+  page.locator('#cast-upload').click();page.locator('#source-upload-status').get_by_role('button',name='Check inspection',exact=True).click();expect(page.locator('#upload-dialog')).not_to_be_visible()
+  assets=page.request.get(base+'/api/projects/'+info['projectId']+'/assets').json()['assets'];assert len(assets)==1 and assets[0]['name']=='inspected-master.wav' and assets[0]['sourceUploadId']==created['id']
+  assert any(u['id']==created['id'] and u['ready'] for u in page.request.get(root).json()['uploads']);assert not publication_errors,publication_errors
+  page.locator('#cast-upload').click();expect(page.locator('#source-upload-status')).to_contain_text('Available in your asset library.');assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');page.screenshot(path=str(out/'published-390.png'),full_page=True);context.close()
+  browser.close();result={'scope':'Real Chromium/TUS SDK with local API and simulated storage/inspection; not live Supabase','checks':checks,'publicationUI':True,'paidCalls':0,'physicalMobileTested':False};(out/'results.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))
 except Exception:
  if 'page' in globals():
   try: page.screenshot(path=str(out/'failure.png'),full_page=True);print(page.locator('body').inner_text()[:5000],flush=True)

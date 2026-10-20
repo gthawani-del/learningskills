@@ -1,5 +1,6 @@
 await import('../apps/director/tests/source-inspection.test.mjs');
 await import('../apps/director/tests/source-inspection-jobs.test.mjs');
+await import('../apps/director/tests/source-publication.test.mjs');
 await import('../apps/director/tests/attachment-ui.test.mjs');
 await import('../apps/director/tests/media-ingestion.test.mjs');
 await import('../apps/director/tests/account-recovery.test.mjs');
