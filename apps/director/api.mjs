@@ -27,6 +27,7 @@ import {applyProductionRecord,recordDependencies} from './production-records.mjs
 import {productionState} from './production-state.mjs';
 import {createImportController} from './imports.mjs';
 import {createMediaStorage} from './media-storage.mjs';
+import {createMediaIngestion,SOURCE_UPLOAD_MAX_BYTES} from './media-ingestion.mjs';
 import {randomUUID} from 'node:crypto';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -66,6 +67,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const planning=false;
  const planningController=store?createPlanningController({store,provider:providedPlanningProvider||createPlanningProvider({env,fetcher}),env}):null;
  const mediaStorage=providedStorage||createMediaStorage({env,fetcher,demo});
+ const resumableUploads=!!store&&!demo&&env.DIRECTOR_RESUMABLE_UPLOADS==='1';
+ const ingestion=store?createMediaIngestion({store,storage:mediaStorage,enabled:resumableUploads}):null;
  const referenceController=store?createReferenceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const storyboardProductionController=store?createStoryboardProductionController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const imports=store?createImportController({store,storage:mediaStorage}):null;
@@ -84,7 +87,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;
  if(await recovery({req,res,path,body,jar,reply,clearSession}))return;
  const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
- if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,planningControls:!!store,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
+ if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,planningControls:!!store,media:false,uploads:!!store,resumableUploads,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024,sourceUploadMaxBytes:resumableUploads?SOURCE_UPLOAD_MAX_BYTES:0});
  if(path==='/api/auth/login'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
  if(typeof body.email!=='string'||body.email.length>254||typeof body.password!=='string'||body.password.length>1024)fail(400,'Enter an email and password.');
@@ -129,6 +132,10 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);
  if(!action&&req.method==='GET')return reply(200,{project});
  if(project.importState?.status==='awaiting_media'&&req.method!=='GET'&&action!=='import-complete'&&!/^import-assets\/[0-9a-f-]+$/.test(action||''))fail(409,'This cloud copy is still importing. Reopen the device draft and choose Save to workspace to finish before editing or approving it.');
+ if(action==='source-uploads'&&req.method==='GET')return reply(200,await ingestion.list(user.id,project));
+ if(action==='source-uploads'&&req.method==='POST')return reply(201,await ingestion.start(user.id,project,body));
+ const sourceAction=action?.match(/^source-uploads\/([^/]+)\/(ticket|complete|cancel)$/);
+ if(sourceAction&&req.method==='POST'){if(Object.keys(body).length)fail(400,'Upload actions do not accept file content or storage paths.');return reply(200,await ingestion[sourceAction[2]](user.id,project,sourceAction[1]));}
  if(!action&&req.method==='PATCH'){const next=patchProject(project,body);if(body.shots){const allowed=await store.records('assets',id);if(next.shots.some(s=>s.clipAssetId&&!allowed.some(a=>a.id===s.clipAssetId&&a.mime==='video/mp4')||s.referenceAssetId&&!allowed.some(a=>a.id===s.referenceAssetId&&a.mime.startsWith('image/'))))fail(400,'A selected clip is unavailable.');}return reply(200,{project:await store.save(next,project.version)});}
  const importAsset=action?.match(/^import-assets\/([0-9a-f-]+)$/);
  if(importAsset&&req.method==='POST'){const file=validateUpload(body);const asset=await imports.upload(user.id,id,importAsset[1],file);const {storageKey,...visible}=asset;return reply(200,{asset:{...visible,url:`/api/projects/${id}/assets/${asset.id}/content`}});}

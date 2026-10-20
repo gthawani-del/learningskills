@@ -1,0 +1,217 @@
+{
+  "observedAt": "2026-10-20T08:17:03.273301+00:00",
+  "parentCommit": "780fa805d1b27f1b980f14409cefd96f264cc19b",
+  "scope": "Portable deterministic source inspector and guarded Sandbox-interface proof harness",
+  "fullQA": {
+    "command": "npm run qa",
+    "passed": true,
+    "automatedTests": 793,
+    "browserFlows": 22,
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.4,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 93.88,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.43,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "attachment-browser",
+        "code": 0,
+        "seconds": 11.19,
+        "log": "test-results/qa/attachment-browser.log"
+      },
+      {
+        "name": "media-ingestion-browser",
+        "code": 0,
+        "seconds": 11.84,
+        "log": "test-results/qa/media-ingestion-browser.log"
+      },
+      {
+        "name": "account-recovery-browser",
+        "code": 0,
+        "seconds": 4.6,
+        "log": "test-results/qa/account-recovery-browser.log"
+      },
+      {
+        "name": "studio-navigation-browser",
+        "code": 0,
+        "seconds": 41.85,
+        "log": "test-results/qa/studio-navigation-browser.log"
+      },
+      {
+        "name": "ftue-browser",
+        "code": 0,
+        "seconds": 4.76,
+        "log": "test-results/qa/ftue-browser.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 7.87,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 4.96,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 4.79,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 8.11,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 14.92,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.78,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 3.82,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 6.84,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.4,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 7.47,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 7.93,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 7.24,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 10,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 7.46,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 7.45,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.73,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 7.09,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 30.57,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ]
+  },
+  "focusedQA": {
+    "command": "npm run qa:fast -- --changed apps/director/workers/source-inspection.mjs apps/director/sandbox-inspection-proof.mjs apps/director/tests/source-inspection.test.mjs",
+    "tests": 15,
+    "passed": true,
+    "buildPassed": true
+  },
+  "sourceHashes": {
+    "apps/director/workers/source-inspection.mjs": "032571ef36a6d6920b70293eac86b4857005aa95196db17103aa20a221ab9be4",
+    "apps/director/sandbox-inspection-proof.mjs": "29f7a635d5b55e8123fdebdd77805cb73d0216dd6ec3b7694e5de44c77ee1f27",
+    "apps/director/tests/source-inspection.test.mjs": "b69e6457890720ef594c1cc2d31454991738b6a2432811e76c10097d0e7474eb"
+  },
+  "measuredLocalMedia": [
+    "180-second WAV with unchanged source checksum and verified full decode",
+    "MP3 with measured streams and full decode",
+    "Silent H.264 MP4 with measured dimensions, duration and full decode"
+  ],
+  "runtime": {
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 7.1.5-0+deb13u1 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "uiScope": {
+    "publicFilesComparedToParent": 34,
+    "changed": 0
+  },
+  "vercelAccess": {
+    "operation": "GET project",
+    "projectId": "prj_FPEsU1tgKwrXw2yaxG45aV0fciH2",
+    "teamId": "team_m3EJjTDjwR7e7VD6QZDgDzaE",
+    "scope": "ggg12",
+    "status": 403,
+    "cliAvailable": false,
+    "runtimeCredentialAvailable": false,
+    "sandboxCreated": false
+  },
+  "cloudSandboxProvenanceVerified": false,
+  "livePrivateTransferVerified": false,
+  "actualCostVerified": false,
+  "paidProviderCalls": 0,
+  "assetPublicationEnabled": false,
+  "productionDeployed": false,
+  "productionMigrationApplied": false,
+  "remaining": [
+    "Actual authorized Vercel Sandbox runtime/private-transfer/cost proof",
+    "Durable exact-source task binding, claim/lease and cancellation recovery",
+    "Trusted atomic ready-asset publication and downstream integration",
+    "Private source retention/orphan cleanup and large device migration",
+    "Live-account and physical-device qualification"
+  ]
+}

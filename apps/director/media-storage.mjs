@@ -4,7 +4,7 @@ import {hash,fail} from './domain.mjs';
 export function createMediaStorage({env,fetcher=fetch,demo}){
  const dir=env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets';
  const headers={apikey:env.SUPABASE_SERVICE_ROLE_KEY,Authorization:`Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`};
- const bucketName=value=>{if(!['director-media','director-reference-media'].includes(value))fail(400,'Unsupported private media bucket.');return value;};
+ const bucketName=value=>{if(!['director-media','director-reference-media','director-source-media'].includes(value))fail(400,'Unsupported private media bucket.');return value;};
  const objectKey=value=>{if(typeof value!=='string'||!value||value.split('/').some(part=>!part||part==='.'||part==='..'||!/^[A-Za-z0-9_-]+$/.test(part)))fail(400,'Invalid private media key.');return value;};
  async function get(key,{bucket='director-media'}={}){bucketName(bucket);objectKey(key);if(demo)return readFile(join(dir,key.split('/').at(-1)));const r=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/authenticated/${bucket}/${key}`,{headers,signal:AbortSignal.timeout(30000)});if(!r.ok)fail(502,'Private reference retrieval failed.');return Buffer.from(await r.arrayBuffer());}
  async function putIfAbsent(key,bytes,mime,checksum,{bucket='director-media'}={}){
@@ -22,5 +22,24 @@ export function createMediaStorage({env,fetcher=fetch,demo}){
   if(typeof path!=='string'||!path.startsWith(`/object/sign/${bucket}/${key}?`)&&!path.startsWith(`/storage/v1/object/sign/${bucket}/${key}?`))fail(502,'The private storage service returned an invalid reference link.');
   return new URL(path.startsWith('/storage/v1/')?path:'/storage/v1'+path,env.SUPABASE_URL).href;
  }
- return {get,putIfAbsent,sign};
+ async function signUpload(key,{bucket='director-source-media'}={}){
+  bucketName(bucket);objectKey(key);if(demo)fail(409,'Resumable uploads require a connected private workspace.');
+  const base=new URL(env.SUPABASE_URL);
+  if(base.protocol!=='https:'||!/^[-a-z0-9]+\.supabase\.co$/.test(base.hostname)||base.port||base.pathname!=='/'||base.username||base.password)fail(503,'A verified Supabase storage origin is required.');
+  const r=await fetcher(`${base.origin}/storage/v1/object/upload/sign/${bucket}/${key}`,{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:'{}',signal:AbortSignal.timeout(20000)});
+  if(!r.ok)fail(502,'The private upload permission could not be issued. Your file is unchanged.');
+  const data=await r.json();let url;try{url=new URL('/storage/v1'+data.url,base.origin);}catch{fail(502,'Invalid upload permission.');}
+  if(typeof data.url!=='string'||url.origin!==base.origin||url.pathname!==`/storage/v1/object/upload/sign/${bucket}/${key}`||!url.searchParams.get('token'))fail(502,'Invalid upload permission.');
+  return {endpoint:`https://${base.hostname.replace('.supabase.co','.storage.supabase.co')}/storage/v1/upload/resumable`,bucket,objectName:key,token:url.searchParams.get('token'),chunkSize:6*1024*1024};
+ }
+ async function info(key,{bucket='director-source-media'}={}){
+  bucketName(bucket);objectKey(key);if(demo)fail(409,'Source inspection requires a connected workspace.');
+  const r=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/info/${bucket}/${key}`,{headers,signal:AbortSignal.timeout(20000)});
+  if(r.status===404)fail(409,'This upload is not finished. Resume transferring the original file.');if(!r.ok)fail(502,'Could not confirm upload completion. Retry the check without uploading again.');
+  // Current object/info returns FileObjectV2 fields; older deployments may
+  // return system metadata. Neither shape is content-inspection evidence.
+  const data=await r.json();const size=Number(data.size??data.metadata?.size),mime=data.content_type??data.metadata?.mimetype;
+  if(!Number.isSafeInteger(size)||size<1||typeof mime!=='string')fail(502,'Storage returned incomplete source metadata.');return {size,mime};
+ }
+ return {get,putIfAbsent,sign,signUpload,info};
 }

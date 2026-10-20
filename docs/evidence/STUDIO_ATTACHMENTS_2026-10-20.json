@@ -1,0 +1,253 @@
+{
+  "date": "2026-10-20",
+  "baseline": "5e8d022f8a886b8c482df7f79f7071eec8e7ce57",
+  "scope": "Contextual Studio attachment UI and gated resumable source-ingestion increment",
+  "qa": {
+    "command": "npm run qa",
+    "passed": true,
+    "automatedTests": 778,
+    "browserFlows": 22,
+    "build": true,
+    "sqlProof": true,
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.4,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 85.54,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.47,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "attachment-browser",
+        "code": 0,
+        "seconds": 11.01,
+        "log": "test-results/qa/attachment-browser.log"
+      },
+      {
+        "name": "media-ingestion-browser",
+        "code": 0,
+        "seconds": 11.05,
+        "log": "test-results/qa/media-ingestion-browser.log"
+      },
+      {
+        "name": "account-recovery-browser",
+        "code": 0,
+        "seconds": 4.57,
+        "log": "test-results/qa/account-recovery-browser.log"
+      },
+      {
+        "name": "studio-navigation-browser",
+        "code": 0,
+        "seconds": 39.07,
+        "log": "test-results/qa/studio-navigation-browser.log"
+      },
+      {
+        "name": "ftue-browser",
+        "code": 0,
+        "seconds": 4.75,
+        "log": "test-results/qa/ftue-browser.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 6.97,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 5.45,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 4.28,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 8.77,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 12.89,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.94,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 4.13,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 6.16,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.42,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5.28,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 5.92,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 7.57,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 8.98,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 7.11,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.18,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.41,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 6.98,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 30.37,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ]
+  },
+  "attachmentBrowser": {
+    "scope": "Chromium app/API with fixture accounts/storage, no live account or provider proof",
+    "checks": [
+      {
+        "width": 1440,
+        "filePreview": true,
+        "roleSuggestion": true,
+        "invalidReplacementPreservedFile": true,
+        "cancelPreservedSelection": true,
+        "librarySearchAndDraftReference": true,
+        "keyboardTabsAndEscape": true,
+        "geometry": {
+          "left": 440,
+          "right": 1000,
+          "top": 260.609375,
+          "bottom": 739.390625,
+          "viewport": 1000,
+          "overflow": false
+        },
+        "pageConsoleErrors": [],
+        "httpErrors": []
+      },
+      {
+        "width": 390,
+        "filePreview": true,
+        "roleSuggestion": true,
+        "invalidReplacementPreservedFile": true,
+        "cancelPreservedSelection": true,
+        "librarySearchAndDraftReference": true,
+        "keyboardTabsAndEscape": true,
+        "geometry": {
+          "left": 0,
+          "right": 390,
+          "top": 391.625,
+          "bottom": 844,
+          "viewport": 844,
+          "overflow": false
+        },
+        "pageConsoleErrors": [],
+        "httpErrors": []
+      }
+    ],
+    "physicalMobileTested": false,
+    "paidCalls": 0
+  },
+  "resumableBrowser": {
+    "scope": "Real Chromium/TUS SDK with local API and simulated storage; not live Supabase",
+    "checks": [
+      {
+        "width": 1440,
+        "reloadResumedWithHEAD": true,
+        "creationRequests": 1,
+        "byteIdentityVerified": true,
+        "pendingNotAsset": true,
+        "noStoredToken": true,
+        "pageErrors": []
+      },
+      {
+        "width": 390,
+        "reloadResumedWithHEAD": true,
+        "creationRequests": 1,
+        "byteIdentityVerified": true,
+        "pendingNotAsset": true,
+        "noStoredToken": true,
+        "pageErrors": []
+      }
+    ],
+    "paidCalls": 0,
+    "physicalMobileTested": false
+  },
+  "productionDeployed": false,
+  "productionSchemaApplied": false,
+  "resumableFeatureEnabled": false,
+  "physicalMobileTested": false,
+  "paidProviderCalls": 0,
+  "remaining": [
+    "Trusted source inspection and atomic ready-asset publication",
+    "Live Supabase signed TUS, isolation, expiry and resume qualification",
+    "Durable processing, orphan cleanup and retention",
+    "Large welcome/device-draft migration",
+    "Physical-device and assistive-technology validation"
+  ]
+}

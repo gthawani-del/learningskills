@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.10"
+  },
+  "dependencies": {
+    "tus-js-client": "4.3.1"
   }
 }

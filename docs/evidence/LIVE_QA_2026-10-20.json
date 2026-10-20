@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-20",
+  "scope": "Anonymous live production Chromium QA; device drafts, no cloud account or paid generation",
+  "url": "https://learningskills.vercel.app",
+  "productionCommit": "9378628214ba21b0f5e876b0f19ba9f1ad5baf11",
+  "navigation": {
+    "checks": [
+      {
+        "width": 1440,
+        "formatsCreated": 10,
+        "assetCategories": 4,
+        "searchAndProjectFilter": true,
+        "selectedProjectUpload": true,
+        "videoPlayback": true,
+        "keyboardTabs": true,
+        "deviceReload": true,
+        "rightHandPreview": true,
+        "navigationLinks": true
+      },
+      {
+        "width": 390,
+        "formatsCreated": 10,
+        "assetCategories": 4,
+        "searchAndProjectFilter": true,
+        "selectedProjectUpload": true,
+        "videoPlayback": true,
+        "keyboardTabs": true,
+        "deviceReload": true,
+        "rightHandPreview": false,
+        "navigationLinks": true
+      }
+    ],
+    "individualMediaPreviews": [
+      {
+        "width": 1440,
+        "format": "image",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      },
+      {
+        "width": 1440,
+        "format": "video",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      },
+      {
+        "width": 1440,
+        "format": "audio",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      },
+      {
+        "width": 390,
+        "format": "image",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      },
+      {
+        "width": 390,
+        "format": "video",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      },
+      {
+        "width": 390,
+        "format": "audio",
+        "taskSpecificHandoff": true,
+        "projectScopedUpload": true,
+        "actualPreview": true
+      }
+    ],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "paidProviderCalls": 0,
+    "deployedSiteTested": true,
+    "executionBrowserTLSOverride": true,
+    "physicalMobileTested": false
+  },
+  "workspace": {
+    "url": "https://learningskills.vercel.app",
+    "passed": [
+      "brief editing",
+      "story version and approval",
+      "shot editing",
+      "image preview and alternate image selection",
+      "video playback pause seek",
+      "draft and media reload persistence",
+      "direction notes and saved-project picker",
+      "truthful cloud gate",
+      "draft JSON download",
+      "390px viewport drawers and overflow"
+    ],
+    "pageErrors": [],
+    "console": [],
+    "httpErrors": [],
+    "physicalMobileTested": false
+  },
+  "api": {
+    "tlsOverrideInIsolatedBrowser": true,
+    "scope": "Anonymous live browser/API checks, no account credentials or provider calls",
+    "results": [
+      {
+        "path": "/api/config",
+        "status": 200,
+        "config": {
+          "mode": "supabase",
+          "capabilities": {
+            "planning": false,
+            "planningControls": true,
+            "media": false,
+            "uploads": true,
+            "localExport": false
+          },
+          "uploadMaxBytes": 2097152
+        }
+      },
+      {
+        "path": "/api/projects",
+        "status": 401,
+        "config": null
+      },
+      {
+        "path": "/api/admin/control",
+        "status": 401,
+        "config": null
+      },
+      {
+        "path": "/api/projects/11111111-1111-4111-8111-111111111111/assets",
+        "status": 401,
+        "config": null
+      }
+    ]
+  },
+  "physicalMobileTested": false,
+  "paidProviderCalls": 0
+}
