@@ -2,6 +2,18 @@
 
 Updated 20 October 2026. Current application release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
 
+## Durable inspection jobs checkpoint — 20 October 2026
+
+**Implemented and locally verified:** transactional receipt-to-job enqueue/backfill, service-only durable records, fenced bounded leases, crash recovery limits, exact source/result validation, cancellation/expiry guards and disabled trusted dispatch. A result never publishes an asset. [Design, gates and rollback](SOURCE_INSPECTION_JOBS.md).
+
+**Passed:** 17 focused checks; full regression **810 automated tests, 22 browser groups, production build and SQL proofs**. All 34 customer UI files match parent PR revision `7a43483`. [Evidence](evidence/SOURCE_INSPECTION_JOBS_2026-10-20.json). Source added to the existing feature PR; exact new-commit CI/deployment is separate from local verification.
+
+**Not activated or complete:** production schema installation, qualified hosted execution, processing spend/cleanup controls, trusted atomic ready-asset publication/private playback, two-account cloud acceptance and physical-device tests. No provider call, VM creation, database migration or security change was performed. Step 5 advances at implementation level; Steps 3–6 remain partial. Next implementation: safe asset publication/private playback, then runtime/dispatcher qualification. Production generation and finished-film export remain unavailable.
+
+## Current QA checkpoint — 20 October 2026
+
+**793 tests, 22 local browser groups, build and SQL passed.** Live production Chromium navigation and editing suites passed at desktop/mobile viewport sizes with no recorded UI page/console/HTTP errors. See [QA report and limitations](evidence/QA_2026-10-20.md). Production is READY at main `9378628`; recovery/attachment/inspection PRs remain unmerged. Production planning/media generation and hosted export remain unavailable. Latest preview requires Vercel authentication. Owner project/deployment access works without forcing team scope; the protected-fetch helper separately returned 403. No physical mobile, live account, paid provider or finished-film acceptance is claimed.
+
 ## Active music-video release implementation
 
 The approved 18-step sequence is tracked in [MUSIC_VIDEO_RELEASE_IMPLEMENTATION.md](MUSIC_VIDEO_RELEASE_IMPLEMENTATION.md). Work begins with recovery, private large-media ingestion and hosted-processing feasibility. The existing department/character/production systems are reused. Current providers only; US$100 planning ceiling; live spend and quality acceptance remain separate.
@@ -26,18 +38,18 @@ Implementation follows the updated Studio shell, with [UI rules](STUDIO_UI_IMPLE
 | Full regression and build | 778 automated tests, 22 browser flows, build and SQL passed. PR #10 exact-commit GitHub Actions run **39377430525 passed**. [Evidence](evidence/STUDIO_ATTACHMENTS_2026-10-20.json). | Local and CI acceptance only; no live-provider, live-account, finished-film or physical-device acceptance implied. |
 | Design consistency | [Shared customer UI rules](STUDIO_UI_IMPLEMENTATION_RULES.md), desktop/mobile screenshots and separate interaction/visual checks. | Applies to every new or modified customer screen across all media types. |
 
-PR #10: https://github.com/gthawani-del/learningskills/pull/10, based on PR #9. Neither PR has been merged/deployed in this ledger. No production flags, security settings, database migration or paid generation was changed.
+PR #10: https://github.com/gthawani-del/learningskills/pull/10, based on PR #9. Neither PR has been merged into production; PR #10 has a protected preview deployment. No production flags, security settings, database migration or paid generation was changed.
 
 ## Deterministic inspection implementation — 20 October 2026
 
 - Implemented a portable source inspector: bounded private download, exact-byte checksum/type checks, measured stream and duration metadata, explicit pilot limits and actual FFmpeg decode. Source bytes remain unchanged. Invalid/incomplete files are held.
 - Implemented a disabled-by-default Sandbox-interface proof harness with runtime checks, a real synthetic-audio positive test, checksum-rejection negative test and explicit session cleanup. No VM creation, package install, provider request or new dependency.
 - **Passed:** 15 focused inspection tests and affected QA/build; full regression **793 automated tests, 22 browser flows, build and SQL**. [Recorded evidence](evidence/SOURCE_INSPECTION_2026-10-20.json). All 34 customer UI files match the approved parent revision.
-- **Not completed:** actual Vercel execution, live private-transfer/cost qualification, durable inspection jobs, trusted atomic publication and cleanup. Uploaded files remain pending, not ready. The previous UI/ingestion commit `780fa805` passed exact-commit CI; the new inspection commit needs its own CI result.
+- **Not completed:** actual Vercel execution, live private-transfer/cost qualification, durable inspection jobs, trusted atomic publication and cleanup. Uploaded files remain pending, not ready. The previous UI/ingestion commit `780fa805` passed exact-commit CI; inspection commit `7a43483` passed exact-commit CI run 39392450811.
 
 ## Next active increment — durable processing and publication
 
-The portable deterministic inspector and bounded Sandbox-interface proof harness are implemented; [handoff and limits](SOURCE_INSPECTION_HANDOFF.md). They verify raw-byte checksum, MIME/container/stream metadata, duration and actual audio/video decode. Local proof includes a real three-minute WAV, MP3 and MP4. Customer sources stay pending until durable inspection, trusted publication and live acceptance are connected. Vercel project management still returns 403 for the intended ggg12 scope; no authenticated CLI/runtime binding is available. No VM was created or billed. Step 4 requires actual Vercel entitlement, private transfer, executable FFmpeg and measured cost evidence; local execution alone will not close it.
+The portable deterministic inspector and bounded Sandbox-interface proof harness are implemented; [handoff and limits](SOURCE_INSPECTION_HANDOFF.md). They verify raw-byte checksum, MIME/container/stream metadata, duration and actual audio/video decode. Local proof includes a real three-minute WAV, MP3 and MP4. Customer sources stay pending until durable inspection, trusted publication and live acceptance are connected. Vercel project/deployment management now succeeds without forced team scope; protected preview access separately remains blocked. No authenticated CLI/runtime binding is available. No VM was created or billed. Step 4 requires actual Vercel entitlement, private transfer, executable FFmpeg and measured cost evidence; local execution alone will not close it.
 
 ## Honest current position
 

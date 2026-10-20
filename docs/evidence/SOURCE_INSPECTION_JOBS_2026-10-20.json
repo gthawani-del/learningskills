@@ -1,0 +1,292 @@
+{
+  "date": "2026-10-20",
+  "baseCommit": "7a43483e6701712f17bde1dc8915636ac25dfd35",
+  "scope": "Durable inspection enqueue/claims/result acceptance; not live processing or asset publication",
+  "focusedTests": 17,
+  "automatedTests": 810,
+  "browserGroups": 22,
+  "fullQA": {
+    "mode": "full",
+    "changed": [],
+    "selected": {
+      "tests": [
+        "apps/director/tests/source-inspection.test.mjs",
+        "apps/director/tests/source-inspection-jobs.test.mjs",
+        "apps/director/tests/attachment-ui.test.mjs",
+        "apps/director/tests/media-ingestion.test.mjs",
+        "apps/director/tests/account-recovery.test.mjs",
+        "apps/director/tests/music-video-redteam.test.mjs",
+        "apps/director/tests/music-video.test.mjs",
+        "apps/director/tests/qa-runner.test.mjs",
+        "apps/director/tests/animatic.test.mjs",
+        "apps/director/tests/animatic-audio.test.mjs",
+        "apps/director/tests/api.test.mjs",
+        "apps/director/tests/jobs.test.mjs",
+        "apps/director/tests/providers.test.mjs",
+        "apps/director/tests/render.test.mjs",
+        "apps/studio/tests/production-contract.test.mjs",
+        "apps/director/tests/cloud-session.test.mjs",
+        "apps/director/tests/imports.test.mjs",
+        "apps/director/tests/production-state.test.mjs",
+        "apps/director/tests/media-storage.test.mjs",
+        "apps/director/tests/production-records.test.mjs",
+        "apps/director/tests/operations.test.mjs",
+        "apps/director/tests/model-router.test.mjs",
+        "apps/director/tests/cost-quotes.test.mjs",
+        "apps/director/tests/routing-task-catalog.test.mjs",
+        "apps/director/tests/routing-api.test.mjs",
+        "apps/director/tests/quote-input.test.mjs",
+        "apps/director/tests/routing-intent.test.mjs",
+        "apps/director/tests/spending.test.mjs",
+        "apps/director/tests/spending-api.test.mjs",
+        "apps/director/tests/tariffs.test.mjs",
+        "apps/director/tests/cost-reconciliation.test.mjs",
+        "apps/director/tests/spending-cloud.test.mjs",
+        "apps/director/tests/planning-provider.test.mjs",
+        "apps/director/tests/planning-policy.test.mjs",
+        "apps/director/tests/planning-consent.test.mjs",
+        "apps/director/tests/planning-api.test.mjs",
+        "apps/director/tests/planning-cloud.test.mjs",
+        "apps/director/tests/creative-brief.test.mjs",
+        "apps/director/tests/creative-brief-api.test.mjs",
+        "apps/director/tests/creative-brief-cloud.test.mjs",
+        "apps/director/tests/creative-brief-integration.test.mjs",
+        "apps/director/tests/screenplay.test.mjs",
+        "apps/director/tests/originality.test.mjs",
+        "apps/director/tests/writing-provider.test.mjs",
+        "apps/director/tests/writing-api.test.mjs",
+        "apps/director/tests/writing-integration.test.mjs",
+        "apps/director/tests/writing-cloud.test.mjs",
+        "apps/director/tests/model-registry.test.mjs",
+        "apps/director/tests/registry-api.test.mjs",
+        "apps/director/tests/planning-registry-routing.test.mjs",
+        "apps/director/tests/registry-cloud.test.mjs",
+        "apps/director/tests/department-api.test.mjs",
+        "apps/director/tests/department-integration.test.mjs",
+        "apps/director/tests/department-provider.test.mjs",
+        "apps/director/tests/department-plan.test.mjs",
+        "apps/director/tests/department-guidance.test.mjs",
+        "apps/director/tests/department-cloud.test.mjs",
+        "apps/director/tests/department-revision-api.test.mjs",
+        "apps/director/tests/department-revision.test.mjs",
+        "apps/director/tests/storyboard-api.test.mjs",
+        "apps/director/tests/storyboard-integration.test.mjs",
+        "apps/director/tests/storyboard-provider.test.mjs",
+        "apps/director/tests/storyboard-handoff.test.mjs",
+        "apps/director/tests/storyboard-handoff-cloud.test.mjs",
+        "apps/director/tests/reference-api.test.mjs",
+        "apps/director/tests/reference-integration.test.mjs",
+        "apps/director/tests/reference-provider.test.mjs",
+        "apps/director/tests/reference-production.test.mjs",
+        "apps/director/tests/reference-cloud.test.mjs",
+        "apps/director/tests/reference-images.test.mjs",
+        "apps/director/tests/storyboard-production-api.test.mjs",
+        "apps/director/tests/storyboard-production-integration.test.mjs",
+        "apps/director/tests/storyboard-frame-provider.test.mjs",
+        "apps/director/tests/storyboard-pricing.test.mjs",
+        "apps/director/tests/storyboard-production.test.mjs",
+        "apps/director/tests/storyboard-production-cloud.test.mjs",
+        "apps/director/tests/studio-shell.test.mjs"
+      ],
+      "browsers": [
+        "attachment-browser",
+        "media-ingestion-browser",
+        "account-recovery-browser",
+        "studio-navigation-browser",
+        "ftue-browser",
+        "music-video-redteam-browser",
+        "music-video-browser",
+        "creative-brief-browser",
+        "v2-workspace",
+        "mobile-footer-browser",
+        "compact-proposal-browser",
+        "registry-browser",
+        "writing-browser",
+        "planning-ui-browser",
+        "department-browser",
+        "department-revision-browser",
+        "storyboard-browser",
+        "reference-browser",
+        "storyboard-production-browser",
+        "animatic-browser",
+        "animatic-audio-browser",
+        "animatic-audio-mp3-browser"
+      ],
+      "sql": true,
+      "reason": "Full release checks."
+    },
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.4,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 100.71,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.55,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "attachment-browser",
+        "code": 0,
+        "seconds": 13.34,
+        "log": "test-results/qa/attachment-browser.log"
+      },
+      {
+        "name": "media-ingestion-browser",
+        "code": 0,
+        "seconds": 14.77,
+        "log": "test-results/qa/media-ingestion-browser.log"
+      },
+      {
+        "name": "account-recovery-browser",
+        "code": 0,
+        "seconds": 5.62,
+        "log": "test-results/qa/account-recovery-browser.log"
+      },
+      {
+        "name": "studio-navigation-browser",
+        "code": 0,
+        "seconds": 44.57,
+        "log": "test-results/qa/studio-navigation-browser.log"
+      },
+      {
+        "name": "ftue-browser",
+        "code": 0,
+        "seconds": 5.05,
+        "log": "test-results/qa/ftue-browser.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 8.09,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 5.19,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 5.24,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 8.31,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 17.43,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 2.98,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 5.5,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 6.79,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.72,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 7.19,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 6.97,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 6.5,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 9.88,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 9.32,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.27,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 8.27,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 7.59,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 37.73,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ],
+    "passed": true,
+    "paidProviderCalls": 0,
+    "deployedWebsiteTested": false,
+    "physicalMobileTested": false
+  },
+  "customerUIComparison": {
+    "baseCommit": "7a43483e6701712f17bde1dc8915636ac25dfd35",
+    "filesCompared": 34,
+    "changed": 0
+  },
+  "productionMigrationApplied": false,
+  "paidProviderCalls": 0,
+  "runtimeActivated": false,
+  "assetsPublished": 0,
+  "physicalMobileTested": false,
+  "liveCloudAcceptance": false
+}

@@ -1,5 +1,6 @@
 import {localPlanningMethods,cloudPlanningMethods} from './planning-store.mjs';
 import {localMediaIngestionMethods,cloudMediaIngestionMethods} from './media-ingestion-store.mjs';
+import {cloudSourceInspectionMethods} from './source-inspection-jobs.mjs';
 import {localRegistryMethods,cloudRegistryMethods} from './registry-store.mjs';
 import {localReferenceMethods,cloudReferenceMethods} from './reference-store.mjs';
 import {localStoryboardProductionMethods,cloudStoryboardProductionMethods} from './storyboard-production-store.mjs';
@@ -141,3 +142,4 @@ Object.assign(LocalStore.prototype,localStoryboardProductionMethods);
 Object.assign(SupabaseStore.prototype,cloudStoryboardProductionMethods);
 Object.assign(LocalStore.prototype,localMediaIngestionMethods);
 Object.assign(SupabaseStore.prototype,cloudMediaIngestionMethods);
+Object.assign(SupabaseStore.prototype,cloudSourceInspectionMethods);
