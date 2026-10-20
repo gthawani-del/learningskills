@@ -22,6 +22,7 @@ import {validatePlanningResult} from './planning-provider.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
 import {createSongProviderController} from './song-provider-controller.mjs';
+import {storedSongSignal} from './song-signal.mjs';
 import {routingTasks,knownRoutingTask,taskCandidates,routingCatalogExplanation} from './routing-task-catalog.mjs';
 import {quoteRequirements} from './quote-input.mjs';
 import {staffRole,staffPermissions,adminCommand} from './operations.mjs';
@@ -274,6 +275,12 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  await mediaStorage.putIfAbsent(storageKey,bytes,mime,hash(bytes.toString('base64')));
  const asset=await store.add('assets',{id:assetId,projectId:id,name:body.name,mime,role:body.role,scope:body.scope,shotId:body.shotId||null,version:1,storageKey,size:bytes.length,checksum:hash(bytes.toString('base64'))});const {storageKey:unused,...visible}=asset;return reply(201,{asset:{...visible,url:`/api/projects/${id}/assets/${assetId}/content`}});}
  const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
+ const savedSongAnalysis=action?.match(/^assets\/([0-9a-f-]+)\/song-analysis$/);
+ if(savedSongAnalysis&&req.method==='GET'){
+  if(project.format!=='music_video')fail(409,'Song analysis belongs to a music-video project.');
+  const asset=(await store.records('assets',id)).find(a=>a.id===savedSongAnalysis[1]);if(!asset)fail(404,'Original song not found.');
+  return reply(200,{source:{assetId:asset.id,assetVersion:asset.version,checksum:asset.checksum},analysis:await storedSongSignal(store,project,asset)});
+ }
  const analysisSource=action?.match(/^assets\/([0-9a-f-]+)\/analysis-content$/);
  if(analysisSource&&req.method==='GET'){
   const asset=(await store.records('assets',id)).find(a=>a.id===analysisSource[1]);if(!asset)fail(404,'Reference not found.');

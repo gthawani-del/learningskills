@@ -1,3 +1,4 @@
+import {analyzeSongChannels} from '../public/song-analysis-core.js';
 // Portable deterministic inspection worker. Run untrusted media in an isolated
 // sandbox. This module never changes storage, publishes assets or calls models.
 import {createHash} from 'node:crypto';
@@ -59,7 +60,7 @@ export function inspectProbe(probe,source){
  return {durationSeconds:duration,streams};
 }
 async function command(bin,args){try{return await execute(bin,args,{timeout:INSPECTION_LIMITS.commandTimeoutMs,maxBuffer:1024*1024,killSignal:'SIGKILL',windowsHide:true,env:{PATH:process.env.PATH,LANG:'C',LC_ALL:'C'}});}catch{deny('source_decode_failed','Source probing or decoding failed within the inspection limits.');}}
-export async function inspectLocalSource({root,path,source}){
+export async function inspectLocalSource({root,path,source,songAnalysis=false}){
  manifest(source);const {target,info}=await checkedPath(root,path);if(info.size!==source.size)deny('source_size_mismatch','Source length differs from the selected file.');
  const checksum=createHash('sha256');let size=0,head=Buffer.alloc(0);for await(const bytes of createReadStream(target,{flags:fsConstants.O_RDONLY|fsConstants.O_NOFOLLOW})){size+=bytes.length;if(size>source.size)deny('source_size_mismatch','Source changed during inspection.');checksum.update(bytes);if(head.length<16)head=Buffer.concat([head,bytes.subarray(0,16-head.length)]);}
  const actual=checksum.digest('hex');if(size!==source.size||actual!==source.sha256)deny('source_checksum_mismatch','Source bytes differ from the selected file.');if(signature(head)!==source.mime)deny('source_mime_mismatch','Source signature does not match its declared media type.');
@@ -67,13 +68,21 @@ export async function inspectLocalSource({root,path,source}){
  const whitelist=source.mime==='audio/wav'?'wav':source.mime==='audio/mpeg'?'mp3':'mov';
  const {stdout}=await command('ffprobe',['-v','error','-protocol_whitelist','file,pipe','-format_whitelist',whitelist,'-show_entries','format=format_name,duration:stream=codec_type,codec_name,width,height,sample_rate,channels,avg_frame_rate:stream_disposition=attached_pic','-of','json',target]);
  let probe;try{probe=JSON.parse(stdout);}catch{deny('source_probe_invalid','Source probe returned invalid metadata.');}const details=inspectProbe(probe,source);
- await command('ffmpeg',['-v','error','-nostdin','-xerror','-err_detect','explode','-threads','1','-protocol_whitelist','file,pipe','-format_whitelist',whitelist,'-i',target,'-map','0:V?','-map','0:a?','-threads','1','-f','null','-']);
+ let signalFeatures;
+ if(songAnalysis===true&&source.mime.startsWith('audio/')&&details.durationSeconds<=300&&details.streams[0].channels<=2){
+  const channels=details.streams[0].channels;let pcm;
+  try{const result=await execute('ffmpeg',['-v','error','-nostdin','-xerror','-err_detect','explode','-threads','1','-protocol_whitelist','file,pipe','-format_whitelist',whitelist,'-i',target,'-map','0:a:0','-vn','-sn','-dn','-ac',String(channels),'-ar','16000','-threads','1','-f','f32le','pipe:1'],{encoding:'buffer',timeout:INSPECTION_LIMITS.commandTimeoutMs,maxBuffer:16000*300*channels*4+65536,killSignal:'SIGKILL',windowsHide:true,env:{PATH:process.env.PATH,LANG:'C',LC_ALL:'C'}});pcm=result.stdout;}catch{deny('source_decode_failed','Bounded song decoding failed. Original source is unchanged.');}
+  if(!pcm.length||pcm.length%(channels*4))deny('source_decode_failed','Invalid decoded song sample layout.');
+  const count=pcm.length/(channels*4),samples=Array.from({length:channels},(_,c)=>Float32Array.from({length:count},(_,i)=>pcm.readFloatLE((i*channels+c)*4)));
+  const measured=analyzeSongChannels({channels:samples,sampleRate:16000});if(Math.abs(measured.durationMs-details.durationSeconds*1000)>250)deny('source_decode_failed','Decoded song duration differs from the inspected source.');
+  signalFeatures={...measured,version:'director-ffmpeg-audio-features-v1',provenance:'worker_decoded'};
+ }else await command('ffmpeg',['-v','error','-nostdin','-xerror','-err_detect','explode','-threads','1','-protocol_whitelist','file,pipe','-format_whitelist',whitelist,'-i',target,'-map','0:V?','-map','0:a?','-threads','1','-f','null','-']);
  const after=await lstat(target);if(after.size!==info.size||after.ino!==info.ino||after.mtimeMs!==info.mtimeMs||after.ctimeMs!==info.ctimeMs)deny('source_changed','Source changed during inspection.');
- return {inspectionVersion:SOURCE_INSPECTION_VERSION,status:'passed',size,sha256:actual,checksumAlgorithm:'sha256-bytes',mime:source.mime,...details,decodeVerified:true,assetPublished:false};
+ return {inspectionVersion:SOURCE_INSPECTION_VERSION,status:'passed',size,sha256:actual,checksumAlgorithm:'sha256-bytes',mime:source.mime,...details,decodeVerified:true,assetPublished:false,...(signalFeatures?{songAnalysis:signalFeatures}:{})};
 }
 export async function runInspection(config,{fetcher=fetch}={}){
  if(!config||!['file','private-download'].includes(config.mode)||typeof config.root!=='string')deny('source_configuration_invalid','Invalid isolated inspection configuration.');
- let path=config.path,downloaded=false;try{if(config.mode==='private-download'){path=await downloadPrivateSource({storage:config.storage,source:config.source,root:config.root,fetcher});downloaded=true;}return await inspectLocalSource({root:config.root,path,source:config.source});}finally{if(downloaded)await rm(path,{force:true}).catch(()=>{});}
+ let path=config.path,downloaded=false;try{if(config.mode==='private-download'){path=await downloadPrivateSource({storage:config.storage,source:config.source,root:config.root,fetcher});downloaded=true;}return await inspectLocalSource({root:config.root,path,source:config.source,songAnalysis:config.songAnalysis===true});}finally{if(downloaded)await rm(path,{force:true}).catch(()=>{});}
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
  try{const config=JSON.parse(await readFile(process.argv[2],'utf8'));process.stdout.write(JSON.stringify(await runInspection(config))+'\n');}

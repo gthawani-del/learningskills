@@ -17,7 +17,8 @@ export async function sandboxInspectionProof({sandbox,enabled=false,privateSourc
   }
   const bytes=wav(),sha256=createHash('sha256').update(bytes).digest('hex'),source={mime:'audio/wav',size:bytes.length,sha256};
   const config={mode:'file',root:'/vercel/sandbox',path:'/vercel/sandbox/proof.wav',source};
-  const files=[{path:'source-inspection.mjs',content:await readFile(new URL('workers/source-inspection.mjs',import.meta.url))},{path:'proof.wav',content:bytes},{path:'proof.json',content:Buffer.from(JSON.stringify(config))},{path:'mismatch.json',content:Buffer.from(JSON.stringify({...config,source:{...source,sha256:'0'.repeat(64)}}))}];
+  const worker=(await readFile(new URL('workers/source-inspection.mjs',import.meta.url),'utf8')).replace("'../public/song-analysis-core.js'","'./song-analysis-core.mjs'");
+  const files=[{path:'source-inspection.mjs',content:Buffer.from(worker)},{path:'song-analysis-core.mjs',content:await readFile(new URL('public/song-analysis-core.js',import.meta.url))},{path:'proof.wav',content:bytes},{path:'proof.json',content:Buffer.from(JSON.stringify(config))},{path:'mismatch.json',content:Buffer.from(JSON.stringify({...config,source:{...source,sha256:'0'.repeat(64)}}))}];
   if(privateSource)files.push({path:'private-source.json',content:Buffer.from(JSON.stringify({mode:'private-download',root:'/vercel/sandbox',source:privateSource.source,storage:privateSource.storage}))});
   await sandbox.writeFiles(files);
   async function inspect(file,expectedExit){

@@ -182,3 +182,7 @@ Director Supabase project `ygyjqubrpqwfgbquwqeo`: `ACTIVE_HEALTHY`; 12 public Di
 ## Rollback
 
 The batch does not change database state. Revert its application files to the previous main baseline and redeploy to remove session changes. Existing device drafts remain in IndexedDB. Clearing browser storage removes local drafts/media, so do not use it as an operational rollback procedure for customer data.
+
+## Song worker measurements — 20 October 2026
+
+Song records/Director integration are on main in `2529691`; provider requests, trusted audio pricing, reviewed results and private browser reads are on main in `1fb1967`. The next coherent increment extends the existing isolated FFmpeg inspection worker with saved full-song signal evidence and an owned read path for larger originals. Actual three-minute stereo WAV proof and 66 targeted checks passed, plus the affected provider Chromium flow and production build. No new runtime, provider or dependency; no paid calls, production SQL or Vercel operations. See [Song Intelligence acceptance](SONG_INTELLIGENCE_PROVIDER_ACCEPTANCE.md#full-size-original-measurement-increment). Hosted execution and real musical/singing/Director quality remain gated. All eighteen release deliverables remain authoritative.

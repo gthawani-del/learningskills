@@ -2,6 +2,7 @@ await import('../apps/director/tests/source-inspection.test.mjs');
 await import('../apps/director/tests/source-inspection-jobs.test.mjs');
 await import('../apps/director/tests/source-publication.test.mjs');
 await import('../apps/director/tests/song-analysis.test.mjs');
+await import('../apps/director/tests/song-signal.test.mjs');
 await import('../apps/director/tests/song-intelligence.test.mjs');
 await import('../apps/director/tests/song-provider-results.test.mjs');
 await import('../apps/director/tests/song-provider.test.mjs');

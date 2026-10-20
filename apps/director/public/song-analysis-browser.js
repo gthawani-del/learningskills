@@ -4,7 +4,15 @@ export function rememberSongAnalysis(asset,result){remembered={id:asset.id,versi
 export function rememberedSongAnalysis(asset){return asset&&remembered?.id===asset.id&&remembered.version===asset.version&&remembered.checksum===asset.checksum?remembered.result:null;}
 export async function analyzeOriginalSong({asset,durationMs,signal,fetcher=fetch,AudioContextClass=globalThis.AudioContext||globalThis.webkitAudioContext}){
  if(!Number.isSafeInteger(durationMs)||durationMs<1000||durationMs>SONG_ANALYSIS_LIMITS.maxDurationSeconds*1000)throw Error('Browser analysis supports complete songs up to five minutes. Your source and plan are unchanged.');
- if(!Number.isSafeInteger(asset?.size)||asset.size<1||asset.size>SONG_ANALYSIS_LIMITS.maxBytes)throw Error('Browser analysis supports source files up to 12 MiB.');
+ if(!Number.isSafeInteger(asset?.size)||asset.size<1)throw Error('Choose the exact original song.');
+ if(asset.size>SONG_ANALYSIS_LIMITS.maxBytes){
+  const expected=`/api/projects/${encodeURIComponent(asset.projectId)}/assets/${encodeURIComponent(asset.id)}/content`;
+  if(asset.bucket!=='director-source-media'||asset.url!==expected||asset.size>128*1024*1024)throw Error('Larger originals require saved measurements from the qualified inspection worker. No new worker starts from this check.');
+  const response=await fetcher(expected.replace(/\/content$/,'/song-analysis'),{signal,cache:'no-store',credentials:'same-origin'}),saved=await response.json();
+  if(!response.ok)throw Error(saved.error||'Measured song features are not saved yet.');
+  if(saved.source?.assetId!==asset.id||saved.source.assetVersion!==asset.version||saved.source.checksum!==asset.checksum||saved.analysis?.provenance!=='worker_decoded'||saved.analysis.version!=='director-ffmpeg-audio-features-v1'||Math.abs(saved.analysis.durationMs-durationMs)>250)throw Error('Saved measurements differ from the selected original song.');
+  return saved.analysis;
+ }
  if(!AudioContextClass)throw Error('Audio analysis is unavailable in this browser. You can still review and plan the song.');
  let bytes;
  if(asset.blob instanceof Blob){if(asset.blob.size!==asset.size)throw Error('Source length differs from the selected file.');bytes=new Uint8Array(await asset.blob.arrayBuffer());}

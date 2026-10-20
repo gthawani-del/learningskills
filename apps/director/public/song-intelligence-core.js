@@ -20,10 +20,10 @@ export function currentSongIntelligence(project){
 }
 export function songSourceBinding(project){const current=project.format==='music_video'?currentSongIntelligence(project):null;return current?{recordId:current.record.id,version:current.record.currentVersion,master:clone(current.snapshot.content.master)}:null;}
 export function technicalSongEvidence(analysis){
- if(!analysis||analysis.provenance!=='browser_decoded')fail(400,'Decoded audio evidence is required.');
+ if(!analysis||!['browser_decoded','worker_decoded'].includes(analysis.provenance))fail(400,'Decoded audio evidence is required.');
  const energy=[];const stride=Math.max(1,Math.ceil(analysis.envelope.length/128));
  for(let i=0;i<analysis.envelope.length;i+=stride){const rows=analysis.envelope.slice(i,i+stride),start=rows[0].startMs,end=rows.at(-1).endMs,power=rows.reduce((n,r)=>n+10**(r.rmsDbFS/10)*(r.endMs-r.startMs),0)/(end-start);energy.push([start,end,Number((10*Math.log10(Math.max(1e-12,power))).toFixed(3))]);}
- return {version:analysis.version,provenance:'browser_decoded',durationMs:analysis.durationMs,audioProperties:clone(analysis.audioProperties),rmsDbFS:analysis.rmsDbFS,peakAmplitude:analysis.peakAmplitude,nearFullScaleSampleFraction:analysis.nearFullScaleSampleFraction,silent:analysis.silent,waveform:analysis.waveform.map(b=>[b.startMs,b.endMs,b.min,b.max]),energy,onsets:analysis.onsets.map(o=>[o.timeMs,o.strength,o.uncertaintyMs]),onsetEvidence:clone(analysis.onsetEvidence),tempo:clone(analysis.tempo)};
+ return {version:analysis.version,provenance:analysis.provenance,durationMs:analysis.durationMs,audioProperties:clone(analysis.audioProperties),rmsDbFS:analysis.rmsDbFS,peakAmplitude:analysis.peakAmplitude,nearFullScaleSampleFraction:analysis.nearFullScaleSampleFraction,silent:analysis.silent,waveform:analysis.waveform.map(b=>[b.startMs,b.endMs,b.min,b.max]),energy,onsets:analysis.onsets.map(o=>[o.timeMs,o.strength,o.uncertaintyMs]),onsetEvidence:clone(analysis.onsetEvidence),tempo:clone(analysis.tempo)};
 }
 export function newSongIntelligence(master,analysis=null){
  return {kind:SONG_INTELLIGENCE_KIND,master:clone(master),technical:analysis?technicalSongEvidence(analysis):null,sections:analysis?analysis.sections.map(s=>({id:s.id,type:'unknown',label:s.label,startMs:s.startMs,endMs:s.endMs,basis:'signal_estimate',evidence:['Energy boundary suggestion, not a verified musical section.']})):[{id:'complete-song',type:'unknown',label:'Complete song — structure unknown',startMs:0,endMs:master.durationMs,basis:'unknown',evidence:[]}],observations:[],vocalEvents:[],lyrics:{canonicalText:'',languages:[],singers:[],vocalMode:'unknown',basis:'unknown'},alignment:[]};
@@ -32,7 +32,7 @@ function technical(value,duration){
  if(value===null)return null;
  keys(value,['version','provenance','durationMs','audioProperties','rmsDbFS','peakAmplitude','nearFullScaleSampleFraction','silent','waveform','energy','onsets','onsetEvidence','tempo']);
  number(value.durationMs,1000,300000,'decoded duration',true);
- if(value.provenance!=='browser_decoded'||value.version!=='director-browser-audio-features-v2'||value.durationMs!==duration||typeof value.silent!=='boolean')fail(400,'Technical evidence must identify its actual browser method and matching source duration.');
+ if(!(value.provenance==='browser_decoded'&&value.version==='director-browser-audio-features-v2'||value.provenance==='worker_decoded'&&value.version==='director-ffmpeg-audio-features-v1')||value.durationMs!==duration||typeof value.silent!=='boolean')fail(400,'Technical evidence must identify its actual decoding method and matching source duration.');
  keys(value.audioProperties,['analysisSampleRate','decodedChannels','decodedSampleCount']);number(value.audioProperties.analysisSampleRate,8000,192000,'analysis sample rate',true);number(value.audioProperties.decodedChannels,1,2,'decoded channels',true);number(value.audioProperties.decodedSampleCount,1,192000*300,'decoded samples',true);
  if(Math.abs(value.audioProperties.decodedSampleCount/value.audioProperties.analysisSampleRate*1000-value.durationMs)>1)fail(400,'Decoded properties disagree with the measured duration.');
  number(value.rmsDbFS,-120,60,'RMS level');number(value.peakAmplitude,0,1000,'peak amplitude');number(value.nearFullScaleSampleFraction,0,1,'near-full-scale fraction');

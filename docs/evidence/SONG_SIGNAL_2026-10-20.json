@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-20",
+  "kind": "song_signal_worker_local_acceptance",
+  "previousMain": "1fb196774d3c1f14703183ff9295bb712039c993",
+  "actualAudio": {
+    "durationSeconds": 180,
+    "sourceChannels": 2,
+    "sourceSampleRate": 48000,
+    "sourceLargerThan12MiB": true,
+    "analysisSampleRate": 16000,
+    "waveformBins": 128,
+    "energyIntervals": 180,
+    "checksumUnchanged": true,
+    "modificationTimeUnchanged": true
+  },
+  "checks": [
+    {
+      "command": "node apps/director/tests/song-signal.test.mjs",
+      "passed": 4
+    },
+    {
+      "command": "node apps/director/tests/source-inspection.test.mjs",
+      "passed": 15,
+      "initialRestrictedProcessFailure": "Child Node returned empty stdout; scoped local-runtime permission resolved it."
+    },
+    {
+      "command": "node apps/director/tests/source-inspection-jobs.test.mjs",
+      "passed": 17,
+      "database": "isolated PGlite only"
+    },
+    {
+      "command": "node --test --test-concurrency=1 apps/director/tests/song-analysis.test.mjs apps/director/tests/song-intelligence.test.mjs apps/director/tests/song-provider.test.mjs",
+      "passed": 30
+    }
+  ],
+  "affectedChromium": {
+    "command": "python3 apps/director/tests/song-provider-browser.py",
+    "passed": true,
+    "providerReplies": "explicitly simulated",
+    "actualBrowserDecoder": true,
+    "desktopAndMobileViewports": true,
+    "physicalMobile": false
+  },
+  "syntaxAndBuild": "passed",
+  "paidCalls": 0,
+  "productionMigrations": 0,
+  "sandboxOperations": 0,
+  "vercelOperations": 0,
+  "hostedRuntimeQualified": false,
+  "remaining": [
+    "Explicit approval and installation of only missing prepared SQL dependencies",
+    "Qualified and authorized isolated source executor",
+    "Real audio-model musical/singing qualification",
+    "Approved music-enabled Director planning output qualification",
+    "Hosted full-song render/output publication/download and creative pilots"
+  ]
+}

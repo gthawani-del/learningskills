@@ -1,3 +1,4 @@
+import {recordInspectedSongSignal} from './song-signal.mjs';
 // Trusted coordinator only. Never expose these methods as customer HTTP routes
 // or give database credentials/lease tokens to the isolated media decoder.
 import {fail} from './domain.mjs';
@@ -25,6 +26,9 @@ export function inspectionOutcome(report,source){
 }
 
 export const cloudSourceInspectionMethods={
+ async readInspectedSongSignal(projectId,uploadId,checksum){
+  return this.request(`/rest/v1/director_audit_events?project_id=eq.${encodeURIComponent(projectId)}&event_type=eq.song_signal_measured&details->>uploadId=eq.${encodeURIComponent(uploadId)}&details->>sourceChecksum=eq.${encodeURIComponent(checksum)}&order=created_at.desc,id.desc&limit=1`);
+ },
  async claimSourceInspection(uploadId,claimToken,leaseSeconds=600){return this.request('/rest/v1/rpc/director_claim_source_inspection',{method:'POST',body:{p_upload:uploadId,p_token:claimToken,p_lease_seconds:leaseSeconds}});},
  async finishSourceInspection(uploadId,claimToken,source,report){return this.request('/rest/v1/rpc/director_finish_source_inspection',{method:'POST',body:{p_upload:uploadId,p_token:claimToken,p_result:inspectionOutcome(report,source)}});}
 };
@@ -47,7 +51,9 @@ export async function runSourceInspectionJob({store,uploadId,execute,enabled=fal
   await store.finishSourceInspection(uploadId,token,source,{status:'held'}).catch(()=>{});
   fail(503,'Inspection execution was not confirmed. Check the existing worker before retrying.');
  }
+ let songFeaturesSaved=false;
+ if(report?.songAnalysis){try{inspectionOutcome(report,source);songFeaturesSaved=await recordInspectedSongSignal({store,claim,source,report});}catch{await store.finishSourceInspection(uploadId,token,source,{status:'held'}).catch(()=>{});fail(503,'Measured song output was not safely saved. Inspect this existing worker result before retrying.');}}
  const accepted=await store.finishSourceInspection(uploadId,token,source,report);
- if(publish&&accepted.status==='passed'){const asset=await store.publishSourceUpload(claim.ownerId,claim.projectId,uploadId);return {claimed:true,uploadId,status:'passed',assetId:asset.id,assetPublished:true};}
+ if(publish&&accepted.status==='passed'){const asset=await store.publishSourceUpload(claim.ownerId,claim.projectId,uploadId);return {claimed:true,uploadId,status:'passed',assetId:asset.id,assetPublished:true,...(songFeaturesSaved?{songFeaturesSaved:true}:{})};}
  return {claimed:true,...accepted,assetPublished:false};
 }
