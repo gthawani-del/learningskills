@@ -3,7 +3,7 @@ import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 const root=resolve(import.meta.dirname,'..'),out=resolve(root,'dist');
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});
-for(const name of ['apps/director','api','docs/evidence/FAL_ENDPOINT_SCHEMAS.json','docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json','package.json','package-lock.json','vercel.json']){
+for(const name of ['apps/director','api','docs/evidence/FAL_ENDPOINT_SCHEMAS.json','docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json','docs/evidence/FAL_SONG_ENDPOINTS_2026-10-20.json','package.json','package-lock.json','vercel.json']){
  await cp(resolve(root,name),resolve(out,name),{recursive:true,filter:source=>!source.includes('/tests')});
 }
 const {createHandler}=await import(pathToFileURL(resolve(out,'apps/director/server.mjs')).href);

@@ -3,16 +3,16 @@ import {reviewedFalInputSchema,validateFalInput} from './providers.mjs';
 const gcd=(a,b)=>b?gcd(b,a%b):a;
 // Adapter validation and payload-derived requirements prevent quoting a different
 // configuration than the one matched by the capability router.
-export function quoteRequirements({task,requirements={},model,input}){
+export function quoteRequirements({task,requirements={},model,input,trustedAudioDurationSeconds}){
  const schema=reviewedFalInputSchema(model.endpoint);if(!schema)fail(409,'This endpoint has no reviewed quote adapter.');
  if(model.schema_evidence?.inputSchemaHash!==hash(schema))fail(409,'Registry schema evidence does not match the reviewed adapter.');
  try{validateFalInput(model.endpoint,input);}catch(error){fail(400,error.message);}
  const actual={inputModes:[]};
  if(typeof input.prompt==='string'||typeof input.text==='string')actual.inputModes.push('text');
  if(input.image_url||input.end_image_url||input.middle_image_url||input.image_urls?.length||input.reference_image_urls?.length||input.reference_conditions?.some(r=>r.type==='image'))actual.inputModes.push('image');
- if(input.reference_audio_urls?.length||input.reference_conditions?.some(r=>r.type==='audio'))actual.inputModes.push('audio');
+ if(input.audio_url||input.reference_audio_urls?.length||input.reference_conditions?.some(r=>r.type==='audio'))actual.inputModes.push('audio');
  if(input.reference_video_urls?.length||input.reference_conditions?.some(r=>r.type==='video'))actual.inputModes.push('video');
- actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',storyboard_frame:'image',reference_video:'video',speech_synthesis:'audio'}[task];
+ actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',storyboard_frame:'image',reference_video:'video',speech_synthesis:'audio',song_analysis:'text',transcription:'text',alignment:'text'}[task];
  if(!actual.modality)fail(409,'This task has no reviewed quote adapter.');
  // A capability flag cannot establish synchronized performance for these
  // adapters. A dedicated reviewed lip-sync payload adapter is required first.
@@ -35,6 +35,7 @@ export function quoteRequirements({task,requirements={},model,input}){
  }
  if(payloadLanguage)actual.language=canonicalFor(payloadLanguage);
  if(typeof input.duration==='number')actual.durationSeconds=input.duration;
+ if(['song_analysis','transcription','alignment'].includes(task)){if(!Number.isFinite(trustedAudioDurationSeconds)||trustedAudioDurationSeconds<=0)fail(409,'Audio quotes require a trusted inspected source duration.');actual.durationSeconds=trustedAudioDurationSeconds;}
  if(input.resolution)actual.resolution=input.resolution;
  if(input.aspect_ratio)actual.aspectRatio=input.aspect_ratio;
  if(input.image_size&&typeof input.image_size==='object'){

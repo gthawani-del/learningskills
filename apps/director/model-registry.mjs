@@ -10,7 +10,7 @@ import {planningProfile,planningRequiredSchemaHash,planningOperationEvidence} fr
 // it neither performs execution tests nor manufactures quality evidence.
 export const REGISTRY_PROFILE_LIMIT_BYTES=100000;
 export const REGISTRY_PLANNING_TASKS=Object.freeze({interpret_brief:'brief_interpretation',initial_plan:'film_planning',revise_plan:'film_plan_revision',write_script:'screenplay_writing',revise_script:'screenplay_revision',plan_departments:'department_planning',revise_departments:'department_revision',plan_storyboard:'storyboard_planning'});
-export const REGISTRY_FAL_ADAPTER_TASKS=Object.freeze({'minimax/h3-max/reference-to-video':['reference_video'],'elevenlabs/tts/eleven-v4':['speech_synthesis'],'bytedance/seedream/v5/pro/edit':['image_edit']});
+export const REGISTRY_FAL_ADAPTER_TASKS=Object.freeze({'minimax/h3-max/reference-to-video':['reference_video'],'elevenlabs/tts/eleven-v4':['speech_synthesis'],'bytedance/seedream/v5/pro/edit':['image_edit'],'fal-ai/audio-understanding':['song_analysis','audio_analysis'],'fal-ai/elevenlabs/speech-to-text/scribe-v2':['transcription'],'fal-ai/elevenlabs/forced-alignment':['alignment']});
 const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&[Object.prototype,null].includes(Object.getPrototypeOf(x));
 const clone=x=>structuredClone(x);
 const positive=x=>Number.isSafeInteger(x)&&x>0;

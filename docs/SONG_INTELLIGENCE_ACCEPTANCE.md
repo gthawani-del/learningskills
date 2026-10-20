@@ -1,5 +1,7 @@
 # Song Intelligence — implementation and acceptance
 
+**Latest implementation:** [Provider workflow, current alignment pricing, qualification boundary and native installation gates](SONG_INTELLIGENCE_PROVIDER_ACCEPTANCE.md) supersede the initial automatic-provider code gaps below. This page records the first published recovery/Director/render increment at `2529691`. Real provider/production acceptance is still not claimed.
+
 20 October 2026. Baseline main: `b8b5fde4fd4a61267c8f3a90caed982f27c78842`. Music Video Production remains the first release. The frozen interface, shared production records, seventeen departments, approved media and all eighteen release deliverables remain authoritative.
 
 ## Working implementation in this increment

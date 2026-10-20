@@ -7,6 +7,13 @@ export function createMediaStorage({env,fetcher=fetch,demo}){
  const bucketName=value=>{if(!['director-media','director-reference-media','director-source-media'].includes(value))fail(400,'Unsupported private media bucket.');return value;};
  const objectKey=value=>{if(typeof value!=='string'||!value||value.split('/').some(part=>!part||part==='.'||part==='..'||!/^[A-Za-z0-9_-]+$/.test(part)))fail(400,'Invalid private media key.');return value;};
  async function get(key,{bucket='director-media'}={}){bucketName(bucket);objectKey(key);if(demo)return readFile(join(dir,key.split('/').at(-1)));const r=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/authenticated/${bucket}/${key}`,{headers,signal:AbortSignal.timeout(30000)});if(!r.ok)fail(502,'Private reference retrieval failed.');return Buffer.from(await r.arrayBuffer());}
+ async function getRange(key,{bucket='director-source-media',start,end,total}={}){
+  bucketName(bucket);objectKey(key);if(bucket!=='director-source-media'||![start,end,total].every(Number.isSafeInteger)||start<0||end<start||end>=total||end-start+1>2*1024*1024)fail(400,'Choose one bounded private source range.');
+  if(demo){const bytes=await get(key,{bucket});if(bytes.length!==total)fail(409,'Original source size changed.');return bytes.subarray(start,end+1);}
+  const response=await fetcher(`${env.SUPABASE_URL}/storage/v1/object/authenticated/${bucket}/${key}`,{headers:{...headers,Range:`bytes=${start}-${end}`},redirect:'error',signal:AbortSignal.timeout(30000)});
+  const expected=end-start+1;if(response.status!==206||response.headers.get('content-range')!==`bytes ${start}-${end}/${total}`||response.headers.get('content-length')!==String(expected)||!response.body?.getReader)fail(502,'Private storage did not confirm the exact original byte range.');
+  const reader=response.body.getReader(),chunks=[];let size=0;try{for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>expected)fail(502,'Private source range exceeds its bound.');chunks.push(Buffer.from(value));}if(size!==expected)fail(502,'Private source range was incomplete.');return Buffer.concat(chunks,size);}finally{try{await reader.cancel();}catch{}reader.releaseLock();}
+ }
  async function putIfAbsent(key,bytes,mime,checksum,{bucket='director-media'}={}){
  bucketName(bucket);objectKey(key);
  if(demo){await mkdir(dir,{recursive:true});try{await writeFile(join(dir,key.split('/').at(-1)),bytes,{mode:0o600,flag:'wx'});return;}catch(error){if(error.code!=='EEXIST')throw error;}}
@@ -41,5 +48,5 @@ export function createMediaStorage({env,fetcher=fetch,demo}){
   const data=await r.json();const size=Number(data.size??data.metadata?.size),mime=data.content_type??data.metadata?.mimetype;
   if(!Number.isSafeInteger(size)||size<1||typeof mime!=='string')fail(502,'Storage returned incomplete source metadata.');return {size,mime};
  }
- return {get,putIfAbsent,sign,signUpload,info};
+ return {get,getRange,putIfAbsent,sign,signUpload,info};
 }

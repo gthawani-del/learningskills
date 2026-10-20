@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-20",
+  "baselineMain": "2529691a58219c4d9c82d1a457150892f065ca7c",
+  "implemented": [
+    "actual-audio task-specific provider inputs/results",
+    "private original bounded same-origin byte ranges and checksum verification",
+    "trusted-duration audio estimates through existing cost controls",
+    "existing reservations/jobs/recovery/two-attempt controls",
+    "canonical text replacement review and exact word alignment",
+    "saved-output reuse against unchanged master",
+    "Director/seventeen-department source integration from prior increment"
+  ],
+  "tests": {
+    "fullNodeBoundary": {
+      "passed": 881,
+      "failed": 0,
+      "log": "/tmp/director-song-provider-release-node.log"
+    },
+    "lateUpdatedResultParser": {
+      "passed": 6,
+      "failed": 0
+    },
+    "lateUpdatedAPIControls": {
+      "passed": 9,
+      "failed": 0
+    },
+    "lateNativeProof": {
+      "reportedPassed": 9,
+      "failed": 0,
+      "isolatedPGlite": true
+    },
+    "sharedTargetedRegression": {
+      "passed": 63,
+      "failed": 0
+    },
+    "storageRangeSuite": {
+      "passed": 5,
+      "failed": 0
+    }
+  },
+  "browser": {
+    "passed": true,
+    "syntheticProvider": true,
+    "realPaidCalls": 0,
+    "sharedSpendingUI": true,
+    "quoteAndAuthorizationDoNotSubmit": true,
+    "singleSavedJob": true,
+    "reviewBeforeApply": true,
+    "newVersionNotAutomaticallyApproved": true,
+    "desktopAndMobileViewport": true,
+    "physicalMobile": false,
+    "consoleErrors": [],
+    "httpErrors": []
+  },
+  "productionBuild": "passed",
+  "paidCalls": 0,
+  "productionMigrations": 0,
+  "modelActivations": 0,
+  "sandboxOperations": 0,
+  "vercelCalls": 0,
+  "alignmentPrice": {
+    "usd": 0.22,
+    "unit": "started hour of input audio",
+    "publishedSource": "https://fal.ai/models/fal-ai/elevenlabs/forced-alignment"
+  },
+  "threeMinuteAudioOperationsEstimateUsd": 0.604,
+  "realProviderAndCreativeQuality": "unqualified",
+  "hostedCompleteSongExport": "not delivered",
+  "physicalDevices": "not tested"
+}

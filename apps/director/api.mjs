@@ -21,6 +21,7 @@ import {planningCreativeContext,planningSchemaHash,departmentPlanningSchemaHash,
 import {validatePlanningResult} from './planning-provider.mjs';
 import {selectRoutes} from './model-router.mjs';
 import {createCostQuote} from './cost-quotes.mjs';
+import {createSongProviderController} from './song-provider-controller.mjs';
 import {routingTasks,knownRoutingTask,taskCandidates,routingCatalogExplanation} from './routing-task-catalog.mjs';
 import {quoteRequirements} from './quote-input.mjs';
 import {staffRole,staffPermissions,adminCommand} from './operations.mjs';
@@ -71,6 +72,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const resumableUploads=!!store&&!demo&&env.DIRECTOR_RESUMABLE_UPLOADS==='1';
  const ingestion=store?createMediaIngestion({store,storage:mediaStorage,enabled:resumableUploads}):null;
  const referenceController=store?createReferenceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
+ const songProviderController=store?createSongProviderController({store,providers,storage:mediaStorage,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const storyboardProductionController=store?createStoryboardProductionController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
@@ -225,6 +227,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(Object.keys(body).some(k=>!allowed.includes(k)))fail(400,'Unsupported routing or quote field.');
  if(!knownRoutingTask(body.task))fail(400,'Choose a known production task.');
  if(action==='quotes'&&['reference_image','reference_look','storyboard_frame'].includes(body.task))fail(400,'Use reference production to quote a reviewed direction; raw client image prompts are not accepted.');
+ if(action==='quotes'&&['song_analysis','audio_analysis','transcription','alignment'].includes(body.task))fail(400,'Use Song Intelligence to quote the exact owned recording, inspected duration and canonical text.');
  const requestFingerprint=hash(body);
  if(action==='quotes'&&body.requestId!==undefined){if(!uuid.test(body.requestId))fail(400,'Use a valid quote request UUID.');if(typeof store.replayCostQuote!=='function')fail(503,'Saved spending controls are not configured.');const previous=await store.replayCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,requestFingerprint});if(previous)return reply(200,{quote:previous,saved:true});}
  const models=taskCandidates(body.task,await store.registry()),now=new Date();
@@ -243,6 +246,8 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames,assets)});
  const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
  }
+ const songProviderAction=action?.match(/^music-video\/intelligence\/providers(?:\/(quotes|start|poll|proposal|apply|review))?$/);
+ if(songProviderAction){if(project.format!=='music_video')fail(400,'Song Intelligence belongs to music-video projects.');if(req.method==='GET'&&!songProviderAction[1])return reply(200,await songProviderController.summary(user.id,project));if(req.method==='POST'&&songProviderAction[1]){const method=songProviderAction[1]==='quotes'?'quote':songProviderAction[1];return reply(method==='quote'||method==='start'?201:200,await songProviderController[method](user.id,project,body));}}
  if(action==='music-video/intelligence'&&['GET','POST'].includes(req.method)){
  const [assets,approvals]=await Promise.all([store.records('assets',id),store.records('approvals',id)]);
  if(req.method==='GET')return reply(200,{songIntelligence:songIntelligenceContext(project,approvals)});
@@ -269,6 +274,15 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  await mediaStorage.putIfAbsent(storageKey,bytes,mime,hash(bytes.toString('base64')));
  const asset=await store.add('assets',{id:assetId,projectId:id,name:body.name,mime,role:body.role,scope:body.scope,shotId:body.shotId||null,version:1,storageKey,size:bytes.length,checksum:hash(bytes.toString('base64'))});const {storageKey:unused,...visible}=asset;return reply(201,{asset:{...visible,url:`/api/projects/${id}/assets/${assetId}/content`}});}
  const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
+ const analysisSource=action?.match(/^assets\/([0-9a-f-]+)\/analysis-content$/);
+ if(analysisSource&&req.method==='GET'){
+  const asset=(await store.records('assets',id)).find(a=>a.id===analysisSource[1]);if(!asset)fail(404,'Reference not found.');
+  if(project.format!=='music_video'||asset.bucket!=='director-source-media'||asset.sourceUploadId!==asset.id||asset.decodeVerified!==true||asset.inspectionVersion!=='director-source-inspection-v1'||asset.checksumAlgorithm!=='sha256-bytes'||asset.role!=='master_song'||!['audio/wav','audio/mpeg'].includes(asset.mime)||!Number.isSafeInteger(asset.size)||asset.size<1||asset.size>12*1024*1024)fail(409,'Choose an inspected original song up to 12 MiB for browser analysis.');
+  const range=typeof req.headers.range==='string'&&req.headers.range.match(/^bytes=(\d+)-(\d+)$/),start=range?Number(range[1]):NaN,end=range?Number(range[2]):NaN;
+  if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||end<start||end>=asset.size||end-start+1>2*1024*1024)fail(416,'Request one exact source range up to 2 MiB.');
+  if(typeof mediaStorage.getRange!=='function')fail(503,'Private source analysis transport is unavailable.');const bytes=await mediaStorage.getRange(asset.storageKey,{bucket:asset.bucket,start,end,total:asset.size});if(bytes.length!==end-start+1)fail(502,'Private original range changed.');
+  res.writeHead(206,{'Content-Type':asset.mime,'Content-Length':bytes.length,'Content-Range':`bytes ${start}-${end}/${asset.size}`,'Accept-Ranges':'bytes','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});return res.end(bytes);
+ }
  if(content&&req.method==='GET'){const asset=(await store.records('assets',id)).find(a=>a.id===content[1]);if(!asset)fail(404,'Reference not found.');let bytes;
  if(asset.bucket==='director-source-media'){
   if(asset.sourceUploadId!==asset.id||asset.decodeVerified!==true||asset.inspectionVersion!=='director-source-inspection-v1'||asset.checksumAlgorithm!=='sha256-bytes')fail(409,'Source inspection is required before playback.');

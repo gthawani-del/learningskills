@@ -16,3 +16,14 @@ test('unknown upload failures are not replayed inside storage transport',async()
  let calls=0;const storage=createMediaStorage({env,demo:false,fetcher:async()=>{calls++;throw Error('Connection lost');}});
  await assert.rejects(()=>storage.putIfAbsent('owner/project/asset',bytes,'text/plain',checksum),/Connection lost/);assert.equal(calls,1);
 });
+
+test('private original byte ranges are bounded, authenticated and verified before browser analysis',async()=>{
+ const calls=[],storage=createMediaStorage({env,demo:false,fetcher:async(url,options)=>{calls.push({url,options});return new Response(bytes.subarray(2,7),{status:206,headers:{'content-range':`bytes 2-6/${bytes.length}`,'content-length':'5'}});}});
+ assert.deepEqual(await storage.getRange('owner/project/asset',{start:2,end:6,total:bytes.length}),bytes.subarray(2,7));assert.equal(calls[0].options.headers.Range,'bytes=2-6');assert.equal(calls[0].options.headers.Authorization,'Bearer fixture-secret');assert.equal(calls[0].options.redirect,'error');assert(calls[0].url.includes('/object/authenticated/director-source-media/'));
+ for(const args of [{start:-1,end:1,total:10},{start:0,end:2097152,total:2097153},{start:0,end:5,total:5}])await assert.rejects(()=>storage.getRange('owner/project/asset',args),{status:400});
+ assert.equal(calls.length,1);
+});
+test('private range transport rejects full, short, oversized and mismatched upstream responses',async()=>{
+ const replies=[()=>new Response(bytes,{status:200}),()=>new Response(bytes.subarray(0,3),{status:206,headers:{'content-range':`bytes 0-4/${bytes.length}`,'content-length':'5'}}),()=>new Response(bytes.subarray(0,6),{status:206,headers:{'content-range':`bytes 0-4/${bytes.length}`,'content-length':'5'}}),()=>new Response(bytes.subarray(0,5),{status:206,headers:{'content-range':`bytes 1-5/${bytes.length}`,'content-length':'5'}})];
+ for(const reply of replies){const storage=createMediaStorage({env,demo:false,fetcher:async()=>reply()});await assert.rejects(()=>storage.getRange('owner/project/asset',{start:0,end:4,total:bytes.length}),{status:502});}
+});

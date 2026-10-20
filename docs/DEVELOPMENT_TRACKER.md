@@ -1,5 +1,11 @@
 # Director Studio — Development Tracker
 
+## Song-provider workflow — 20 October 2026
+
+**Implemented and locally verified:** audio-understanding, lyrics transcription and exact canonical forced-alignment adapters now use the existing registry, private source, quotes, authorization, reservations, job recovery, audit results and explicit review. Private published songs can be checksum-read/decoded through bounded same-origin ranges. Saved transcript timing can be reused without another call; evidence corrections preserve history and require new approval before Director handoff. Native JS/SQL parity is prepared and PGlite-tested. **Published alignment pricing is $0.22 per started audio hour**; a three-minute interpretation/transcription/alignment pass estimates $0.604 in provider charges, before other production costs. [Acceptance, evidence and exact remaining gates](SONG_INTELLIGENCE_PROVIDER_ACCEPTANCE.md).
+
+**Not production accepted:** no real model was called or activated; no live migration or Sandbox executed. Trusted production source publication, real musical/singing/Director quality, account acceptance and hosted complete-song export still need their explicit dependencies/approval. The full eighteen-deliverable music-video release remains incomplete. Frozen UI and all seventeen departments are preserved. The first increment is on main `2529691`; the provider increment has separate publication evidence.
+
 ## Song Intelligence implementation — 20 October 2026
 
 Recovered the unpublished deterministic audio increment and connected versioned, editable song evidence/canonical lyrics/timing to approved Director treatment input and the existing seventeen departments. Device-cloud source remapping and selective source invalidation are implemented. Portable FFmpeg assembly actually produced a complete three-minute supplied-media MP4 retaining original-master content. See [implementation, evidence and explicit remaining gates](SONG_INTELLIGENCE_ACCEPTANCE.md). **Automatic provider song interpretation/transcription/alignment and real creative qualification remain incomplete.** The native parity migration is prepared/PGlite-tested, not applied. Hosted export, paid execution and physical-device acceptance are not claimed. The eighteen music-video deliverables remain intact; no UI redesign or provider activation occurred.

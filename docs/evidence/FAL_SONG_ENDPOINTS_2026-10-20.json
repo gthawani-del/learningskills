@@ -1,0 +1,658 @@
+{
+  "observedOn": "2026-10-20",
+  "purpose": "Read-only schema/pricing observation. Not execution or singing-quality qualification, not activation.",
+  "source": "fal MCP get_model_schema/get_pricing",
+  "endpoints": [
+    {
+      "endpoint_id": "fal-ai/audio-understanding",
+      "schema": {
+        "input_schema": {
+          "title": "AudioUnderstandingInput",
+          "x-fal-order-properties": [
+            "audio_url",
+            "prompt",
+            "detailed_analysis"
+          ],
+          "type": "object",
+          "required": [
+            "audio_url",
+            "prompt"
+          ],
+          "properties": {
+            "prompt": {
+              "maxLength": 10000,
+              "minLength": 1,
+              "examples": [
+                "What is being discussed in this audio?",
+                "What emotions are expressed in this audio?",
+                "What is the main topic of this conversation?"
+              ],
+              "type": "string",
+              "description": "The question or prompt about the audio content.",
+              "title": "Prompt"
+            },
+            "audio_url": {
+              "examples": [
+                "https://storage.googleapis.com/falserverless/model_tests/audio-understanding/Title_%20Running%20on%20Fal.mp3"
+              ],
+              "type": "string",
+              "description": "URL of the audio file to analyze",
+              "title": "Audio Url"
+            },
+            "detailed_analysis": {
+              "default": false,
+              "type": "boolean",
+              "description": "Whether to request a more detailed analysis of the audio",
+              "title": "Detailed Analysis"
+            }
+          }
+        },
+        "output_schema": {
+          "title": "AudioUnderstandingOutput",
+          "x-fal-order-properties": [
+            "output"
+          ],
+          "type": "object",
+          "required": [
+            "output"
+          ],
+          "properties": {
+            "output": {
+              "examples": [
+                "Based on the audio, this appears to be a business meeting discussing quarterly sales results. The speakers are analyzing performance metrics and discussing strategies for the upcoming quarter. The tone is professional and collaborative, with multiple participants contributing to the discussion."
+              ],
+              "type": "string",
+              "description": "The analysis of the audio content based on the prompt",
+              "title": "Output"
+            }
+          }
+        }
+      }
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/forced-alignment",
+      "schema": {
+        "input_schema": {
+          "required": [
+            "audio_url",
+            "text"
+          ],
+          "title": "ForcedAlignmentRequest",
+          "properties": {
+            "audio_url": {
+              "title": "Audio Url",
+              "examples": [
+                "https://storage.googleapis.com/falserverless/example_inputs/elevenlabs/scribe_v2_in.mp3"
+              ],
+              "description": "URL of the audio file to align. The file can be up to 3 GB and the audio can be up to 10 hours long.",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "examples": [
+                "Hey, this is a test recording for Scribe version two, which is now available on fal.ai."
+              ],
+              "description": "Transcript to align with the audio",
+              "maxLength": 675000,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "x-fal-order-properties": [
+            "audio_url",
+            "text"
+          ],
+          "type": "object"
+        },
+        "output_schema": {
+          "required": [
+            "characters",
+            "words",
+            "loss"
+          ],
+          "title": "ForcedAlignmentOutput",
+          "properties": {
+            "loss": {
+              "title": "Loss",
+              "description": "Average alignment loss for the transcript",
+              "type": "number"
+            },
+            "characters": {
+              "items": {
+                "required": [
+                  "text",
+                  "start",
+                  "end"
+                ],
+                "title": "ForcedAlignmentCharacter",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "description": "Start time in seconds",
+                    "type": "number"
+                  },
+                  "end": {
+                    "title": "End",
+                    "description": "End time in seconds",
+                    "type": "number"
+                  },
+                  "text": {
+                    "title": "Text",
+                    "description": "The aligned character",
+                    "type": "string"
+                  }
+                },
+                "x-fal-order-properties": [
+                  "text",
+                  "start",
+                  "end"
+                ],
+                "type": "object"
+              },
+              "title": "Characters",
+              "description": "Character-level alignment details",
+              "type": "array"
+            },
+            "words": {
+              "items": {
+                "required": [
+                  "text",
+                  "start",
+                  "end",
+                  "loss"
+                ],
+                "title": "ForcedAlignmentWord",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "description": "Start time in seconds",
+                    "type": "number"
+                  },
+                  "loss": {
+                    "title": "Loss",
+                    "description": "Average alignment loss for the word",
+                    "type": "number"
+                  },
+                  "end": {
+                    "title": "End",
+                    "description": "End time in seconds",
+                    "type": "number"
+                  },
+                  "text": {
+                    "title": "Text",
+                    "description": "The aligned character",
+                    "type": "string"
+                  }
+                },
+                "x-fal-order-properties": [
+                  "text",
+                  "start",
+                  "end",
+                  "loss"
+                ],
+                "type": "object"
+              },
+              "title": "Words",
+              "description": "Word-level alignment details",
+              "type": "array"
+            }
+          },
+          "x-fal-order-properties": [
+            "characters",
+            "words",
+            "loss"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "schema": {
+        "input_schema": {
+          "required": [
+            "audio_url"
+          ],
+          "title": "SpeechToTextRequestScribeV2",
+          "properties": {
+            "audio_url": {
+              "title": "Audio Url",
+              "examples": [
+                "https://storage.googleapis.com/falserverless/example_inputs/elevenlabs/scribe_v2_in.mp3"
+              ],
+              "description": "URL of the audio file to transcribe",
+              "type": "string"
+            },
+            "tag_audio_events": {
+              "title": "Tag Audio Events",
+              "default": true,
+              "description": "Tag audio events like laughter, applause, etc.",
+              "type": "boolean"
+            },
+            "diarize": {
+              "title": "Diarize",
+              "default": true,
+              "description": "Whether to annotate who is speaking",
+              "type": "boolean"
+            },
+            "keyterms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Keyterms",
+              "default": [],
+              "maxItems": 100,
+              "description": "Words or sentences to bias the model towards transcribing. Up to 100 keyterms, max 50 characters each. Adds 30% premium over base transcription price.",
+              "type": "array"
+            },
+            "language_code": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language Code",
+              "examples": [
+                "eng",
+                "spa",
+                "fra",
+                "deu",
+                "jpn"
+              ],
+              "description": "Language code of the audio"
+            }
+          },
+          "x-fal-order-properties": [
+            "audio_url",
+            "language_code",
+            "tag_audio_events",
+            "diarize",
+            "keyterms"
+          ],
+          "type": "object"
+        },
+        "output_schema": {
+          "required": [
+            "text",
+            "language_code",
+            "language_probability",
+            "words"
+          ],
+          "title": "TranscriptionOutputV2",
+          "properties": {
+            "text": {
+              "title": "Text",
+              "examples": [
+                "Hey, this is a test recording for Scribe version two, which is now available on fal.ai."
+              ],
+              "description": "The full transcribed text",
+              "type": "string"
+            },
+            "language_probability": {
+              "title": "Language Probability",
+              "examples": [
+                1
+              ],
+              "description": "Confidence in language detection",
+              "type": "number"
+            },
+            "language_code": {
+              "title": "Language Code",
+              "examples": [
+                "eng"
+              ],
+              "description": "Detected or specified language code",
+              "type": "string"
+            },
+            "words": {
+              "items": {
+                "required": [
+                  "text",
+                  "type"
+                ],
+                "title": "TranscriptionWord",
+                "properties": {
+                  "start": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Start",
+                    "description": "Start time in seconds"
+                  },
+                  "type": {
+                    "title": "Type",
+                    "description": "Type of element (word, spacing, or audio_event)",
+                    "type": "string"
+                  },
+                  "end": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "End",
+                    "description": "End time in seconds"
+                  },
+                  "speaker_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Speaker Id",
+                    "description": "Speaker identifier if diarization was enabled"
+                  },
+                  "text": {
+                    "title": "Text",
+                    "description": "The transcribed word or audio event",
+                    "type": "string"
+                  }
+                },
+                "x-fal-order-properties": [
+                  "text",
+                  "start",
+                  "end",
+                  "type",
+                  "speaker_id"
+                ],
+                "type": "object"
+              },
+              "title": "Words",
+              "examples": [
+                {
+                  "text": "Hey,",
+                  "type": "word",
+                  "end": 0.539,
+                  "speaker_id": "speaker_0",
+                  "start": 0.079
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 0.599,
+                  "speaker_id": "speaker_0",
+                  "start": 0.539
+                },
+                {
+                  "text": "this",
+                  "type": "word",
+                  "end": 0.679,
+                  "speaker_id": "speaker_0",
+                  "start": 0.599
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 0.739,
+                  "speaker_id": "speaker_0",
+                  "start": 0.679
+                },
+                {
+                  "text": "is",
+                  "type": "word",
+                  "end": 0.799,
+                  "speaker_id": "speaker_0",
+                  "start": 0.739
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 0.939,
+                  "speaker_id": "speaker_0",
+                  "start": 0.799
+                },
+                {
+                  "text": "a",
+                  "type": "word",
+                  "end": 0.939,
+                  "speaker_id": "speaker_0",
+                  "start": 0.939
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 0.959,
+                  "speaker_id": "speaker_0",
+                  "start": 0.939
+                },
+                {
+                  "text": "test",
+                  "type": "word",
+                  "end": 1.179,
+                  "speaker_id": "speaker_0",
+                  "start": 0.959
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 1.219,
+                  "speaker_id": "speaker_0",
+                  "start": 1.179
+                },
+                {
+                  "text": "recording",
+                  "type": "word",
+                  "end": 1.719,
+                  "speaker_id": "speaker_0",
+                  "start": 1.22
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 1.719,
+                  "speaker_id": "speaker_0",
+                  "start": 1.719
+                },
+                {
+                  "text": "for",
+                  "type": "word",
+                  "end": 1.86,
+                  "speaker_id": "speaker_0",
+                  "start": 1.719
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 1.879,
+                  "speaker_id": "speaker_0",
+                  "start": 1.86
+                },
+                {
+                  "text": "Scribe",
+                  "type": "word",
+                  "end": 2.24,
+                  "speaker_id": "speaker_0",
+                  "start": 1.879
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 2.319,
+                  "speaker_id": "speaker_0",
+                  "start": 2.24
+                },
+                {
+                  "text": "version",
+                  "type": "word",
+                  "end": 2.759,
+                  "speaker_id": "speaker_0",
+                  "start": 2.319
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 2.779,
+                  "speaker_id": "speaker_0",
+                  "start": 2.759
+                },
+                {
+                  "text": "two,",
+                  "type": "word",
+                  "end": 3.379,
+                  "speaker_id": "speaker_0",
+                  "start": 2.779
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 3.399,
+                  "speaker_id": "speaker_0",
+                  "start": 3.379
+                },
+                {
+                  "text": "which",
+                  "type": "word",
+                  "end": 3.519,
+                  "speaker_id": "speaker_0",
+                  "start": 3.399
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 3.539,
+                  "speaker_id": "speaker_0",
+                  "start": 3.519
+                },
+                {
+                  "text": "is",
+                  "type": "word",
+                  "end": 3.659,
+                  "speaker_id": "speaker_0",
+                  "start": 3.539
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 3.699,
+                  "speaker_id": "speaker_0",
+                  "start": 3.659
+                },
+                {
+                  "text": "now",
+                  "type": "word",
+                  "end": 3.839,
+                  "speaker_id": "speaker_0",
+                  "start": 3.699
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 3.839,
+                  "speaker_id": "speaker_0",
+                  "start": 3.839
+                },
+                {
+                  "text": "available",
+                  "type": "word",
+                  "end": 4.319,
+                  "speaker_id": "speaker_0",
+                  "start": 3.839
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 4.339,
+                  "speaker_id": "speaker_0",
+                  "start": 4.319
+                },
+                {
+                  "text": "on",
+                  "type": "word",
+                  "end": 4.579,
+                  "speaker_id": "speaker_0",
+                  "start": 4.339
+                },
+                {
+                  "text": " ",
+                  "type": "spacing",
+                  "end": 4.599,
+                  "speaker_id": "speaker_0",
+                  "start": 4.579
+                },
+                {
+                  "text": "fal.ai.",
+                  "type": "word",
+                  "end": 5.699,
+                  "speaker_id": "speaker_0",
+                  "start": 4.599
+                }
+              ],
+              "description": "Word-level transcription details",
+              "type": "array"
+            }
+          },
+          "x-fal-order-properties": [
+            "text",
+            "language_code",
+            "language_probability",
+            "words"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "prices": [
+    {
+      "endpoint_id": "fal-ai/audio-understanding",
+      "unit_price": 0.01,
+      "unit": "5 seconds",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/forced-alignment",
+      "unit_price": 0.22,
+      "unit": "units",
+      "currency": "USD"
+    },
+    {
+      "endpoint_id": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "unit_price": 0.008,
+      "unit": "minutes",
+      "currency": "USD"
+    }
+  ],
+  "holds": {
+    "interpret": "Reserve whole 5-second blocks pending reconciliation; real musical interpretation quality unqualified.",
+    "transcribe": "Reserve whole minute blocks without keyterms premium; singing, multilingual detection and diarization quality unqualified.",
+    "alignmentQuality": "Singing alignment quality remains unqualified. The published hourly billing basis resolves the initial API unit ambiguity."
+  },
+  "publishedPricing": {
+    "alignment": {
+      "endpoint": "fal-ai/elevenlabs/forced-alignment",
+      "url": "https://fal.ai/models/fal-ai/elevenlabs/forced-alignment",
+      "observedOn": "2026-10-20",
+      "exactVisibleText": "Your request will cost $0.22 per hour of audio input. It will be rounded upwards to the nearest hour.",
+      "usdPerHour": 0.22,
+      "rounding": "up to nearest hour",
+      "htmlSha256": "66bff3348502d19604eae8f4253db6a6c5d62bf2aaa9d8a49443ba2d5d992eba"
+    },
+    "transcription": {
+      "endpoint": "fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "url": "https://fal.ai/models/fal-ai/elevenlabs/speech-to-text/scribe-v2",
+      "exactVisibleText": "Your request will cost $0.008 per input audio minutes. If keyterm is used, your request will cost 30% more.",
+      "keytermsInAdapter": []
+    },
+    "interpretation": {
+      "endpoint": "fal-ai/audio-understanding",
+      "source": "fal get_pricing read-only lookup",
+      "unitPriceUsd": 0.01,
+      "unit": "5 seconds",
+      "quoteRounding": "conservative whole 5-second blocks pending actual reconciliation"
+    }
+  }
+}

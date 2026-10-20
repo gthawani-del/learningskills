@@ -24,9 +24,9 @@ export function analyzeSongChannels({channels,sampleRate}){
  return {version:SONG_ANALYSIS_VERSION,provenance:'browser_decoded',durationMs,audioProperties:{analysisSampleRate:sampleRate,decodedChannels:channels.length,decodedSampleCount:count},rmsDbFS:db(rms),peakAmplitude:peak,nearFullScaleSampleFraction:nearFullScale/(count*channels.length),silent,waveform,envelope,onsets,onsetEvidence:{method:'positive-rms-change',totalDetected:events.length,retained:onsets.length,selection:'strongest-200',beatGridVerified:false},sections,tempo:{bpm:candidates[0]?.bpm??null,confidence:candidates.length?'low':'unknown',reviewRequired:true,ambiguity:'Half-time and double-time are possible. This is not a verified beat grid.'},unknown:['lyrics','language','vocals','verse_chorus_labels','emotion','stems','lip_sync']};
 }
 
-export async function readSongAnalysisBytes(response,expectedSize,{signal}={}){
+export async function readSongAnalysisBytes(response,expectedSize,{signal,allowPartial=false}={}){
  if(!Number.isSafeInteger(expectedSize)||expectedSize<1||expectedSize>SONG_ANALYSIS_LIMITS.maxBytes)reject('Browser analysis supports source files up to 12 MiB.');
- if(response.status!==200||!response.body){await response.body?.cancel().catch(()=>{});reject('The original song could not be read.');}
+ if(!(response.status===200||allowPartial===true&&response.status===206)||!response.body){await response.body?.cancel().catch(()=>{});reject('The original song could not be read.');}
  const chunks=[];let length=0;const reader=response.body.getReader();
  try{while(true){if(signal?.aborted)reject('Song analysis cancelled.');const {done,value}=await reader.read();if(done)break;length+=value.byteLength;if(length>expectedSize||length>SONG_ANALYSIS_LIMITS.maxBytes)reject('Source length differs from the selected file.');chunks.push(value);}if(length!==expectedSize)reject('The original song download was incomplete.');}
  catch(error){await reader.cancel().catch(()=>{});throw error;}finally{reader.releaseLock();}

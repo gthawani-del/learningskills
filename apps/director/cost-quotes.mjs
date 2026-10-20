@@ -6,6 +6,7 @@ import {currentReferenceBrief} from './public/reference-production-core.js';
 import {currentStoryboardProductionSpec} from './public/storyboard-production-core.js';
 import {currentStoryboardSequence} from './public/storyboard-handoff-core.js';
 import {assertStoryboardFramePricing} from './storyboard-pricing.mjs';
+import {songQuoteFacts} from './song-pricing.mjs';
 
 const MAX_UNITS = 1_000_000;
 const forbidden = new Set(['cost','price','budget','authorization','authorized','generationauthorized','estimate','quote','quoteid','approved','accepted','approval','spend','billing','currency','unitmicrousd','totalmicrousd','priceevidence','priceversion','expectedversion','ownerid','projectid','inputprice','clientbudget','generationauthorization','maxcost','estimatedcost','estimatedcostmicrousd','amountmicrousd','reservedmicrousd','pricing','canexpense','canauthorize','authorizationid','budgetusd','budgetmicrousd','costusd','costmicrousd','priceusd','pricemicrousd','usageevidence','usagebound','usagebounds','tokenusage','actualtokens']);
@@ -40,7 +41,7 @@ function validatePayload(value, depth = 0, count = {nodes: 0}) {
 }
 
 // This is a trusted-server estimate, never a reservation, charge or generation permission.
-export function createCostQuote({project, artifactId, artifactVersion, model, task, requirements, intent, input, now, ttlMs = 300_000}) {
+export function createCostQuote({project, artifactId, artifactVersion, model, task, requirements, intent, input, assets, now, ttlMs = 300_000}) {
   const time = now instanceof Date ? now.getTime() : typeof now === 'number' ? now : typeof now === 'string' ? isoTime(now) : NaN;
   if (!Number.isFinite(time) || !positive(ttlMs) || ttlMs > 3_600_000 || !Number.isSafeInteger(time + ttlMs)) fail(400, 'A valid quote time and bounded lifetime are required.');
   if (!project || !identifier(project.id) || !positive(project.version) || !identifier(artifactId) || !positive(artifactVersion)) fail(400, 'A project and exact artifact version are required.');
@@ -71,9 +72,10 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     if (!/^[a-zA-Z][a-zA-Z0-9_]{0,79}$/.test(key) || !(value === null || typeof value === 'boolean' || typeof value === 'string' && value.length <= 500 || typeof value === 'number' && Number.isFinite(value))) fail(409, 'Price configuration must contain bounded scalar values.');
     if (!Object.hasOwn(input, key) || hash(input[key]) !== hash(value)) fail(409, 'Model input does not match the verified price configuration.');
   }
+  const songFacts=songQuoteFacts({project,assets,task,model,input,artifactId,artifactVersion,requirements});
   let calculation;
   if (price.tariff) {
-    const result = calculateTariff({price, input, now: time});
+    const result = calculateTariff({price, input, usageEvidence:songFacts?.usageEvidence, now: time});
     if (!positive(result.totalMicroUsd)) fail(409, 'A positive bounded generation estimate is required.');
     calculation = {unit: 'composite', totalMicroUsd: result.totalMicroUsd, components: result.components, priceEvidence: structuredClone(price)};
   } else {
@@ -101,7 +103,7 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     payloadHash: hash(input), modelId: model.id, endpoint: model.endpoint, modelVersion,
     schemaVersion: schema.version, schemaEvidence: {verified: true, version: schema.version, sourceUrl: schema.sourceUrl, endpoint: schema.endpoint, modelVersion: schema.modelVersion, inputSchemaHash: schema.inputSchemaHash, expiresAt: schema.expiresAt}, priceVersion: price.version, currency: 'USD', priceConfiguration: structuredClone(configuration), ...calculation,
     createdAt: new Date(time).toISOString(), expiresAt: new Date(Math.min(time + ttlMs, priceExpiry, schemaExpiry, intentExpiry)).toISOString(),
-    generationAuthorized: false, estimateOnly: true
+    ...(songFacts||{}),generationAuthorized: false, estimateOnly: true
   };
   if(artifact.kind==='reference_brief'){
     const subjectId=artifactId.slice('reference_brief:'.length),snapshot=currentReferenceBrief(project,subjectId);

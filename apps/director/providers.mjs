@@ -3,9 +3,10 @@ import { readFileSync } from 'node:fs';
 // Frozen evidence supplies input validation, not a claim of production eligibility.
 const evidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_ENDPOINT_SCHEMAS.json', import.meta.url), 'utf8'));
 const referenceEvidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json', import.meta.url), 'utf8'));
+const songEvidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_SONG_ENDPOINTS_2026-10-20.json', import.meta.url), 'utf8'));
 export const REFERENCE_FAL_PROMPT_MAX_BYTES = 100000;
-export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit', 'fal-ai/flux-2-pro', 'fal-ai/flux-2/klein/9b']);
-const schemas = new Map([...evidence.endpoints,...referenceEvidence.endpoints].filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
+export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit', 'fal-ai/flux-2-pro', 'fal-ai/flux-2/klein/9b','fal-ai/audio-understanding','fal-ai/elevenlabs/speech-to-text/scribe-v2','fal-ai/elevenlabs/forced-alignment']);
+const schemas = new Map([...evidence.endpoints,...referenceEvidence.endpoints,...songEvidence.endpoints].filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
 const fail = message => { throw new Error(message); };
 function validate(schema, value, path = 'input') {
   if (schema.anyOf) {
@@ -48,6 +49,8 @@ export function validateFalInput(endpoint, input) {
   }
   if (input.sync_mode === true) fail('Async jobs require sync_mode false');
   if (input.enable_safety_checker === false) fail('Safety checker must remain enabled');
+  if(endpoint==='fal-ai/elevenlabs/speech-to-text/scribe-v2'&&(!Array.isArray(input.keyterms)||input.keyterms.length||input.diarize!==true||input.tag_audio_events!==true||input.language_code!==null))fail('Song transcription requires explicit diarization, audio events, automatic language and no premium keyterms.');
+  if(endpoint==='fal-ai/audio-understanding'&&input.detailed_analysis!==true)fail('Song interpretation requires explicit detailed audio analysis.');
   if (endpoint === 'fal-ai/flux-2-pro' || endpoint === 'fal-ai/flux-2/klein/9b') {
     // These additive adapters deliberately support one reviewed price configuration.
     // Live schemas accept broader sizes/batches; those need their own tariff review.

@@ -54,3 +54,7 @@ Recovery and ingestion PRs #9/#10 are merged; production main `c205c40` is READY
 ## Song Intelligence and complete-song assembly increment — 20 October 2026
 
 [Acceptance and limitations](SONG_INTELLIGENCE_ACCEPTANCE.md): recovered signal analysis, saved editable evidence/canonical lyrics/timing, approval-to-Director context, shared seventeen-department bindings and correction invalidation. A portable supplied-media renderer produced a synchronized 180-second MP4 locally. This advances deliverables 7, 11, 12 and the feasibility portion of 6/17; none is declared production-complete. Automatic audio-provider interpretation/transcription/alignment, native migration approval, real account/model qualification and hosted export remain outstanding. All eighteen deliverables and their dependencies are preserved.
+
+## Song-provider request/result increment — 20 October 2026
+
+[Detailed implementation and qualification gates](SONG_INTELLIGENCE_PROVIDER_ACCEPTANCE.md): task-specific actual-audio request preparation, trusted-duration pricing, shared authorization/reservation/jobs, reviewable musical/lyric/alignment proposals, exact saved-output reuse and private original browser analysis. The alignment model page specifies $0.22 per started audio hour. Native migration is prepared only; real musical/singing/Director quality is unqualified. This further advances deliverables 7/11/12; it does not complete live activation, generated media, hosted finishing or the eighteen-deliverable release.

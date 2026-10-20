@@ -1,10 +1,20 @@
 # Model Router Intelligence Bible
 
-Revision 11 • As of 19 October 2026 UTC • Planning specification and implementation deltas
+## 20 October 2026 — Song Intelligence runtime increment
+
+The implemented music-first path now prepares actual audio for retained candidates M05 (`fal-ai/audio-understanding`), M06 (`fal-ai/elevenlabs/speech-to-text/scribe-v2`) and M07 (`fal-ai/elevenlabs/forced-alignment`). Eligibility still requires approved exact schemas/tariffs and fresh music-specific evaluation; adapters do not activate candidates. Interpretation uses musical_audio_analysis, transcription uses singing_transcription, and alignment uses sung_lyric_alignment purpose evidence. Original-song/canonical pins, source inspection, explicit sharing and spending, two attempts, unknown-charge holds and human review apply. Existing matching transcript timings are reused before spending on another alignment request.
+
+Published alignment pricing resolves the initial API unit ambiguity: **$0.22 per audio hour, rounded upward to a whole hour per request**. For one 180-second song, interpretation is approximately $0.36, transcription without premium keyterms $0.024 and forced alignment $0.22: $0.604 total for those audio operations, excluding the rest of production. Actual charges require reconciliation. [Current observed schemas/prices](evidence/FAL_SONG_ENDPOINTS_2026-10-20.json) and [runtime/acceptance details](SONG_INTELLIGENCE_PROVIDER_ACCEPTANCE.md) govern this increment. Direct OpenAI music-treatment planning remains within separately reviewed existing planning profiles; no OpenRouter service or new provider is introduced. No real provider/creative-quality qualification, live schema installation or hosted-export acceptance is claimed.
+
+Revision 12 • As of 19 October 2026 UTC • Planning specification and implementation deltas
 
 This is the single controlling planning document for request interpretation, production recipes, model/tool choices, costs and functional execution coverage. It consolidates the earlier readable matrix, all 105 CSV function contracts and all 20 fal candidate records. It adds direct OpenAI writing/planning candidates and dated prices. Appendices contain the complete functional contracts and machine-readable records, so those three earlier files are no longer required to understand routing.
 
 This bible separates the decision specification and historical candidate research from the implemented contracts recorded in the current advancement sections below. The original research did not execute paid models or validate creative outputs; documentation updates do not activate candidates or certify production quality. Official documentation, a valid schema, implemented request handling, a connected account and a finished film are different evidence levels.
+
+## Music-video trust and tool-fit research — 19 October 2026
+
+The expanded [competitor/customer/tool review](MUSIC_VIDEO_COMPETITOR_FINDINGS_2026-10-19.md) adds customer reports and company replies, explicit rejection rules, responsibilities and checked input/billing contracts. Incorporate its source locks, modality checks, original-master/language policy, bounded cost-to-finish, scoped repair and delivery-proof requirements into future implementation. Its vendor allegations are not independently verified defect rates, and its model candidates/rates do not activate routes or certify singing quality. The observed still-image→video and existing-video→image-avatar recommendation mismatches must be rejected, not silently executed. Preserve the dated evidence and unresolved rate units. No implementation status is upgraded by this research.
 
 ## Music-video journey gap — 19 October 2026
 
