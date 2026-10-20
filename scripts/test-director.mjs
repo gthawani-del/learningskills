@@ -93,3 +93,5 @@ await import('../apps/director/tests/storyboard-pricing.test.mjs');
 await import('../apps/director/tests/storyboard-production.test.mjs');
 await import('../apps/director/tests/storyboard-production-cloud.test.mjs');
 
+
+await import('../apps/director/tests/studio-shell.test.mjs');

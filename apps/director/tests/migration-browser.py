@@ -12,7 +12,7 @@ with sync_playwright() as p:
  page.reload();expect(page.locator('#mode')).to_have_text('On this device')
  page.locator('#viewer-add').click();page.locator('#upload-file').set_input_files({'name':'keeper.png','mimeType':'image/png','buffer':base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=')});page.locator('#upload-form button[type=submit]').click()
  expect(page.locator('#studio-still')).to_be_visible()
- page.locator('.stage-switch summary').click();page.locator('[data-stage=cast]').click();page.locator('[data-use-media]').click();page.locator('[data-stage=production]').click()
+ page.locator('[data-stage=cast]').click();page.locator('[data-use-media]').click();page.locator('[data-stage=production]').click()
  fault={'used':False}
  def interrupt(route):
   if not fault['used']:
