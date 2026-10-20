@@ -8,7 +8,7 @@ Reuse the existing character/reference library, seventeen departments, productio
 |---|---|---|---|
 | 1 | Record release checklist and baseline | Recorded locally | This checklist linked from the existing tracker; exact baseline recorded. |
 | 2 | Cloud accounts and recovery | Recovery code and local checks implemented; real account acceptance outstanding | Recovery implementation and fixture/browser proof; separate real two-account/private-storage/cross-browser proof. |
-| 3 | Resumable media ingestion | Small-file uploads only | Direct private upload, interrupted transfer recovery and authoritative inspection. |
+| 3 | Resumable media ingestion | Gated TUS/receipt/UI implementation; trusted inspection and real cloud acceptance outstanding | Direct private upload, interrupted transfer recovery and authoritative inspection. |
 | 4 | Vercel Sandbox processing proof | Not implemented | Account entitlement, private transfer, executable FFmpeg and bounded actual cost evidence. |
 | 5 | Durable processing | Existing paid provider jobs | Processing tasks/leases/heartbeats/recovery without duplicate provider generation. |
 | 6 | Hosted export with uploaded assets | Local FFmpeg proof only | Stored playable MP4, verified timing/sound, interruption recovery and download. |
@@ -34,3 +34,7 @@ The first execution batch covers account recovery and source-media foundations. 
 ## Account-recovery implementation increment
 
 See [ACCOUNT_RECOVERY_ACCEPTANCE.md](ACCOUNT_RECOVERY_ACCEPTANCE.md). Recovery is implemented locally; release verification is separate. Full local QA passed 758 tests/20 browser flows plus build/SQL; the final state-comparison correction has separate targeted evidence and requires exact-commit CI. Steps 3–18 are not marked complete by this increment. Current Vercel scope access is blocked (403); live-account tests require designated sessions. No paid calls or production settings changed.
+
+## Contextual attachment and source-ingestion increment
+
+See [MEDIA_INGESTION_ACCEPTANCE.md](MEDIA_INGESTION_ACCEPTANCE.md) for implemented transport/UI, verification and production gates. The updated Studio layout and [shared UI implementation rules](STUDIO_UI_IMPLEMENTATION_RULES.md) govern this and all subsequent customer screens. Recovery PR #9 passed exact-commit GitHub Actions run 39373263840. Resumable ingestion is not complete until trusted inspection, cleanup and live-account acceptance pass; it remains disabled by default.
