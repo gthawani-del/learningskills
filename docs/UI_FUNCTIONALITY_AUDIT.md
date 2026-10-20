@@ -4,7 +4,11 @@
 
 **Verification:** 749 local automated tests, 19 browser flows, production build and SQL checks passed. REA produced 14 successful passive page captures; Chromium recorded 118 state snapshots across all seven production types and seven shared stages, at 1440×1000 and 390×844. No page/console/HTTP errors or horizontal overflow were recorded in that navigation audit. This does not establish model quality or physical-device behavior.
 
-## Production versus local implementation
+## Release update — 20 October 2026
+
+The audited UI/Assets/account change was subsequently merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) into main `c86cd27` and deployed successfully. Full pre-merge GitHub QA passed. Live Chromium checks exercised all ten device-draft creation formats, four asset categories, uploads/filtering, device reload, image selection and audio/video playback at desktop and mobile viewport sizes without recorded page/console/HTTP errors. The earlier UI-not-deployed finding below is **closed by this release**. The other implementation and live-provider/account gaps are unchanged. See [current tracker](DEVELOPMENT_TRACKER.md); viewport checks do not certify physical devices.
+
+## Production versus local implementation — historical audit snapshot
 
 The read-only live check of https://learningskills.vercel.app returned HTTP 200. It still has the old three production choices and no shared Studio menu. Main remains `bb100bfbe39d538a053ca9281f36b0fe99c898b1`; new UI/Assets changes are local and uncommitted. There was no deployment or paid generation in this audit. The live browser used an isolated certificate-error override because of environment trust limitations; deployment security was unchanged.
 
@@ -49,7 +53,7 @@ The read-only live check of https://learningskills.vercel.app returned HTTP 200.
 
 | Priority | Finding | Evidence and impact |
 |---|---|---|
-| P0 | New UI is not deployed | Live URL returns HTTP 200 but exposes only short_film/music_video/advertisement and has no Studio navigation. Local source remains uncommitted. Users cannot see the new UI on production. |
+| Closed on 20 Oct | New UI was not deployed at audit time | Live URL returns HTTP 200 but exposes only short_film/music_video/advertisement and has no Studio navigation. Local source remains uncommitted. Users cannot see the new UI on production. |
 | P1 | Footage, singing/lip sync and voice audition gaps | Reference image/still routes and low-level adapters do not complete film footage, talking-avatar or singing performance production. New media-type labels do not activate those workflows. |
 | P1 | Final editor and hosted finished-film export missing | Production/Edit show references, clip playback and storyboard timing. Download draft exports JSON; the hosted export route rejects unavailable rendering. |
 | P1 | Music intelligence incomplete | Song binding and timed role plans work; automatic listening, canonical lyrics/alignment, beat/energy mapping and measured lip-sync quality are not connected. |

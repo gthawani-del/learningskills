@@ -1,12 +1,83 @@
 # Director Studio — Development Tracker
 
-Updated 19 October 2026. Baseline before the routing/quote batch: `76960d5`. This is an implementation ledger, not a replacement blueprint.
+Updated 20 October 2026. Current application release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
 
-Tracked: **167 acceptance/function items**: 105 functions, 32 frontend criteria, 18 realism scenarios and 12 admin scenarios. Also indexes 108 numbered sections across the six active specifications.
+## Honest current position
 
-Status: 71 partial, 90 missing/unverified, 6 explicitly deferred. **Zero items are claimed fully production-accepted.** Partial describes existing implementation, not a completion percentage.
+**The studio has working project preparation, manual editing, versioned approvals, shared Assets, storyboard/animatic tooling and guarded AI/provider orchestration. It does not yet have a complete, live-validated path from a request to a downloadable generated movie, music video or avatar video.**
 
-Canonical records: [JSON](DEVELOPMENT_REQUIREMENTS.json) and [CSV](DEVELOPMENT_REQUIREMENTS.csv). Each row includes source, implementation paths, test paths, evidence limits, next gap and dependencies. The CSV is a readable export of the same review.
+Earlier statements that an entire production module was “completed” overstated the evidence when only its code, fixtures or UI path had passed. Conversely, calling all of this merely a UI shell understates the substantial backend and workflow code already implemented. This summary distinguishes both cases.
+
+### Status meanings
+
+- **Working and deployed:** the specific user action passed a live browser check on the released application. This does not certify adjacent untested functionality.
+- **Implemented; live validation outstanding:** source and automated/local integration evidence exist, but the real account/provider/output workflow has not passed production acceptance.
+- **Missing:** a required user workflow or production service is not implemented end to end. Configuring a key will not complete it.
+- **Deferred:** explicitly postponed scope. No completion percentage is inferred from tests or file counts.
+
+## What is actually working on the live site
+
+The latest signed-out/device-draft Chromium run passed at 1440×1000 and 390×844:
+
+- Home/Create, Projects, Assets, Brand & characters, Usage & costs, Help and Account navigation.
+- Creation of device drafts for seven production types plus image, video and audio. These are project formats, not seven complete generators.
+- Local reference upload; Images, Videos, Characters and Audio library categories; search and project filtering; selected-project upload targeting.
+- Character records and their exact selected portrait references. “Open character” opens the project's Cast & World library, not a dedicated selected-character editor.
+- Reopening/reloading saved device drafts, project navigation and keyboard navigation.
+- Standalone image selection and real uploaded audio/video playback.
+- Desktop three-pane production layout and mobile-viewport drawer behavior, with no horizontal overflow in the checks exercised.
+
+The existing local browser suite additionally exercises manual story/shot editing, approvals, source-bound references, scoped revisions, timed animatics, original-audio preview, recovery fixtures and JSON draft download. Those local checks must not be described as live provider or live account acceptance.
+
+## Twelve-step delivery status
+
+| Step | What has been implemented | What is missing or not verified | Overall status |
+|---|---|---|---|
+| **1. Requirements audit** | Requirements ledger; source/UI/endpoint/test mapping for 105 functions; 32 frontend criteria; REA and Chromium evidence; this current status summary. | Keep rows aligned as work changes; older 167-item ledger has not been fully reconciled with the newer function audit. | **Initial audit delivered; maintenance ongoing.** |
+| **2. Cloud foundations** | Signup, login, refresh/logout, owner-scoped project/private-media adapters, retry-safe checksummed device-to-cloud project/media import; local authenticated fixture tests. | Password recovery; real deployed two-account isolation; private-media access denial; cross-browser persistence; real session expiry/recovery and interrupted import acceptance. Current deployment environment configuration is not certified by old observations. | **Implemented in substantial part; real cloud acceptance incomplete.** |
+| **3. Production records** | Versioned scenes/shots and character/reference/voice/take/audio/edit library records; bindings, approval history, dependency review holds and selective invalidation; script/department/shot-contract records. | Verify the complete department/run/take/edit lifecycle with real outputs; actual performance, sound and final-edit production do not yet exercise the full graph. | **Core system implemented; full production integration incomplete.** |
+| **4. Operational backoffice** | Role-scoped operational access, audited pause/model-disable controls, model-profile draft/publication, job inspection, project spending controls and reservation APIs. | Complete skill publication/lifecycle, staff lifecycle/MFA, broader tenant/support permissions and realistic operational acceptance scenarios. | **Operational slices implemented; full admin product incomplete.** |
+| **5. Routing and costs** | Capability/intent/evidence-aware route selection, reviewed registry bindings, scalar/composite tariffs, durable quote receipts, explicit authorization, caps/reserves, planning reservations, recovery/accounting states and scoped customer Costs UI. | Qualify actual enabled endpoint/model configurations; verify current schemas/prices; live provider settlement/charge reconciliation; full sequence estimates including every missing production stage; production concurrency and billing acceptance. | **Substantial routing/accounting code; live financial acceptance incomplete.** |
+| **6. Intelligent Director** | Structured brief interpretation/proposals, treatment/script/scene/dialogue writing, optional source text, deterministic project-source comparison, seventeen department plans, targeted revisions, affected-department review flags and shot-contract handoff. Manual/rule paths and reviewed model proposal paths exist. | Activate qualified models through existing gates and evaluate real brief/script/department/revision outputs; broader originality comparison is not implemented. Existing source comparison cannot certify plagiarism-free work. | **Main planning/writing orchestration implemented; real creative validation incomplete.** |
+| **7. Visual production** | Identity/look/location reference-job orchestration, private image import/selection/review, approved-reference-bound storyboard frame jobs, candidate/frame approval, shot contracts, timed still animatics and original-audio preview. | End-to-end live generated-reference/storyboard quality acceptance; connected footage production; measured character/shot continuity; output-driven scoped repairs; rendered animatic delivery. | **Reference/storyboard/animatic systems implemented; motion-production workflow incomplete.** |
+| **8. Audio, avatars and music videos** | Source-song binding/duration, reviewed manual sections and timing, performance/B-roll/dance/singing classifications, performer pins, original-audio animatics; low-level speech/provider adapters and voice/audio record types. | Automatic song/beat/energy/instrument analysis; canonical lyrics/alignment; voice casting/auditions and voice-to-line generation workflow; sound/music production; working talking-avatar and singing/lip-sync generation with measured audiovisual quality. | **Planning and audio-preview slices implemented; production workflows missing.** |
+| **9. Editing and export** | Animatic timing edits/history, uploaded clip/image/audio preview, JSON project download and gated local FFmpeg proof. | Full footage timeline assembly/trimming/transitions, mixing, captions, durable hosted rendering, finished-film MP4 delivery and output verification. Hosted `/export` rejects unavailable rendering. | **Preview/local proof exists; finished-movie editing/export missing.** |
+| **10. Customer experience** | New shared navigation/Assets and first-use upload/account flow released; compact prefilled brief; approval/cost interfaces; device recovery and responsive desktop/mobile-viewport checks. | Remaining v2 accessibility/recovery/error acceptance; password recovery; project search; welcome thumbnails; take comparison; microphone transcription; realistic large-media upload; physical mobile/keyboard testing. Documentary/series entries currently lack their specialist research/episode engines. | **Released and partly live-tested; customer acceptance incomplete.** |
+| **11. Commercial backoffice** | Underlying usage/cost/audit records and some operational views that future commercial functions can reuse. | Customer billing and settlement; support cases/tools; credits/refunds; retention/deletion workflows; incident procedures exercised in production; founder reporting. | **Mostly missing.** |
+| **12. Production pilots** | Local/CI fixtures and actual browser checks; defined pilot and quality criteria. | Accepted finished short film, music video and avatar production using real providers; measured total cost, failures, recovery, human quality and two-attempt success rate. | **Not completed.** |
+
+## Critical omissions that keys or UI labels will not solve
+
+1. Hosted finished-film rendering/export and full final editing/mixing/captions.
+2. Connected footage generation and output-driven continuity/repair loops.
+3. Reliable singing/lip sync, avatar production and voice auditions.
+4. Automatic song analysis and lyric/alignment intelligence.
+5. Source-backed documentary research/fact checks and actual episode/series orchestration.
+6. Commercial billing/support/refund/retention workflows.
+7. The current 2 MiB whole-file upload limit excludes many normal songs and clips. Retry-safe whole-file import is not large-file/chunk-resumable transport.
+
+## Evidence and counts
+
+- Latest function audit: **105 functions = 52 partial + 47 missing + 6 deferred**. “Partial” includes useful implemented components; it is not 52 complete user workflows. “Missing” is scoped to the named requirement, not proof that no related adapter exists.
+- The earlier ledger covers **167 items** (105 functions, 32 UI criteria, 18 realism scenarios and 12 admin scenarios). Its historical 71 partial / 90 missing-or-unverified / 6 deferred count is **not the current reconciled total** and must not be combined with the 105-function count.
+- Local release evidence: **749 automated tests, 19 browser flows, production build and SQL checks passed**. Successful pre-merge full GitHub run: [39367158622](https://github.com/gthawani-del/learningskills/actions/runs/39367158622), candidate `a36170e`. Its test correction waits for a completed cloud import rather than reloading during the import. This does not convert simulated accounts into real accounts.
+- Vercel success reported for merged commit `c86cd27`, deployment `7URdTkGpJVgjZDab9ZHrT1XcZdq9`. Live navigation/media checks are recorded in `test-results/production-navigation/results.json` and `release-verification.json`. No page, console or HTTP errors were recorded in those exercised flows.
+- Live browser checks used an isolated certificate-error override for this environment's trust limitation. Site security settings were unchanged. TLS certification, physical mobile, real customer sessions, paid creative output and live billing were not tested by that run.
+- No accepted finished-film/music-video/avatar pilot or measured two-attempt quality result exists in the reviewed evidence. No defensible whole-product completion percentage is available.
+
+Detailed sources: [105-function trace](UI_FUNCTIONALITY_TRACEABILITY.csv), [32 UI criteria](UI_ACCEPTANCE_TRACEABILITY.csv), [dated audit](UI_FUNCTIONALITY_AUDIT.md), [earlier requirement JSON](DEVELOPMENT_REQUIREMENTS.json), [earlier requirement CSV](DEVELOPMENT_REQUIREMENTS.csv), [release procedure](ENGINEERING_RELEASE.md).
+
+## Next implementation gates
+
+1. Verify real cloud accounts/private media and implement large-source uploads so normal projects can enter production.
+2. Qualify live planning/reference/storyboard routes through existing authorization/cost controls; retain separate quality and spending evidence.
+3. Complete actual footage, voice/performance and lip-sync workflows; implement song intelligence and the documentary/series engines required for their advertised formats.
+4. Complete the final editor, mixing/captions and durable hosted export.
+5. Finish commercial/customer acceptance and run the three real production pilots.
+
+## Historical implementation entries
+
+The entries below retain what was recorded at each earlier increment. Their dates, test totals, configuration observations and “next” instructions are historical; **the current summary above takes precedence**. No old migration/security observation is a fresh production check.
 
 ## Music-video journey review — 19 October 2026
 

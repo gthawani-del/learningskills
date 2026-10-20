@@ -1,3 +1,9 @@
+# Current status — 20 October 2026
+
+Use [DEVELOPMENT_TRACKER.md](DEVELOPMENT_TRACKER.md) for the current consolidated status. Main `c86cd27` is deployed; the new navigation/Assets and first-use account work has shipped. The entries below are a historical increment log, not the current product summary. In particular, older statements that signup is unfinished or the new UI is uncommitted have been superseded. Real paid output, account isolation and finished-film export remain unaccepted.
+
+---
+
 # Engineering QA and silent timed storyboard draft — 19 October 2026
 
 Shared affected/full QA commands reuse existing Node tests, Playwright fixtures and SQL proof. Automatic PR/main Actions was verified on QA setup PR #2 and merged as 80350e7c848503b6c8b9c28b4ab66034b69332a0. The approved [release procedure](ENGINEERING_RELEASE.md) records minimal agent handoffs, exact-commit live verification and compatible application rollback. No security settings or new database schema were changed.
