@@ -1,3 +1,4 @@
+import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic} from './public/animatic-core.js';
 import {musicVideoContext,saveMusicVideo} from './public/music-video-core.js';
@@ -75,11 +76,14 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const lifetime=Number.isFinite(session.expires_in)?Math.max(1,Math.min(Math.floor(session.expires_in),3600)):3600;
  return {'Set-Cookie':[cookie('director_session',session.access_token,lifetime),cookie('director_refresh',session.refresh_token,30*86400,'/api')]};
  };
+ const recovery=createAccountRecovery({env,store,connected,demo});
  const refreshing=new Map();
  const refreshSession=async token=>{if(!token||token.length>8192)fail(401,'Sign in again to continue.');let pending=refreshing.get(token);if(!pending){pending=store.refresh(token);refreshing.set(token,pending);}try{return await pending;}finally{if(refreshing.get(token)===pending)refreshing.delete(token);}};
  return async(req,res,path,body={})=>{
  const reply=(status,value,headers={})=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store',...headers});res.end(JSON.stringify(value));};
- const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
+ const jar=cookies(req),token=jar.director_session,refreshToken=jar.director_refresh;
+ if(await recovery({req,res,path,body,jar,reply,clearSession}))return;
+ const user=demo?{id:'demo-user',email:'local-development'}:store&&token?await store.user(token):null;
  if(path==='/api/config'&&req.method==='GET')return reply(200,{mode:demo?'demo':'supabase',user:user?{id:user.id,email:user.email,isAdmin:isAdmin(user),staffRole:staffRole(user.id,env)}:null,session:{refreshAvailable:!!(connected&&!demo&&refreshToken)},capabilities:{planning,planningControls:!!store,media:false,uploads:!!store,localExport:demo&&env.DIRECTOR_LOCAL_RENDER==='1'},uploadMaxBytes:2*1024*1024});
  if(path==='/api/auth/login'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
