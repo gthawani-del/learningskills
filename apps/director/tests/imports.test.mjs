@@ -78,11 +78,13 @@ test('invalid library archives fail before creating a cloud copy',async()=>{
 
 test('device song-plan migration remaps the original master pin and preserves exact source checksum/history',async()=>{
  const {saveMusicVideo,MUSIC_VIDEO_KIND,musicVideoContext}=await import('../public/music-video-core.js');
+ const {newSongIntelligence,saveSongIntelligence,songIntelligenceContext}=await import('../public/song-intelligence-core.js');
  const s=await setup(),request=structuredClone(body);request.project.format='music_video';request.project.version=1;
  request.assets[0]={...request.assets[0],name:'song.wav',mime:'audio/wav',role:'master_song'};
  const a={...request.assets[0],projectId:sourceId,version:1};
  const document={kind:MUSIC_VIDEO_KIND,master:{assetId,assetVersion:1,checksum:a.checksum,durationMs:30000,timingBasis:'user_reviewed'},range:{startMs:0,endMs:30000},fps:24,sections:[{id:'whole',label:'Unanalysed song',startMs:0,endMs:30000,timingBasis:'provisional'}],shots:[]};
- const source=saveMusicVideo({...request.project,id:sourceId},{expectedVersion:1,document,acknowledgePlanning:true},[a]);request.project=source;
+ let source=saveMusicVideo({...request.project,id:sourceId},{expectedVersion:1,document,acknowledgePlanning:true},[a]);const analysis=newSongIntelligence(document.master);analysis.lyrics={canonicalText:'  नमस्ते\n你好 🎵  ',languages:['Hindi','Chinese'],singers:[],vocalMode:'mixed',basis:'user_supplied'};source=saveSongIntelligence(source,{expectedVersion:source.version,document:analysis,acknowledgeEvidence:true},[a]);request.project=source;
  const p=await s.controller.start(owner,request);await s.controller.upload(owner,p.id,assetId,{bytes,mime:'audio/wav'});const done=await s.controller.complete(owner,p.id),assets=await s.store.records('assets',p.id),context=musicVideoContext(done,assets);
  assert.equal(context.document.master.assetId,stableImportId({projectId:p.id,sourceId:assetId}));assert.equal(context.document.master.checksum,a.checksum);assert(!context.holds.some(h=>h.includes('unavailable')));assert.equal(context.generationAuthorized,false);assert.equal(context.version,1);
+ const evidence=songIntelligenceContext(done,[]);assert.equal(evidence.document.master.assetId,context.document.master.assetId);assert.equal(evidence.document.lyrics.canonicalText,analysis.lyrics.canonicalText);assert.equal(evidence.approved,false);assert.equal(evidence.holds.length,0);
 });

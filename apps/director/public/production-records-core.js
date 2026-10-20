@@ -4,13 +4,13 @@ const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const types=new Set(['character','voice','location','wardrobe','prop','audio','take','edit']);
 const forbidden=new Set(['ownerId','owner_id','projectId','project_id','approved','accepted','acceptance','quality','qualityValidated','quality_validated','generationAuthorized','model','modelId','budget','spend','authorization','status','executionTested','execution_tested','rightsVerified','rights_verified','routeActive','price','cost','billing']);
 const textLimits={character:12000,voice:12000,location:10000,wardrobe:8000,prop:8000,audio:24000,take:16000,edit:32000};
-function contentValue(value,type,depth=0){
+function contentValue(value,type,depth=0,preserveText=false){
  if(depth>6)fail(400,'Production content is too deeply nested.');
- if(typeof value==='string'){if(value.length>textLimits[type])fail(400,'Production content is too long.');return value.trim();}
+ if(typeof value==='string'){if(value.length>textLimits[type])fail(400,'Production content is too long.');return preserveText?value:value.trim();}
  if(value===null||typeof value==='boolean')return value;
  if(typeof value==='number'){if(!Number.isFinite(value))fail(400,'Production numbers must be finite.');return value;}
- if(Array.isArray(value)){if(value.length>200)fail(400,'Production content list is too long.');return value.map(x=>contentValue(x,type,depth+1));}
- if(value&&typeof value==='object'){const entries=Object.entries(value);if(entries.length>60)fail(400,'Too many production content fields.');return Object.fromEntries(entries.sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>{if(!/^[a-zA-Z][a-zA-Z0-9_]{0,79}$/.test(k)||forbidden.has(k))fail(400,'Production content cannot grant ownership, acceptance or spending permissions.');return [k,contentValue(v,type,depth+1)];}));}
+ if(Array.isArray(value)){if(value.length>200)fail(400,'Production content list is too long.');return value.map(x=>contentValue(x,type,depth+1,preserveText));}
+ if(value&&typeof value==='object'){const entries=Object.entries(value);if(entries.length>60)fail(400,'Too many production content fields.');return Object.fromEntries(entries.sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>{if(!/^[a-zA-Z][a-zA-Z0-9_]{0,79}$/.test(k)||forbidden.has(k))fail(400,'Production content cannot grant ownership, acceptance or spending permissions.');return [k,contentValue(v,type,depth+1,preserveText||depth===0&&type==='edit'&&value.kind==='song_intelligence_v1')];}));}
  fail(400,'Invalid production content value.');
 }
 const current=r=>r.versions.find(v=>v.version===r.currentVersion);

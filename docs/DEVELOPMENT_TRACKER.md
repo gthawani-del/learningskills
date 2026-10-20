@@ -1,5 +1,9 @@
 # Director Studio — Development Tracker
 
+## Song Intelligence implementation — 20 October 2026
+
+Recovered the unpublished deterministic audio increment and connected versioned, editable song evidence/canonical lyrics/timing to approved Director treatment input and the existing seventeen departments. Device-cloud source remapping and selective source invalidation are implemented. Portable FFmpeg assembly actually produced a complete three-minute supplied-media MP4 retaining original-master content. See [implementation, evidence and explicit remaining gates](SONG_INTELLIGENCE_ACCEPTANCE.md). **Automatic provider song interpretation/transcription/alignment and real creative qualification remain incomplete.** The native parity migration is prepared/PGlite-tested, not applied. Hosted export, paid execution and physical-device acceptance are not claimed. The eighteen music-video deliverables remain intact; no UI redesign or provider activation occurred.
+
 Updated 20 October 2026. Historical Studio UI release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
 
 ## Frozen UI adaptation — 20 October 2026

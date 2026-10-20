@@ -2,6 +2,7 @@ import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic} from './public/animatic-core.js';
 import {musicVideoContext,saveMusicVideo} from './public/music-video-core.js';
+import {saveSongIntelligence,songIntelligenceContext,songDirectorContext} from './public/song-intelligence-core.js';
 import {storyboardProductionContext} from './public/storyboard-production-core.js';
 import {createReferenceController} from './reference-production.mjs';
 import {createPlanningController} from './planning.mjs';
@@ -242,6 +243,13 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames,assets)});
  const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
  }
+ if(action==='music-video/intelligence'&&['GET','POST'].includes(req.method)){
+ const [assets,approvals]=await Promise.all([store.records('assets',id),store.records('approvals',id)]);
+ if(req.method==='GET')return reply(200,{songIntelligence:songIntelligenceContext(project,approvals)});
+ const next=saveSongIntelligence(project,body,assets),saved=next.version===project.version?project:await store.save(next,project.version);
+ return reply(200,{project:saved,songIntelligence:songIntelligenceContext(saved,approvals)});
+ }
+ if(action==='music-video/director-context'&&req.method==='GET')return reply(200,{songContext:songDirectorContext(project,await store.records('approvals',id))});
  if(action==='music-video'&&['GET','POST'].includes(req.method)){
  const assets=await store.records('assets',id);
  if(req.method==='GET')return reply(200,{musicVideo:musicVideoContext(project,assets)});

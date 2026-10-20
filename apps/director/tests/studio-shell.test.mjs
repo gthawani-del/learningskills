@@ -53,7 +53,7 @@ test('asset names, URLs, titles and navigation remain escaped user data',()=>{
  const html=assetResults([{name:'<img onerror=alert(1)>',projectTitle:'<script>',projectId:'" onclick="bad',mime:'image/png',url:'" onerror="bad'}],{category:'images'});
  assert.ok(!html.includes('<script>'));assert.ok(!html.includes('src="" onerror='));
  const nav=studioNavigation({page:'assets'});assert.match(nav,/aria-current="page"/);assert.match(nav,/>Assets</);
- for(const label of ['Home','Projects','Brand & characters','Usage & costs','Account / workspace'])assert.ok(nav.includes(label));
+ for(const label of ['Create','Projects','Brand & characters','Usage & costs','Account / workspace'])assert.ok(nav.includes(label));
 });
 
 test('Characters includes versioned character records and only their exact referenced portrait version',async()=>{

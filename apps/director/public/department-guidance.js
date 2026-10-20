@@ -1,5 +1,6 @@
 import {currentBrief,briefInputSignature,briefPlanningContext} from './creative-brief-core.js';
 import {currentScreenplay,screenplaySourceSignature,screenplayContext} from './screenplay-core.js';
+import {songSourceBinding,songDirectorContext} from './song-intelligence-core.js';
 
 // Reviewed internal direction, not copied external prompts or provider capability claims.
 // IDs are stable production responsibilities; they do not imply one paid call per unit.
@@ -192,6 +193,16 @@ export function departmentGuidance(project,approvals){
  if(project.format==='music_video'){
   get('music').summary='Music-video planning must establish an authoritative song and canonical lyrics, preserve original vocals by default and obtain measured timing before song-led shot planning.';
   get('music').rationale='The approved project format is music_video. This makes the song workflow required; it does not establish that an audio file, analysis, lyric alignment or singing-capable route exists.';
+  if(songSourceBinding(project)&&approvals!==undefined){
+   const song=songDirectorContext(project,approvals),binding=`Song evidence record ${song.recordId} version ${song.version}; exact original ${song.master.assetId} v${song.master.assetVersion}, checksum ${song.master.checksum}; selected master interval ${song.range.startMs}–${song.range.endMs} ms. Preserve this source, canonical lyrics and uncertainty. No source fact approves media, rights or spending.`;
+   for(const id of all.keys())add(id,rule('song_source','Approved song/treatment source',binding));
+   get('music').summary=`Use approved song evidence v${song.version} and its original ${song.master.durationMs/1000}-second master. Unresolved: ${song.unknown.join(', ')||'none recorded'}. This is evidence-based planning, not verified singing performance.`;
+   const sectionLines=song.sections.map(s=>`${s.startMs}–${s.endMs} ms: ${s.label} (${s.type}; ${s.basis}).`),chunks=[];for(const line of sectionLines){if(chunks.length&&chunks.at(-1).length+line.length<3200)chunks[chunks.length-1]+='\n'+line;else chunks.push(line);}
+   for(const id of ['script_breakdown','direction','music','storyboard','animatic','editorial'])chunks.forEach((chunk,i)=>add(id,rule('song_map_'+i,'Musical timing evidence',chunk+'\nUse only the stated evidence; unknown labels are not verses/choruses. Create purposeful performance, narrative, dance, B-roll and graphic coverage where the approved treatment needs them.')));
+   for(const id of ['voice','sound','music','animatic','editorial'])add(id,rule('original_master','Preserve original vocal performance','The approved uploaded recording is authoritative. Do not replace singers, regenerate speech from lyrics, alter tempo or change the song to fit footage. Additional voices/sound require explicit direction. Visible singing needs exact master segments and separately qualified synchronization.'));
+   const notes=[];for(const note of song.observations)if(note.basis==='user_reviewed'){const line=`${note.category}, ${note.startMs}–${note.endMs} ms: ${note.text}\nEvidence: ${note.evidence.join('; ')}`;if(notes.length&&notes.at(-1).length+line.length<3400)notes[notes.length-1]+='\n'+line;else notes.push(line);}for(const id of ['direction','music','editorial'])notes.forEach((note,i)=>add(id,rule('song_note_'+i,'Reviewed musical interpretation',note)));
+   if(song.lyrics.vocalMode==='instrumental'&&!spokenSceneIds.length){get('voice').applicability='not_applicable';get('voice').rationale='The approved song evidence explicitly identifies an instrumental recording, and the approved treatment contains no additional spoken lines. Review any later dialogue separately.';}
+  }
  }else conditional('music','The complete screenplay needs a reviewed score/original-music/no-score decision. A mandatory soundtrack, tempo or music source is not inferred from the story’s genre or emotion.');
  conditional('vfx','Production/action feasibility is required. The need for special effects, animation, layers or repair depends on reviewed shot contracts and actual outputs; no special effect or available adapter is inferred from keywords.');
  get('rights').summary='Review actual source, identity, voice, brand, music/lyric and factual-use records before affected production. Planning approval does not establish legal clearance.';

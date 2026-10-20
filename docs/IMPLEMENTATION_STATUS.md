@@ -1,5 +1,9 @@
 # Current status — 20 October 2026
 
+## Song Intelligence implementation — 20 October 2026
+
+Recovered the unpublished deterministic audio increment and connected versioned, editable song evidence/canonical lyrics/timing to approved Director treatment input and the existing seventeen departments. Device-cloud source remapping and selective source invalidation are implemented. Portable FFmpeg assembly actually produced a complete three-minute supplied-media MP4 retaining original-master content. See [implementation, evidence and explicit remaining gates](SONG_INTELLIGENCE_ACCEPTANCE.md). **Automatic provider song interpretation/transcription/alignment and real creative qualification remain incomplete.** The native parity migration is prepared/PGlite-tested, not applied. Hosted export, paid execution and physical-device acceptance are not claimed. The eighteen music-video deliverables remain intact; no UI redesign or provider activation occurred.
+
 Use [DEVELOPMENT_TRACKER.md](DEVELOPMENT_TRACKER.md) for the current consolidated status. Main `c86cd27` is deployed; the new navigation/Assets and first-use account work has shipped. The entries below are a historical increment log, not the current product summary. In particular, older statements that signup is unfinished or the new UI is uncommitted have been superseded. Real paid output, account isolation and finished-film export remain unaccepted.
 
 ---

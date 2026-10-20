@@ -50,3 +50,7 @@ See [MEDIA_INGESTION_ACCEPTANCE.md](MEDIA_INGESTION_ACCEPTANCE.md) for implement
 ## Source publication/private playback increment
 
 Recovery and ingestion PRs #9/#10 are merged; production main `c205c40` is READY and passed live navigation/media-preview checks. [Publication acceptance](SOURCE_PUBLICATION_ACCEPTANCE.md) adds exact-inspection atomic library publication, original-object reuse and authorized signed playback, with 823 local tests/22 browser groups/build/SQL passing. The schema and temporary runtime proof were rejected by automatic approval review and await specific approval; neither executed. Steps 3–6 remain incomplete at live acceptance level.
+
+## Song Intelligence and complete-song assembly increment — 20 October 2026
+
+[Acceptance and limitations](SONG_INTELLIGENCE_ACCEPTANCE.md): recovered signal analysis, saved editable evidence/canonical lyrics/timing, approval-to-Director context, shared seventeen-department bindings and correction invalidation. A portable supplied-media renderer produced a synchronized 180-second MP4 locally. This advances deliverables 7, 11, 12 and the feasibility portion of 6/17; none is declared production-complete. Automatic audio-provider interpretation/transcription/alignment, native migration approval, real account/model qualification and hosted export remain outstanding. All eighteen deliverables and their dependencies are preserved.

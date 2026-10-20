@@ -9,6 +9,7 @@ export function planningScope(project, approvals = []) {
  if (project.screenplay) brief.screenplay = project.screenplay;
  if (project.departmentPlanning) brief.departmentPlanning = project.departmentPlanning;
  if (project.storyboardHandoff) brief.storyboardHandoff = project.storyboardHandoff;
+ if(project.format==='music_video')brief.songIntelligence=(project.production?.records||[]).filter(r=>r.type==='edit'&&r.versions?.find(v=>v.version===r.currentVersion)?.content?.kind==='song_intelligence_v1').map(r=>({id:r.id,version:r.currentVersion,content:r.versions.find(v=>v.version===r.currentVersion).content}));
  const latest = new Map();
  for (const decision of approvals) {
   if (typeof decision?.artifactId !== 'string' || !Number.isSafeInteger(decision.version) || decision.version < 1) continue;

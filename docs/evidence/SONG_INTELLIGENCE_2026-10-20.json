@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-20",
+  "baselineMain": "b8b5fde4fd4a61267c8f3a90caed982f27c78842",
+  "implemented": [
+    "recovered deterministic browser audio analysis",
+    "versioned editable source-bound song evidence",
+    "canonical multilingual lyric preservation",
+    "reviewed phrase and word timing with uncertainty",
+    "approved Director context and all seventeen department source bindings",
+    "device-cloud song evidence remapping",
+    "portable complete-song supplied-media FFmpeg assembly"
+  ],
+  "nodeRegression": {
+    "command": "npm test",
+    "tests": 857,
+    "initialPassed": 856,
+    "initialFailed": 1,
+    "failure": "pre-existing studio-shell navigation assertion expected Home instead of frozen Create",
+    "correction": "test assertion only",
+    "targetedRerun": {
+      "file": "apps/director/tests/studio-shell.test.mjs",
+      "passed": 6,
+      "failed": 0
+    },
+    "fullSuiteRepeated": false
+  },
+  "build": {
+    "command": "npm run build",
+    "passed": true
+  },
+  "browser": {
+    "passed": true,
+    "actualBrowserDecode": true,
+    "canonicalTextPreserved": true,
+    "savedAndApprovedAcrossReload": true,
+    "directorHandoff": true,
+    "sourceUnchanged": true,
+    "desktopAndMobileViewport": true,
+    "physicalMobile": false,
+    "paidCalls": 0,
+    "consoleErrors": [],
+    "httpErrors": []
+  },
+  "musicVideoBrowser": {
+    "report": "test-results/music-video/music-video-browser.json",
+    "passed": true
+  },
+  "render": {
+    "actualMP4": true,
+    "durationSeconds": 180,
+    "frames": 4320,
+    "originalAudioFrequencyChecksSeconds": [
+      20,
+      80,
+      140
+    ],
+    "masterBytesUnchanged": true,
+    "sourceClipAudioDiscarded": true,
+    "audioEncoding": "AAC from original master",
+    "hosted": false,
+    "creativeQuality": "unverified"
+  },
+  "nativeMigration": {
+    "path": "database/director-song-intelligence.sql",
+    "isolatedPGlitePassed": true,
+    "productionApplied": false
+  },
+  "paidModelCalls": 0,
+  "sandboxOperations": 0,
+  "productionMigrations": 0,
+  "vercelOperations": 0,
+  "notQualified": [
+    "semantic song interpretation",
+    "singing transcription and alignment",
+    "real OpenAI music treatment quality",
+    "generated singing and footage",
+    "hosted complete-song export",
+    "real account isolation",
+    "physical mobile devices"
+  ]
+}
