@@ -26,8 +26,14 @@ try:
    if width==390:
     page.reload();page.locator('#auth-button').click();expect(page.locator('#login-dialog')).to_be_visible();page.locator('#login-email').fill('creator@example.test')
    page.locator('#login-password').fill('wrong-password');page.locator('#login-submit').click();expect(page.locator('#login-error')).to_contain_text('Check your email')
-   page.locator('#login-password').fill('fixture-password');page.locator('#login-submit').click();expect(page.locator('#login-dialog')).not_to_be_visible();expect(page.locator('#mode')).to_have_text('Workspace')
-   expect(page.locator('#rail')).to_contain_text('product.png');page.reload();expect(page.locator('#mode')).to_have_text('Workspace');expect(page.locator('#rail')).to_contain_text('product.png')
+   page.locator('#login-password').fill('fixture-password');page.locator('#login-submit').click();expect(page.locator('#login-dialog')).not_to_be_visible()
+   # Authentication closes the dialog before the asynchronous project/media import.
+   # Wait for the completed save rather than a transient Workspace label during init.
+   expect(page.locator('#toast')).to_contain_text('Draft, notes and references saved to your workspace.',timeout=12000)
+   cloud_id=page.evaluate('localStorage.getItem("director:lastProject")');assert cloud_id and not cloud_id.startswith('device-')
+   expect(page.locator('#mode')).to_have_text('Workspace');expect(page.locator('#rail')).to_contain_text('product.png')
+   page.reload();expect(page.locator('#mode')).to_have_text('Workspace');expect(page.locator('#rail')).to_contain_text('product.png')
+   assert page.evaluate('localStorage.getItem("director:lastProject")')==cloud_id
    projects=page.request.get(base+'/api/projects').json()['projects'];cloud=[x for x in projects if x.get('importState',{}).get('sourceId')]
    assert cloud and cloud[-1]['importState']['status']=='ready'
    assets=page.request.get(base+'/api/projects/'+cloud[-1]['id']+'/assets').json()['assets'];assert len(assets)==1 and assets[0]['name']=='product.png'
