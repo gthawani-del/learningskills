@@ -38,3 +38,7 @@ Sources reviewed: Supabase changelog and current password/PKCE documentation; th
 ## Release and recovery
 
 Review this application-only increment and full QA before production deployment. No database rollback is needed. Reverting the scoped application commit removes recovery entry points while preserving user records/media and the existing login/signup flow. This batch does not rotate keys, disable confirmation, enable paid models or send production email during testing.
+
+## Opt-in real-account check
+
+The existing Playwright infrastructure also supplies `apps/director/tests/cloud-live-browser.py`. It does not run in ordinary CI or without `DIRECTOR_LIVE_QA=1`. Configure `DIRECTOR_QA_USER1_EMAIL`, `DIRECTOR_QA_USER1_PASSWORD`, `DIRECTOR_QA_USER2_EMAIL` and `DIRECTOR_QA_USER2_PASSWORD` through secure runtime bindings. Run `DIRECTOR_LIVE_QA=1 python apps/director/tests/cloud-live-browser.py` against the explicit HTTPS application origin. It creates two labelled QA projects and synthetic private PNGs, verifies owner/read/edit/media isolation, a fresh browser session and local logout, and retains the records for review. Credentials are never added to source/reports. TLS validation remains enabled. This check is prepared and syntax-checked, **not run**; it does not verify email recovery or expiry.
