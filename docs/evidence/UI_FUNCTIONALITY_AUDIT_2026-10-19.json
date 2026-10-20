@@ -1,0 +1,400 @@
+{
+  "summary": {
+    "function_count": 105,
+    "status_counts": {
+      "missing": 47,
+      "partial": 52,
+      "deferred": 6
+    },
+    "fully_production_accepted": 0,
+    "ux_criteria": 32,
+    "local_node_tests_passed": 749,
+    "local_browser_flows_passed": 19,
+    "rea_page_captures": 14,
+    "runtime_snapshots": 118,
+    "production_has_new_studio_navigation": false,
+    "source_changes_committed": false,
+    "physical_mobile_verified": false,
+    "paid_provider_calls": 0
+  },
+  "source_sha256": {
+    "apps/director/public/app.js": "622a5f9cff360c6d829d66b0d9e01ffdcb6401590faca5588a7d08f5ed40ac1f",
+    "apps/director/public/studio-shell.js": "b229c0ec868ccc8c4bb015b7dea77b04faf70a32969ec90450ca387b256075c7",
+    "apps/director/public/studio-catalog.js": "326dbfddbb33a754861ae4df34d7ca3eb684b14c8ec191ea92cb124cef56d079",
+    "apps/director/public/studio-shell.css": "c9832f9771b4eb3b7e9d9b22b241e5429a51df97381df320811b89d16e91ae90",
+    "apps/director/api.mjs": "6a9c157670430b3d792e4a15c4d0d2957d9b7e3b1ee76fa8288941a5b3a25550"
+  },
+  "full_qa_steps": [
+    {
+      "name": "syntax",
+      "code": 0,
+      "seconds": 0.39,
+      "log": "test-results/qa/syntax.log"
+    },
+    {
+      "name": "node-tests",
+      "code": 0,
+      "seconds": 82.52,
+      "log": "test-results/qa/node-tests.log"
+    },
+    {
+      "name": "build",
+      "code": 0,
+      "seconds": 0.72,
+      "log": "test-results/qa/build.log"
+    },
+    {
+      "name": "studio-navigation-browser",
+      "code": 0,
+      "seconds": 41.03,
+      "log": "test-results/qa/studio-navigation-browser.log"
+    },
+    {
+      "name": "ftue-browser",
+      "code": 0,
+      "seconds": 6.64,
+      "log": "test-results/qa/ftue-browser.log"
+    },
+    {
+      "name": "music-video-redteam-browser",
+      "code": 0,
+      "seconds": 8.26,
+      "log": "test-results/qa/music-video-redteam-browser.log"
+    },
+    {
+      "name": "music-video-browser",
+      "code": 0,
+      "seconds": 7.41,
+      "log": "test-results/qa/music-video-browser.log"
+    },
+    {
+      "name": "creative-brief-browser",
+      "code": 0,
+      "seconds": 3.99,
+      "log": "test-results/qa/creative-brief-browser.log"
+    },
+    {
+      "name": "v2-workspace",
+      "code": 0,
+      "seconds": 8.76,
+      "log": "test-results/qa/v2-workspace.log"
+    },
+    {
+      "name": "mobile-footer-browser",
+      "code": 0,
+      "seconds": 12.93,
+      "log": "test-results/qa/mobile-footer-browser.log"
+    },
+    {
+      "name": "compact-proposal-browser",
+      "code": 0,
+      "seconds": 3.24,
+      "log": "test-results/qa/compact-proposal-browser.log"
+    },
+    {
+      "name": "registry-browser",
+      "code": 0,
+      "seconds": 5.18,
+      "log": "test-results/qa/registry-browser.log"
+    },
+    {
+      "name": "writing-browser",
+      "code": 0,
+      "seconds": 6.47,
+      "log": "test-results/qa/writing-browser.log"
+    },
+    {
+      "name": "planning-ui-browser",
+      "code": 0,
+      "seconds": 3.29,
+      "log": "test-results/qa/planning-ui-browser.log"
+    },
+    {
+      "name": "department-browser",
+      "code": 0,
+      "seconds": 6.09,
+      "log": "test-results/qa/department-browser.log"
+    },
+    {
+      "name": "department-revision-browser",
+      "code": 0,
+      "seconds": 7.68,
+      "log": "test-results/qa/department-revision-browser.log"
+    },
+    {
+      "name": "storyboard-browser",
+      "code": 0,
+      "seconds": 6.62,
+      "log": "test-results/qa/storyboard-browser.log"
+    },
+    {
+      "name": "reference-browser",
+      "code": 0,
+      "seconds": 8.69,
+      "log": "test-results/qa/reference-browser.log"
+    },
+    {
+      "name": "storyboard-production-browser",
+      "code": 0,
+      "seconds": 7.77,
+      "log": "test-results/qa/storyboard-production-browser.log"
+    },
+    {
+      "name": "animatic-browser",
+      "code": 0,
+      "seconds": 6.74,
+      "log": "test-results/qa/animatic-browser.log"
+    },
+    {
+      "name": "animatic-audio-browser",
+      "code": 0,
+      "seconds": 6.74,
+      "log": "test-results/qa/animatic-audio-browser.log"
+    },
+    {
+      "name": "animatic-audio-mp3-browser",
+      "code": 0,
+      "seconds": 6.83,
+      "log": "test-results/qa/animatic-audio-mp3-browser.log"
+    },
+    {
+      "name": "sql-proof",
+      "code": 0,
+      "seconds": 31.88,
+      "log": "test-results/qa/sql-proof.log"
+    }
+  ],
+  "rea": [
+    {
+      "name": "home-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_5f94080a6bc7f9a95c70a8d2b89059556ed86f544bf4d65935a9efd06a9b76d0",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-brief-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_46dd6a300a9e4a423bbcabbaf2c620e27f3b9eaaf7469b9e5671cebf0827efc0",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-story-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_4181555c2d77af652bf896a02abd1a7c33abf75cc57f14bcd3b020c08954df3a",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-cast-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_86feca105f1f1aa31b56265ff7f25406316e328a27e6b1949d59f978153cc968",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-storyboard-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_e9684b5320075d22adb1ba0b5afbb4cfca1c6647ecd2ab815839a155c12e1f7a",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-production-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_752d1ff87658caa49ee3831ab65c028f4e483acd0162944a25130287c073c9eb",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-edit-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_823e287ea406a9816b92205996a844aa4ed1f0f0a03b62060184afaa4a20d193",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "short_film-export-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_6a54a22e487bcda05bf9cdd52a9e8ed16b6c393e69ed652d76324faafc882597",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "music_video-brief-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_978f21366443dfb48264c7f7f03d2b5685187246e9316db52755cb318edac156",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "assets-characters-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_723fddbd07f13850f155cf0806c13cdbdf99a6e64cc3b350f82270358fd2c8f8",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "usage-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_c10a9c8d610ad1e50461802ff0fea9917ca2befa64b3506d2809bcdeec2f25ef",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "account-1440",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_15f8bdf83f05d631390c53442cc424d4ec17ba51aafdc6a711b29b7948e76f8a",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "home-390",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_7392836d5e408bc5dc57e80bbc99e1176462d39dc0288e5df5702ff4749d69ce",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    },
+    {
+      "name": "music_video-brief-390",
+      "operation": "inspect_web_page",
+      "evidenceId": "ev_c8ab96e27171e357c85e53f4a649a868b0b6503c711026c9a8e948e422f0cd8b",
+      "error": null,
+      "limitations": [
+        "Artifact identity is unavailable for this observation.",
+        "Observation starts when REA attaches; prior network and console activity is unavailable.",
+        "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+        "Source maps are reported only as declarative URLs and are not fetched.",
+        "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+        "CDP discovery omitted the target attachment state; attached is reported as unknown.",
+        "Browser host platform and architecture were not observed."
+      ]
+    }
+  ],
+  "production_comparison": {
+    "url": "https://learningskills.vercel.app",
+    "physicalMobileTested": false,
+    "status": 200,
+    "finalUrl": "https://learningskills.vercel.app/",
+    "title": "Director Studio",
+    "formatChoices": [
+      "short_film",
+      "music_video",
+      "advertisement"
+    ],
+    "studioNavigationPresent": false,
+    "environmentTLSOverride": true
+  },
+  "limitations": [
+    "Local controlled identity/provider fixtures",
+    "No physical mobile device",
+    "No live paid-model quality validation",
+    "New UI not deployed",
+    "REA static worker startup failed"
+  ]
+}

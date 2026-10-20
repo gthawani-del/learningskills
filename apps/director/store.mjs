@@ -84,6 +84,7 @@ export class SupabaseStore {
  async allRows(path){const rows=[];let offset=0;while(offset<50000){const page=await this.request(`${path}&limit=200&offset=${offset}`);if(!Array.isArray(page))fail(502,'Invalid workspace history response.');if(!page.length)return rows;rows.push(...page);offset+=page.length;}fail(503,'Workspace history is too large to review safely. No approval decision was inferred.');}
  async refresh(refreshToken){return this.request('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:refreshToken}});}
  async login(email,password){return this.request('/auth/v1/token?grant_type=password',{method:'POST',body:{email,password}});}
+ async signup(email,password){return this.request('/auth/v1/signup',{method:'POST',body:{email,password}});}
  project(row){return {...row.brief,id:row.id,ownerId:row.owner_id,title:row.title,stage:row.stage};}
  async list(owner){return (await this.request(`/rest/v1/director_projects?owner_id=eq.${owner}&order=created_at.desc`)).map(r=>this.project(r));}
  async get(id,owner){const rows=await this.request(`/rest/v1/director_projects?id=eq.${id}&owner_id=eq.${owner}`);if(!rows.length)fail(404,'Project not found.');return this.project(rows[0]);}

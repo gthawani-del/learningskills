@@ -123,3 +123,17 @@ test('a current dependent record can be revoked while stale dependency holds sti
  const after=(await call(handler,`/api/projects/${p.id}`)).json.project;assert.deepEqual(after,before);assert.equal(after.production.records.find(r=>r.id===audio.id).currentVersion,1);
  const graph=(await call(handler,`/api/projects/${p.id}/production-state`)).json.production;assert.equal(graph.nodes.find(n=>n.id===decision.artifactId).specificationApproved,false);assert.ok(graph.nodes.find(n=>n.id===decision.artifactId).holds.length);assert.equal(graph.generationAuthorized,false);
 });
+
+// New production types remain normal persisted projects, not implicit paid permissions.
+test('all studio formats persist through HTTP creation, reload and explicit edits',async t=>{
+ const {PROJECT_FORMATS}=await import('../public/studio-catalog.js');const {handler}=await setup(t);
+ for(const format of PROJECT_FORMATS){
+  const created=await call(handler,'/api/projects',{title:'Studio '+format,format,premise:'Source material.'});
+  assert.equal(created.status,201,format);const project=created.json.project;
+  assert.equal((await call(handler,'/api/projects/'+project.id)).json.project.format,format);
+  const edited=await call(handler,'/api/projects/'+project.id,{expectedVersion:project.version,format:'documentary'},{method:'PATCH'});
+  assert.equal(edited.status,200);assert.equal(edited.json.project.format,'documentary');
+ }
+ assert.equal((await call(handler,'/api/projects',{title:'Invalid',format:'invented'})).status,400);
+ for(const path of ['/studio-shell.css','/studio-shell.js','/studio-catalog.js'])assert.equal((await call(handler,path)).status,200,path);
+});

@@ -40,7 +40,7 @@ try:
   assert page.request.get(url+'/assets/'+source['assetId']+'/content').body()==before,'Original audio changed'
   device_context=browser.new_context(viewport={'width':390,'height':844});device=device_context.new_page()
   device.on('pageerror',lambda e:errors.append(str(e)));device.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
-  device.goto(base);device.get_by_role('button',name='Music video',exact=True).click();device.locator('#premise').fill('A performance music video for my uploaded song.');device.locator('#start-form button[type=submit]').click()
+  device.goto(base);device.get_by_role('button',name='Music video',exact=True).click();device.locator('#premise').fill('A performance music video for my uploaded song.');device.locator('#start-device').click()
   expect(device.locator('#music-video-workspace')).to_be_visible();device.locator('#attach').click()
   device.locator('#upload-file').set_input_files({'name':'Device song.wav','mimeType':'audio/wav','buffer':before});device.locator('#upload-role').select_option('master_song');device.locator('#upload-scope').select_option('project');device.locator('#upload-form button[type=submit]').click()
   expect(device.locator('#upload-dialog')).not_to_be_visible();device.locator('[data-song-choice]').select_option(index=1);expect(device.locator('[data-song-bind]')).to_be_enabled();device.locator('[data-song-bind]').click()

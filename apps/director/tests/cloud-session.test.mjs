@@ -69,3 +69,25 @@ test('approval pagination retains later revocations even when provider row cap i
  const store=new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher:async url=>{calls.push(url);const offset=Number(new URL(url).searchParams.get('offset'));const list=url.includes('director_artifacts')?[{id:'a',logical_key:'story',version:1}]:events;return {ok:true,status:200,json:async()=>list.slice(offset,offset+1)};}});
  const rows=await store.records('approvals','p');assert.equal(rows.length,2);assert.equal(rows.at(-1).decision,'revoked');assert.ok(calls.some(url=>url.includes('director_approvals')&&url.includes('offset=2')));
 });
+
+test('signup preserves confirmation requirements without returning credentials or granting a session',async()=>{
+ let requests=0;const h=await createHandler({env,store:fakeStore({signup:async()=>{requests++;return {id:owner,email:'new@example.test'};}})});
+ const r=await call(h,'/api/auth/signup',{email:'new@example.test',password:'fixture-password'});
+ assert.equal(r.status,200);assert.equal(r.json.confirmationRequired,true);assert.equal(r.headers['Set-Cookie'],undefined);assert.equal(requests,1);assert.ok(!JSON.stringify(r.json).includes(owner));
+});
+test('signup uses secure session cookies only when Auth returns a complete confirmed session',async()=>{
+ const h=await createHandler({env,store:fakeStore({signup:async()=>session})});
+ const r=await call(h,'/api/auth/signup',{email:'new@example.test',password:'fixture-password'});
+ assert.equal(r.status,200);assert.equal(r.json.confirmationRequired,false);assert.equal(r.headers['Set-Cookie'].length,2);assert.ok(r.headers['Set-Cookie'].every(c=>c.includes('HttpOnly')&&c.includes('Secure')));assert.ok(!JSON.stringify(r.json).includes(session.access_token));
+});
+test('signup rejects bad inputs, cross-origin requests and repeated submissions before calling Auth',async()=>{
+ let calls=0;const h=await createHandler({env,store:fakeStore({signup:async()=>{calls++;return {id:owner};}})});
+ assert.equal((await call(h,'/api/auth/signup',{email:'bad',password:'short'})).status,400);
+ assert.equal((await call(h,'/api/auth/signup',{email:'new@example.test',password:'fixture-password'},'', 'https://other.example')).status,403);assert.equal(calls,0);
+ for(let i=0;i<8;i++)assert.equal((await call(h,'/api/auth/signup',{email:'new@example.test',password:'fixture-password'})).status,200);
+ assert.equal((await call(h,'/api/auth/signup',{email:'other@example.test',password:'fixture-password'})).status,429);assert.equal(calls,8);
+});
+test('signup transport uses normal Auth signup without administrative confirmation or user metadata',async()=>{
+ let request;const store=new SupabaseStore({url:env.SUPABASE_URL,key:'fixture-key',fetcher:async(url,options)=>{request={url,options};return {ok:true,status:200,json:async()=>({id:owner})};}});
+ await store.signup('new@example.test','fixture-password');assert.equal(request.url,'https://fixture.supabase.co/auth/v1/signup');assert.deepEqual(JSON.parse(request.options.body),{email:'new@example.test',password:'fixture-password'});
+});

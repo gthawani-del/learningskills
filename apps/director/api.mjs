@@ -87,6 +87,14 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const ip=req.socket?.remoteAddress||'serverless';const key=ip+':'+body.email.toLowerCase();const hit=loginAttempts.get(key)||{n:0,start:Date.now()};if(Date.now()-hit.start>600000){hit.n=0;hit.start=Date.now();}if(hit.n>=8)fail(429,'Too many sign-in attempts. Try again later.');hit.n++;loginAttempts.set(key,hit);if(loginAttempts.size>1000)loginAttempts.delete(loginAttempts.keys().next().value);
  const session=await store.login(body.email,body.password);if(!session.access_token||!session.user)fail(401,'Sign-in failed. Check your credentials.');loginAttempts.delete(key);
  return reply(200,{user:{id:session.user.id,email:session.user.email}},sessionHeaders(session));}
+ if(path==='/api/auth/signup'&&req.method==='POST'){
+ if(!connected||demo||typeof store?.signup!=='function')fail(503,'Account creation is not configured for this environment. Your draft is preserved.');
+ if(typeof body.email!=='string'||body.email.length>254||!/^\S+@\S+\.\S+$/.test(body.email)||typeof body.password!=='string'||body.password.length<8||body.password.length>1024)fail(400,'Enter a valid email and a password of at least 8 characters.');
+ const key='signup:'+(req.socket?.remoteAddress||'serverless'),hit=loginAttempts.get(key)||{n:0,start:Date.now()};if(Date.now()-hit.start>600000){hit.n=0;hit.start=Date.now();}if(hit.n>=8)fail(429,'Too many account attempts. Try again later.');hit.n++;loginAttempts.set(key,hit);if(loginAttempts.size>1000)loginAttempts.delete(loginAttempts.keys().next().value);
+ let result;try{result=await store.signup(body.email,body.password);}catch(error){if(error.status===429)throw error;fail(error.status===502?502:400,'Account creation could not finish. Check your details or sign in if you already have an account. Your draft is preserved.');}
+ if(result?.access_token)return reply(200,{user:{id:result.user?.id,email:result.user?.email},confirmationRequired:false},sessionHeaders(result));
+ if(!result?.id&&!result?.user?.id)fail(502,'The account service did not return a usable response. Your draft is preserved.');
+ return reply(200,{confirmationRequired:true});}
  if(path==='/api/auth/refresh'&&req.method==='POST'){
  if(!connected||demo)fail(503,'Sign-in is not configured for this environment.');
  try{const session=await refreshSession(refreshToken);return reply(200,{user:{id:session.user?.id,email:session.user?.email}},sessionHeaders(session));}

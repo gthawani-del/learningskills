@@ -1,3 +1,4 @@
+import {isProjectFormat,productionType} from './studio-catalog.js';
 export const CREATIVE_BRIEF_FIELDS = ['purpose','audience','audienceResponse','platform','aspectRatio','visualStyle','tone','setting','cast','voice','product','constraints','budget','format','duration','language'];
 const statuses = ['explicit','inferred','unknown'];
 const sources = ['user','project','default','rule','model'];
@@ -100,7 +101,7 @@ export function suggestBrief(project,approvals=[]) {
  const premise=typeof project.premise==='string'?project.premise.trim():'';
  if(premise&&canSuggest('purpose')){
   const labels={advertisement:'Develop an advertisement around the supplied idea',music_video:'Develop a music-video concept around the supplied idea',short_film:'Develop a short film around the supplied idea'};
-  const prefix=(labels[project.format]||'Develop a film around the supplied idea')+': ';
+  const prefix=(labels[project.format]||'Develop a '+productionType(project.format).label.toLowerCase()+' around the supplied idea')+': ';
   const room=2000-prefix.length;
   const excerpt=premise.length>room?premise.slice(0,room-1)+'…':premise;
   proposed.fields.purpose={value:prefix+excerpt,status:'inferred',source:'rule',evidence:['Reversible planning suggestion based on the selected format and supplied premise; not an interpretation of unstated intent.']};
@@ -124,7 +125,7 @@ export function applyBriefCommand(project,command,approvals=[]) {
   if(archive){const previous=currentBrief(project);for(const key of CREATIVE_BRIEF_FIELDS)if(!['format','duration','language'].includes(key))proposed.fields[key]=clone(previous.fields[key]);}
   for(const [key,value]of Object.entries(command.changes)){const normalized=valueFor(key,value);
    if(['format','duration','language'].includes(key)){
-    if(normalized===null||key==='format'&&!['short_film','music_video','advertisement'].includes(normalized)||key==='language'&&typeof normalized!=='string'||key==='duration'&&typeof normalized!=='number')fail(400,'Project format, duration and language need valid explicit settings.');
+    if(normalized===null||key==='format'&&!isProjectFormat(normalized)||key==='language'&&typeof normalized!=='string'||key==='duration'&&typeof normalized!=='number')fail(400,'Project format, duration and language need valid explicit settings.');
     working[key]=normalized;working.briefExplicitFields=[...new Set([...(working.briefExplicitFields||[]),key])];
    }
    proposed.fields[key]={value:normalized,status:normalized===null?'unknown':'explicit',source:'user',evidence:normalized===null?[]:['Entered directly in the creative brief editor.']};}
