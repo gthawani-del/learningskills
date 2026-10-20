@@ -4,6 +4,7 @@ await import('../apps/director/tests/source-publication.test.mjs');
 await import('../apps/director/tests/song-analysis.test.mjs');
 await import('../apps/director/tests/song-signal.test.mjs');
 await import('../apps/director/tests/song-intelligence.test.mjs');
+await import('../apps/director/tests/music-treatment.test.mjs');
 await import('../apps/director/tests/song-provider-results.test.mjs');
 await import('../apps/director/tests/song-provider.test.mjs');
 await import('../apps/director/tests/song-provider-pricing-sql.test.mjs');

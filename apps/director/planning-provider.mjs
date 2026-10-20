@@ -4,6 +4,7 @@ import { briefProposalSchema, briefProposalInstruction, validateBriefProposal } 
 import { screenplayProposalSchema, screenplayPlanningInstruction, validateScreenplayProposal } from './screenplay-proposal.mjs';
 import { departmentProposalSchema, departmentPlanningInstruction, validateDepartmentContext, validateDepartmentProposal, departmentRevisionProposalSchema, departmentRevisionInstruction, validateDepartmentRevisionContext, validateDepartmentRevisionProposal } from './department-proposal.mjs';
 import {storyboardProposalSchema,storyboardPlanningInstruction,validateStoryboardContext,validateStoryboardProposal} from './storyboard-proposal.mjs';
+import {musicTreatmentSchema,musicTreatmentInstruction,MUSIC_TREATMENT_CONTRACT} from './music-treatment-proposal.mjs';
 import {SONG_DIRECTOR_INSTRUCTION} from './public/song-intelligence-core.js';
 export const PLANNING_VERSION = 'director-planning-v3';
 // The first five operation bodies remain byte-for-byte compatible with saved v3
@@ -36,10 +37,11 @@ export function buildPlanningRequest({ brief, refs = [], duration, model, maxOut
   const revision=departmentRevision?validateDepartmentRevisionContext(context):null;
   if(storyboard)validateStoryboardContext(context);
   const interpretation = operation === 'interpret_brief';
-  const schema=structuredClone(interpretation ? briefProposalSchema : writing ? screenplayProposalSchema : departmentRevision ? departmentRevisionProposalSchema : departments ? departmentProposalSchema : storyboard ? storyboardProposalSchema : planSchema);
+  const schema=structuredClone(interpretation ? briefProposalSchema : writing ? context.songIntelligence?.treatmentContract===MUSIC_TREATMENT_CONTRACT ? musicTreatmentSchema : screenplayProposalSchema : departmentRevision ? departmentRevisionProposalSchema : departments ? departmentProposalSchema : storyboard ? storyboardProposalSchema : planSchema);
   if(revision){schema.properties.departments.minItems=revision.selected.length;schema.properties.departments.maxItems=revision.selected.length;schema.properties.departments.items.properties.id.enum=[...revision.selected];}
   const body = { model, instructions: interpretation ? briefProposalInstruction : writing ? screenplayPlanningInstruction : departmentRevision ? departmentRevisionInstruction : departments ? departmentPlanningInstruction : storyboard ? storyboardPlanningInstruction : filmPlanningInstruction, input: JSON.stringify({ brief, references: refs, durationSeconds: duration, operation, context }), max_output_tokens: maxOutputTokens, background: true, store: true, text: { format: { type: 'json_schema', name: interpretation ? 'creative_brief_proposal' : writing ? 'screenplay_proposal' : departmentRevision ? 'department_revision_proposal' : departments ? 'department_proposal' : storyboard ? 'storyboard_handoff_proposal' : 'film_plan', strict: true, schema } } };
   if(context.songIntelligence)body.instructions+=' '+SONG_DIRECTOR_INSTRUCTION;
+  if(context.songIntelligence?.treatmentContract===MUSIC_TREATMENT_CONTRACT)body.instructions+=' '+musicTreatmentInstruction;
   const version=storyboard?STORYBOARD_PLANNING_VERSION:departmentRevision?DEPARTMENT_REVISION_VERSION:departments?DEPARTMENT_PLANNING_VERSION:PLANNING_VERSION;
   return { version, model, operation, body, requestHash: hash({ version, body }) };
 }

@@ -1,3 +1,4 @@
+import {approveMusicDepartmentPackage} from './music-department-package.mjs';
 import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic} from './public/animatic-core.js';
@@ -255,6 +256,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const next=saveSongIntelligence(project,body,assets),saved=next.version===project.version?project:await store.save(next,project.version);
  return reply(200,{project:saved,songIntelligence:songIntelligenceContext(saved,approvals)});
  }
+ if(action==='music-video/department-package/approve'&&req.method==='POST')return reply(200,await approveMusicDepartmentPackage({project,body,actorId:user.id,store}));
  if(action==='music-video/director-context'&&req.method==='GET')return reply(200,{songContext:songDirectorContext(project,await store.records('approvals',id))});
  if(action==='music-video'&&['GET','POST'].includes(req.method)){
  const assets=await store.records('assets',id);

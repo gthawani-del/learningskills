@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-20",
+  "increment": "1 — Timed Music Treatment and Department Package",
+  "baselineMain": "a44c57a4f1830138e59e83402e8846db8c165ff9",
+  "implemented": [
+    "Optional musicTiming on shared screenplay with exact song record/version/master/range and contiguous original-song millisecond intervals",
+    "Narrative/performance/dance/B-roll/lyric-graphics roles, emotional progression, performance direction and transitions",
+    "Qualified existing OpenAI writing/revision request path with music-specific schema/profile hash; no new provider",
+    "Free explicitly incomplete timing scaffold and focused sequence/adjacent-cut editing",
+    "Seventeen existing departments with actionable timed requirements and applicability rationales",
+    "One customer action appends existing per-department planning-only approvals; interruption/concurrency remains a hold with resumable valid history",
+    "Selected-scene and department revisions preserve protected scope; performance-only corrections flag linked shots while retaining media",
+    "Imported timed media references remap to owned cloud copies without transferring approvals",
+    "Frozen UI retained; open department section survives component edits"
+  ],
+  "verification": {
+    "fullNodeBoundary": {
+      "command": "npm test",
+      "passed": 900,
+      "failed": 0,
+      "note": "One full integration-boundary invocation. Subsequent bounded-guidance capacity refinement checked with the complete targeted feature suite."
+    },
+    "targetedFeature": {
+      "command": "node apps/director/tests/music-treatment.test.mjs",
+      "passed": 14,
+      "failed": 0,
+      "includes100SequenceCapacity": true
+    },
+    "earlierSharedCompatibility": {
+      "passed": 92,
+      "failed": 0
+    },
+    "browsers": [
+      {
+        "command": "python3 apps/director/tests/music-treatment-browser.py",
+        "passed": true
+      },
+      {
+        "command": "python3 apps/director/tests/writing-browser.py",
+        "passed": true
+      },
+      {
+        "command": "python3 apps/director/tests/department-browser.py",
+        "passed": true
+      }
+    ],
+    "browserResults": {
+      "passed": true,
+      "syntheticOpenAIOnly": true,
+      "realPaidCalls": 0,
+      "fullSongSeconds": 180,
+      "reviewedTreatment": true,
+      "singleDepartmentApprovalAction": true,
+      "departmentArtifacts": 17,
+      "targetedSequenceAndNeighbourCutEdit": true,
+      "unselectedSequencePreserved": true,
+      "originalSongEvidencePreserved": true,
+      "unsavedNavigationGuard": true,
+      "desktopAndMobileViewports": true,
+      "physicalMobile": false,
+      "consoleErrors": [],
+      "httpErrors": []
+    },
+    "syntax": "passed",
+    "productionBuild": "passed"
+  },
+  "qaCorrections": [
+    "Registered new browser modules in the existing static allowlist after a real 404 was caught",
+    "Preserved open department-section state across focused edits",
+    "Adapted existing writing/department navigation checks to the frozen UI accordions and awaited stage changes",
+    "Removed retired pre-freeze briefing-footer selectors from the writing smoke; dedicated footer/physical-device acceptance remains separate"
+  ],
+  "limitations": [
+    "Simulated provider replies verify request/result/financial/review code, not real creative quality",
+    "Music-enabled planning profiles must be reviewed against the new exact schema hash before activation",
+    "No deployed account/isolation or physical-device verification",
+    "Prior prepared source/song database dependencies and hosted-runtime qualifications remain separately gated",
+    "Department package approval reuses individual append-only records and is recoverable, not a new atomic database operation"
+  ],
+  "paidCalls": 0,
+  "productionMigrations": 0,
+  "billableProcessing": 0,
+  "vercelOperations": 0,
+  "newProviders": 0,
+  "newDependencies": 0,
+  "newInfrastructure": 0,
+  "additionalAgents": 0,
+  "increment2Started": false
+}

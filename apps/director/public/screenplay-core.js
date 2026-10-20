@@ -1,6 +1,7 @@
 import {currentBrief,briefPlanningContext} from './creative-brief-core.js';
 import {scanOriginality} from './originality-core.js';
-import {songSourceBinding} from './song-intelligence-core.js';
+import {songSourceBinding,songDirectorContext} from './song-intelligence-core.js';
+import {normalizeMusicTiming,validateMusicTreatment,assertScopedMusicTiming} from './music-treatment-timing.js';
 const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&[Object.prototype,null].includes(Object.getPrototypeOf(x));
 const canonical=x=>Array.isArray(x)?'['+x.map(canonical).join(',')+']':plain(x)?'{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canonical(x[k])).join(',')+'}':JSON.stringify(x);
 const clone=x=>structuredClone(x);
@@ -13,7 +14,7 @@ function date(value){if(typeof value!=='string'||!Number.isFinite(Date.parse(val
 function boundedArchive(value){if(new TextEncoder().encode(canonical(value)).length>1500000)fail(400,'Screenplay archive exceeds its 1.5 MB limit. Export a copy before starting a new project.');return value;}
 function list(value,max,label){if(!Array.isArray(value)||value.length>max)fail(400,'Invalid '+label+' list.');return value;}
 export function normalizeScreenplayDocument(value){
- keys(value,['title','logline','treatment','characters','scenes']);
+ keys(value,['title','logline','treatment','characters','scenes','musicTiming'],['title','logline','treatment','characters','scenes']);
  const characterIds=new Set(),sceneIds=new Set(),dialogueIds=new Set();
  const characters=list(value.characters,30,'characters').map(c=>{keys(c,['id','name','description']);const identifier=id(c.id);if(characterIds.has(identifier))fail(400,'Character IDs must be unique.');characterIds.add(identifier);return {id:identifier,name:text(c.name,120,'Character name',false),description:text(c.description,2000,'Character description')};});
  const scenes=list(value.scenes,100,'scenes').map(s=>{keys(s,['id','heading','action','dialogue','durationSeconds']);const identifier=id(s.id);if(sceneIds.has(identifier))fail(400,'Scene IDs must be unique.');sceneIds.add(identifier);if(typeof s.durationSeconds!=='number'||!Number.isFinite(s.durationSeconds)||s.durationSeconds<=0||s.durationSeconds>3600)fail(400,'Scene duration must be a positive bounded number.');
@@ -21,6 +22,7 @@ export function normalizeScreenplayDocument(value){
  return {id:identifier,heading:text(s.heading,300,'Scene heading',false),action:text(s.action,12000,'Scene action'),dialogue,durationSeconds:s.durationSeconds};});
  if(!scenes.length)fail(400,'A screenplay needs at least one scene.');
  const result={title:text(value.title,200,'Script title',false),logline:text(value.logline,1000,'Logline'),treatment:text(value.treatment,12000,'Treatment'),characters,scenes};
+ if(value.musicTiming!==undefined)result.musicTiming=normalizeMusicTiming(value.musicTiming,scenes);
  if(canonical(result).length>150000)fail(400,'Screenplay document is too large.');return result;
 }
 const emptyArchive=()=>({currentVersion:0,versions:[],sources:[],revisionRequest:null,reviews:[]});
@@ -47,7 +49,7 @@ export function screenplayOriginality(project){const current=currentScreenplay(p
 function matchingReview(project,report){const current=currentScreenplay(project);return clone((archiveOf(project).reviews||[]).filter(r=>r.screenplayVersion===current?.version&&r.inputSignature===report?.inputSignature).at(-1)||null);}
 export function screenplayContext(project,approvals=[]){const current=currentScreenplay(project),stale=!!current&&current.inputSignature!==screenplaySourceSignature(project),originality=current?screenplayOriginality(project):null,review=matchingReview(project,originality);const findingsResolved=!!originality&&!originality.truncated&&originality.findings.every(f=>(review?.dispositions||[]).some(d=>d.findingKey===f.key&&d.decision==='authorized_use'));const approved=!!current&&!stale&&(!project.creativeBrief||briefPlanningContext(project,approvals).approved)&&findingsResolved&&approvals.filter(a=>a.artifactId==='screenplay'&&a.version===current.version).at(-1)?.decision==='approved';return {screenplay:current,currentVersion:current?.version||0,status:!current?'missing':stale?'stale':approved?'approved':'needs_review',approved,stale,originality,review,revisionRequest:clone(archiveOf(project).revisionRequest??null),sources:clone(archiveOf(project).sources)};}
 export function assertScopedScreenplayRevision(previous,proposed,request){
- const next=normalizeScreenplayDocument(proposed);if(!previous)return next;const r=revision(request,previous);if(!r)fail(400,'Save an explicit revision request before replacing an existing script.');if(!r.sceneIds.length)return next;
+ const next=normalizeScreenplayDocument(proposed);if(!previous)return next;const r=revision(request,previous);if(!r)fail(400,'Save an explicit revision request before replacing an existing script.');if(!r.sceneIds.length)return next;assertScopedMusicTiming(previous,next,r.sceneIds);
  for(const key of ['title','logline','treatment','characters'])if(canonical(previous[key])!==canonical(next[key]))fail(400,'A scene revision cannot change protected script or character choices.');
  if(canonical(previous.scenes.map(s=>s.id))!==canonical(next.scenes.map(s=>s.id)))fail(400,'A scene revision must preserve scene IDs and order.');
  for(const s of previous.scenes)if(!r.sceneIds.includes(s.id)&&canonical(s)!==canonical(next.scenes.find(x=>x.id===s.id)))fail(400,'A targeted revision changed an unaffected scene.');return next;
@@ -80,6 +82,7 @@ export function applyScreenplayCommand(project,command,approvals=[]){
 export function screenplayArtifact(project){const current=currentScreenplay(project);return current?{logical_key:'screenplay',kind:'screenplay',version:current.version,content:current}:null;}
 export function assertScreenplayApproval(project,body,approvals=[]){
  if(body?.artifactId!=='screenplay')return null;const context=screenplayContext(project,approvals),current=context.screenplay;if(!current)fail(404,'Screenplay not found.');if(body.version!==current.version)fail(409,'Refresh the current screenplay before changing its approval.');if(body.decision!=='approved')return current;if(body.expectedVersion!==project.version||context.stale)fail(409,'The project changed. Review the current screenplay and source findings before approving it.');
+ if(project.format==='music_video')validateMusicTreatment(current.document,songDirectorContext(project,approvals),{complete:true});
  if(project.creativeBrief&&!briefPlanningContext(project,approvals).approved)fail(409,'Approve the current creative brief before approving its script.');if(body.acknowledgeLimitedCoverage!==true)fail(400,'Acknowledge that source comparison has limited coverage and is not plagiarism or legal clearance.');if(context.originality.truncated)fail(409,'Source comparison exceeded its review limits; narrow or revise the script before approval.');
  const reviewed=context.review?.dispositions||[];if(context.originality.findings.some(f=>!reviewed.some(d=>d.findingKey===f.key&&d.decision==='authorized_use')))fail(409,'Revise matched passages or record an explicit use declaration for every current finding.');return current;
 }

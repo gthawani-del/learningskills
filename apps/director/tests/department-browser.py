@@ -39,6 +39,7 @@ try:
         def planning():
             return read('/planning/plan_departments')
         def open_unit(unit_id):
+            ensure_departments()
             row = page.locator('details[data-department-card="' + unit_id + '"]')
             expect(row).to_have_count(1)
             if not row.evaluate('(node)=>node.open'):
@@ -52,11 +53,23 @@ try:
             page.locator('[data-approve-department="' + unit_id + '"]').click()
             expect(page.locator('[data-approve-department="' + unit_id + '"]')).to_have_text('Plan approved')
 
+        def ensure_departments():
+            section=page.locator('#department-workspace')
+            expect(section).to_be_attached()
+            if page.locator('#mobile-results-tab').is_visible():page.locator('#mobile-results-tab').click()
+            if not section.is_visible():page.locator('details').filter(has=section).locator(':scope > summary').first.click()
+        def navigate_stage(name):
+            target=page.locator('#rail [data-stage='+name+']')
+            if not target.is_visible():page.get_by_text('Project stages',exact=True).click()
+            target.click()
         page.goto(base)
+        ensure_departments()
         expect(page.locator('#department-workspace')).to_be_visible()
         assert not any(item['current'] for item in context()['departments'])
         assert not planning()['calls']
         page.locator('#prepare-departments').click()
+        expect(page.locator('#department-workspace')).to_contain_text('0 of 17 plans approved')
+        ensure_departments()
         expect(page.locator('details[data-department-card=camera]')).to_be_visible()
         assert len(context()['departments']) == 17
         assert all(item['current'] and not item['approved'] for item in context()['departments'])
@@ -80,12 +93,14 @@ try:
         open_unit('camera')
         page.locator('[data-edit-department=camera]').click()
         editor = page.locator('#department-editor')
+        ensure_departments()
         expect(editor).to_be_visible()
         assert page.locator('#department-workspace textarea').count() == 1
         correction = 'Use an eye-level locked frame for the ticket handoff; retain the established screen direction.'
         editor.locator('[name=value]').fill(correction)
         expect(editor.locator('[name=field]')).to_be_disabled()
-        page.locator('#rail [data-stage=story]').click()
+        navigate_stage('story')
+        ensure_departments()
         expect(page.locator('#department-workspace')).to_be_visible()
         expect(editor.locator('[name=value]')).to_have_value(correction)
         expect(page.locator('#toast')).to_contain_text('Save or cancel')
@@ -100,6 +115,7 @@ try:
 
         open_unit('casting')
         page.locator('[data-edit-department=casting]').click()
+        ensure_departments()
         editor = page.locator('#department-editor')
         choice_options = editor.locator('[name=field] option').evaluate_all("nodes => nodes.filter(n=>n.value.startsWith('choices.')).map(n=>n.value)")
         assert choice_options, 'Casting must expose a reviewable candidate choice'
@@ -113,6 +129,7 @@ try:
         assert len(selected) == 1 and not unit('casting')['approved']
         assert context()['assetsApproved'] is False and context()['generationAuthorized'] is False
         page.reload()
+        ensure_departments()
         expect(page.locator('#department-workspace')).to_be_visible()
         assert unit('camera')['current']['document']['summary'] == correction and unit('rights')['approved']
         passed.append('An explicit creative choice survives reload, remains separate from performer/media approval and does not authorize generation')
@@ -147,6 +164,7 @@ try:
 
         page.set_viewport_size({'width': 390, 'height': 844})
         page.reload()
+        ensure_departments()
         expect(page.locator('#department-workspace')).to_be_visible()
         assert page.locator('#department-workspace details[data-department-card][open]').count() == 0
         overview = page.evaluate('''()=>{const work=document.querySelector('#department-workspace').getBoundingClientRect();const rows=[...document.querySelectorAll('#department-workspace details[data-department-card]')].map(e=>{const r=e.getBoundingClientRect();return {id:e.dataset.departmentCard,height:r.height}});return {width:innerWidth,height:innerHeight,workspaceHeight:work.height,rows,openCount:document.querySelectorAll('#department-workspace details[data-department-card][open]').length};}''')
@@ -158,6 +176,7 @@ try:
         open_unit('voice')
         page.locator('[data-edit-department=voice]').click()
         editor = page.locator('#department-editor')
+        ensure_departments()
         expect(editor).to_be_visible()
         editor.locator('[name=value]').fill('A quiet, conversational voice; listen to actual voice samples before approving the performance.')
         editor.locator('button[type=submit]').click()

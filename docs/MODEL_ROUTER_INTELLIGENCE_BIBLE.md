@@ -1,5 +1,14 @@
 # Model Router Intelligence Bible
 
+## Timed music-treatment execution contract — 20 October 2026
+
+`director-music-treatment-v1` extends the shared screenplay document with optional `musicTiming`; only song-aware requests use the strict timed output schema. Original-song record/version/master, selected range, exact section links and continuous scene coverage must validate before treatment approval. Emotional/performance/transition directions are creative proposals, not newly measured musical facts. The five existing music roles remain available without forcing every role or an on-screen singer. The original vocal performance remains authoritative by default.
+
+Use existing `write_script` / `revise_script` and department planning/revision operations, OpenAI Responses, registry/routing, scoped cost reservations and saved-output review. Music profile schema hashing now includes the timed schema and instructions; requalification is required before activation. Ordinary film profiles and saved legacy request reconstruction retain their contracts. No paid qualification or model activation occurred.
+
+All seventeen departments remain source/version bound. A single customer department-package sign-off records their existing planning-only approvals; it grants neither actual cast/reference/voice/rights approval nor spending. Scoped revisions preserve unselected music intervals and department documents, retain media and flag affected downstream work. Complete supplied-media finishing, route quality and the two-attempt target retain separate acceptance. [Implementation evidence](evidence/MUSIC_TREATMENT_2026-10-20.json) distinguishes local/simulated checks from real-provider qualification. Increment 2 is not started.
+
+
 ## 20 October 2026 — Song Intelligence runtime increment
 
 The implemented music-first path now prepares actual audio for retained candidates M05 (`fal-ai/audio-understanding`), M06 (`fal-ai/elevenlabs/speech-to-text/scribe-v2`) and M07 (`fal-ai/elevenlabs/forced-alignment`). Eligibility still requires approved exact schemas/tariffs and fresh music-specific evaluation; adapters do not activate candidates. Interpretation uses musical_audio_analysis, transcription uses singing_transcription, and alignment uses sung_lyric_alignment purpose evidence. Original-song/canonical pins, source inspection, explicit sharing and spending, two attempts, unknown-charge holds and human review apply. Existing matching transcript timings are reused before spending on another alignment request.

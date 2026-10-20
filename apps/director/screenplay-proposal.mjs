@@ -1,3 +1,4 @@
+import {MUSIC_TREATMENT_CONTRACT,validateMusicTreatment,assertScopedMusicTiming} from './public/music-treatment-timing.js';
 import { hash, fail } from './domain.mjs';
 import { normalizeScreenplayDocument } from './public/screenplay-core.js';
 
@@ -21,6 +22,7 @@ write_script requires no current screenplay. revise_script requires context.scre
 
 export function validateScreenplayProposal(document, { context, operation } = {}) {
   const normalized = normalizeScreenplayDocument(document);
+  if(context?.songIntelligence?.treatmentContract===MUSIC_TREATMENT_CONTRACT)validateMusicTreatment(normalized,context.songIntelligence,{complete:true});
   // Runtime validation must reject rather than strip unsupported provider fields.
   if (hash(normalized) !== hash(document)) fail(409, 'The screenplay does not match the exact document contract.');
   const writing = context?.screenplay;
@@ -35,6 +37,7 @@ export function validateScreenplayProposal(document, { context, operation } = {}
   const targets = writing.revisionRequest.sceneIds;
   if (targets.some(id => !previous.scenes.some(scene => scene.id === id)) || new Set(targets).size !== targets.length) fail(409, 'The saved screenplay revision scope contains unavailable scenes.');
   if (targets.length) {
+    assertScopedMusicTiming(previous,normalized,targets);
     if (hash(normalized.scenes.map(scene => scene.id)) !== hash(previous.scenes.map(scene => scene.id))) fail(409, 'A targeted screenplay revision must preserve scene identities and order.');
     for (const key of ['title', 'logline', 'treatment', 'characters']) if (hash(normalized[key]) !== hash(previous[key])) fail(409, 'A targeted screenplay revision changed protected script decisions.');
     if (previous.scenes.some((scene, index) => !targets.includes(scene.id) && hash(scene) !== hash(normalized.scenes[index]))) fail(409, 'A targeted screenplay revision changed an unselected scene.');

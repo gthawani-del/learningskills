@@ -76,7 +76,12 @@ export function createImportController({store,storage}){
  const archive=structuredClone(state.productionArchive||{records:[]});for(const record of archive.records)for(const version of record.versions){version.references=version.references.map(r=>({...r,assetId:mapping.get(r.assetId)}));if([MUSIC_VIDEO_KIND,SONG_INTELLIGENCE_KIND].includes(version.content?.kind)){const document=version.content.kind===MUSIC_VIDEO_KIND?normalizeMusicVideoDocument(version.content):normalizeSongIntelligence(version.content);document.master.assetId=mapping.get(document.master.assetId);if(!document.master.assetId)fail(400,'The imported song source is missing.');version.content=document;}}
  const production=normalizeProductionArchive(archive,id,assets);
  const shots=project.shots.map(s=>{const link=state.links.find(l=>l.shotId===s.id);return {...s,clipAssetId:mapping.get(link?.clip)||null,referenceAssetId:mapping.get(link?.image)||null,productionBindings:link?.bindings||[]};});
- const next={...patchProject({...project,production},{expectedVersion:2,shots}),importState:{...state,status:'ready',completedAt:new Date().toISOString()}};
+ // Imported treatment media references follow the existing asset mapping.
+ // Keep historical input signatures: imported approvals are not transferred and
+ // the copied treatment must be explicitly rebound/reviewed in this account.
+ const screenplay=project.screenplay?structuredClone(project.screenplay):null;
+ if(screenplay)for(const version of screenplay.versions){const master=version.document.musicTiming?.source.master;if(master){const mapped=mapping.get(master.assetId);if(!mapped)fail(400,'The imported music-treatment master is missing.');master.assetId=mapped;}}
+ const next={...patchProject({...project,production,...(screenplay?{screenplay}:{})},{expectedVersion:2,shots}),importState:{...state,status:'ready',completedAt:new Date().toISOString()}};
  try{return await store.save(next,2);}catch(error){if(error.status!==409)throw error;const recovered=await store.get(id,owner);if(recovered.importState?.status!=='ready'||!same(recovered,project))throw error;return recovered;}
  }
  return {start,upload,complete};
