@@ -9,7 +9,7 @@ Reuse the existing character/reference library, seventeen departments, productio
 | 1 | Record release checklist and baseline | Recorded locally | This checklist linked from the existing tracker; exact baseline recorded. |
 | 2 | Cloud accounts and recovery | Recovery code and local checks implemented; real account acceptance outstanding | Recovery implementation and fixture/browser proof; separate real two-account/private-storage/cross-browser proof. |
 | 3 | Resumable media ingestion | Gated TUS/receipt/UI implementation; trusted inspection and real cloud acceptance outstanding | Direct private upload, interrupted transfer recovery and authoritative inspection. |
-| 4 | Vercel Sandbox processing proof | Not implemented | Account entitlement, private transfer, executable FFmpeg and bounded actual cost evidence. |
+| 4 | Vercel Sandbox processing proof | Portable inspector/proof harness implemented and locally tested; real Vercel proof blocked by scoped 403 | Account entitlement, private transfer, executable FFmpeg and bounded actual cost evidence. |
 | 5 | Durable processing | Existing paid provider jobs | Processing tasks/leases/heartbeats/recovery without duplicate provider generation. |
 | 6 | Hosted export with uploaded assets | Local FFmpeg proof only | Stored playable MP4, verified timing/sound, interruption recovery and download. |
 | 7 | Music source adapter for departments | Screenplay source exists | Approved song/treatment accepted; existing movie sources/approvals preserved. |
@@ -38,3 +38,7 @@ See [ACCOUNT_RECOVERY_ACCEPTANCE.md](ACCOUNT_RECOVERY_ACCEPTANCE.md). Recovery i
 ## Contextual attachment and source-ingestion increment
 
 See [MEDIA_INGESTION_ACCEPTANCE.md](MEDIA_INGESTION_ACCEPTANCE.md) for implemented transport/UI, verification and production gates. The updated Studio layout and [shared UI implementation rules](STUDIO_UI_IMPLEMENTATION_RULES.md) govern this and all subsequent customer screens. Recovery PR #9 passed exact-commit GitHub Actions run 39373263840. Resumable ingestion is not complete until trusted inspection, cleanup and live-account acceptance pass; it remains disabled by default.
+
+## Deterministic inspection increment
+
+[Source inspection handoff](SOURCE_INSPECTION_HANDOFF.md): raw-byte verification, bounded private download, measured stream/duration metadata, actual full decode and a guarded Sandbox-interface proof harness. Local FFmpeg evidence does not close Step 4. Actual Vercel access/private-transfer/cost proof and durable inspection/publication remain outstanding. No production activation or paid execution occurred.
