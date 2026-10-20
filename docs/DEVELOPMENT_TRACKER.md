@@ -2,6 +2,14 @@
 
 Updated 20 October 2026. Current application release: [`c86cd27`](https://github.com/gthawani-del/learningskills/commit/c86cd272e9eb194f52d9841338dab4f0793c82f8), merged through [PR #8](https://github.com/gthawani-del/learningskills/pull/8) and deployed at https://learningskills.vercel.app.
 
+## Active music-video release implementation
+
+The approved 18-step sequence is tracked in [MUSIC_VIDEO_RELEASE_IMPLEMENTATION.md](MUSIC_VIDEO_RELEASE_IMPLEMENTATION.md). Work begins with recovery, private large-media ingestion and hosted-processing feasibility. The existing department/character/production systems are reused. Current providers only; US$100 planning ceiling; live spend and quality acceptance remain separate.
+
+## Recovery implementation increment — 20 October 2026
+
+The first music-video foundation increment adds password recovery through existing Supabase Auth, the sign-in UI, private cookie-scoped PKCE exchange and draft-preserving browser recovery. [Acceptance and remaining live gates](ACCOUNT_RECOVERY_ACCEPTANCE.md). Full local QA passed 758 tests and 20 browser flows with build/SQL; the final state-comparison correction was separately covered by 24 account/session tests and needs exact-commit CI. This increment has not been deployed, does not complete real cloud-account acceptance and does not implement resumable uploads or later production steps. The table below is the last released product baseline; its missing password-recovery item is superseded only at the implementation level by this increment.
+
 ## Honest current position
 
 **The studio has working project preparation, manual editing, versioned approvals, shared Assets, storyboard/animatic tooling and guarded AI/provider orchestration. It does not yet have a complete, live-validated path from a request to a downloadable generated movie, music video or avatar video.**

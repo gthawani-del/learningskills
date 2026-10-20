@@ -1,0 +1,14 @@
+import http from 'node:http';
+import {createHash} from 'node:crypto';
+import {referenceFixture} from './reference-fixture-server.mjs';
+import {createHandler} from '../server.mjs';
+const f=await referenceFixture(),user={id:f.project.ownerId,email:'creator@example.test'};
+let recoveryLink,challenge,password;
+f.store.requestRecovery=async(email,redirect,value)=>{challenge=value;const url=new URL(redirect);url.searchParams.set('code','fixture-recovery-code');recoveryLink=url.href;return {};};
+f.store.exchangeRecovery=async(code,verifier)=>{if(code!=='fixture-recovery-code'||createHash('sha256').update(verifier).digest('base64url')!==challenge)throw Object.assign(Error('Expired'),{status:401});return {user,access_token:'fixture-recovery-access',expires_in:600};};
+const originalUser=f.store.user.bind(f.store);f.store.user=async token=>token==='fixture-recovery-access'?user:originalUser(token);
+f.store.updatePassword=async(token,value)=>{if(token!=='fixture-recovery-access')throw Error('Wrong recovery token');password=value;};
+const handler=await createHandler(f);
+const server=http.createServer((req,res)=>{if(req.url==='/__recovery-fixture'){res.writeHead(200,{'Content-Type':'application/json'});res.end(JSON.stringify({link:recoveryLink,passwordChanged:!!password}));return;}handler(req,res);});
+server.listen(0,'127.0.0.1',()=>{f.env.APP_ORIGIN='http://127.0.0.1:'+server.address().port;console.log(JSON.stringify({port:server.address().port}));});
+process.on('SIGTERM',()=>server.close(()=>process.exit(0)));

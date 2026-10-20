@@ -1,0 +1,211 @@
+{
+  "recordedAt": "2026-10-20T05:02:16.492288+00:00",
+  "baseline": "9378628214ba21b0f5e876b0f19ba9f1ad5baf11",
+  "scope": "Account recovery and approved release checklist only; not the whole music-video release",
+  "localFullQA": {
+    "passed": true,
+    "automatedTests": 758,
+    "browserFlows": 20,
+    "steps": [
+      {
+        "name": "syntax",
+        "code": 0,
+        "seconds": 0.41,
+        "log": "test-results/qa/syntax.log"
+      },
+      {
+        "name": "node-tests",
+        "code": 0,
+        "seconds": 93.17,
+        "log": "test-results/qa/node-tests.log"
+      },
+      {
+        "name": "build",
+        "code": 0,
+        "seconds": 0.56,
+        "log": "test-results/qa/build.log"
+      },
+      {
+        "name": "account-recovery-browser",
+        "code": 0,
+        "seconds": 4.46,
+        "log": "test-results/qa/account-recovery-browser.log"
+      },
+      {
+        "name": "studio-navigation-browser",
+        "code": 0,
+        "seconds": 42.38,
+        "log": "test-results/qa/studio-navigation-browser.log"
+      },
+      {
+        "name": "ftue-browser",
+        "code": 0,
+        "seconds": 5.46,
+        "log": "test-results/qa/ftue-browser.log"
+      },
+      {
+        "name": "music-video-redteam-browser",
+        "code": 0,
+        "seconds": 8.55,
+        "log": "test-results/qa/music-video-redteam-browser.log"
+      },
+      {
+        "name": "music-video-browser",
+        "code": 0,
+        "seconds": 6.01,
+        "log": "test-results/qa/music-video-browser.log"
+      },
+      {
+        "name": "creative-brief-browser",
+        "code": 0,
+        "seconds": 4.43,
+        "log": "test-results/qa/creative-brief-browser.log"
+      },
+      {
+        "name": "v2-workspace",
+        "code": 0,
+        "seconds": 8.66,
+        "log": "test-results/qa/v2-workspace.log"
+      },
+      {
+        "name": "mobile-footer-browser",
+        "code": 0,
+        "seconds": 13.56,
+        "log": "test-results/qa/mobile-footer-browser.log"
+      },
+      {
+        "name": "compact-proposal-browser",
+        "code": 0,
+        "seconds": 4.39,
+        "log": "test-results/qa/compact-proposal-browser.log"
+      },
+      {
+        "name": "registry-browser",
+        "code": 0,
+        "seconds": 4.17,
+        "log": "test-results/qa/registry-browser.log"
+      },
+      {
+        "name": "writing-browser",
+        "code": 0,
+        "seconds": 7.29,
+        "log": "test-results/qa/writing-browser.log"
+      },
+      {
+        "name": "planning-ui-browser",
+        "code": 0,
+        "seconds": 2.53,
+        "log": "test-results/qa/planning-ui-browser.log"
+      },
+      {
+        "name": "department-browser",
+        "code": 0,
+        "seconds": 5.45,
+        "log": "test-results/qa/department-browser.log"
+      },
+      {
+        "name": "department-revision-browser",
+        "code": 0,
+        "seconds": 7.64,
+        "log": "test-results/qa/department-revision-browser.log"
+      },
+      {
+        "name": "storyboard-browser",
+        "code": 0,
+        "seconds": 6.29,
+        "log": "test-results/qa/storyboard-browser.log"
+      },
+      {
+        "name": "reference-browser",
+        "code": 0,
+        "seconds": 8.23,
+        "log": "test-results/qa/reference-browser.log"
+      },
+      {
+        "name": "storyboard-production-browser",
+        "code": 0,
+        "seconds": 8.63,
+        "log": "test-results/qa/storyboard-production-browser.log"
+      },
+      {
+        "name": "animatic-browser",
+        "code": 0,
+        "seconds": 6.35,
+        "log": "test-results/qa/animatic-browser.log"
+      },
+      {
+        "name": "animatic-audio-browser",
+        "code": 0,
+        "seconds": 6.58,
+        "log": "test-results/qa/animatic-audio-browser.log"
+      },
+      {
+        "name": "animatic-audio-mp3-browser",
+        "code": 0,
+        "seconds": 6.79,
+        "log": "test-results/qa/animatic-audio-mp3-browser.log"
+      },
+      {
+        "name": "sql-proof",
+        "code": 0,
+        "seconds": 30.73,
+        "log": "test-results/qa/sql-proof.log"
+      }
+    ]
+  },
+  "latestTargetedAccountTests": {
+    "passed": 24,
+    "failed": 0
+  },
+  "recoveryBrowser": {
+    "scope": "Actual local app/API/cookies; simulated identity and email, no live account proof",
+    "checks": [
+      {
+        "width": 1440,
+        "sameBrowserRecovery": true,
+        "otherBrowserRejected": true,
+        "draftPreserved": true,
+        "passwordConfirmation": true,
+        "noLocalStorageCredentials": true
+      },
+      {
+        "width": 390,
+        "sameBrowserRecovery": true,
+        "otherBrowserRejected": true,
+        "draftPreserved": true,
+        "passwordConfirmation": true,
+        "noLocalStorageCredentials": true
+      }
+    ],
+    "pageErrors": [],
+    "paidCalls": 0,
+    "physicalMobileTested": false
+  },
+  "liveObservations": {
+    "directorSupabase": "ACTIVE_HEALTHY",
+    "publicConfig": {
+      "mode": "supabase",
+      "uploads": true,
+      "uploadMaxBytes": 2097152
+    },
+    "vercelManagement": "403 forbidden under intended ggg12 scope"
+  },
+  "limitations": [
+    "Identity/email are simulated in tests; no actual email delivery",
+    "No designated live account sessions in executor",
+    "Final malformed-Unicode state comparison was separately retested after full QA began; exact-commit CI remains required",
+    "Password recovery requires configured application origin and allowed Auth callback",
+    "No real cloud two-account acceptance",
+    "Large resumable uploads, Sandbox proof and steps 3-18 remain incomplete"
+  ],
+  "paidCalls": 0,
+  "productionSettingsChanged": false,
+  "physicalMobileTested": false,
+  "sourceSha256": {
+    "apps/director/account-recovery.mjs": "2f9bb4c3b3b89cedff16dfc449efad34f728de0272c9594d4e0ddc4199cfa59d",
+    "apps/director/public/account-recovery.js": "acdec26fadf93ea12e5143f4dd8b1d7c4e3612713e109eb8f342a2ba5f033e20",
+    "apps/director/api.mjs": "c0c980a381fe382abae1886098749063d4a6ad2b67251b5520040414ab2bc719",
+    "apps/director/store.mjs": "0bd4e5671005c7aef4b74c10ecd86c3ed6cba8472e35639e34981eb8c308acb1",
+    "apps/director/tests/account-recovery.test.mjs": "48f5fef6f5ae809b2672d6e68d77ded0dfa590cdc14f5200bfa2c0021c40fb25"
+  }
+}

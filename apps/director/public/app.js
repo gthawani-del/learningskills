@@ -1,3 +1,4 @@
+import {mountAccountRecovery} from './account-recovery.js';
 import {PRODUCTION_TYPES,MEDIA_TOOLS,productionType,productionSteps,ASSET_CATEGORIES} from './studio-catalog.js';
 import {studioNavigation,studioPage,creationChoices,projectsPage,assetFilters,assetResults,collectStudioAssets,assetCounts} from './studio-shell.js';
 import {mountMusicVideo,disposeMusicVideo,musicVideoHasUnsaved} from './music-video-workspace.js';
@@ -450,6 +451,7 @@ async function referenceFinancialAction(kind,path,body,onSuccess){return imageFi
 function referenceFailureEditorHTML(draft){return `<form id="reference-failure-review-form" class="reference-focused-editor"><h3>What needs correction?</h3><p class="small muted">Describe the observed image failure. Saving this review is free and starts no replacement. A new attempt needs its own estimate and permission.</p><label>Observed issue<textarea name="reason" required minlength="5" maxlength="2000" rows="4">${esc(draft.reason||'')}</textarea></label><p id="reference-editor-status" role="status" aria-live="polite"></p><div class="actions"><button type="submit">Save correction review</button><button type="button" id="cancel-reference-edit">Cancel</button></div></form>`;}
 function bindReferenceFailureReview(projectId){main.querySelectorAll('[data-review-reference-failure]').forEach(button=>button.onclick=()=>{if(!referenceClean())return;referenceDrafts.set(projectId,{mode:'failure',subjectId:button.dataset.subject,jobId:button.dataset.reviewReferenceFailure,reason:''});updateReferencePanel();$('#reference-failure-review-form')?.scrollIntoView({block:'center'});$('#reference-failure-review-form textarea')?.focus();});const form=$('#reference-failure-review-form');if(!form)return;form.elements.reason.oninput=()=>referenceDrafts.get(projectId).reason=form.elements.reason.value;form.onsubmit=event=>{event.preventDefault();const draft=structuredClone(referenceDrafts.get(projectId));referenceAction(async()=>{await api(`/api/projects/${encodeURIComponent(projectId)}/reference-production/reviews`,{method:'POST',body:{jobId:draft.jobId,expectedVersion:state.project.version,reason:draft.reason}});referenceDrafts.delete(projectId);await fetchReferenceSummary(projectId);updateReferencePanel();toast('Correction review saved. No retry or new charge started.');});};}
 
+mountAccountRecovery({api,openLogin:()=>openAuth('login')});
 init().then(()=>{studioBooting=false;if(initialStudioRoute)navigateStudio(initialStudioRoute,false);});
 
 // Storyboard frame production uses the existing project ledger and private-media authority.
