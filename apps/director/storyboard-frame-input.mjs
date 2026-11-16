@@ -5,6 +5,8 @@ import {currentDepartmentPlan} from './public/department-plan-core.js';
 import {currentStoryboardShot,currentStoryboardSequence} from './public/storyboard-handoff-core.js';
 import {currentReferenceSubject,currentReferenceBrief,currentReferenceSelection,referenceSourceSignature} from './public/reference-production-core.js';
 import {currentStoryboardProductionSpec} from './public/storyboard-production-core.js';
+import {musicTreatmentShotTiming} from './public/music-treatment-timing.js';
+import {currentMusicVideo,normalizeMusicVideoDocument} from './public/music-video-core.js';
 import {validateFalInput} from './providers.mjs';
 
 export const STORYBOARD_FRAME_INPUT_VERSION='director-storyboard-frame-input-v1';
@@ -29,6 +31,16 @@ function outputSize(shot){
 export function storyboardFrameRequirements(shot){
  const {width,height,aspectRatio}=outputSize(shot);
  return {modality:'image',inputModes:['image','text'],resolution:width+'x'+height,aspectRatio,identityReferences:true};
+}
+export function storyboardMusicContext(project,shotId){
+ if(project.format!=='music_video')return null;
+ const screenplay=currentScreenplay(project),contract=currentStoryboardShot(project,shotId),sequence=currentStoryboardSequence(project),scene=screenplay?.document.scenes.find(s=>s.id===contract?.document.sceneId),shot={shotId};
+ if(!screenplay||!contract||!sequence||!scene)fail(409,'Prepare current music-treatment and storyboard sources first.');
+ const timing=musicTreatmentShotTiming(screenplay.document,sequence.shots.map(pin=>({shotId:pin.shotId,...currentStoryboardShot(project,pin.shotId)?.document}))),interval=timing?.shots.find(s=>s.shotId===shot.shotId),passage=screenplay.document.musicTiming?.sequences.find(s=>s.sceneId===scene.id);
+ if(!timing?.ready||!interval||!passage)fail(409,'Review complete original-song treatment and shot timing before generating music-video storyboard frames.');
+ const savedPlan=currentMusicVideo(project),plan=savedPlan&&normalizeMusicVideoDocument(savedPlan.snapshot.content),assignment=plan?.shots.find(s=>s.shotId===shot.shotId);
+ if(!assignment||!equal(plan.master,timing.source.master)||!equal(plan.range,timing.range)||assignment.shotVersion!==project.shots.find(s=>s.id===shot.shotId)?.version||assignment.contractVersion!==contract.version||assignment.startMs!==interval.startMs||assignment.endMs!==interval.endMs||assignment.timingBasis!=='user_reviewed'||!interval.roles.includes(assignment.role))fail(409,'Review this shot’s exact original-song interval and role in the song plan before requesting a frame.');
+ return {source:timing.source,range:timing.range,shotInterval:interval,songPlan:{recordId:savedPlan.record.id,version:savedPlan.record.currentVersion},assignment,passage:{emotion:passage.emotion,performance:passage.performance,transition:passage.transition},audioPolicy:'preserve_original_master',evidenceScope:'Timing and creative direction only. No audio is supplied to this image model; singing, beat detection and lip-sync accuracy are not demonstrated.'};
 }
 function signedReferenceUrl(value,asset){
  let url;try{url=new URL(value);}catch{fail(409,'Every storyboard input must be a server-signed private approved reference.');}
@@ -96,12 +108,14 @@ export function buildStoryboardFrameInput({project,shot,model,referenceUrls}={})
  const sourceCharacters=contract.document.characterIds.map(id=>{
   const character=screenplay.document.characters.find(c=>c.id===id);if(!character)fail(409,'A storyboard character is absent from its current source.');return character;
  });
- const departments=departmentIds.map(id=>{const snapshot=currentDepartmentPlan(project,id);if(!snapshot)fail(409,'Complete the reviewed filmmaking departments before storyboard image production.');return {id,version:snapshot.version,document:snapshot.document};});
+ const departments=(project.format==='music_video'?[...departmentIds,'music','editorial','vfx']:departmentIds).map(id=>{const snapshot=currentDepartmentPlan(project,id);if(!snapshot)fail(409,'Complete the reviewed filmmaking departments before storyboard image production.');return {id,version:snapshot.version,document:snapshot.document};});
+ const music=storyboardMusicContext(project,shot.shotId);
  const context={version:STORYBOARD_FRAME_INPUT_VERSION,shotId:shot.shotId,shotContract:{version:contract.version,sourceVersion:contract.sourceVersion,document:contract.document},frameSpec:{version:current.version,contractVersion:current.contractVersion,sourceVersion:current.sourceVersion,sequenceVersion:current.sequenceVersion,document},
-  sourceScene:{id:scene.id,heading:scene.heading,action:scene.action},sourceCharacters,
+  sourceScene:{id:scene.id,heading:scene.heading,action:scene.action},sourceCharacters,...(music?{music}:{}),
   brief:Object.fromEntries(['aspectRatio','visualStyle','tone','setting','product','constraints'].map(key=>[key,brief.fields[key]])),departments,
   inputImages:groups.map((group,index)=>({imageNumber:index+1,label:'Image '+(index+1),...group})),output:{width,height,aspectRatio},evidenceScope:'One proposed start-state still. No motion, end-state transition, audio, speech, singing, identity metric, rights clearance or final-film acceptance is demonstrated.'};
  const policy=[
+  ...(music?['This is a music-video storyboard still for the exact original-master interval in music.shotInterval. Follow its approved creative roles, emotional progression, performance and transition context. A singing pose is only a still composition, not a lip-sync result. Do not invent lyric text, audio analysis, new singers or timing. Preserve original-master playback for the later animatic.']:[]),
   'Create exactly ONE coherent storyboard frame at the START STATE of this exact approved shot. Use the native output aspect and dimensions; do not crop a square, add a border, collage, contact sheet, inset or extra panel.',
   'Preserve the exact frame direction, pictured-character decision, framing, camera position and perspective, motivated light, intended spatial relations, startState and continuity anchors. Use concrete source facts rather than generic cinematic adjectives. The approved shot action and endState are future temporal context; a still must not compress multiple moments or claim that motion or the ending has occurred.',
   'The ordered input images are labelled Image 1 through Image N below. Preserve EACH labelled identity, look and location according to its role; use all required anchors. Several roles may point to one image. Do not silently change a face, skin detail, body proportions, wardrobe, prop, material, environment, world rule or approved product detail. Reference image framing is not permission to override the shot camera/framing.',

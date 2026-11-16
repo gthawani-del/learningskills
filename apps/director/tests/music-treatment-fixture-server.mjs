@@ -36,7 +36,7 @@ export async function musicPlanningCall(f,operation){
  const consent=(await f.post('/planning-consents',{requestId:randomUUID(),expectedVersion:project.version,operation,expectedModelId:quote.quote.modelId,expectedProfileFingerprint:quote.quote.profileFingerprint,maxMicroUsd:100000,finishReserveMicroUsd:0,maxCalls:2})).consent;
  return f.post('/planning-calls',{requestId:randomUUID(),expectedVersion:project.version,consentId:consent.id,operation});
 }
-if(process.argv[1]===fileURLToPath(import.meta.url)){const f=process.argv.includes('--references')?await musicReferenceFixture():await musicTreatmentFixture(),server=await createServer(f);server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({projectId:f.project.id,port:server.address().port,session:songSession,originalBase64:f.original.toString('base64'),spareAssetId:f.spareAsset?.id,sourceAssetId:f.asset.id})));process.on('SIGTERM',()=>server.close(()=>process.exit(0)));}
+if(process.argv[1]===fileURLToPath(import.meta.url)){const f=process.argv.includes('--storyboard')?await musicStoryboardFixture():process.argv.includes('--references')?await musicReferenceFixture():await musicTreatmentFixture(),server=await createServer(f);server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({projectId:f.project.id,port:server.address().port,session:songSession,originalBase64:f.original.toString('base64'),spareAssetId:f.spareAsset?.id,sourceAssetId:f.asset.id})));process.on('SIGTERM',()=>server.close(()=>process.exit(0)));}
 
 // Supplied-image local fixture: no image generator and no external service.
 export async function musicReferenceFixture(){
@@ -66,4 +66,27 @@ export async function musicReferenceFixture(){
  await change('/storyboard-production',{action:'prepare'});
  f.spareAsset=await upload('Alternative supplied location.png','location');f.change=change;f.select=select;
  const previous=f.project;f.project={...previous,stage:'cast',version:previous.version+1};await f.store.save(f.project,previous.version);return f;
+}
+
+export async function musicStoryboardFixture(){
+ const f=await musicReferenceFixture(),{syntheticStoryboardTransport,syntheticStoryboardFrameModel}=await import('./storyboard-production-fixture-server.mjs');
+ f.project=(await f.change('/music-video/from-treatment',{acknowledgePlanning:true})).project;const song=(await f.get('/music-video')).data.musicVideo.document;song.shots.forEach(s=>s.timingBasis='user_reviewed');
+ await f.change('/music-video',{document:song,acknowledgePlanning:true});
+ const transport=syntheticStoryboardTransport(),read=f.storage.get.bind(f.storage),put=f.storage.putIfAbsent.bind(f.storage),written=new Set();
+ f.storage.get=async(key,options)=>{if(written.has(key)||f.store.state.assets.some(a=>a.storageKey===key))return read(key,options);throw Object.assign(new Error('Synthetic object not stored.'),{status:404});};
+ f.storage.putIfAbsent=async(key,...args)=>{const result=await put(key,...args);written.add(key);return result;};
+ f.storage.sign=async(key,{bucket='director-media'}={})=>{if(!key.startsWith(f.project.ownerId+'/'+f.project.id+'/'))throw Error('Wrong reference scope');return 'https://song-fixture.supabase.co/storage/v1/object/sign/'+bucket+'/'+key+'?token=synthetic-no-network';};
+ f.store.state.models=[syntheticStoryboardFrameModel()];const options={...f,providers:transport.providers,fetcher:transport.fetcher},handler=await createHandler(options);
+ f.handler=handler;f.providers=transport.providers;f.fetcher=transport.fetcher;f.transport=transport;
+ f.get=path=>call(handler,f.base+path,undefined,songSession);f.post=async(path,body)=>{const r=await call(handler,f.base+path,body,songSession);if(r.status>=400)throw Object.assign(new Error(JSON.stringify(r.data)),{status:r.status});return r.data;};
+ f.change=async(path,body)=>{const r=await f.post(path,{expectedVersion:f.project.version,...body});if(r.project)f.project=r.project;return r;};
+ const summary=(await f.get('/storyboard-production')).data.storyboardProductionContext;for(const shot of summary.shots)await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_brief:'+shot.shotId,version:shot.current.version,decision:'approved',acknowledgeFrameDirection:true});
+ const previous=f.project;f.project={...previous,stage:'storyboard',version:previous.version+1};await f.store.save(f.project,previous.version);
+ f.generateFrame=async shotId=>{
+  const quote=(await f.change('/storyboard-production/quotes',{requestId:randomUUID(),shotId,modelId:'F-storyboard-frame-local',shareReferences:true})).quote;
+  const authorization=(await f.change('/spending-authorizations',{requestId:randomUUID(),quoteId:quote.id,maxMicroUsd:quote.totalMicroUsd,finishReserveMicroUsd:0})).authorization;
+  const job=(await f.change('/storyboard-production/jobs',{requestId:randomUUID(),quoteId:quote.id,authorizationId:authorization.id})).job;await f.post('/jobs/'+job.id+'/poll',{});const imported=await f.post('/storyboard-production/import',{jobId:job.id});
+  await f.change('/storyboard-production',{action:'select',shotId,candidateId:imported.candidate.id,acknowledgeReview:true});
+  const shot=(await f.get('/storyboard-production')).data.storyboardProductionContext.shots.find(s=>s.shotId===shotId);await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_frame:'+shotId,version:shot.selection.version,decision:'approved',acknowledgeFrameReview:true});return imported;
+ };return f;
 }

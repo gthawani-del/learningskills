@@ -63,3 +63,11 @@ export function saveAnimatic(project,body,frameContext,assets){
  if(references.length>100)fail(400,'This draft exceeds the existing edit-record limit of 100 unique assets; split the production explicitly.');
  return applyProductionRecord(project,{expectedVersion:project.version,...(existing?{id:existing.record.id}:{}),type:'edit',name:'Storyboard animatic — '+(audio?'original-audio':'silent')+' timing draft',content:{kind,fps,sequenceVersion:fresh.sequenceVersion,frames,audio,...(song?.ready?{musicPlan:song.plan}:{}),timingBasis:body.refresh===true?'estimated':'manually_timed'},references,dependencies:song?.ready?[{recordId:song.plan.recordId,version:song.plan.version}]:[]},assets);
 }
+// One explicit operation derives all frame counts and the master audio from the
+// existing reviewed song plan. No client durations, substitutions or fitting.
+export function buildSongAnimatic(project,body,frameContext,assets){
+ if(!body||Object.keys(body).some(k=>!['expectedVersion','acknowledgeOriginalSong','refresh'].includes(k))||body.expectedVersion!==project.version||body.acknowledgeOriginalSong!==true||body.refresh!==undefined&&typeof body.refresh!=='boolean')fail(409,'Review the current project and acknowledge the original-song storyboard preview.');
+ if(project.format!=='music_video')fail(409,'Original-song animatic assembly requires a music-video project.');
+ const song=musicVideoTiming(project,assets);if(!song?.ready)fail(409,song?.holds.join(' ')||'Review the complete original-song plan.');
+ return saveAnimatic(project,{expectedVersion:project.version,fps:song.fps,frameCounts:song.frames.map(f=>f.frameCount),acknowledgeTiming:true,...(body.refresh===true?{refresh:true}:{})},frameContext,assets);
+}

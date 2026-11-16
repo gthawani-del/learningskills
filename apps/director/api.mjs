@@ -1,7 +1,7 @@
 import {approveMusicDepartmentPackage} from './music-department-package.mjs';
 import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
-import {animaticContext,saveAnimatic} from './public/animatic-core.js';
+import {animaticContext,saveAnimatic,buildSongAnimatic} from './public/animatic-core.js';
 import {musicVideoContext,saveMusicVideo} from './public/music-video-core.js';
 import {saveMusicTreatmentShotPlan} from './public/music-treatment-handoff.js';
 import {saveSongIntelligence,songIntelligenceContext,songDirectorContext} from './public/song-intelligence-core.js';
@@ -243,11 +243,11 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(body.requestId!==undefined){const saved=await store.persistCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,expectedVersion:body.expectedVersion,requestFingerprint,quote,input:body.input});return reply(201,{quote:saved,saved:true});}
  return reply(200,{quote});
  }
- if(action==='animatic'&&['GET','POST'].includes(req.method)){
+ if((action==='animatic'||action==='animatic/from-song'&&req.method==='POST')&&['GET','POST'].includes(req.method)){
  const [assets,approvals,referenceCandidates,candidates]=await Promise.all([store.records('assets',id),store.records('approvals',id),store.referenceCandidates(user.id,id),store.storyboardCandidates(user.id,id)]);
  const frames=storyboardProductionContext(project,approvals,{assets,referenceCandidates,candidates});
  if(req.method==='GET')return reply(200,{animatic:animaticContext(project,frames,assets)});
- const next=saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
+ const next=action==='animatic/from-song'?buildSongAnimatic(project,body,frames,assets):saveAnimatic(project,body,frames,assets);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version),animatic:animaticContext(next,frames,assets)});
  }
  const songProviderAction=action?.match(/^music-video\/intelligence\/providers(?:\/(quotes|start|poll|proposal|apply|review))?$/);
  if(songProviderAction){if(project.format!=='music_video')fail(400,'Song Intelligence belongs to music-video projects.');if(req.method==='GET'&&!songProviderAction[1])return reply(200,await songProviderController.summary(user.id,project));if(req.method==='POST'&&songProviderAction[1]){const method=songProviderAction[1]==='quotes'?'quote':songProviderAction[1];return reply(method==='quote'||method==='start'?201:200,await songProviderController[method](user.id,project,body));}}

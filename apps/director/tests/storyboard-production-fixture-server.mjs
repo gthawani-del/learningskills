@@ -59,6 +59,19 @@ export async function storyboardProductionFixture({ projectSettings = {}, file, 
     p = await store.saveStoryboardProduction(next, p.version, { expectedApprovalId: approvals.at(-1)?.id ?? null });
   }
   if (approveSpec) for (const shot of storyboardProductionContext(p, await store.records('approvals', p.id), { assets: await store.records('assets', p.id), referenceCandidates: await store.referenceCandidates(p.ownerId, p.id), candidates: [] }).shots) await store.approve(p, { expectedVersion: p.version, artifactId: 'storyboard_brief:' + shot.shotId, version: shot.current.version, decision: 'approved', acknowledgeFrameDirection: true }, p.ownerId);
+  const transport=syntheticStoryboardTransport({submitThrows,pollThrows,downloadFailures,outputBytes,malformedOutput,terminalStatus});
+
+  return { ...f, project: p, ...transport, counters: () => ({ ...transport.stats, signs: f.counters().signs, puts: f.counters().puts }) };
+}
+
+export async function storyboardProductionServer(options) { const f = await storyboardProductionFixture(options); return { ...f, server: await createServer(f) }; }
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const { server, project } = await storyboardProductionServer(); server.listen(0, '127.0.0.1', () => console.log(JSON.stringify({ projectId: project.id, port: server.address().port, session: referenceSession })));
+  process.on('SIGTERM', () => server.close(() => process.exit(0)));
+}
+
+// Shared simulated transport for film and complete-song integration checks.
+export function syntheticStoryboardTransport({submitThrows=false,pollThrows=false,downloadFailures=0,outputBytes=null,malformedOutput=false,terminalStatus='COMPLETED'}={}){
   const requests = [], queries = [], sizes = new Map(), stats = { submits: 0, polls: 0, results: 0, downloads: 0 }, state = { submitThrows, pollThrows, downloadFailures, outputBytes, malformedOutput, terminalStatus };
   const providers = {
     async submitFalJob(request) { stats.submits++; requests.push(structuredClone(request)); if (state.submitThrows) throw Error('Simulated ambiguous frame submission.'); const requestId = 'storyboard_frame_' + stats.submits; sizes.set(requestId, request.input.image_size); return { requestId, status: 'IN_QUEUE' }; },
@@ -70,11 +83,5 @@ export async function storyboardProductionFixture({ projectSettings = {}, file, 
     const id = url.split('/').at(-1).replace(/\.png$/, ''), size = sizes.get(id), bytes = state.outputBytes || referencePng(size.width, size.height);
     return new Response(bytes, { headers: { 'content-type': 'image/png', 'content-length': String(bytes.length) } });
   };
-  return { ...f, project: p, providers, fetcher, requests, queries, state, counters: () => ({ ...stats, signs: f.counters().signs, puts: f.counters().puts }) };
-}
-
-export async function storyboardProductionServer(options) { const f = await storyboardProductionFixture(options); return { ...f, server: await createServer(f) }; }
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { server, project } = await storyboardProductionServer(); server.listen(0, '127.0.0.1', () => console.log(JSON.stringify({ projectId: project.id, port: server.address().port, session: referenceSession })));
-  process.on('SIGTERM', () => server.close(() => process.exit(0)));
+ return {providers,fetcher,requests,queries,state,stats};
 }

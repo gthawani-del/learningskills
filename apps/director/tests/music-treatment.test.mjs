@@ -196,3 +196,32 @@ test('music cast/look/location selections bind exact versions, survive reopening
  const reopened=(await f.get('')).data.project;assert.deepEqual(reopened.referenceProduction,f.project.referenceProduction);assert.deepEqual(reopened.storyboardProduction,f.project.storyboardProduction);assert.equal(f.counters.submits,0);assert.equal(f.planning.submits,0);
  const image=(await f.get('/assets/'+f.spareAsset.id+'/content'));assert.equal(image.status,200);assert.equal(image.data.subarray(1,4).toString(),'PNG');
 });
+
+test('music storyboard requests carry exact song passages and actual private frame bytes assemble a full-song animatic',async()=>{
+ const {musicStoryboardFixture}=await import('./music-treatment-fixture-server.mjs'),f=await musicStoryboardFixture(),before=structuredClone(f.project),masterBefore=await f.storage.get(f.asset.storageKey);
+ await assert.rejects(()=>f.change('/animatic/from-song',{acknowledgeOriginalSong:true}),{status:409});
+ const imported=[];for(const shot of f.project.shots)imported.push(await f.generateFrame(shot.id));
+ assert.equal(f.transport.stats.submits,3);assert.equal(f.transport.stats.downloads,3);
+ for(const [index,request]of f.transport.requests.entries()){
+  const context=JSON.parse(request.input.prompt.split('REVIEWED_STORYBOARD_FRAME_CONTEXT_JSON\n')[1]);
+  assert.equal(context.music.assignment.startMs,index*60000);assert.equal(context.music.assignment.endMs,(index+1)*60000);assert.equal(context.music.assignment.role,index===1?'broll':'narrative');assert.equal(context.music.audioPolicy,'preserve_original_master');assert.equal(context.music.source.master.checksum,f.asset.checksum);assert(context.music.passage.emotion);assert.equal(Object.hasOwn(request.input,'audio_url'),false);
+  const asset=imported[index].asset,bytes=await f.storage.get(f.store.state.assets.find(a=>a.id===asset.id).storageKey);assert.equal(bytes.subarray(1,4).toString(),'PNG');assert.equal(asset.generated.kind,'storyboard_frame');
+ }
+ const frames=(await f.get('/storyboard-production')).data.storyboardProductionContext;assert(frames.shots.every(s=>s.selectionApproved));
+ const saved=await f.change('/animatic/from-song',{acknowledgeOriginalSong:true}),preview=saved.animatic;assert.equal(preview.canPlay,true);assert.equal(preview.saved,true);assert.equal(preview.silent,false);assert.equal(preview.frames.length,3);assert.equal(preview.durationSeconds,180);assert.equal(preview.totalFrames,4320);assert.equal(preview.audio.assetId,f.asset.id);assert.equal(preview.audioStartSeconds,0);assert.equal(preview.audioEndSeconds,180);assert.equal(preview.productionAuthorized,false);
+ assert.deepEqual((await f.get('/animatic')).data.animatic.frames,preview.frames);assert.deepEqual(await f.storage.get(f.asset.storageKey),masterBefore);assert.deepEqual(f.project.screenplay,before.screenplay);assert.deepEqual(f.project.referenceProduction,before.referenceProduction);
+ const replay=await f.change('/animatic/from-song',{acknowledgeOriginalSong:true});assert.equal(replay.project.version,saved.project.version);
+ await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_frame:'+frames.shots[0].shotId,version:frames.shots[0].selection.version,decision:'revoked'});assert.equal((await f.get('/animatic')).data.animatic.canPlay,false);
+ const held=structuredClone(f.project);await assert.rejects(()=>f.change('/animatic/from-song',{acknowledgeOriginalSong:true,refresh:true}),{status:409});assert.deepEqual((await f.get('')).data.project,held);
+});
+test('whole-song animatic command rejects client retiming, foreign access and missing original-master acknowledgement',async()=>{
+ const {musicStoryboardFixture}=await import('./music-treatment-fixture-server.mjs'),f=await musicStoryboardFixture();
+ for(const patch of [{acknowledgeOriginalSong:false},{expectedVersion:1},{frameCounts:[24]},{fps:30},{audio:{assetId:randomUUID()}},{refresh:'yes'}])await assert.rejects(()=>f.change('/animatic/from-song',{acknowledgeOriginalSong:true,...patch}),{status:409});
+ assert.equal((await call(f.handler,f.base+'/animatic/from-song',{expectedVersion:f.project.version,acknowledgeOriginalSong:true},'foreign-fixture-session')).status,404);assert.equal(f.transport.stats.submits,0);
+});
+test('provisional or conflicting song assignments block image quoting before a provider is called',async()=>{
+ const {musicStoryboardFixture}=await import('./music-treatment-fixture-server.mjs'),f=await musicStoryboardFixture(),song=(await f.get('/music-video')).data.musicVideo.document;
+ song.shots[0].timingBasis='provisional';await f.change('/music-video',{document:song,acknowledgePlanning:true});
+ const summary=(await f.get('/storyboard-production')).data;assert(summary.models.every(m=>!m.shotEligibility[f.project.shots[0].id].eligible));
+ await assert.rejects(()=>f.change('/storyboard-production/quotes',{requestId:randomUUID(),shotId:f.project.shots[0].id,modelId:'F-storyboard-frame-local',shareReferences:true}),{status:409});assert.equal(f.transport.stats.submits,0);
+});

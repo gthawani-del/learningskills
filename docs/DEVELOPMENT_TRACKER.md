@@ -1,5 +1,20 @@
 # Director Studio — Development Tracker
 
+## Music-aware storyboard frames → full-song animatic — 16 November 2026
+
+**Implemented and locally verified, not real-provider creative acceptance.** Baseline `5face100fc8ffd45da65c2f73f81b1907b6e42fc`. Publication is the commit accompanying this entry.
+
+- Existing Seedream image-edit requests now include exact original-master shot intervals, reviewed song-plan role/version, treatment emotion/performance/transition and music/editorial/VFX department context in addition to the standard image departments. Approved identity/look/location inputs and realism constraints are retained. No lyrics, audio interpretation or lip-sync performance is invented by the image model. Existing non-music prompts remain unchanged.
+- Missing/provisional/conflicting music assignments hold both route availability and quote compilation before paid execution. Generation continues through the existing explicit quote → authorization → reservation/job → status → bounded private PNG import → human selection/approval flow. No auto-selection, batch spending permission, new provider or new generation engine.
+- Added `POST /api/projects/:id/animatic/from-song`: one explicit build derives FPS, cumulative frame counts, selected image versions and original-master audio from the reviewed existing song plan. It saves the existing versioned edit record; client retiming/audio substitution is rejected. Source revocation or changed frames holds playback; refresh preserves earlier versions.
+- The frozen preview control now offers Build full-song animatic for ready music plans, with exact duration/frame count and original-audio confirmation. Existing playback, seeking, audio clock, private images and reload are reused. This is a still-frame animatic, not generated motion, singing proof or finished-film export.
+
+**Local verification:** 82 distinct affected Node cases passed (music treatment/frame compiler/animatic core, frame APIs/audio, QA selection). The extended music treatment selection was repeated after the final music-department context change. Syntax and production build passed. Chromium exercised three quoted/authorized simulated frame jobs, real PNG import/private serving, explicit selection/approval, full 180-second saved timeline (4,320 frames at 24fps), musical boundary seeks, original-audio clock, playback from the last second through the endpoint, and reload on desktop/mobile viewport. This does not claim a three-minute continuous watch/listening session. [Evidence](evidence/MUSIC_STORYBOARD_ANIMATIC_2026-11-16.json).
+
+**Evidence limits:** fal replies/pixels, account identity and song/treatment evidence are fixtures. Master playback is supplied by a range-capable local browser stub; the image import/review/application APIs are exercised without interception. No actual AI creative output, real provider charge, production Supabase or physical phone was qualified. No paid generation, production migration, hosted processing, environment/security change, new dependency, extra agent or UI redesign.
+
+**Outstanding:** actual production source ingestion/runtime/cloud acceptance and reviewed model activation; authorized real-song frame generation and human quality review. Hosted downloadable rendering/export, performance/lip-sync, footage and remaining Music Video release deliverables remain open. This increment completes the local code connection, not production acceptance of deliverables 14–18.
+
 ## Music-video cast/look/location → shot bindings — 16 November 2026
 
 **Implemented and locally verified; production account/provider acceptance remains outstanding.** Baseline `b5f9ce4ef81727e60f22aa23d95dcdf1061aa2c9`. Publication is the commit accompanying this entry.
