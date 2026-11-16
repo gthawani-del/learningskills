@@ -21,7 +21,7 @@ export function createStoryboardProductionController({store,providers,storage,fe
  const jobs=createJobController({store,providers});
  async function facts(actorId,project){const r=await Promise.allSettled([store.records('approvals',project.id),store.records('assets',project.id),store.referenceCandidates(actorId,project.id),store.storyboardCandidates(actorId,project.id)]);const error=r.find(x=>x.status==='rejected');if(error)throw error.reason;return {approvals:r[0].value,assets:r[1].value,referenceCandidates:r[2].value,candidates:r[3].value};}
  const context=(project,info)=>storyboardProductionContext(project,info.approvals,info);
- const visibleContext=(project,value)=>({...value,shots:value.shots.map(shot=>({...shot,uniqueReferenceAssets:shot.uniqueReferenceAssets.map(a=>visibleAsset(project,a)),candidates:shot.candidates.map(c=>({...c,...(c.asset?{asset:visibleAsset(project,c.asset)}:{})}))}))});
+ const visibleContext=(project,value)=>({...value,shots:value.shots.map(shot=>({...shot,availableReferences:shot.availableReferences.map(r=>({...r,asset:visibleAsset(project,r.asset)})),referenceSubjects:shot.referenceSubjects.map(r=>({...r,asset:visibleAsset(project,r.asset)})),uniqueReferenceAssets:shot.uniqueReferenceAssets.map(a=>visibleAsset(project,a)),candidates:shot.candidates.map(c=>({...c,...(c.asset?{asset:visibleAsset(project,c.asset)}:{})}))}))});
  return {
   async summary(actorId,project){
    const r=await Promise.allSettled([facts(actorId,project),store.registry(),store.generationControl(),store.readProjectSpendingBudget(actorId,project.id),store.readStoryboardJobs(actorId,project.id)]);const error=r.find(x=>x.status==='rejected');if(error)throw error.reason;

@@ -181,3 +181,18 @@ test('approved musical department sources prepare existing character/location re
  const next=applyReferenceProductionCommand(f.project,{expectedVersion:f.project.version,action:'prepare'},approvals,{assets:[f.asset],candidates:[]});
  const context=referenceProductionContext(next,approvals,{assets:[f.asset],candidates:[]});assert.equal(context.holds.length,0);assert.equal(context.subjects.filter(s=>s.kind==='location').length,3);assert.equal(context.subjects.some(s=>s.selectionApproved),false);assert.deepEqual(next.screenplay,f.project.screenplay);assert.equal(f.counters.submits,0);
 });
+
+test('music cast/look/location selections bind exact versions, survive reopening and selectively review affected shots',async()=>{
+ const {musicReferenceFixture}=await import('./music-treatment-fixture-server.mjs'),f=await musicReferenceFixture(),before=structuredClone(f.project);
+ const summary=(await f.get('/reference-production')).data.referenceContext;assert.equal(summary.subjects.length,5);assert(summary.subjects.every(s=>s.selectionApproved));
+ const location=summary.subjects.find(s=>s.id==='location:music_sequence_1');assert.equal(location.shotUsage.length,1);assert.equal(location.shotUsage[0].sequenceStartMs,0);assert.equal(location.shotUsage[0].sequenceEndMs,60000);assert(location.current.document.mustPreserve.some(s=>s.includes('0–60000 ms')));
+ const frames=(await f.get('/storyboard-production')).data.storyboardProductionContext;assert.equal(frames.shots.length,3);assert.equal(frames.shots[0].referenceCount,3);assert.equal(frames.shots[1].referenceCount,1);assert(frames.shots.every(s=>s.readyForDirectionApproval));
+ const encoded=JSON.stringify(frames);assert.equal(encoded.includes('storageKey'),false);
+ for(const shot of frames.shots)await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_brief:'+shot.shotId,version:shot.current.version,decision:'approved',acknowledgeFrameDirection:true});
+ await f.select('location:music_sequence_1',f.spareAsset);
+ const changed=(await f.get('/storyboard-production')).data.storyboardProductionContext;assert.equal(changed.shots[0].referenceStale,true);assert(changed.shots.slice(1).every(s=>s.directionApproved));
+ const update=await f.change('/storyboard-production',{action:'bind_approved_references',shotIds:[changed.shots[0].shotId],acknowledgeReferenceBinding:true});assert.equal(update.storyboardProductionContext.shots[0].directionApproved,false);assert.equal(update.storyboardProductionContext.shots[0].referenceStale,false);
+ assert.deepEqual(f.project.storyboardProduction.shots.slice(1),before.storyboardProduction.shots.slice(1));assert.deepEqual(f.project.shots,before.shots);assert.deepEqual(f.project.screenplay,before.screenplay);assert.deepEqual(f.project.departmentPlanning,before.departmentPlanning);
+ const reopened=(await f.get('')).data.project;assert.deepEqual(reopened.referenceProduction,f.project.referenceProduction);assert.deepEqual(reopened.storyboardProduction,f.project.storyboardProduction);assert.equal(f.counters.submits,0);assert.equal(f.planning.submits,0);
+ const image=(await f.get('/assets/'+f.spareAsset.id+'/content'));assert.equal(image.status,200);assert.equal(image.data.subarray(1,4).toString(),'PNG');
+});

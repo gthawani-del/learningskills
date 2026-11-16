@@ -11,13 +11,13 @@ import {syntheticPlanningModel} from './writing-fixture-server.mjs';
 import {reviewedPlanningFixture} from './planning-fixture-profile.mjs';
 import {planningRequiredSchemaHash} from '../planning-profile.mjs';
 import {applyDepartmentCommand,departmentPlanningContext} from '../public/department-plan-core.js';
-export async function musicTreatmentFixture({prepared=false,instrumental=false,durationSeconds=180}={}){
+export async function musicTreatmentFixture({prepared=false,instrumental=false,durationSeconds=180,cast=false}={}){
  const f=await songProviderFixture({durationSeconds,lyrics:instrumental?'':'  नमस्ते\nHello 世界  '}),{store}=f;let p=await store.get(f.project.id,f.project.ownerId);
  const song=structuredClone(songIntelligenceContext(p,[]).document);song.sections=[0,1,2].map(i=>i*Math.round(durationSeconds*1000/3)).map((startMs,i)=>({id:'passage_'+i,type:'unknown',label:'Reviewed fixture passage '+(i+1),startMs,endMs:startMs+Math.round(durationSeconds*1000/3),basis:'user_reviewed',evidence:['Synthetic fixture timeline, not a real musical classification.']}));song.lyrics.vocalMode=instrumental?'instrumental':'sung';
  let next=saveSongIntelligence(p,{expectedVersion:p.version,document:song,acknowledgeEvidence:true},[f.asset]);await store.save(next,p.version);p=next;const context=songIntelligenceContext(p,[]);await store.approve(p,{artifactId:'record:'+context.recordId,version:context.version,decision:'approved'},p.ownerId);
  next=applyBriefCommand(p,{expectedVersion:p.version,action:'suggest'});await store.save(next,p.version);p=next;await store.approve(p,{expectedVersion:p.version,artifactId:'brief',version:p.creativeBrief.currentVersion,decision:'approved',acknowledgeAssumptions:true},p.ownerId);
  if(p.stage!=='story'){next={...p,stage:'story',version:p.version+1};await store.save(next,p.version);p=next;}
- const ledger=await store.records('approvals',p.id),draft=musicTreatmentDraft(p,ledger),document=structuredClone(draft);document.logline='A traveller follows changing light and chooses a way home.';document.treatment='A visual journey from hesitation through shared motion to a deliberate return. The original recording carries the performance.';
+ const ledger=await store.records('approvals',p.id),draft=musicTreatmentDraft(p,ledger),document=structuredClone(draft);if(cast)document.characters=[{id:'traveller',name:'Traveller',description:'Original role; appearance and voice require explicit selection.'}];document.logline='A traveller follows changing light and chooses a way home.';document.treatment='A visual journey from hesitation through shared motion to a deliberate return. The original recording carries the performance.';
  for(const [i,scene]of document.scenes.entries()){scene.action=['A traveller waits at a window, watches the rain settle and picks up a coat.','Reflections, passing feet and changing light connect the journey without inventing a visible singer.','The traveller steps into the morning and leaves the door open behind them.'][i];const row=document.musicTiming.sequences[i];row.roles=[i===1?'broll':'narrative'];row.emotion=['Hesitation gives way to attention.','Attention becomes forward momentum.','Resolve settles into calm.'][i];row.performance='Use the visible action and motivated attention in this scene; retain original song vocals.';row.transition=i===2?'Hold the final settled image to the original recording endpoint.':'Cut on the reviewed passage boundary into the next change of place.';}
  const operations=['write_script','revise_script','plan_departments','revise_departments'];let model=reviewedPlanningFixture(syntheticPlanningModel(),{operations});model.capabilities.planning.songIntelligenceVersion=SONG_INTELLIGENCE_KIND;model.capabilities.planning.maxRequestBytes=200000;model.capabilities.planning.contextWindowTokens=20000;model.capabilities.planning.maxOutputTokens=4000;model.capabilities.planning.tokenBoundEvidence.contextWindowTokens=20000;model.schema_evidence.inputSchemaHash=planningRequiredSchemaHash(model);store.state.models=[model];
  const planning={requests:[],output:null,submits:0};
@@ -36,4 +36,34 @@ export async function musicPlanningCall(f,operation){
  const consent=(await f.post('/planning-consents',{requestId:randomUUID(),expectedVersion:project.version,operation,expectedModelId:quote.quote.modelId,expectedProfileFingerprint:quote.quote.profileFingerprint,maxMicroUsd:100000,finishReserveMicroUsd:0,maxCalls:2})).consent;
  return f.post('/planning-calls',{requestId:randomUUID(),expectedVersion:project.version,consentId:consent.id,operation});
 }
-if(process.argv[1]===fileURLToPath(import.meta.url)){const f=await musicTreatmentFixture(),server=await createServer(f);server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({projectId:f.project.id,port:server.address().port,session:songSession,originalBase64:f.original.toString('base64')})));process.on('SIGTERM',()=>server.close(()=>process.exit(0)));}
+if(process.argv[1]===fileURLToPath(import.meta.url)){const f=process.argv.includes('--references')?await musicReferenceFixture():await musicTreatmentFixture(),server=await createServer(f);server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({projectId:f.project.id,port:server.address().port,session:songSession,originalBase64:f.original.toString('base64'),spareAssetId:f.spareAsset?.id,sourceAssetId:f.asset.id})));process.on('SIGTERM',()=>server.close(()=>process.exit(0)));}
+
+// Supplied-image local fixture: no image generator and no external service.
+export async function musicReferenceFixture(){
+ const f=await musicTreatmentFixture({prepared:true,cast:true}),{referencePng}=await import('./reference-fixture-server.mjs');
+ const ledger=await f.store.records('approvals',f.project.id),departments=departmentPlanningContext(f.project,ledger);
+ await f.post('/music-video/department-package/approve',{expectedVersion:f.project.version,expectedApprovalId:ledger.at(-1)?.id??null,departmentVersions:departments.departments.map(d=>({id:d.id,version:d.current.version})),ackPlanningOnly:true});
+ const change=async(path,body)=>{const r=await f.post(path,{expectedVersion:f.project.version,...body});if(r.project)f.project=r.project;return r;};
+ await change('/storyboard-handoff',{action:'prepare'});
+ for(const shot of [f.project.shots[0],f.project.shots[2]]){
+  const document=structuredClone(f.project.storyboardHandoff.shots.find(s=>s.id===shot.id).versions.at(-1).document);document.characterIds=['traveller'];document.referenceRequirements.push({id:'visible_identity',role:'identity',characterIds:['traveller'],direction:'Explicit fixture choice to picture the traveller.'},{id:'visible_look',role:'look',characterIds:['traveller'],direction:'Preserve the approved traveller wardrobe.'});
+  await change('/storyboard-handoff',{action:'update',shotId:shot.id,document});
+ }
+ await change('/storyboard-handoff',{action:'review_sequence',acknowledgeShotChanges:true});
+ await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_sequence',version:f.project.storyboardHandoff.sequences.at(-1).version,decision:'approved',ackPlanningOnly:true});
+ await change('/reference-production',{action:'prepare'});
+ const objects=new Map(),originalGet=f.storage.get.bind(f.storage),png=referencePng();f.storage.putIfAbsent=async(key,bytes)=>objects.set(key,Buffer.from(bytes));f.storage.get=async(key,options)=>objects.has(key)?Buffer.from(objects.get(key)):originalGet(key,options);
+ const upload=async(name,role)=>(await f.post('/assets',{name,mime:'image/png',role,scope:'project',base64:png.toString('base64')})).asset;
+ const select=async(subjectId,asset)=>{
+  const r=await change('/reference-production',{action:'add_uploaded',subjectId,assetId:asset.id});await change('/reference-production',{action:'select',subjectId,candidateId:r.candidate.id,acknowledgeReview:true});
+  const selection=f.project.referenceProduction.selections.filter(s=>s.subjectId===subjectId).at(-1);await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'reference_selection:'+subjectId,version:selection.version,decision:'approved',acknowledgeReferenceReview:true});
+ };
+ for(const id of ['identity:traveller','look:traveller',...f.document.scenes.map(s=>'location:'+s.id)]){
+  if(id.startsWith('look:'))await change('/reference-production',{action:'refresh',subjectId:id,acknowledgeSourceChange:true});
+  const subject=f.project.referenceProduction.subjects.find(s=>s.id===id);await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'reference_brief:'+id,version:subject.currentVersion,decision:'approved'});
+  const asset=await upload('Supplied '+id+'.png',id.startsWith('identity:')?'character_identity':id.startsWith('look:')?'wardrobe':'location');await select(id,asset);
+ }
+ await change('/storyboard-production',{action:'prepare'});
+ f.spareAsset=await upload('Alternative supplied location.png','location');f.change=change;f.select=select;
+ const previous=f.project;f.project={...previous,stage:'cast',version:previous.version+1};await f.store.save(f.project,previous.version);return f;
+}

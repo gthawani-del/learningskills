@@ -1,5 +1,21 @@
 # Director Studio — Development Tracker
 
+## Music-video cast/look/location → shot bindings — 16 November 2026
+
+**Implemented and locally verified; production account/provider acceptance remains outstanding.** Baseline `b5f9ce4ef81727e60f22aa23d95dcdf1061aa2c9`. Publication is the commit accompanying this entry.
+
+1. **Source requirements:** reference subjects show linked shot contracts and the exact approved treatment passage/roles. Location preservation constraints include the musical passage, emotional progression and performance direction. The existing approved department inputs remain authoritative; a dialogue/character association does not establish on-screen visibility.
+2. **Reuse before generation:** the existing reference panel shows reusable-candidate/upload availability and a project-image picker filtered by subject-compatible role, supported image type, project/version/checksum and upload provenance. Existing approved/generated candidates retain their original receipts. No copying across projects, relabeling generated images, new provider or free-stock licence inference.
+3. **Review:** existing identity → look anchoring, actual candidate preview, explicit selection and visual approval are reused. No new approval engine, detached character module or UI redesign.
+4. **Exact shot binding:** a single explicit action updates only eligible affected frame directions using the latest exact approved reference versions. The server recomputes/validates the scoped change. Pictured cast, aspect, manual direction, unchanged shot specs and selected images remain recorded. Missing references and changed contract sources hold the operation; no partial write or paid request.
+5. **Selective review:** changed references hold only matching frame bindings. Updated directions receive a new unapproved version; old candidates/selections remain saved. Client frame summaries are invalidated when references change or are approved, including approvals that do not increment the project version.
+
+**Passed locally:** 114 affected Node cases (44 reference/frame-core, 21 music-treatment, 45 reference/frame API, 4 QA-selection checks); the supplied-image three-minute music-video browser flow at desktop and 390px mobile viewport; syntax and production build. Actual private image serving, reference registration/selection/approval, scoped binding, unselected-shot preservation and reopening were exercised. The browser fixture stubs original-song playback to supplied audio and uses synthetic account/treatment evidence; it does not prove real account persistence, real audio analysis or model quality. No physical-phone claim. [Evidence](evidence/MUSIC_REFERENCES_2026-11-16.json).
+
+**Release scope:** shared reference/frame modules and existing frozen-UI controls. No production migration/configuration, paid model, additional agent, dependency or QA framework. The new browser scenario is registered in the existing QA runner.
+
+**Next:** actual storyboard-frame production and full-song animatic assembly using these approved references. Existing model/quote/job adapters remain gated by real-provider qualification, actual generation authorization and outstanding production ingestion/cloud dependencies. This checkpoint does not claim generated images, singing/lip-sync, footage or a finished export.
+
 ## Music treatment → storyboard/song-plan handoff — 16 November 2026
 
 **Implemented and locally verified; production/account/provider acceptance remains outstanding.** Baseline main `5fc0b3962838fec06cc91344cb155ca4a7dce91c`. The publication commit accompanying this entry contains the changes.

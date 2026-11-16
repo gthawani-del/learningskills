@@ -92,3 +92,9 @@ test('imported creative histories carry no current reference authority without r
 test('project versions and bounded selection archives fail atomically',()=>{
  const {project,approvals,facts}=selectedIdentity(),before=structuredClone(project);assert.throws(()=>applyReferenceProductionCommand(project,{expectedVersion:project.version-1,action:'prepare'},approvals,facts),{status:409});assert.throws(()=>command(project,approvals,facts,'prepare',{approved:true}),{status:400});const archive=structuredClone(project.referenceProduction),selection=archive.selections[0];archive.selections=Array.from({length:1001},(_,i)=>({...selection,version:i+1}));assert.throws(()=>normalizeReferenceProductionArchive(archive),{status:400});assert.deepEqual(project,before);
 });
+
+test('reuse discovery filters incompatible, foreign and generated assets without granting selection authority',async()=>{
+ const {reusableReferenceUploads}=await import('../public/reference-production-core.js'),{project,facts}=selectedIdentity(),subject=currentReferenceSubject(project,'identity:keeper'),valid=facts.assets[0];
+ const candidates=[valid,{...valid,id:uuid(200),role:'location'},{...valid,id:uuid(201),projectId:uuid(999)},{...valid,id:uuid(202),generated:{jobId:uuid(2)}},{...valid,id:uuid(203),mime:'image/svg+xml'},{...valid,id:uuid(204),checksum:'missing'}];
+ assert.deepEqual(reusableReferenceUploads(project,subject,candidates),[valid]);assert.equal(reusableReferenceUploads(project,{kind:'location'},candidates).length,1);
+});
