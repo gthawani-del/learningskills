@@ -1,5 +1,19 @@
 # Director Studio — Development Tracker
 
+## Music treatment → storyboard/song-plan handoff — 16 November 2026
+
+**Implemented and locally verified; production/account/provider acceptance remains outstanding.** Baseline main `5fc0b3962838fec06cc91344cb155ca4a7dce91c`. The publication commit accompanying this entry contains the changes.
+
+- Consolidated the inspected repository/Muapi lessons in [GENERATION_STUDIO_LEARNINGS.md](GENERATION_STUDIO_LEARNINGS.md), including evidence limits, model-routing discrepancies, credential/licence concerns and reuse decisions. No external code or provider was imported.
+- Fixed reference/storyboard source readers rejecting the existing song-aware department signature. Existing source validation is reused; film signatures remain supported.
+- Shot-sequence review now checks contiguous original-master coverage and each approved treatment boundary. Shot durations are not stretched, rounded to convenient seconds or redistributed to make a plan fit.
+- The existing song workspace has one explicit handoff action. It fills the existing `music_video_plan_v1` with exact shot/source versions, intervals and applicable roles. New assignments remain provisional; mixed-role sequences require explicit shot choices. Existing performer pins/reviewed assignments are preserved; conflicts require the existing editor rather than automatic replacement. The server recomputes the handoff from current approvals, not a client-supplied document.
+- No new database record type, provider, dependency, agent framework, editor, billing system or UI redesign. All 17 departments and the 18 release deliverables remain in scope.
+
+**Verification:** 84 affected integration/unit cases passed; existing Chromium treatment flow extended to exercise the actual new control/API and reload at desktop/mobile viewport sizes; original evidence and targeted edits preserved, no captured console/HTTP errors. Syntax and production package build passed. See [evidence](evidence/MUSIC_TREATMENT_HANDOFF_2026-11-16.json). Simulated OpenAI fixture outputs establish application behaviour only, not creative quality or live provider/account success. No physical device, paid execution, production migration or Vercel configuration change.
+
+**Remaining:** trusted large-song production ingestion/processing activation and cloud acceptance; music-enabled real-model qualification; approved cast/look/location selections and actual storyboard frames, full-song animatics, singing proof, footage, finishing/export. References can now prepare from the musical source, but no images or performers were generated or accepted by this increment.
+
 ## Increment 1 — Timed music treatment and department package — 20 October 2026
 
 **Implemented and locally verified; live creative/provider acceptance remains outstanding.** This increment continues main `a44c57a`; its publication hash is the accompanying GitHub commit. Increment 2 has not started.

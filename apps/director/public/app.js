@@ -7,6 +7,7 @@ import {PRODUCTION_TYPES,MEDIA_TOOLS,productionType,productionSteps,ASSET_CATEGO
 import {studioNavigation,studioPage,creationChoices,projectsPage,assetFilters,assetResults,collectStudioAssets,assetCounts} from './studio-shell.js';
 import {mountMusicVideo,disposeMusicVideo,musicVideoHasUnsaved} from './music-video-workspace.js';
 import {saveMusicVideo} from './music-video-core.js';
+import {saveMusicTreatmentShotPlan} from './music-treatment-handoff.js';
 import {saveSongIntelligence} from './song-intelligence-core.js';
 import {mountSongIntelligence} from './song-intelligence-ui.js';
 import {mountAnimatic,animaticHasUnsaved,disposeAnimatic} from './animatic-player.js';
@@ -223,7 +224,11 @@ bindStudioNavigation();
 if(state.project.format==='music_video'&&['brief','story','storyboard'].includes(stage())){
  const host=document.createElement('section');host.className='panel music-video-workspace';host.id='music-video-workspace';
  (stage()==='brief'?$('.brief-transcript'):$('.canvas')).prepend(host);
- mountMusicVideo(host,{project:state.project,assets:state.assets,getProject:()=>state.project,canStart:()=>frameNavigationAllowed(true)&&!animaticHasUnsaved(),save:async command=>{
+ mountMusicVideo(host,{project:state.project,assets:state.assets,approvals:local()?state.project.approvals||[]:state.approvals,fromTreatment:async()=>{
+  const command={expectedVersion:state.project.version,acknowledgePlanning:true};
+  if(local()){const next=saveMusicTreatmentShotPlan(state.project,command,state.assets,state.project.approvals||[]);return next.version===state.project.version?state.project:await saveDevice(next,state.project.version);}
+  return projectFrom(await api(`/api/projects/${state.project.id}/music-video/from-treatment`,{method:'POST',body:command}));
+ },getProject:()=>state.project,canStart:()=>frameNavigationAllowed(true)&&!animaticHasUnsaved(),save:async command=>{
   if(local()){const previous=state.project.version,next=saveMusicVideo(state.project,command,state.assets);return next.version===previous?state.project:await saveDevice(next,previous);}
   return projectFrom(await api(`/api/projects/${state.project.id}/music-video`,{method:'POST',body:command}));
  },onSaved:project=>{state.project=project;render();toast('Song plan saved. No generation or lip-sync approval granted.');}});

@@ -42,7 +42,7 @@ export function departmentSourceSignature(project){
  const brief=currentBrief(project),screenplay=currentScreenplay(project);
  const music=songSourceBinding(project);return canonical({project:sourceSettings(project),brief:brief?{version:brief.version,fields:brief.fields,inputSignature:brief.inputSignature}:null,screenplay:screenplay?{version:screenplay.version,document:screenplay.document}:null,...(music?{music}:{})});
 }
-function validSourceSignature(value){
+export function validSourceSignature(value){
  text(value,300000,'Department source signature');let parsed;try{parsed=JSON.parse(value);}catch{fail(400,'Invalid department source signature.');}
  keys(parsed,['project','brief','screenplay','music'],['project','brief','screenplay']);if(parsed.music!==undefined){keys(parsed.music,['recordId','version','master']);if(typeof parsed.music.recordId!=='string'||!Number.isSafeInteger(parsed.music.version)||parsed.music.version<1||parsed.music.version>100)fail(400,'Invalid song department source binding.');}keys(parsed.project,['premise','direction','language','duration','format']);for(const key of ['premise','direction','language','format'])text(parsed.project[key],12000,'Source setting',true);
  if(parsed.project.duration!==null&&(!Number.isFinite(parsed.project.duration)||parsed.project.duration<=0||parsed.project.duration>3600))fail(400,'Invalid department source duration.');

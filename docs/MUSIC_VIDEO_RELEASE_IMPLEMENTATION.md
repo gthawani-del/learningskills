@@ -79,3 +79,9 @@ Verification: one full Node integration boundary passed **900/900**; the final f
 No paid model call, production migration, billable runtime, Vercel operation, new provider/dependency/infrastructure, additional agent or Increment 2 work occurred. Existing cloud dependencies and real music-enabled OpenAI qualification remain gated. See [recorded evidence](evidence/MUSIC_TREATMENT_2026-10-20.json), [desktop viewport](evidence/music-treatment/desktop-timed-treatment.png) and [mobile viewport](evidence/music-treatment/mobile-timed-treatment.png).
 
 This advances deliverables 7/12 and prepares the existing references/storyboard handoff. All eighteen release deliverables remain required. It does not complete actual reference generation, singing proof, footage, hosted export or the private pilot.
+
+## Song-aware visual handoff — 16 November 2026
+
+Continues published Increment 1 at `5fc0b39`. Reference and storyboard source readers now accept the existing song binding using shared department validation. Storyboard approval checks complete original-song coverage and exact treatment boundaries. One action transfers current approved treatment/shot timing to the existing music-video plan without replacing saved performer/media choices or auto-approving provisional assignments. No separate engine, provider or UI redesign. See the tracker and [consolidated learnings](GENERATION_STUDIO_LEARNINGS.md).
+
+84 affected cases, the extended existing Chromium flow and production build passed locally. Real music interpretation/generation quality, production schema/runtime activation and hosted export remain unverified or gated. This advances deliverables 7/12/14 and unblocks the existing reference engine for musical sources; it does not complete cast selections, generated frames, animatics, singing, footage or release acceptance.

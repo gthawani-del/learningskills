@@ -2,6 +2,25 @@
 // the unchanged original master; this contract grants no media or spend rights.
 export const MUSIC_TREATMENT_CONTRACT='director-music-treatment-v1';
 export const MUSIC_TREATMENT_ROLES=Object.freeze(['singing','narrative','broll','dance','lyric_graphics']);
+// Derive exact master-time intervals from existing ordered shot contracts.
+// Never stretch coverage or infer a cut from energy/lyrics to make it fit.
+export function musicTreatmentShotTiming(document,shots){
+ if(!document?.musicTiming)return null;
+ const timing=normalizeMusicTiming(document.musicTiming,document.scenes),holds=[],bindings=[];
+ let cursor=timing.range.startMs,previousScene=-1;
+ const covered=new Map();
+ for(const shot of shots){
+  const sceneIndex=document.scenes.findIndex(s=>s.id===shot.sceneId),sequence=timing.sequences[sceneIndex],durationMs=Math.round(shot.durationSeconds*1000);
+  if(!sequence||sceneIndex<previousScene||!Number.isSafeInteger(durationMs)||durationMs<1||Math.abs(durationMs/1000-shot.durationSeconds)>0.000001){holds.push('Review shot order and millisecond durations against the timed treatment.');continue;}
+  if(sceneIndex!==previousScene){if(cursor!==sequence.startMs)holds.push('Shot coverage must meet each approved treatment boundary exactly.');previousScene=sceneIndex;}
+  const endMs=cursor+durationMs;
+  if(cursor<sequence.startMs||endMs>sequence.endMs)holds.push('Shot coverage exceeds its approved treatment sequence.');
+  bindings.push({shotId:shot.shotId,sceneId:sequence.sceneId,startMs:cursor,endMs,roles:[...sequence.roles],syncClass:sequence.syncClass,sectionIds:[...sequence.sectionIds]});
+  covered.set(sequence.sceneId,(covered.get(sequence.sceneId)||0)+durationMs);cursor=endMs;
+ }
+ if(cursor!==timing.range.endMs||timing.sequences.some(s=>covered.get(s.sceneId)!==s.endMs-s.startMs))holds.push('Shots must cover the complete treatment with no missing passages, gaps or overlaps.');
+ return {ready:holds.length===0,holds:[...new Set(holds)],source:structuredClone(timing.source),range:structuredClone(timing.range),shots:bindings};
+}
 const fail=message=>{throw Object.assign(new Error(message),{status:400});};
 const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
 const same=(a,b)=>canonical(a)===canonical(b);

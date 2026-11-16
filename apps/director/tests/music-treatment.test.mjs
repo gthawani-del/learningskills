@@ -125,3 +125,59 @@ test('complete 100-sequence musical treatment fits the existing department contr
  let result=await f.post('/screenplay',{expectedVersion:f.project.version,action:'save',document:d});f.project=result.project;await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'screenplay',version:1,decision:'approved',acknowledgeLimitedCoverage:true});result=await f.post('/department-plans',{expectedVersion:f.project.version,action:'prepare'});
  for(const unit of result.departmentContext.departments){assert.ok(unit.current.document.requirements.length<=120);const covered=new Set(unit.current.document.requirements.filter(r=>r.id.startsWith('music_time_')).flatMap(r=>r.sceneIds));assert.equal(covered.size,100);}
 });
+
+// The treatment-to-shot bridge reuses the actual application commands. No model calls.
+async function approvedMusicShots(){
+ const f=await musicTreatmentFixture({prepared:true});
+ await f.post('/music-video/department-package/approve',await approveBody(f));
+ f.project=(await f.post('/storyboard-handoff',{expectedVersion:f.project.version,action:'prepare'})).project;
+ const sequence=f.project.storyboardHandoff.sequences.at(-1);
+ await f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_sequence',version:sequence.version,decision:'approved',ackPlanningOnly:true});
+ return f;
+}
+test('approved full-song treatment becomes provisional exact-time shot assignments in the existing plan',async()=>{
+ const f=await approvedMusicShots(),before=structuredClone(f.project),approvals=await f.store.records('approvals',f.project.id);
+ const result=await f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true});f.project=result.project;
+ const document=result.musicVideo.document;assert.equal(document.shots.length,3);assert.deepEqual(document.shots.map(s=>[s.startMs,s.endMs,s.role]),[[0,60000,'narrative'],[60000,120000,'broll'],[120000,180000,'narrative']]);
+ assert(document.shots.every(s=>s.timingBasis==='provisional'&&s.performers.length===0));assert.equal(result.musicVideo.readyForStoryboardReview,false);
+ assert.deepEqual(f.project.screenplay,before.screenplay);assert.deepEqual(f.project.shots,before.shots);assert.deepEqual(f.project.departmentPlanning,before.departmentPlanning);assert.deepEqual(await f.store.records('approvals',f.project.id),approvals);assert.equal(f.counters.submits,0);assert.equal(f.planning.submits,0);
+ const again=await f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true});assert.equal(again.project.version,f.project.version);assert.equal(again.musicVideo.version,result.musicVideo.version);
+ assert.deepEqual((await f.get('/music-video')).data.musicVideo.document,document);
+});
+test('song handoff requires current approvals, exact project version and explicit planning acknowledgement',async()=>{
+ const f=await musicTreatmentFixture({prepared:true}),body={expectedVersion:f.project.version,acknowledgePlanning:true};await assert.rejects(()=>f.post('/music-video/from-treatment',body),{status:409});
+ const ready=await approvedMusicShots();for(const change of [{expectedVersion:1},{acknowledgePlanning:false},{approved:true}])await assert.rejects(()=>ready.post('/music-video/from-treatment',{expectedVersion:ready.project.version,acknowledgePlanning:true,...change}),{status:409});
+ const {call}=await import('./animatic-fixture-server.mjs');assert.equal((await call(ready.handler,ready.base+'/music-video/from-treatment',{expectedVersion:ready.project.version,acknowledgePlanning:true},'foreign-fixture-session')).status,404);
+});
+test('music storyboard approval rejects changed durations or scene order instead of stretching the master',async()=>{
+ const f=await approvedMusicShots(),id=f.project.shots[0].id;
+ const {currentStoryboardShot,storyboardHandoffContext}=await import('../public/storyboard-handoff-core.js');const document=currentStoryboardShot(f.project,id).document;document.durationSeconds=59;
+ f.project=(await f.post('/storyboard-handoff',{expectedVersion:f.project.version,action:'update',shotId:id,document})).project;
+ f.project=(await f.post('/storyboard-handoff',{expectedVersion:f.project.version,action:'review_sequence',acknowledgeShotChanges:true})).project;
+ const c=storyboardHandoffContext(f.project,await f.store.records('approvals',f.project.id));assert.equal(c.sequence.coverage.musicTiming.ready,false);assert.equal(c.sequence.coverage.complete,false);
+ await assert.rejects(()=>f.post('/approvals',{expectedVersion:f.project.version,artifactId:'storyboard_sequence',version:c.sequence.current.version,decision:'approved',ackPlanningOnly:true}),{status:409});
+ await assert.rejects(()=>f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true}),{status:409});
+});
+test('existing reviewed shot choices are preserved and conflicting timing is not silently overwritten',async()=>{
+ const f=await approvedMusicShots();f.project=(await f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true})).project;
+ let document=(await f.get('/music-video')).data.musicVideo.document;document.shots.forEach(s=>s.timingBasis='user_reviewed');f.project=(await f.post('/music-video',{expectedVersion:f.project.version,document,acknowledgePlanning:true})).project;
+ const replay=await f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true});assert.equal(replay.project.version,f.project.version);assert(replay.musicVideo.document.shots.every(s=>s.timingBasis==='user_reviewed'));
+ document=structuredClone(replay.musicVideo.document);document.shots[0].endMs=59000;document.shots[1].startMs=59000;f.project=(await f.post('/music-video',{expectedVersion:f.project.version,document,acknowledgePlanning:true})).project;
+ const before=structuredClone(f.project);await assert.rejects(()=>f.post('/music-video/from-treatment',{expectedVersion:f.project.version,acknowledgePlanning:true}),/not replaced/);assert.deepEqual(await f.store.get(f.project.id,f.project.ownerId),before);
+});
+test('mixed creative roles require explicit shot decisions, and exact rounding uses cumulative master boundaries',async()=>{
+ const {musicTreatmentShotTiming}=await import('../public/music-treatment-timing.js');
+ const f=await approvedMusicShots(),d=structuredClone(currentScreenplay(f.project).document);d.musicTiming.sequences[0].roles=['narrative','dance'];
+ const {musicTreatmentShotPlan}=await import('../public/music-treatment-handoff.js');const p=structuredClone(f.project);p.screenplay.versions.at(-1).document=d;
+ // Editing the source cannot borrow the old approval or department snapshots.
+ assert.throws(()=>musicTreatmentShotPlan(p,[]),{status:409});
+ const shots=d.scenes.flatMap((s,i)=>i?[{shotId:'s'+i,sceneId:s.id,durationSeconds:60}]:[{shotId:'a',sceneId:s.id,durationSeconds:19.999},{shotId:'b',sceneId:s.id,durationSeconds:40.001}]);const timing=musicTreatmentShotTiming(d,shots);assert(timing.ready);assert.deepEqual(timing.shots.slice(0,2).map(s=>[s.startMs,s.endMs]),[[0,19999],[19999,60000]]);
+ assert.equal(musicTreatmentShotTiming(d,[...shots].reverse()).ready,false);
+});
+
+
+test('approved musical department sources prepare existing character/location references without a parallel engine',async()=>{
+ const f=await approvedMusicShots(),{applyReferenceProductionCommand,referenceProductionContext}=await import('../public/reference-production-core.js'),approvals=await f.store.records('approvals',f.project.id);
+ const next=applyReferenceProductionCommand(f.project,{expectedVersion:f.project.version,action:'prepare'},approvals,{assets:[f.asset],candidates:[]});
+ const context=referenceProductionContext(next,approvals,{assets:[f.asset],candidates:[]});assert.equal(context.holds.length,0);assert.equal(context.subjects.filter(s=>s.kind==='location').length,3);assert.equal(context.subjects.some(s=>s.selectionApproved),false);assert.deepEqual(next.screenplay,f.project.screenplay);assert.equal(f.counters.submits,0);
+});

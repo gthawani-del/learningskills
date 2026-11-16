@@ -3,6 +3,7 @@ import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic} from './public/animatic-core.js';
 import {musicVideoContext,saveMusicVideo} from './public/music-video-core.js';
+import {saveMusicTreatmentShotPlan} from './public/music-treatment-handoff.js';
 import {saveSongIntelligence,songIntelligenceContext,songDirectorContext} from './public/song-intelligence-core.js';
 import {storyboardProductionContext} from './public/storyboard-production-core.js';
 import {createReferenceController} from './reference-production.mjs';
@@ -258,6 +259,11 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  }
  if(action==='music-video/department-package/approve'&&req.method==='POST')return reply(200,await approveMusicDepartmentPackage({project,body,actorId:user.id,store}));
  if(action==='music-video/director-context'&&req.method==='GET')return reply(200,{songContext:songDirectorContext(project,await store.records('approvals',id))});
+ if(action==='music-video/from-treatment'&&req.method==='POST'){
+ const [assets,approvals]=await Promise.all([store.records('assets',id),store.records('approvals',id)]);
+ const next=saveMusicTreatmentShotPlan(project,body,assets,approvals),saved=next.version===project.version?project:await store.save(next,project.version);
+ return reply(200,{project:saved,musicVideo:musicVideoContext(saved,assets)});
+ }
  if(action==='music-video'&&['GET','POST'].includes(req.method)){
  const assets=await store.records('assets',id);
  if(req.method==='GET')return reply(200,{musicVideo:musicVideoContext(project,assets)});

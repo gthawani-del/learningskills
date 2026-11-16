@@ -1,6 +1,6 @@
 import {currentBrief,briefPlanningContext} from './creative-brief-core.js';
 import {currentScreenplay,screenplayContext,normalizeScreenplayDocument} from './screenplay-core.js';
-import {DEPARTMENT_IDS,departmentPlanningContext,departmentSourceSignature} from './department-plan-core.js';
+import {DEPARTMENT_IDS,departmentPlanningContext,departmentSourceSignature,validSourceSignature} from './department-plan-core.js';
 
 export const REFERENCE_PRODUCTION_VERSION='director-reference-production-v1';
 const kinds=['character_identity','character_look','location'];
@@ -35,7 +35,7 @@ export function normalizeReferenceBriefDocument(value){
 export function referenceSourceSignature(project){return canonical({departmentSourceSignature:departmentSourceSignature(project),departmentVersions:DEPARTMENT_IDS.map(departmentId=>({departmentId,version:project.departmentPlanning?.departments.find(d=>d.id===departmentId)?.currentVersion??null}))});}
 function parseSourceSignature(value){
  text(value,350000,'Reference source signature');let source,department;try{source=JSON.parse(value);department=JSON.parse(source.departmentSourceSignature);}catch{fail(400,'Invalid reference source signature.');}
- keys(source,['departmentSourceSignature','departmentVersions']);keys(department,['project','brief','screenplay']);keys(department.screenplay,['version','document']);version(department.screenplay.version,'Bound screenplay version');normalizeScreenplayDocument(department.screenplay.document);
+ keys(source,['departmentSourceSignature','departmentVersions']);keys(department,['project','brief','screenplay','music'],['project','brief','screenplay']);if(department.music!==undefined)validSourceSignature(source.departmentSourceSignature);keys(department.screenplay,['version','document']);version(department.screenplay.version,'Bound screenplay version');normalizeScreenplayDocument(department.screenplay.document);
  const pins=list(source.departmentVersions,DEPARTMENT_IDS.length,'reference department versions');if(pins.length!==DEPARTMENT_IDS.length)fail(400,'Reference sources must bind every department.');pins.forEach((pin,index)=>{keys(pin,['departmentId','version']);if(pin.departmentId!==DEPARTMENT_IDS[index]||!Number.isSafeInteger(pin.version)||pin.version<1||pin.version>100)fail(400,'Invalid reference department version binding.');});if(canonical(source)!==value||canonical(department)!==source.departmentSourceSignature)fail(400,'Reference source signatures must be canonical.');return {source,department,screenplay:department.screenplay.document};
 }
 export function referenceSourceContext(project,sourceVersion){const source=archiveOf(project).sources.find(s=>s.version===sourceVersion);return source?clone(parseSourceSignature(source.inputSignature)):null;}
