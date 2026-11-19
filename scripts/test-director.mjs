@@ -111,3 +111,11 @@ await import('../apps/director/tests/storyboard-production-cloud.test.mjs');
 
 
 await import('../apps/director/tests/studio-shell.test.mjs');
+
+await import('../apps/director/tests/director-session.test.mjs');
+await import('../apps/director/tests/director-session-api.test.mjs');
+await import('../apps/director/tests/director-context.test.mjs');
+await import('../apps/director/tests/director-planning.test.mjs');
+await import('../apps/director/tests/director-planning-sql.test.mjs');
+await import('../apps/director/tests/director-actions.test.mjs');
+await import('../apps/director/tests/director-ui.test.mjs');

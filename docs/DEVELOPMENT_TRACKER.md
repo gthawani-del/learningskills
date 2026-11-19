@@ -1,5 +1,10 @@
 # Director Studio — Development Tracker
 
+## Music Video Director participation and conversation — 19 November 2026
+
+**Implemented; local/provider-fixture verification, not production creative acceptance.** Saved participation style and source-bound conversation now connect through the existing router, planning consent/reservations and exact scene/department revision handlers. One existing composer and frozen desktop/mobile shell are reused. All seventeen departments and the complete eighteen-deliverable release scope remain intact. The new operation requires its own reviewed registry profile; GPT-6.2 Sol is a preferred candidate, not auto-activated. The cloud migration is prepared only. [Acceptance and exact gates](DIRECTOR_CONVERSATION_ACCEPTANCE.md). [OpenDirector pricing findings](OPENDIRECTOR_PRICING_REVIEW_2026-11-19.md) distinguish subscription from purchased generation credits; no lowest-market-price claim is established.
+
+
 ## Music-aware storyboard frames → full-song animatic — 16 November 2026
 
 **Implemented and locally verified, not real-provider creative acceptance.** Baseline `5face100fc8ffd45da65c2f73f81b1907b6e42fc`. Publication is the commit accompanying this entry.

@@ -22,3 +22,7 @@ test('database and persistence changes retain the existing SQL proof',async()=>{
  assert.equal((await selectChecks(['apps/director/storyboard-production-store.mjs'])).sql,true);
  await assert.rejects(selectChecks(['../outside.mjs']),/inside this repository/);
 });
+
+test('Director conversation changes select the real composer browser flow',async()=>{
+ const selected=await selectChecks(['apps/director/public/director-session-core.js']);assert.ok(selected.tests.includes('apps/director/tests/director-session.test.mjs'));assert.ok(selected.browsers.includes('music-director-browser'));
+});
