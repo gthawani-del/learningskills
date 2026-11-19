@@ -1,3 +1,4 @@
+import {buildDirectorContext,DIRECTOR_CONVERSATION_KIND,DIRECTOR_INSTRUCTION,directorProposalSchema} from './director-context.mjs';
 import {musicTreatmentSchema,musicTreatmentInstruction,MUSIC_TREATMENT_CONTRACT} from './music-treatment-proposal.mjs';
 import {hash,fail,artifacts} from './domain.mjs';
 import {recordArtifacts} from './production-records.mjs';
@@ -18,7 +19,8 @@ export const planningSchemaHash=hash({version:PLANNING_VERSION,planSchema,filmPl
 export const departmentPlanningSchemaHash=hash({version:DEPARTMENT_PLANNING_VERSION,contextSignatures:'sha256-canonical-department-source-and-decisions-v1',departmentArtifacts:'complete-once-in-department-context-with-current-approval-and-dependency-status-v1',dependencyPolicyVersion:DEPARTMENT_DEPENDENCY_POLICY_VERSION,dependencyPolicy:departmentDependencyPolicy,guidanceVersion:DEPARTMENT_GUIDANCE_VERSION,guidance:departmentPromptGuidance(departmentIds),planSchema,filmPlanningInstruction,briefProposalSchema,briefProposalInstruction,screenplayProposalSchema,screenplayPlanningInstruction,departmentProposalSchema,departmentPlanningInstruction});
 export const departmentRevisionSchemaHash=hash({version:DEPARTMENT_REVISION_VERSION,departmentPlanningSchemaHash,departmentRevisionProposalSchema,departmentRevisionInstruction,revisionScope:'saved-request-current-source-all-seventeen-version-bindings-exact-selected-catalog-subset-v1',schemaAdmission:'selected-count-and-id-enum-runtime-exact-order-and-coverage'});
 export const storyboardPlanningSchemaHash=hash({version:STORYBOARD_PLANNING_VERSION,planningSchemaHash,departmentPlanningSchemaHash,departmentRevisionSchemaHash,handoffVersion:STORYBOARD_HANDOFF_VERSION,guidance:STORYBOARD_HANDOFF_GUIDANCE,storyboardProposalSchema,storyboardPlanningInstruction,contextSignatures:'sha256-canonical-handoff-source-and-current-contracts-v1',coverage:'all-source-scenes-and-exactly-once-dialogue-ids',protectedOrder:'all-existing-relative-order-approved-sequence-exact',admission:'current-approved-source-and-departments-free-legacy-adoption-required-approved-sequence-reopen-first-v1'});
-export const planningRequiredSchemaHash=model=>{const base=model?.capabilities?.planning?.operations?.includes('plan_storyboard')?storyboardPlanningSchemaHash:model?.capabilities?.planning?.operations?.includes('revise_departments')?departmentRevisionSchemaHash:model?.capabilities?.planning?.operations?.includes('plan_departments')?departmentPlanningSchemaHash:planningSchemaHash;return model?.capabilities?.planning?.songIntelligenceVersion===SONG_INTELLIGENCE_KIND?hash({base,songContract:SONG_INTELLIGENCE_KIND,instructions:SONG_DIRECTOR_INSTRUCTION,musicTreatment:{version:MUSIC_TREATMENT_CONTRACT,schema:musicTreatmentSchema,instructions:musicTreatmentInstruction},sourceBinding:'approved-exact-song-record-version-master-and-canonical-lyrics-v1'}):base;};
+export const directorPlanningSchemaHash=hash({version:'director-planning-v7',contract:DIRECTOR_CONVERSATION_KIND,instructions:DIRECTOR_INSTRUCTION,schema:directorProposalSchema,authority:'proposals-only-no-approval-or-spend'});
+export const planningRequiredSchemaHash=model=>{if(model?.capabilities?.planning?.operations?.includes('director_turn'))return hash({directorPlanningSchemaHash,legacy:planningRequiredSchemaHash({...model,capabilities:{...model.capabilities,planning:{...model.capabilities.planning,operations:model.capabilities.planning.operations.filter(op=>op!=='director_turn')}}})});const base=model?.capabilities?.planning?.operations?.includes('plan_storyboard')?storyboardPlanningSchemaHash:model?.capabilities?.planning?.operations?.includes('revise_departments')?departmentRevisionSchemaHash:model?.capabilities?.planning?.operations?.includes('plan_departments')?departmentPlanningSchemaHash:planningSchemaHash;return model?.capabilities?.planning?.songIntelligenceVersion===SONG_INTELLIGENCE_KIND?hash({base,songContract:SONG_INTELLIGENCE_KIND,instructions:SONG_DIRECTOR_INSTRUCTION,musicTreatment:{version:MUSIC_TREATMENT_CONTRACT,schema:musicTreatmentSchema,instructions:musicTreatmentInstruction},sourceBinding:'approved-exact-song-record-version-master-and-canonical-lyrics-v1'}):base;};
 const positive=n=>Number.isSafeInteger(n)&&n>0;
 const source=s=>{try{const u=new URL(s);return u.protocol==='https:'&&!u.username&&!u.password;}catch{return false;}};
 const instant=now=>now instanceof Date?now.getTime():typeof now==='string'?Date.parse(now):now;
@@ -50,7 +52,8 @@ export function planningProfile(model,now=Date.now(),operation){
  if(!positive(cost.totalMicroUsd))fail(409,'A positive bounded planning reservation is required.');
  return {fingerprint:hash(model),expiresAt:new Date(Math.min(Date.parse(s.expiresAt),Date.parse(p.expiresAt),Date.parse(t.expiresAt),...operationEvidence.flatMap(e=>[e.binding,e.execution,e.quality].map(review=>Date.parse(review.expiresAt))))).toISOString(),maxCallMicroUsd:cost.totalMicroUsd,modelId:model.id,modelVersion:model.model_version,priceVersion:model.price_version};
 }
-export function planningCreativeContext(project,approvals=[],operation='initial_plan'){
+export function planningCreativeContext(project,approvals=[],operation='initial_plan',assets=[]){
+ if(operation==='director_turn')return buildDirectorContext({project,approvals,assets});
  const creative=briefPlanningContext(project,approvals);
  const storyboard=operation==='plan_storyboard',departments=['plan_departments','revise_departments','plan_storyboard'].includes(operation)?departmentPlanningContext(project,approvals):null;
  const decisions=approvals.map((a,index)=>({artifactId:a.artifactId??null,version:a.version??null,decision:a.decision??null,ordinal:Number.isSafeInteger(a.ordinal)&&a.ordinal>0?a.ordinal:index+1,id:a.id??null}));
@@ -80,11 +83,12 @@ export function planningCreativeContext(project,approvals=[],operation='initial_
  if(/data:(?:image|audio|video)\//i.test(serialized))fail(409,'Planning creative context cannot contain embedded media bytes.');
  return context;
 }
-export function preparePlanningRequest(project,model,operation='initial_plan',now=Date.now(),approvals=[]){
+export function preparePlanningRequest(project,model,operation='initial_plan',now=Date.now(),approvals=[],assets=[]){
  const profile=planningProfile(model,now,operation),c=model.capabilities.planning;
- if(project.format==='music_video'&&operation!=='interpret_brief'&&c.songIntelligenceVersion!==SONG_INTELLIGENCE_KIND)fail(409,'Music treatment requires a separately reviewed song-intelligence model contract. Existing film routes remain unchanged.');
+ if(operation==='director_turn'&&(project.format!=='music_video'||c.directorConversationVersion!==DIRECTOR_CONVERSATION_KIND||!project.directorSession?.messages?.some(m=>m.role==='user')))fail(409,'Director conversation needs a saved user message and separately reviewed music conversation contract.');
+ if(project.format==='music_video'&&!['interpret_brief','director_turn'].includes(operation)&&c.songIntelligenceVersion!==SONG_INTELLIGENCE_KIND)fail(409,'Music treatment requires a separately reviewed song-intelligence model contract. Existing film routes remain unchanged.');
  const creative=briefPlanningContext(project,approvals);
- if(operation!=='interpret_brief'&&project.creativeBrief&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before film planning.');
+ if(!['interpret_brief','director_turn'].includes(operation)&&project.creativeBrief&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before film planning.');
  if(['write_script','revise_script'].includes(operation)&&(!creative.approved||creative.stale))fail(409,'Review and approve the current structured brief before screenplay writing.');
  if(['plan_departments','revise_departments','plan_storyboard'].includes(operation)&&(!creative.approved||creative.stale||!screenplayContext(project,approvals).approved))fail(409,'Department planning requires the current approved creative brief and screenplay.');
  if(operation==='revise_departments'&&!departmentRevisionContext(project).valid)fail(409,'Save a current targeted department revision request before paid revision planning.');
@@ -93,7 +97,7 @@ export function preparePlanningRequest(project,model,operation='initial_plan',no
   if(handoff.legacyRequiresAdoption===true||(project.shots?.length&&!project.storyboardHandoff?.shots?.length))fail(409,'Prepare the existing shots as storyboard contracts first. This free adoption preserves their IDs, directions and media; repair missing scene or exact dialogue links before any paid planning.');
   if(handoff.sequence?.approved)fail(409,'The current storyboard sequence is already approved. Edit a contract, reorder explicitly or reopen its review before requesting paid planning.');
  }
- const context=planningCreativeContext(project,approvals,operation);
+ const context=planningCreativeContext(project,approvals,operation,assets);
  const brief=JSON.stringify({premise:project.premise,direction:project.direction,language:project.language,format:project.format,operation,...(operation==='revise_plan'?{existingStory:project.story}:{} )});
  const request=buildPlanningRequest({brief,duration:project.duration,model:model.model_version,maxOutputTokens:c.maxOutputTokens,operation,context});
  if(Buffer.byteLength(JSON.stringify(request.body),'utf8')>c.maxRequestBytes)fail(409,'This planning request exceeds the reviewed input limit. Shorten the brief before continuing.');

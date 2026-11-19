@@ -197,7 +197,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
   if(saved.reservation?.operation==='plan_storyboard')try{const input=JSON.parse(saved.request.body.input);storyboardSource={screenplayDocument:input.context.screenplay.current.document};}catch{storyboardSource={screenplayDocument:null};}
   return reply(200,{call:visiblePlanningCall(saved),result:saved.result??null,...(storyboardSource?{storyboardSource}:{})});
  }
- const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments|revise_departments|plan_storyboard))?$/);
+ const planningSummary=action?.match(/^planning(?:\/(initial_plan|revise_plan|interpret_brief|write_script|revise_script|plan_departments|revise_departments|plan_storyboard|director_turn))?$/);
  if(planningSummary&&req.method==='GET')return reply(200,await planningController.summary(user.id,id,planningSummary[1]||'interpret_brief'));
  const consentRevoke=action?.match(/^planning-consents\/([0-9a-f-]+)\/revoke$/),planningPoll=action?.match(/^planning-calls\/([0-9a-f-]+)\/(poll|resume|release)$/);
  if(req.method==='POST'&&(action==='planning-consents'||action==='planning-calls'||consentRevoke||planningPoll)){
@@ -207,7 +207,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(planningPoll){if(!uuid.test(planningPoll[1]))fail(400,'Invalid planning call identity.');return reply(200,{call:visiblePlanningCall(planningPoll[2]==='poll'?await planningController.poll(user.id,id,planningPoll[1]):await planningController[planningPoll[2]](c,planningPoll[1]))});}
  if(consentRevoke){if(!uuid.test(consentRevoke[1])||typeof body.reason!=='string'||body.reason.trim().length<5||body.reason.length>1000)fail(400,'Supply an authorization and a reason of 5–1000 characters.');return reply(200,{consent:await planningController.revoke({...c,consentId:consentRevoke[1]})});}
  if(action==='planning-consents'){if(!Number.isSafeInteger(body.maxMicroUsd)||body.maxMicroUsd<=0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||!Number.isSafeInteger(body.maxCalls)||body.maxCalls<1||body.maxCalls>10)fail(400,'Supply integer USD limits and 1–10 planning calls.');return reply(200,{consent:await planningController.consent(c)});}
- if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments','plan_storyboard'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
+ if(!uuid.test(body.consentId||'')||!['initial_plan','revise_plan','interpret_brief','write_script','revise_script','plan_departments','revise_departments','plan_storyboard','director_turn'].includes(body.operation))fail(400,'Supply a scoped planning consent and operation.');
  return reply(200,{call:visiblePlanningCall(await planningController.start(c))});
  }
  if(action==='plan'&&req.method==='POST'){

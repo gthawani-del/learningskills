@@ -11,7 +11,7 @@ const policy='Match the reviewed operation, task, language, format, schema, exec
 // Registry discovery and eligibility are distinct from a user's spending consent.
 // Only the admitted Responses adapter can execute structured paid planning today;
 // fal remains discoverable with an explicit hold until its planning adapter is reviewed.
-export function routePlanning({project,approvals=[],models,operation='interpret_brief',modelId,now=Date.now(),budgetMicroUsd,intent}={}){
+export function routePlanning({project,approvals=[],assets=[],models,operation='interpret_brief',modelId,now=Date.now(),budgetMicroUsd,intent}={}){
  const task=planningOperationTask(operation);
  if(!task)fail(400,'Choose a supported planning operation.');
  if(!Array.isArray(models)||models.length>10000||!project||typeof project!=='object')fail(400,'A saved project and server registry are required.');
@@ -32,7 +32,7 @@ export function routePlanning({project,approvals=[],models,operation='interpret_
   const fit=evaluateRoutingIntent({intent,model,task,now:time});holds.push(...fit.holds);explanation.push(...fit.explanation);
   let context;
   if(model.provider==='openai'){
-   try{context=preparePlanningRequest(project,model,operation,now,approvals);prepared.set(model.id,context);}
+   try{context=preparePlanningRequest(project,model,operation,now,approvals,assets);prepared.set(model.id,context);}
    catch(error){holds.push('planning_evidence_or_context_held');explanation.push(error.status?error.message:'Planning evidence could not be reviewed.');}
   }
   if(context){

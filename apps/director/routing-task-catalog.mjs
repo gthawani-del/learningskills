@@ -42,6 +42,7 @@ export const routingTasks = Object.freeze([
   task('storyboard_planning', 'Prepare source-bound storyboard shot contracts and timing estimates', []),
   task('reference_image', 'Create an initial character identity or location reference image', []),
   task('reference_look', 'Create a character look using its approved identity reference', ['M09']),
+  task('director_conversation','Song-aware Director discussion and safe next-action proposals',[]),
   task('storyboard_frame', 'Create a shot-specific storyboard frame using approved reference images', ['M09']),
   task('story_reasoning', 'Story, screenplay and filmmaking reasoning', ['M01']),
   task('audio_analysis', 'Audio interpretation', ['M02', 'M05']),
@@ -72,6 +73,7 @@ export const planningOperationTasks = Object.freeze({
   plan_departments: 'department_planning',
   revise_departments: 'department_revision',
   plan_storyboard: 'storyboard_planning',
+  director_turn: 'director_conversation',
 });
 export function planningOperationTask(operation) {
   return typeof operation === 'string' && Object.hasOwn(planningOperationTasks, operation) ? planningOperationTasks[operation] : null;
