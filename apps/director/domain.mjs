@@ -21,6 +21,7 @@ export function newProject(body,owner){
  return {id:randomUUID(),ownerId:owner,title,premise:text(body.premise||'','premise'),format:body.format||'short_film',briefExplicitFields:['premise',...(body.format?['format']:[])],stage:'brief',duration:60,language:'English',direction:'',version:1,story:{treatment:'',scenes:[],version:1},shots:[],production:{records:[]},createdAt:new Date().toISOString()};
 }
 export function patchProject(previous,body){
+ if(Object.hasOwn(body,'directorSession'))fail(400,'Use the Director conversation to change participation style or messages.');
  if(Object.hasOwn(body,'screenplay'))fail(400,'Use the screenplay editor to change scripts, sources or review records.');
  if(Object.hasOwn(body,'departmentPlanning'))fail(400,'Use the department planner to change plans and their version history.');
  if(Object.hasOwn(body,'storyboardHandoff'))fail(400,'Use the shot-plan editor to change storyboard contracts and their version history.');

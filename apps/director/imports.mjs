@@ -1,4 +1,5 @@
 import {MUSIC_VIDEO_KIND,normalizeMusicVideoDocument} from './public/music-video-core.js';
+import {importedDirectorSession} from './public/director-session-core.js';
 import {SONG_INTELLIGENCE_KIND,normalizeSongIntelligence} from './public/song-intelligence-core.js';
 import {normalizeProductionArchive} from './production-records.mjs';
 import {normalizeBriefArchive} from './public/creative-brief-core.js';
@@ -36,6 +37,7 @@ function normalize(body,owner){
  const links=(source.shots||[]).map(s=>{const bindings=s.productionBindings||[];if(!Array.isArray(bindings)||bindings.length>100||new Set(bindings.map(b=>b?.recordId)).size!==bindings.length||bindings.some(b=>!productionArchive.records.some(r=>r.id===b?.recordId&&r.versions.some(v=>v.version===b.version))))fail(400,'A library binding is missing from this draft.');return {shotId:s.id,clip:s.clipAssetId||null,image:s.referenceAssetId||null,bindings};});
  for(const l of links)for(const [key,mime]of [['clip','video/'],['image','image/']])if(l[key]&&!assets.some(a=>a.sourceId===l[key]&&a.mime.startsWith(mime)))fail(400,'A selected reference is missing from this draft.');
  const content={title:project.title,premise:project.premise,format:project.format,duration:project.duration,language:project.language,direction:project.direction,stage:project.stage,story:project.story,shots:project.shots.map(({productionBindings,...s})=>productionBindings?.length?{...s,productionBindings}:s),notes:project.notes,assets,links:links.map(({bindings,...l})=>bindings?.length?{...l,bindings}:l),...(productionArchive.records.length?{productionArchive}:{})};
+ if(source.directorSession){project.directorSession=importedDirectorSession(source.directorSession);content.directorSession={mode:project.directorSession.mode,messages:project.directorSession.messages.map(({role,text})=>({role,text}))};}
  if(creativeBrief){content.creativeBrief=creativeBrief;content.briefExplicitFields=project.briefExplicitFields;}
  if(screenplay)content.screenplay=screenplay;
  if(departmentPlanning)content.departmentPlanning=departmentPlanning;

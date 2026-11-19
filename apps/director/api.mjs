@@ -1,4 +1,5 @@
 import {approveMusicDepartmentPackage} from './music-department-package.mjs';
+import {directorSession,applyDirectorSessionCommand} from './public/director-session-core.js';
 import {createAccountRecovery} from './account-recovery.mjs';
 import {createStoryboardProductionController} from './storyboard-production.mjs';
 import {animaticContext,saveAnimatic,buildSongAnimatic} from './public/animatic-core.js';
@@ -137,7 +138,9 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);
  if(!action&&req.method==='GET')return reply(200,{project});
+ if(action==='director-session'&&req.method==='GET')return reply(200,{session:directorSession(project)});
  if(project.importState?.status==='awaiting_media'&&req.method!=='GET'&&action!=='import-complete'&&!/^import-assets\/[0-9a-f-]+$/.test(action||''))fail(409,'This cloud copy is still importing. Reopen the device draft and choose Save to workspace to finish before editing or approving it.');
+ if(action==='director-session'&&req.method==='POST'){const next=applyDirectorSessionCommand(project,body);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
  if(action==='source-uploads'&&req.method==='GET')return reply(200,await ingestion.list(user.id,project));
  if(action==='source-uploads'&&req.method==='POST')return reply(201,await ingestion.start(user.id,project,body));
  const sourceAction=action?.match(/^source-uploads\/([^/]+)\/(ticket|complete|cancel|publish)$/);
