@@ -19,5 +19,10 @@ test('prepared conversation migration extends existing financial contracts and s
   assert.ok(command.includes("'director_turn'"));assert.ok(command.includes("'director-planning-v7'"));assert.ok(command.includes("'director-planning-v3'"));
   const check=(await db.query("select pg_get_constraintdef(oid) definition from pg_constraint where conname='director_planning_reservations_operation_check'")).rows[0].definition;assert.ok(check.includes('director_turn'));
   assert.equal((await db.query("select has_function_privilege('authenticated','public.director_conversation_snapshot(uuid)','EXECUTE') allowed")).rows[0].allowed,false);
+  const next={...p,version:p.version+1};
+  await db.query('select public.director_save_conversation($1,$2,$3,$4,$5,$6)',[owner,p.id,p.version,null,next,[]]);
+  assert.equal((await db.query('select brief->>\'version\' value from public.director_projects where id=$1',[p.id])).rows[0].value,String(next.version));
+  await assert.rejects(()=>db.query('select public.director_save_conversation($1,$2,$3,$4,$5,$6)',[owner,p.id,p.version,null,next,[]]),/version_conflict/);
+  assert.equal((await db.query("select has_function_privilege('authenticated','public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb)','EXECUTE') allowed")).rows[0].allowed,false);
  }finally{await db.close();}
 });

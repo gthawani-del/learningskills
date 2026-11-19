@@ -54,4 +54,18 @@ create trigger current_director_before_reservation before insert on public.direc
 create trigger current_director_before_claim before update of submit_claimed on public.director_planning_reservations for each row execute function public.director_guard_conversation();
 revoke all on function public.director_conversation_snapshot(uuid),public.director_capture_conversation(),public.director_guard_conversation(),public.director_immutable_conversation_snapshot() from public,anon,authenticated;
 grant execute on function public.director_conversation_snapshot(uuid),public.director_capture_conversation(),public.director_guard_conversation(),public.director_immutable_conversation_snapshot() to service_role;
+-- Save the response/action receipt and any existing revision request together,
+-- fenced by both the project version and the append-only approval ledger.
+create function public.director_save_conversation(p_actor_id uuid,p_project_id uuid,p_expected_version integer,p_expected_approval_id uuid,p_document jsonb,p_artifacts jsonb) returns void language plpgsql security invoker set search_path='' as $$
+declare p public.director_projects;latest uuid;
+begin
+ select x.* into p from public.director_projects x where x.id=p_project_id and x.owner_id=p_actor_id for update;
+ if p.id is null then raise exception 'not_project_owner';end if;
+ if(p.brief->>'version')::integer<>p_expected_version then raise exception 'project_version_conflict';end if;
+ select a.id into latest from public.director_approvals a where a.project_id=p.id order by a.ordinal desc limit 1;
+ if latest is distinct from p_expected_approval_id then raise exception 'director_approval_state_changed';end if;
+ perform public.director_save_project(p_actor_id,p_project_id,p_expected_version,p_document,p_artifacts);
+end $$;
+revoke all on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb) from public,anon,authenticated;
+grant execute on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb) to service_role;
 commit;
