@@ -13,7 +13,11 @@ begin
  definition=replace(definition,operations,expanded);definition=replace(definition,version_test,'case when p_body->>''operation''=''director_turn'' then ''director-planning-v7'' when p_body->>''operation''=''plan_storyboard'' then ''director-planning-v6'' when p_body->>''operation''=''revise_departments'' then ''director-planning-v5'' when p_body->>''operation''=''plan_departments'' then ''director-planning-v4'' else ''director-planning-v3'' end');execute definition;
  definition=pg_get_functiondef('public.director_registry_review_ready(text,jsonb,jsonb)'::regprocedure);
  if(length(definition)-length(replace(definition,operations,'')))/length(operations)<>1 then raise exception 'director_conversation_registry_baseline_mismatch';end if;
- execute replace(definition,operations,expanded);
+ definition=replace(definition,operations,expanded);
+ if strpos(definition,'if not public.director_registry_profile_shape(p_profile)')=0 then raise exception 'director_conversation_review_guard_baseline_mismatch';end if;
+ definition=replace(definition,'if not public.director_registry_profile_shape(p_profile)',
+ 'if (c#>''{planning,operations}'') @> ''["director_turn"]''::jsonb and c#>>''{planning,directorConversationVersion}'' is distinct from ''director_conversation_v1'' then return false;end if; if not public.director_registry_profile_shape(p_profile)');
+ execute definition;
 end $$;
 
 alter table public.director_planning_consents add column director_snapshot jsonb;

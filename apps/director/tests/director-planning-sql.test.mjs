@@ -3,6 +3,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {PGlite} from '@electric-sql/pglite';
+import {registryCandidate} from './registry-fixture-server.mjs';
+import {planningRequiredSchemaHash} from '../planning-profile.mjs';
 import {newProject} from '../domain.mjs';
 const prior=['director-foundation.sql','director-registry-seed.sql','director-registry-roles.sql','director-project-persistence.sql','director-route-freshness.sql','director-server-only-access.sql','director-dispatch-claims.sql','20261017235051_production_record_currentness.sql','director-recursive-approval-guards.sql','director-durable-quotes.sql','20261018002640_director_operational_controls.sql','director-planning-consent.sql','director-structured-brief-planning.sql','director-screenplay-planning.sql','director-registry-management.sql','director-department-planning.sql','director-department-revisions.sql','director-storyboard-handoff.sql','director-reference-production.sql','director-storyboard-production.sql'];
 test('prepared conversation migration extends existing financial contracts and snapshots exact authority',async()=>{
@@ -10,6 +12,9 @@ test('prepared conversation migration extends existing financial contracts and s
   await db.exec("create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);create function auth.uid()returns uuid language sql as 'select null::uuid';create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);");
   for(const name of prior)await db.exec(await readFile(new URL('../../../database/'+name,import.meta.url),'utf8'));
   await db.exec(await readFile(new URL('../../../database/director-conversation-planning.sql',import.meta.url),'utf8'));
+  const candidate=registryCandidate('O-native-conversation',{operations:['director_turn']});candidate.profile.capabilities.planning.directorConversationVersion='director_conversation_v1';candidate.profile.schema_evidence.inputSchemaHash=planningRequiredSchemaHash(candidate.profile);
+  const ready=async profile=>(await db.query('select public.director_registry_review_ready($1,$2,$3) ready',[candidate.modelId,profile,candidate.review])).rows[0].ready;
+  assert.equal(await ready(candidate.profile),true);const missing=structuredClone(candidate.profile);delete missing.capabilities.planning.directorConversationVersion;assert.equal(await ready(missing),false,'Native publication must reject an unqualified conversation contract');
   const owner='11111111-1111-4111-8111-111111111111',p=newProject({format:'music_video'},owner);
   await db.query('insert into auth.users(id)values($1)',[owner]);await db.query('insert into public.director_projects(id,owner_id,title,brief)values($1,$2,$3,$4)',[p.id,owner,p.title,p]);
   const snapshot=async()=> (await db.query('select public.director_conversation_snapshot($1) value',[p.id])).rows[0].value;

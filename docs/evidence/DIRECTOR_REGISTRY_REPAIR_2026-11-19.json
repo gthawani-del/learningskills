@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-19",
+  "baseline": "6051a69cdbd0a5e9d2fe062dd55aed5723ad4a03",
+  "nodeCasesPassed": 947,
+  "finalRegistryCasesPassed": 15,
+  "registryApiCasesPassed": 11,
+  "preparedNativeMarkerProof": true,
+  "nativeMigrationApplied": false,
+  "syntax": true,
+  "productionBuild": true,
+  "browserFlowsPassed": [
+    "registry-browser",
+    "music-director-browser"
+  ],
+  "browserEvidence": "Local actual application/API with synthetic identity/model evidence; no paid calls",
+  "realProviderQualified": false,
+  "paidCalls": 0,
+  "physicalMobileTested": false,
+  "deployedWebsiteTested": false,
+  "fullBrowserSuiteRun": false,
+  "knownPreviousBrowserFailuresNotFixed": [
+    "attachment-browser hidden control",
+    "department-revision-browser collapsed panel"
+  ],
+  "review": "No important code defects; all-nine lifecycle/routing assertion strengthened after evidence wording note",
+  "notImplementedHere": [
+    "multiobjective cost/latency utility",
+    "Thompson sampling or paid canary",
+    "live vendor circuit-breaker telemetry",
+    "face-aware cutting",
+    "qualified singing/lip-sync adapter"
+  ],
+  "providerOrInfrastructureAdded": false
+}
