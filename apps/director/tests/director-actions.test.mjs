@@ -30,10 +30,15 @@ test('stale sources, forged action identities and foreign accounts cannot apply 
  const f=await fixture(),base={project:f.project,actorId:f.project.ownerId,store:f.store,body:{requestId:randomUUID(),expectedVersion:f.project.version,planningCallId:f.callId,actionId:'0'.repeat(64)}};
  await assert.rejects(()=>applyDirectorAction(base));await assert.rejects(()=>recordDirectorReply({...base,actorId:'foreign',body:{requestId:randomUUID(),expectedVersion:f.project.version,planningCallId:f.callId}}),{status:404});
  const changed={...f.project,direction:'Different world',version:f.project.version+1};await f.store.save(changed,f.project.version);
- await assert.rejects(()=>recordDirectorReply({...base,project:changed,body:{requestId:randomUUID(),expectedVersion:changed.version,planningCallId:f.callId}}),{status:409});
+ const historical=await recordDirectorReply({...base,project:changed,body:{requestId:randomUUID(),expectedVersion:changed.version,planningCallId:f.callId}});assert.equal(historical.project.directorSession.messages.at(-1).text,'Preserve the approved cast; revise only this passage.');assert.equal(historical.action.destination,null);assert.equal(historical.action.sourceCurrent,false);await assert.rejects(()=>applyDirectorAction({...base,project:historical.project,body:{...base.body,expectedVersion:historical.project.version}}),{status:409});
 });
 test('department handoff preserves all department documents and prepares only selected revision scope',async()=>{
  const f=await fixture('prepare_department_revision'),approvals=await f.store.records('approvals',f.project.id),assets=await f.store.records('assets',f.project.id),call=await f.store.readPlanningCall(f.project.ownerId,f.project.id,f.callId),preview=prepareDirectorAction({project:f.project,approvals,assets,proposal:call.result.directorProposal,planningCallId:f.callId});
  const result=await applyDirectorAction({project:f.project,actorId:f.project.ownerId,store:f.store,body:{requestId:randomUUID(),expectedVersion:f.project.version,planningCallId:f.callId,actionId:preview.actionId}});
  assert.deepEqual(result.project.departmentPlanning.departments,f.project.departmentPlanning.departments);assert.deepEqual(result.project.departmentPlanning.revisionRequests.at(-1).departmentIds,['camera']);assert.equal(f.store.state.jobs.length,0);
+});
+test('concurrent asset publication fences a Director action before saving any revision',async()=>{
+ const f=await fixture(),approvals=await f.store.records('approvals',f.project.id),assets=await f.store.records('assets',f.project.id),call=await f.store.readPlanningCall(f.project.ownerId,f.project.id,f.callId),preview=prepareDirectorAction({project:f.project,approvals,assets,proposal:call.result.directorProposal,planningCallId:f.callId});
+ const original=f.store.saveDirectorDecision.bind(f.store);f.store.saveDirectorDecision=async(...args)=>{f.store.state.assets.push({id:randomUUID(),projectId:f.project.id,mime:'image/png',version:1,checksum:'new'});return original(...args);};
+ await assert.rejects(()=>applyDirectorAction({project:f.project,actorId:f.project.ownerId,store:f.store,body:{requestId:randomUUID(),expectedVersion:f.project.version,planningCallId:f.callId,actionId:preview.actionId}}),{status:409});assert.deepEqual((await f.store.get(f.project.id,f.project.ownerId)).screenplay,f.project.screenplay);
 });

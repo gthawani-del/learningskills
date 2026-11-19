@@ -21,7 +21,7 @@ create function public.director_conversation_snapshot(p_project_id uuid) returns
  select jsonb_build_object(
   'creative',(select coalesce(jsonb_object_agg(e.key,e.value),'{}'::jsonb) from jsonb_each(p.brief)e where e.key=any(array['title','premise','direction','language','format','duration','stage','briefExplicitFields','creativeBrief','story','screenplay','departmentPlanning','storyboardHandoff','referenceProduction','storyboardProduction','production','shots','referenceIds','notes'])),
   'approvals',coalesce((select jsonb_agg(jsonb_build_object('id',a.id,'artifact',a.artifact_id,'decision',a.decision,'ordinal',a.ordinal)order by a.ordinal)from public.director_approvals a where a.project_id=p.id),'[]'::jsonb),
-  'assets',coalesce((select jsonb_agg(jsonb_build_object('id',a.id,'version',a.metadata->'version','checksum',a.metadata->'checksum')order by a.id)from public.director_assets a where a.project_id=p.id),'[]'::jsonb)
+  'assets',coalesce((select jsonb_agg(jsonb_build_object('id',a.id,'version',a.metadata->'version','checksum',a.metadata->'checksum','mime',a.metadata->'mime','name',a.metadata->'name','role',a.metadata->'role')order by a.id)from public.director_assets a where a.project_id=p.id),'[]'::jsonb)
  ) from public.director_projects p where p.id=p_project_id;
 $$;
 create function public.director_capture_conversation() returns trigger language plpgsql security invoker set search_path='' as $$
@@ -56,7 +56,7 @@ revoke all on function public.director_conversation_snapshot(uuid),public.direct
 grant execute on function public.director_conversation_snapshot(uuid),public.director_capture_conversation(),public.director_guard_conversation(),public.director_immutable_conversation_snapshot() to service_role;
 -- Save the response/action receipt and any existing revision request together,
 -- fenced by both the project version and the append-only approval ledger.
-create function public.director_save_conversation(p_actor_id uuid,p_project_id uuid,p_expected_version integer,p_expected_approval_id uuid,p_document jsonb,p_artifacts jsonb) returns void language plpgsql security invoker set search_path='' as $$
+create function public.director_save_conversation(p_actor_id uuid,p_project_id uuid,p_expected_version integer,p_expected_approval_id uuid,p_expected_assets jsonb,p_document jsonb,p_artifacts jsonb) returns void language plpgsql security invoker set search_path='' as $$
 declare p public.director_projects;latest uuid;
 begin
  select x.* into p from public.director_projects x where x.id=p_project_id and x.owner_id=p_actor_id for update;
@@ -64,8 +64,20 @@ begin
  if(p.brief->>'version')::integer<>p_expected_version then raise exception 'project_version_conflict';end if;
  select a.id into latest from public.director_approvals a where a.project_id=p.id order by a.ordinal desc limit 1;
  if latest is distinct from p_expected_approval_id then raise exception 'director_approval_state_changed';end if;
+ if(public.director_conversation_snapshot(p.id)->'assets')is distinct from p_expected_assets then raise exception 'director_reference_assets_changed';end if;
  perform public.director_save_project(p_actor_id,p_project_id,p_expected_version,p_document,p_artifacts);
 end $$;
-revoke all on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb) from public,anon,authenticated;
-grant execute on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb) to service_role;
+revoke all on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb,jsonb) from public,anon,authenticated;
+grant execute on function public.director_save_conversation(uuid,uuid,integer,uuid,jsonb,jsonb,jsonb) to service_role;
+-- Asset metadata may change without a project version. Serialize those writes
+-- against the same parent-row lock used by consent and conversation decisions.
+create function public.director_lock_asset_context() returns trigger language plpgsql security invoker set search_path='' as $$
+begin
+ if TG_OP='DELETE' then perform 1 from public.director_projects where id=old.project_id for update;return old;end if;
+ if TG_OP='UPDATE' and old.project_id is distinct from new.project_id then raise exception 'director_asset_project_immutable';end if;
+ perform 1 from public.director_projects where id=new.project_id for update;return new;
+end $$;
+create trigger director_asset_context_lock before insert or update or delete on public.director_assets for each row execute function public.director_lock_asset_context();
+revoke all on function public.director_lock_asset_context() from public,anon,authenticated;
+grant execute on function public.director_lock_asset_context() to service_role;
 commit;

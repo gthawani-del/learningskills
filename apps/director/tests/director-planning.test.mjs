@@ -39,3 +39,9 @@ test('an uncertain submission is retained and the same request cannot create ano
  const body={requestId:randomUUID(),expectedVersion:p.version,consentId:consent.id,operation:'director_turn'};
  const first=await f.post('/planning-calls',body),again=await f.post('/planning-calls',body);assert.equal(first.call.id,again.call.id);assert.equal(submitted,1);assert.equal(first.call.chargeState,'unknown');assert.equal(first.call.result?.directorProposal,undefined);
 });
+test('Director allowance cannot survive a newly published source asset',async()=>{
+ const f=await fixture(),p=f.project,q=(await f.get('/planning/director_turn')).data;
+ const consent=(await f.post('/planning-consents',{requestId:randomUUID(),expectedVersion:p.version,operation:'director_turn',expectedModelId:q.quote.modelId,expectedProfileFingerprint:q.quote.profileFingerprint,maxMicroUsd:100000,finishReserveMicroUsd:0,maxCalls:2})).consent;
+ f.store.state.assets.push({id:randomUUID(),projectId:p.id,name:'new reference',version:1,mime:'image/png',checksum:'changed'});
+ await assert.rejects(()=>f.post('/planning-calls',{requestId:randomUUID(),expectedVersion:p.version,consentId:consent.id,operation:'director_turn'}),{status:409});assert.equal(f.submits(),0);
+});

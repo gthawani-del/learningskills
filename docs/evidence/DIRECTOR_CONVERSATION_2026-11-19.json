@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "provider": "simulated",
+  "paidCalls": 0,
+  "modeAndTranscriptReload": true,
+  "scopedRevisionOnly": true,
+  "sourceAndMediaPreserved": true,
+  "keyboard": true,
+  "draftRecovery": true,
+  "committedResponseLossReplay": true,
+  "desktopAndMobileViewport": true,
+  "physicalDevice": false,
+  "pageErrors": [],
+  "httpErrors": [],
+  "unexpectedConsoleErrors": [],
+  "date": "2026-11-19",
+  "baseline": "bf51cda57f8f9adc9d937f5b956ecf256e9b956a",
+  "finalNodeCasesPassed": 943,
+  "productionBuild": true,
+  "syntax": true,
+  "isolatedPreparedSqlProof": true,
+  "liveMigration": false,
+  "realModelQualified": false,
+  "fullBrowserReleasePassed": false,
+  "existingFailuresReproducedOnBaseline": [
+    {
+      "scenario": "attachment-browser",
+      "reason": "Hidden #cast-upload control"
+    },
+    {
+      "scenario": "department-revision-browser",
+      "reason": "Collapsed #department-workspace visibility at line61"
+    }
+  ],
+  "additionalAffectedBrowsersPassed": [
+    "music-treatment-browser",
+    "music-storyboard-browser"
+  ],
+  "independentFinalReview": "All findings corrected; ready to merge at offline implementation scope",
+  "limitations": [
+    "Synthetic model/identity/song evidence; no real provider quality or billing acceptance",
+    "Native migration prepared and isolated-tested only",
+    "No physical mobile device verification",
+    "Full browser regression run stopped at known baseline attachment failure; remaining suite not claimed green"
+  ]
+}

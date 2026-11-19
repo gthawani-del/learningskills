@@ -1,3 +1,4 @@
+import {buildDirectorContext} from './director-context.mjs';
 import {hash,fail} from './domain.mjs';
 import {planningScope} from './planning-policy.mjs';
 import {planningProfile} from './planning-profile.mjs';
@@ -18,13 +19,22 @@ export const localPlanningMethods={
   const p=own(state,c.actorId,c.projectId);if(!operations[operation])fail(400,'Unknown planning command.');
   const previous=(state.planningCommands||[]).find(r=>r.requestId===c.requestId);
   if(previous){if(previous.fingerprint!==hash({operation,...c}))fail(409,'This request identity belongs to another planning decision.');return operation==='claim_planning'?{...structuredClone(previous.result),claimed:false}:structuredClone(previous.result);}
-  let trusted={now:new Date()};
+  let trusted={now:new Date()},directorDigest;
   if(['grant_planning','reserve_planning','claim_planning'].includes(operation)){
    const current=state.models.find(m=>m.id===options.profile?.modelId);const profile=planningProfile(current),scope=planningScope(p,state.approvals.filter(a=>a.projectId===p.id));
    if(hash(profile)!==hash(options.profile)||hash(scope)!==hash(options.scope))fail(409,'Planning evidence or approvals changed. Refresh before continuing.');
+   const reservation=(state.planningReservations||[]).find(r=>r.id===c.reservationId),directorOperation=c.operation??reservation?.operation;
+   if(directorOperation==='director_turn'){
+    directorDigest=buildDirectorContext({project:p,approvals:state.approvals.filter(a=>a.projectId===p.id),assets:state.assets.filter(a=>a.projectId===p.id)}).sourceDigest;
+    if(options.request&&JSON.parse(options.request.body.input).context.sourceDigest!==directorDigest)fail(409,'Director context changed before authorization.');
+    if(operation!=='grant_planning'){const consent=(state.planningConsents||[]).find(g=>g.id===(c.consentId??reservation?.consentId));if(consent?.directorSourceDigest!==directorDigest)fail(409,'Director sources changed. A new planning allowance is required.');}
+   }
    trusted={...trusted,profile,scope};
   }
   const result=['settle_planning','revoke_planning'].includes(operation)?operations[operation](state,c,trusted.now):operations[operation](state,c,trusted);
+  if(operation==='grant_planning'&&directorDigest){
+   const consent=state.planningConsents.find(g=>g.id===result.id);consent.directorSourceDigest=directorDigest;result.directorSourceDigest=directorDigest;state.planningCommands.find(x=>x.requestId===c.requestId).result=structuredClone(result);
+  }
   if(operation==='reserve_planning'){
    const original=options.apiRequest;
    const previous=(state.planningCallRequests||[]).find(r=>r.requestId===c.requestId);

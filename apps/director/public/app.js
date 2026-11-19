@@ -579,10 +579,17 @@ async function imageFinancialAction(config,kind,path,body,onSuccess){if(config.b
 
 // Same composer, project document and planning controls; no separate chat service.
 function musicDirectorActive(){return state.project?.format==='music_video'&&!presentation.revision;}
+function pendingDirectorRequest(project,kind,command){
+ const storageKey=`director:conversation-request:${project.id}:${kind}`,signature=JSON.stringify(command);
+ const previous=JSON.parse(sessionStorage.getItem(storageKey)||'null');
+ if(previous&&previous.signature!==signature)throw Error('A previous Director request needs checking. Retry that same request before changing it.');
+ const pending=previous||{signature,body:{requestId:crypto.randomUUID(),expectedVersion:project.version,...command}};
+ sessionStorage.setItem(storageKey,JSON.stringify(pending));return {storageKey,body:pending.body};
+}
 async function saveDirectorCommand(command){
- const project=state.project,body={requestId:crypto.randomUUID(),expectedVersion:project.version,...command};
- const next=local()?await saveDevice(applyDirectorSessionCommand(project,body),project.version):projectFrom(await api(`/api/projects/${encodeURIComponent(project.id)}/director-session`,{method:'POST',body}));
- if(state.project?.id!==project.id)return;state.project=next;if(local())deviceProjects=await listDevice();return next;
+ const project=state.project,pending=pendingDirectorRequest(project,command.action,command),body=pending.body;
+ let next;try{next=local()?await saveDevice(applyDirectorSessionCommand(project,body),project.version):projectFrom(await api(`/api/projects/${encodeURIComponent(project.id)}/director-session`,{method:'POST',body}));}catch(error){if([400,403,404,409,413,422].includes(error.status))sessionStorage.removeItem(pending.storageKey);throw error;}
+ sessionStorage.removeItem(pending.storageKey);if(state.project?.id!==project.id)return;state.project=next;if(local())deviceProjects=await listDevice();return next;
 }
 async function saveDirectorReply(callId){
  const projectId=state.project.id,current=projectFrom(await api(`/api/projects/${encodeURIComponent(projectId)}`));
@@ -596,9 +603,9 @@ function bindMusicDirector(){
  $('#director-review-cost').onclick=()=>showPlanningLimits('director_turn');
  main.querySelectorAll('[data-director-action]').forEach(button=>button.onclick=async()=>{
   if(state.busy||!frameNavigationAllowed())return;state.busy=true;button.disabled=true;
-  try{const projectId=state.project.id,result=await api(`/api/projects/${encodeURIComponent(projectId)}/director-session/actions`,{method:'POST',body:{requestId:crypto.randomUUID(),expectedVersion:state.project.version,planningCallId:button.dataset.directorCall,actionId:button.dataset.directorAction}});
+  try{const projectId=state.project.id,pending=pendingDirectorRequest(state.project,'action',{planningCallId:button.dataset.directorCall,actionId:button.dataset.directorAction}),result=await api(`/api/projects/${encodeURIComponent(projectId)}/director-session/actions`,{method:'POST',body:pending.body});sessionStorage.removeItem(pending.storageKey);
    if(state.project?.id!==projectId)return;state.project=projectFrom(result);if(result.action.destination)await save({stage:result.action.destination});render();
    if(result.action.planningOperation)await showPlanningLimits(result.action.planningOperation);else toast('Existing project review opened. No paid work started.');
-  }catch(error){toast(error.message);button.disabled=false;}finally{state.busy=false;}
+  }catch(error){if([400,403,404,409,413,422].includes(error.status))sessionStorage.removeItem(`director:conversation-request:${state.project.id}:action`);toast(error.message);button.disabled=false;}finally{state.busy=false;}
  });
 }
