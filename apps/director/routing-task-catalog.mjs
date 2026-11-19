@@ -53,6 +53,7 @@ export const routingTasks = Object.freeze([
   task('alignment', 'Align approved words to audio', ['M07']),
   task('stem_separation', 'Vocal and accompaniment separation', ['M08']),
   task('image_edit', 'Reference image editing and storyboard frames', ['M09']),
+  task('singing_performance','Singing performance from exact original audio and approved identity frame; quality requires task-specific qualification',[]),
   task('talking_portrait', 'Portrait performance from approved audio; singing unverified', ['M10']),
   task('music_generation', 'Score and music generation', ['M11']),
   task('sound_effects', 'Sound effects, ambience and Foley', ['M12']),

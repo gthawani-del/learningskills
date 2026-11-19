@@ -1,5 +1,7 @@
 # Model Router Intelligence Bible
 
+Implementation update, 19 November 2026: [approved intent, complete quote utility, explicit outcomes, health holds, offline sampling, exact singing adapter and financial/source gates](FIVE_FOUNDATIONS_IMPLEMENTATION_2026-11-19.md). OmniHuman v2's observed USD0.105/s is a dated candidate price, not activation or a promised complete-video cost. Native changes remain prepared only; real task/configuration qualification is still required.
+
 ## 19 November 2026 — Model-routing PDF: adopted rules and algorithm boundaries
 
 This addendum reconciles the user-supplied **Model routing.pdf**, “Director Studio: Product, Economics & Algorithmic Architecture for a Multimodal Media Model Router”, against the existing system. It preserves Music Video as the first release, all seventeen departments, the frozen UI and shared multi-format architecture. The PDF is useful design input; its unsourced model names, API IDs, prices, promotional dates, exchange rate, tax treatment, quality scores and savings are **unverified candidates, not production registry evidence**. This addendum takes precedence over conflicting PDF instructions; it does not replace existing source-specific execution contracts.

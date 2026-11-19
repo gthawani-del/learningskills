@@ -27,3 +27,11 @@ test('private range transport rejects full, short, oversized and mismatched upst
  const replies=[()=>new Response(bytes,{status:200}),()=>new Response(bytes.subarray(0,3),{status:206,headers:{'content-range':`bytes 0-4/${bytes.length}`,'content-length':'5'}}),()=>new Response(bytes.subarray(0,6),{status:206,headers:{'content-range':`bytes 0-4/${bytes.length}`,'content-length':'5'}}),()=>new Response(bytes.subarray(0,5),{status:206,headers:{'content-range':`bytes 1-5/${bytes.length}`,'content-length':'5'}})];
  for(const reply of replies){const storage=createMediaStorage({env,demo:false,fetcher:async()=>reply()});await assert.rejects(()=>storage.getRange('owner/project/asset',{start:0,end:4,total:bytes.length}),{status:502});}
 });
+test('source byte SHA256 retries preserve the already stored exact object',async()=>{
+ const {createHash}=await import('node:crypto');
+ const storage=createMediaStorage({env,demo:false,fetcher:async(url,options)=>options.method==='POST'?{ok:false,status:409}:{ok:true,arrayBuffer:async()=>bytes}});
+ await storage.putIfAbsent('owner/project/asset',bytes,'video/mp4',createHash('sha256').update(bytes).digest('hex'),{bucket:'director-source-media'});
+});
+test('private source transport enforces its byte ceiling while streaming',async()=>{
+ const storage=createMediaStorage({env,demo:false,fetcher:async()=>new Response(bytes)});await assert.rejects(()=>storage.get('owner/project/asset',{bucket:'director-source-media',maxBytes:3}),{status:413});
+});

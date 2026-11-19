@@ -6,7 +6,7 @@ import {mkdtemp,readFile,writeFile,rm,symlink} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {randomUUID,createHash} from 'node:crypto';
-import {prepareSongRender,renderSongTimeline} from '../song-render.mjs';
+import {prepareSongRender,renderSongTimeline,compileSongFinishing} from '../song-render.mjs';
 
 const run=promisify(execFile),hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 function fixture(seconds=180){
@@ -40,19 +40,56 @@ test('visible singing requires a source-video and exact reviewed master-to-sourc
  const still=clone(args);still.selections[2].assetId=still.assets[1].id;still.selections[2].sourceInMs=0;assert.throws(()=>prepareSongRender(still),/still image/);
 });
 
+test('finishing preserves canonical text, validates timing and compiles bounded fit choices',()=>{
+ const args=fixture();args.selections[0].fit='cover';
+ args.finishing={canonicalLyrics:"  It's 100%: [mine]\\forever\n",captions:[{text:"It's 100%: [mine]\\forever",startMs:1000,endMs:2000}],titles:[{text:'  Original title  ',startMs:0,endMs:1000}]};
+ const manifest=prepareSongRender(args);
+ assert.equal(manifest.clips[0].fit,'cover');assert.equal(manifest.clips[1].fit,'contain');
+ assert.deepEqual(manifest.finishing,args.finishing);
+ const changed=clone(args);changed.finishing.captions[0].text='rewritten lyric';assert.throws(()=>prepareSongRender(changed),/canonical/);
+ const late=clone(args);late.finishing.titles[0].endMs=180001;assert.throws(()=>prepareSongRender(late),/overlay interval/);
+ const control=clone(args);control.finishing.titles[0].text='unsafe\u0000text';assert.throws(()=>prepareSongRender(control),/control characters/);
+ const badFit=clone(args);badFit.selections[0].fit='stretch';assert.throws(()=>prepareSongRender(badFit),/fit/);
+ const overlap=clone(args);overlap.finishing.captions.push({...overlap.finishing.captions[0]});assert.throws(()=>prepareSongRender(overlap),/overlap/);
+});
+
+test('finishing compiler offsets master timing and supports instrumental delivery',()=>{
+ const args=fixture();args.songPlan.range={startMs:60000,endMs:180000};args.project.duration=120;
+ args.songPlan.sections[0].startMs=60000;args.songPlan.shots.shift();args.selections.shift();
+ args.finishing={canonicalLyrics:'  Literal %{pts}: text  ',captions:[{text:'  Literal %{pts}: text  ',startMs:61000,endMs:62000}]};
+ const compiled=compileSongFinishing(prepareSongRender(args));
+ assert.deepEqual(compiled.files,[{name:'overlay-0.txt',text:'  Literal %{pts}: text  '}]);
+ assert.ok(compiled.filter.includes("between(n,24,47)"));assert.ok(compiled.filter.includes('expansion=none'));assert.ok(!compiled.filter.includes('Literal'));
+ delete args.finishing;assert.deepEqual(compileSongFinishing(prepareSongRender(args)),{files:[],filter:''});
+});
+
 test('real three-minute MP4 assembles supplied stills and trimmed footage with the unchanged master recording',async()=>{
  const dir=await mkdtemp(join(tmpdir(),'director-song-render-test-')),args=fixture();
  try{
   const [master,image,clip]=args.assets;
   await run('ffmpeg',['-v','error','-nostdin','-y','-f','lavfi','-i','aevalsrc=0.2*sin(2*PI*if(lt(t\\,60)\\,220\\,if(lt(t\\,120)\\,440\\,660))*t):s=8000:d=180','-c:a','pcm_s16le','-f','wav',join(dir,master.id)]);
   const bytes=await readFile(join(dir,master.id));master.size=bytes.length;master.checksum=hash(bytes);args.songPlan.master.checksum=master.checksum;
-  await run('ffmpeg',['-v','error','-nostdin','-y','-f','lavfi','-i','color=c=blue:s=160x90:r=24:d=1','-frames:v','1','-threads','1','-c:v','png','-f','image2',join(dir,image.id)]);
+  await run('ffmpeg',['-v','error','-nostdin','-y','-f','lavfi','-i','color=c=blue:s=90x160:r=24:d=1','-frames:v','1','-threads','1','-c:v','png','-f','image2',join(dir,image.id)]);
   await run('ffmpeg',['-v','error','-nostdin','-y','-f','lavfi','-i','color=c=green:s=160x90:r=24:d=62','-f','lavfi','-i','sine=frequency=1400:sample_rate=8000:duration=62','-c:v','libx264','-preset','ultrafast','-threads','1','-pix_fmt','yuv420p','-c:a','aac','-f','mp4',join(dir,clip.id)]);
+  for(const asset of [image,clip]){const stored=await readFile(join(dir,asset.id));Object.assign(asset,{checksum:hash(stored),checksumAlgorithm:'sha256-bytes',size:stored.length});}
+  args.selections[0].fit='cover';
+  args.finishing={canonicalLyrics:"It's 100%: [mine]\\forever",captions:[{text:"It's 100%: [mine]\\forever",startMs:1000,endMs:2000}],titles:[{text:'Original master',startMs:3000,endMs:4000}]};
   const result=await renderSongTimeline({...args,assetDir:dir});assert.ok(result.bytes.length>10000);assert.equal(result.manifest.totalFrames,4320);assert.equal(result.manifest.masterBytesUnchanged,true);assert.equal(result.manifest.technicalValidation,'passed');assert.equal(result.manifest.creativeReview,'unverified');assert.equal(result.manifest.output.audioChannels,1);assert.ok(Math.abs(result.manifest.output.durationSeconds-180)<=0.1);assert.equal(hash(await readFile(join(dir,master.id))),master.checksum);
   const final=join(dir,'finished.mp4');await writeFile(final,result.bytes);
+  assert.equal(result.manifest.output.videoTimeBase,'1/12288');assert.equal(result.manifest.output.frameCount,4320);
+  for(const [time,visible] of [[0.5,false],[1.5,true],[2.5,false],[3.5,true],[4.5,false]]){
+   const {stdout:rgb}=await run('ffmpeg',['-v','error','-ss',String(time),'-i',final,'-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','pipe:1'],{encoding:'buffer',maxBuffer:320*180*3+1024});
+   let white=0;for(let i=0;i<rgb.length;i+=3)if(rgb[i]>180&&rgb[i+1]>180&&rgb[i+2]>180)white++;
+   assert.equal(white>30,visible,`deterministic overlay visibility at ${time}s; white pixels ${white}`);
+  }
+  for(const [time,blue] of [[30,true],[90,false]]){
+   const {stdout:rgb}=await run('ffmpeg',['-v','error','-ss',String(time),'-i',final,'-frames:v','1','-vf','crop=2:2:0:80','-f','rawvideo','-pix_fmt','rgb24','pipe:1'],{encoding:'buffer',maxBuffer:1024});
+   assert.equal(rgb[2]>150,blue,`cover fills picture while contain pads at ${time}s`);
+  }
   for(const [time,frequency] of [[20,220],[80,440],[140,660]]){
    const {stdout:pcm}=await run('ffmpeg',['-v','error','-ss',String(time),'-i',final,'-t','1','-vn','-ac','1','-ar','8000','-f','s16le','pipe:1'],{encoding:'buffer',maxBuffer:65536});let crossings=0;for(let i=1;i<pcm.length/2;i++)if(pcm.readInt16LE((i-1)*2)<=0&&pcm.readInt16LE(i*2)>0)crossings++;assert.ok(Math.abs(crossings-frequency)<5,`original ${frequency}Hz at ${time}s; observed ${crossings}, not generated clip sound`);
   }
+  const swapped=clone(args);swapped.assets[1].checksum='f'.repeat(64);await assert.rejects(()=>renderSongTimeline({...swapped,assetDir:dir}),/visual.*bytes|picture.*checksum/i);
   const unsafe=clone(args),foreign=randomUUID();await symlink(join(dir,master.id),join(dir,foreign));unsafe.assets[0].id=foreign;unsafe.songPlan.master.assetId=foreign;await assert.rejects(()=>renderSongTimeline({...unsafe,assetDir:dir}),/unsafe path/);
   const short=clone(args);short.selections[2].sourceInMs=3000;await assert.rejects(()=>renderSongTimeline({...short,assetDir:dir}),/too short/);
   const changed=clone(args);changed.assets[0].checksum='c'.repeat(64);changed.songPlan.master.checksum='c'.repeat(64);await assert.rejects(()=>renderSongTimeline({...changed,assetDir:dir}),/bytes do not match/);

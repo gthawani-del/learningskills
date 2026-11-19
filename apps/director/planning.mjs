@@ -1,3 +1,7 @@
+import {modelProviderHealth,observeProviderHealth} from './production-outcomes.mjs';
+import {routingPolicyRecords} from './routing-policy.mjs';
+import {evaluateRoutingIntent} from './routing-intent.mjs';
+import {routingPolicyContext} from './routing-policy.mjs';
 import {randomUUID} from 'node:crypto';
 import {hash,fail} from './domain.mjs';
 import {planningScope,decidePlanningPath} from './planning-policy.mjs';
@@ -13,9 +17,11 @@ export function createPlanningController({store,provider,env=process.env,now=()=
    if(handoff.legacyRequiresAdoption===true||(project.shots?.length&&!project.storyboardHandoff?.shots?.length))fail(409,'Prepare the existing shots as storyboard contracts first. This free adoption preserves their IDs, directions and media; repair missing scene or exact dialogue links before any paid planning.');
    if(handoff.sequence?.approved)fail(409,'The current storyboard sequence is already approved. Edit a contract, reorder explicitly or reopen its review before requesting paid planning.');
   }
-  const route=routePlanning({project,approvals,models:await store.planningModels(),operation,modelId,assets:operation==='director_turn'?await store.records('assets',projectId):[],now:now()});
+  const routing=routingPolicyContext(project,approvals,operation);
+  const models=await store.planningModels(),healthEvents=models.some(m=>m.capabilities?.healthPolicy)?await store.records('audit',projectId):[],healthByModel=Object.fromEntries(models.filter(m=>m.capabilities?.healthPolicy).map(m=>[m.id,modelProviderHealth(m,healthEvents,now().getTime())]));
+  const route=routePlanning({project,approvals,intent:routing.intent,models,healthByModel,operation,modelId,assets:operation==='director_turn'?await store.records('assets',projectId):[],now:now()});
   if(!route.selected)throw Object.assign(new Error(modelId?'The authorized planning model is unavailable for this operation. No replacement model was selected.':'No reviewed registry planning route fits this operation and project. Manual editing remains available.'),{status:409,route:publicPlanningRoute(route)});
-  return {project,scope,model:route.model,route:publicPlanningRoute(route),...route.context};
+  return {project,scope,model:route.model,route:{...publicPlanningRoute(route),routingPolicy:routing.policy},...route.context};
  }
  async function enabled(){
   if(!env.OPENAI_API_KEY)fail(409,'The planning provider credential is unavailable. Manual editing remains available.');
@@ -23,6 +29,7 @@ export function createPlanningController({store,provider,env=process.env,now=()=
  }
  async function recordSnapshot(actorId,projectId,call,snapshot){
   await store.recordPlanningResponse(actorId,projectId,call.id,snapshot.id);
+  if(snapshot.status==='completed'){const saved=await store.readPlanningCall(actorId,projectId,call.id);await observeProviderHealth({store,projectId,actorId,model:saved.profileSnapshot,requestId:snapshot.id,kind:'success'});}
   const current=await store.readPlanningCall(actorId,projectId,call.id);
   const terminal=['completed','failed','cancelled','incomplete'].includes(snapshot.status);
   if(!terminal){
@@ -48,7 +55,7 @@ export function createPlanningController({store,provider,env=process.env,now=()=
   if(!claim.claimed)return store.readPlanningCall(c.actorId,c.projectId,call.id);
   let snapshot;
   try{snapshot=await provider.submit({request:ctx.request,authorized:true});}
-  catch{await store.planningCommand('settle_planning',{actorId:c.actorId,projectId:c.projectId,requestId:randomUUID(),expectedVersion:c.expectedVersion,reservationId:call.id,outcome:'unknown'});return store.readPlanningCall(c.actorId,c.projectId,call.id);}
+  catch(error){await observeProviderHealth({store,projectId:c.projectId,actorId:c.actorId,model:ctx.model,requestId:call.id,kind:'provider_error',httpStatus:error.providerHttpStatus});await store.planningCommand('settle_planning',{actorId:c.actorId,projectId:c.projectId,requestId:randomUUID(),expectedVersion:c.expectedVersion,reservationId:call.id,outcome:'unknown'});return store.readPlanningCall(c.actorId,c.projectId,call.id);}
   try{return await recordSnapshot(c.actorId,c.projectId,call,snapshot);}
   catch{return {...await store.readPlanningCall(c.actorId,c.projectId,call.id),providerResponseId:snapshot.id,recoveryWarning:'Response received; durable reconciliation is pending. Check this existing request before doing more work.'};}
  }
@@ -57,8 +64,12 @@ export function createPlanningController({store,provider,env=process.env,now=()=
    if(!planningOperations.some(op=>op.id===operation))fail(400,'Choose a supported planning operation.');
    const project=await store.get(projectId,actorId),approvals=await store.records('approvals',projectId),scope=planningScope(project,approvals),briefContext=briefPlanningContext(project,approvals);let availability={enabled:false,reason:'No reviewed planning route is configured.'},quote=null,route=null;
    try{const c=await context(actorId,projectId,operation);route=c.route;quote={operation,task:c.route.task,modelId:c.model.id,modelVersion:c.model.model_version,profileFingerprint:c.profile.fingerprint,maxCallMicroUsd:c.quote.totalMicroUsd,currency:'USD',expiresAt:c.profile.expiresAt,quoteKind:c.quote.quoteKind};await enabled();availability={enabled:true,reason:'This reviewed registry route can use an explicitly approved scope and budget.'};}catch(e){route=e.route??route;availability.reason=e.status?e.message:'Planning controls are temporarily unavailable.';}
+   const models=await store.planningModels(),task=planningOperations.find(op=>op.id===operation).task,goals=new Set();
+   for(const m of models)for(const p of m.routing_profiles||[])for(const goal of Object.keys(p.scores||{}))if(goal.length<=200&&evaluateRoutingIntent({intent:{qualityGoals:[{goal,weight:1}]},model:m,task,now:now().getTime()}).holds.length===0)goals.add(goal);
+   const preferences=routingPolicyRecords(project),preference=preferences[0],current=preference?.versions.find(v=>v.version===preference.currentVersion)?.content;
+   const routingPreferences={current:current?{intent:current.intent,operations:current.operations,recordId:preference.id,version:preference.currentVersion}:null,goalOptions:[...goals].sort().slice(0,20)};
    const records=await store.planningSummary(actorId,projectId);
-   return {operation,task:planningOperations.find(op=>op.id===operation).task,operations:planningOperations,route,policy:{path:availability.enabled?'llm':'manual',reason:'Manual and supported rule-based edits use no model. Creative planning uses an operation-specific registry route and scoped allowance.'},availability,scope,quote,briefContext,...records,providerDataPolicy:'Background planning stores a response with the selected provider; approved project data policies must permit this.'};
+   return {projectVersion:project.version,operation,task:planningOperations.find(op=>op.id===operation).task,operations:planningOperations,route,policy:{path:availability.enabled?'llm':'manual',reason:'Manual and supported rule-based edits use no model. Creative planning uses an operation-specific registry route and scoped allowance.'},availability,scope,quote,briefContext,...records,routingPreferences,providerDataPolicy:'Background planning stores a response with the selected provider; approved project data policies must permit this.'};
   },
   async consent(c){const previous=await store.replayPlanningDecision('grant_planning',c);if(previous)return previous;const ctx=await context(c.actorId,c.projectId,c.operation??'interpret_brief');if(c.expectedModelId!==undefined&&c.expectedModelId!==ctx.model.id||c.expectedProfileFingerprint!==undefined&&c.expectedProfileFingerprint!==ctx.profile.fingerprint)fail(409,'The displayed planning route changed. Review its current model and reservation before approving a limit.');return store.planningCommand('grant_planning',c,ctx);},
   async revoke(c){return store.planningCommand('revoke_planning',c);},

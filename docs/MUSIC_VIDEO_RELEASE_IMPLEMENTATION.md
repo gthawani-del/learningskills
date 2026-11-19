@@ -1,8 +1,10 @@
 # Music-video release implementation
 
+Current increment: [five-foundation production implementation](FIVE_FOUNDATIONS_IMPLEMENTATION_2026-11-19.md). The table below preserves **state at start**, not current completion. New footage/edit/render code does not waive any of the eighteen acceptance deliverables.
+
 Baseline: main `9378628214ba21b0f5e876b0f19ba9f1ad5baf11`. Providers: Vercel, Supabase, fal.ai and direct OpenAI. Private pilot first. US$100 is a planning ceiling, not permission to spend. No paid provider/model activation or new hosting provider is authorized by this checklist.
 
-Reuse the existing character/reference library, seventeen departments, production records, approvals, selective invalidation, registry/router, spending controls, jobs, storyboard/animatic, UI and QA runner. The current department planner's screenplay-only source binding needs a compatible music-treatment adapter. Existing local rendering is limited to eight shots/60 seconds; hosted rendering is separate.
+Reuse the existing character/reference library, seventeen departments, production records, approvals, selective invalidation, registry/router, spending controls, jobs, storyboard/animatic, UI and QA runner. The current department planner's screenplay-only source binding needs a compatible music-treatment adapter. The legacy generic renderer is limited to eight shots/60 seconds. The supplied-song renderer now supports up to 200 shots/full inspected original duration within its documented media/output bounds; hosted execution qualification remains separate.
 
 | Order | Deliverable | State at start | Required acceptance |
 |---|---|---|---|

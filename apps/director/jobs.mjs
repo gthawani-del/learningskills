@@ -1,3 +1,4 @@
+import {modelProviderHealth,observeProviderHealth} from './production-outcomes.mjs';
 import { validateFalInput } from './providers.mjs';
 import { hash } from './domain.mjs';
 import { publishedReviewHolds } from './model-router.mjs';
@@ -39,6 +40,7 @@ export function createJobController({ store, providers }) {
       if (model.active !== true || model.execution_tested !== true || model.quality_validated !== true || model.price_version !== proposal.price_version) fail(409, 'Model route is not eligible.');
       if (!Number.isFinite(Date.parse(proposal.quote_expires_at)) || Date.parse(proposal.quote_expires_at) <= Date.now()) fail(409, 'Quote has expired.');
       if (publishedReviewHolds(model).length) fail(409, 'The published model execution or quality review expired or changed. Reconcile this reservation before any new submission.');
+      if(model.capabilities?.healthPolicy){if(typeof store.records!=='function')fail(503,'Provider health evidence is unavailable.');const health=modelProviderHealth(model,await store.records('audit',projectId));if(health.state==='hold')fail(409,'Provider health policy holds this route. No replacement submission started.');}
       validateFalInput(model.endpoint, proposal.payload);
       // The database claim revalidates current artifacts, approvals and spending
       // authorization under locks; rejection must happen before any provider call.
@@ -51,7 +53,8 @@ export function createJobController({ store, providers }) {
         if (!updated) throw new Error('Could not persist provider identity');
         await audit(projectId, actorId, 'job_submitted', { job_id: jobId, provider_request_id: submission.requestId, model_id: model.id, charge_state: 'held' });
         return updated;
-      } catch {
+      } catch (error) {
+        await observeProviderHealth({store,projectId,actorId,model,requestId:jobId,kind:'provider_error',httpStatus:error.providerHttpStatus});
         // This includes transport timeout and persistence failure after acceptance.
         // Retain reservation: a failed HTTP request does not prove no billing.
         await store.markJob(jobId, { status: 'unknown', charge_state: 'unknown' }, { expectedStatuses: ['submitted', 'running'] });
@@ -67,7 +70,8 @@ export function createJobController({ store, providers }) {
       let response;
       try {
         response = await providers.getFalJob({ endpoint: model.endpoint, requestId: job.provider_request_id });
-      } catch {
+      } catch (error) {
+        await observeProviderHealth({store,projectId,actorId,model,requestId:job.provider_request_id,kind:'provider_error',httpStatus:error.providerHttpStatus});
         await audit(projectId, actorId, 'job_poll_unavailable', { job_id: jobId, action: 'inspect_existing_request_only' });
         return job;
       }
@@ -79,6 +83,7 @@ export function createJobController({ store, providers }) {
           await audit(projectId, actorId, 'job_result_pending', { job_id: jobId });
           return job;
         }
+        await observeProviderHealth({store,projectId,actorId,model,requestId:job.provider_request_id,kind:'success'});
         // Output is evidence, not acceptance, a download instruction or an invoice.
         await audit(projectId, actorId, 'job_provider_output', { job_id: jobId, output, creative_acceptance: 'unreviewed', cost_reconciliation: 'pending' });
         return await store.markJob(jobId, { status: 'completed' }, { expectedStatuses: [...inFlight, 'unknown'] }) || await store.readJob(actorId, projectId, jobId);

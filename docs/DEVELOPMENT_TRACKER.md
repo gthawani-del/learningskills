@@ -1,5 +1,12 @@
 # Director Studio — Development Tracker
 
+## Five-foundation production increment — 19 November 2026
+
+**Implemented code and local verification; not a fully qualified Music Video release.** Approved routing preferences/quality-cost-latency utility now reach existing planning and media quotes. Added explicit outcomes/defects, offline learning replay and scoped provider-health holds; one source-bound production recommendation; approved-frame/original-audio singing and image-led footage compiler/jobs/import/review/selection; complete-song timeline, deterministic text finishing, durable private-render worker/cancellation/recovery and owned playback/download. All seventeen department applicability contracts remain shared. Frozen desktop/mobile shell preserved. No paid execution, production migration or model activation occurred.
+
+[Implementation, source crosswalk and exact remaining gates](FIVE_FOUNDATIONS_IMPLEMENTATION_2026-11-19.md). Prepared adapters are not qualified creative outputs; the complete eighteen-deliverable release and commercial/stock/benchmark/pilot gaps remain tracked there. This entry supersedes older statements that these code paths do not exist, without superseding their outstanding production acceptance.
+
+
 ## Director registry publication repair and routing-PDF reconciliation — 19 November 2026
 
 **Implemented and locally verified.** Fixed the mismatch where execution admitted `director_turn` but normal admin registry validation rejected it and its conversation marker. Registry tasks now reuse the canonical operation map; operations, bindings and review-evidence bounds derive from its nine entries. Publication requires `director_conversation_v1` and the existing v7-aware schema/evidence gates. Prepared native review also rejects a missing conversation marker. Conversation-only and all-nine-operation profiles pass actual draft/publication/routing checks; the owned admin API → consent → simulated submission path passes without media generation. Native PGlite proves marker acceptance/rejection, not full JS/native parity or hosted operation.
@@ -322,8 +329,8 @@ Retries resend whole files; byte/chunk-resumable transport is not implemented. S
 | ID | Function | Step | Status | Next gap |
 |---|---|---|---|---|
 | F001 | Explore pre-rendered sample | 2 | missing | No complete executable workflow found; implement and verify before activation. |
-| F002 | Sign up and sign in | 2 | partial | Password login/session rotation implemented; signup, verification and recovery UX missing; live credentials pending. |
-| F003 | Recover account and end session | 2 | partial | Current-session logout implemented; password recovery/reset and live revocation verification missing. |
+| F002 | Sign up and sign in | 2 | partial | Login/session rotation and signup/recovery UX/code implemented; real verification, isolation and cross-session acceptance remain outstanding. |
+| F003 | Recover account and end session | 2 | partial | Logout and password recovery/reset code and fixture checks implemented; live recovery/delivery and session revocation acceptance remain outstanding. |
 | F004 | Create or reopen project | 2 | partial | Create/reopen plus retry-safe import implemented; real authenticated Supabase cross-browser verification pending. |
 | F005 | Autosave and resolve concurrent edits | 2 | partial | Optimistic saves exist; full autosave UX, conflict merge/recovery and live database concurrency verification missing. |
 | F006 | Import script/project | 2 | partial | Optional UTF-8 TXT/Markdown scripts preserve original text, use declarations and immutable working versions; device import preserves sources while stripping approval/review authority. PDF/DOCX, semantic screenplay parsing and deployed-account import remain unverified. |

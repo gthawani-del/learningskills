@@ -1,3 +1,5 @@
+import {routingPolicyContext} from './routing-policy.mjs';
+import {performanceQuoteFacts} from './performance-input.mjs';
 import {hash, artifacts, fail} from './domain.mjs';
 import {calculateTariff} from './tariffs.mjs';
 import {selectRoutes} from './model-router.mjs';
@@ -41,7 +43,7 @@ function validatePayload(value, depth = 0, count = {nodes: 0}) {
 }
 
 // This is a trusted-server estimate, never a reservation, charge or generation permission.
-export function createCostQuote({project, artifactId, artifactVersion, model, task, requirements, intent, input, assets, now, ttlMs = 300_000}) {
+export function createCostQuote({project, artifactId, artifactVersion, model, task, requirements, intent, input, assets, approvals=[], now, ttlMs = 300_000}) {
   const time = now instanceof Date ? now.getTime() : typeof now === 'number' ? now : typeof now === 'string' ? isoTime(now) : NaN;
   if (!Number.isFinite(time) || !positive(ttlMs) || ttlMs > 3_600_000 || !Number.isSafeInteger(time + ttlMs)) fail(400, 'A valid quote time and bounded lifetime are required.');
   if (!project || !identifier(project.id) || !positive(project.version) || !identifier(artifactId) || !positive(artifactVersion)) fail(400, 'A project and exact artifact version are required.');
@@ -49,11 +51,9 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
   if (!artifact) fail(409, 'The requested artifact version is no longer current.');
   if (['department_plan','shot_contract','storyboard_sequence'].includes(artifact.kind)) fail(409, 'A production plan is planning evidence. Create and review its reference, audio or shot specification before quoting media generation.');
   if (!requirements || Array.isArray(requirements) || Object.getPrototypeOf(requirements) !== Object.prototype) fail(400, 'Explicit routing requirements are required.');
-  const route = selectRoutes({task, requirements, intent, models: [model], now: time}).candidates[0];
+  const policy=routingPolicyContext(project,approvals,task);if(policy.policy?.applies){if(intent!==undefined&&hash(intent)!==hash(policy.intent))fail(409,'The request conflicts with approved routing preferences.');intent=policy.intent;}
+  const route = selectRoutes({task, requirements, models: [model], now: time}).candidates[0];
   if (!route?.eligibleForQuote) fail(409, 'The selected model does not meet the task and routing requirements.');
-  const intentEvidence = route.intentFit?.attestation;
-  const intentExpiry = intentEvidence ? isoTime(intentEvidence.expiresAt) : Infinity;
-  if (intentEvidence && (!Number.isFinite(intentExpiry) || intentExpiry <= time)) fail(409, 'Routing preference evidence is expired or invalid.');
   const schema = model?.schema_evidence;
   const modelVersion = model?.model_version ?? model?.version;
   if (model?.active !== true || model.execution_tested !== true || model.quality_validated !== true || !identifier(model.id) || !identifier(model.endpoint) || !evidenceVersion(modelVersion) || schema?.verified !== true || !evidenceVersion(schema.version) || !httpsSource(schema.sourceUrl)) fail(409, 'The model route requires current execution, quality and schema evidence.');
@@ -73,9 +73,10 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     if (!Object.hasOwn(input, key) || hash(input[key]) !== hash(value)) fail(409, 'Model input does not match the verified price configuration.');
   }
   const songFacts=songQuoteFacts({project,assets,task,model,input,artifactId,artifactVersion,requirements});
+  const performanceFacts=performanceQuoteFacts({project,assets:assets||[],approvals,task,model,input,artifactId,artifactVersion});
   let calculation;
   if (price.tariff) {
-    const result = calculateTariff({price, input, usageEvidence:songFacts?.usageEvidence, now: time});
+    const result = calculateTariff({price, input, usageEvidence:performanceFacts?.usageEvidence??songFacts?.usageEvidence, now: time});
     if (!positive(result.totalMicroUsd)) fail(409, 'A positive bounded generation estimate is required.');
     calculation = {unit: 'composite', totalMicroUsd: result.totalMicroUsd, components: result.components, priceEvidence: structuredClone(price)};
   } else {
@@ -98,12 +99,16 @@ export function createCostQuote({project, artifactId, artifactVersion, model, ta
     calculation = {unit: price.unit, units, unitMicroUsd: price.unitMicroUsd, totalMicroUsd,
       priceEvidence: {verified: true, configurationVerified: true, configuration: structuredClone(configuration), version: price.version, currency: 'USD', unit: price.unit, unitMicroUsd: price.unitMicroUsd, minimumUnits: minimum, rounding: 'ceil', expiresAt: price.expiresAt, sourceUrl: price.sourceUrl}};
   }
+  const intentRoute=selectRoutes({task,requirements,intent,models:[model],now:time,costAssessments:{[model.id]:{modelId:model.id,modelVersion,pricingVersion:model.price_version,totalMicroUsd:calculation.totalMicroUsd,quoteKind:'configuration_bound',expiresAt:new Date(Math.min(time+ttlMs,priceExpiry,schemaExpiry)).toISOString()}}}).candidates[0];
+  if(!intentRoute?.eligibleForQuote)fail(409,'The complete quote does not meet the reviewed task preferences or quality floor.');
+  const intentEvidence=intentRoute.intentFit?.attestation,intentExpiry=intentEvidence?isoTime(intentEvidence.expiresAt):Infinity;
+  if(intentEvidence&&(!Number.isFinite(intentExpiry)||intentExpiry<=time))fail(409,'Routing preference evidence is expired or invalid.');
   const quote = {
-    projectId: project.id, projectVersion: project.version, ...(intentEvidence ? {intentEvidence: structuredClone(intentEvidence)} : {}), task, ...(intent === undefined ? {} : {intent: structuredClone(intent)}), requirements: structuredClone(requirements), artifactId, artifactVersion, artifactContentHash: artifact.content_hash,
+    projectId: project.id, projectVersion: project.version, ...(intentEvidence ? {intentEvidence: structuredClone(intentEvidence)} : {}),...(intentRoute.intentFit?.utility?{intentEvaluation:structuredClone(intentRoute.intentFit)}:{}),...(policy.policy?{routingPolicy:policy.policy}:{}), task, ...(intent === undefined ? {} : {intent: structuredClone(intent)}), requirements: structuredClone(requirements), artifactId, artifactVersion, artifactContentHash: artifact.content_hash,
     payloadHash: hash(input), modelId: model.id, endpoint: model.endpoint, modelVersion,
     schemaVersion: schema.version, schemaEvidence: {verified: true, version: schema.version, sourceUrl: schema.sourceUrl, endpoint: schema.endpoint, modelVersion: schema.modelVersion, inputSchemaHash: schema.inputSchemaHash, expiresAt: schema.expiresAt}, priceVersion: price.version, currency: 'USD', priceConfiguration: structuredClone(configuration), ...calculation,
     createdAt: new Date(time).toISOString(), expiresAt: new Date(Math.min(time + ttlMs, priceExpiry, schemaExpiry, intentExpiry)).toISOString(),
-    ...(songFacts||{}),generationAuthorized: false, estimateOnly: true
+    ...(songFacts||{}),...(performanceFacts||{}),generationAuthorized: false, estimateOnly: true
   };
   if(artifact.kind==='reference_brief'){
     const subjectId=artifactId.slice('reference_brief:'.length),snapshot=currentReferenceBrief(project,subjectId);

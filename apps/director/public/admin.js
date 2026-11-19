@@ -45,7 +45,7 @@ async function refresh(afterCommand=false){
  try{
   access=await request('/api/admin/control');if(ticket!==loading)return;
   $('#admin-mode').textContent=`${access.role} · operations`;
-  const permissions={jobs:'jobs.read',registry:'registry.read',controls:'controls.read',audit:'audit.read'};
+  const permissions={quality:'jobs.read',jobs:'jobs.read',registry:'registry.read',controls:'controls.read',audit:'audit.read'};
   document.querySelectorAll('[data-tab]').forEach(button=>{button.disabled=!can(permissions[button.dataset.tab]);});
   if(!can(permissions[tab])){content.innerHTML='<h2>Access restricted</h2><p>Your current role cannot view this section. Select an available section.</p>';return;}
   let html;
@@ -53,6 +53,8 @@ async function refresh(afterCommand=false){
   else if(tab==='jobs'){
    const data=await request('/api/admin/overview');const jobs=data.jobs||[];
    html=`<h2>Production jobs</h2>${jobs.length?table(['Job','Project','Status','Route','Review'],jobs.map(j=>`<tr><td><code>${esc(j.id)}</code></td><td>${esc(j.projectId||j.project_id)}</td><td>${esc(j.status)}</td><td><code>${esc(j.endpoint||j.modelId||'Not assigned')}</code></td><td>${esc(j.reviewStatus||'Not reviewed')}</td></tr>`)):'<p class="muted">No production jobs recorded. Nothing has been submitted for generation.</p>'}`;
+  }else if(tab==='quality'){
+   const data=await request('/api/admin/quality');html=`<h2>Quality & outcomes</h2><p class="small muted">${esc(data.scope)} Explicit media verdicts are separate from model qualification and customer billing.</p>${data.summaries.length?table(['Project','Reviewed / accepted / correction','Known actual (micro USD)','Unknown charges','Accepted finished minutes'],data.summaries.map(s=>`<tr><td>${esc(s.title)}</td><td>${esc(s.quality.reviewed)} / ${esc(s.quality.accepted)} / ${esc(s.quality.needsCorrection)}${s.quality.conflictedReviewCount?' · conflicting reviews need resolution':''}</td><td>${esc(s.economics.knownActualMicroUsd)}</td><td>${esc(s.economics.unknownChargeCount)}</td><td>${esc(s.economics.acceptedFinishedMinutes)}</td></tr>`)):'<p>No reviewed production media recorded.</p>'}`;
   }else if(tab==='registry'){
    const data=await request('/api/admin/registry');html=registryHTML(data);
   }else{

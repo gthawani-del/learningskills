@@ -4,9 +4,10 @@ import { readFileSync } from 'node:fs';
 const evidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_ENDPOINT_SCHEMAS.json', import.meta.url), 'utf8'));
 const referenceEvidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_REFERENCE_ENDPOINTS_2026-10-19.json', import.meta.url), 'utf8'));
 const songEvidence = JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_SONG_ENDPOINTS_2026-10-20.json', import.meta.url), 'utf8'));
+const performanceEvidence=JSON.parse(readFileSync(new URL('../../docs/evidence/FAL_PERFORMANCE_ENDPOINT_2026-11-19.json',import.meta.url),'utf8'));
 export const REFERENCE_FAL_PROMPT_MAX_BYTES = 100000;
-export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit', 'fal-ai/flux-2-pro', 'fal-ai/flux-2/klein/9b','fal-ai/audio-understanding','fal-ai/elevenlabs/speech-to-text/scribe-v2','fal-ai/elevenlabs/forced-alignment']);
-const schemas = new Map([...evidence.endpoints,...referenceEvidence.endpoints,...songEvidence.endpoints].filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
+export const FAL_ENDPOINTS = Object.freeze(['minimax/h3-max/reference-to-video', 'elevenlabs/tts/eleven-v4', 'bytedance/seedream/v5/pro/edit', 'fal-ai/flux-2-pro', 'fal-ai/flux-2/klein/9b','fal-ai/audio-understanding','fal-ai/elevenlabs/speech-to-text/scribe-v2','fal-ai/elevenlabs/forced-alignment','bytedance/omnihuman/v2']);
+const schemas = new Map([...evidence.endpoints,...referenceEvidence.endpoints,...songEvidence.endpoints,{endpoint_id:performanceEvidence.endpoint_id,schema:{input_schema:performanceEvidence.input_schema}}].filter(e => FAL_ENDPOINTS.includes(e.endpoint_id)).map(e => [e.endpoint_id, e.schema.input_schema]));
 const fail = message => { throw new Error(message); };
 function validate(schema, value, path = 'input') {
   if (schema.anyOf) {
@@ -49,6 +50,7 @@ export function validateFalInput(endpoint, input) {
   }
   if (input.sync_mode === true) fail('Async jobs require sync_mode false');
   if (input.enable_safety_checker === false) fail('Safety checker must remain enabled');
+  if(endpoint==='bytedance/omnihuman/v2'&&(Object.keys(input).some(k=>!['image_url','audio_url','prompt'].includes(k))||typeof input.prompt==='string'&&Buffer.byteLength(input.prompt,'utf8')>16000))fail('Performance input supports only the reviewed image, exact audio and bounded optional prompt.');
   if(endpoint==='fal-ai/elevenlabs/speech-to-text/scribe-v2'&&(!Array.isArray(input.keyterms)||input.keyterms.length||input.diarize!==true||input.tag_audio_events!==true||input.language_code!==null))fail('Song transcription requires explicit diarization, audio events, automatic language and no premium keyterms.');
   if(endpoint==='fal-ai/audio-understanding'&&input.detailed_analysis!==true)fail('Song interpretation requires explicit detailed audio analysis.');
   if (endpoint === 'fal-ai/flux-2-pro' || endpoint === 'fal-ai/flux-2/klein/9b') {
@@ -105,7 +107,7 @@ export const instruction = `You are the studio's filmmaking planner. Return a pr
 export function createProviderClients({ fetcher = globalThis.fetch, env = process.env } = {}) {
   async function request(url, options) {
     const response = await fetcher(url, { ...options, redirect: 'error', signal: AbortSignal.timeout(60000) });
-    if (!response.ok) fail(`Provider request failed (${response.status}); reconcile submission before retrying`);
+    if (!response.ok) throw Object.assign(new Error(`Provider request failed (${response.status}); reconcile submission before retrying`),{providerHttpStatus:response.status});
     return response.json();
   }
   function auth(authorized, key) { if (authorized !== true) fail('Explicit server authorization required'); if (!env[key]) fail(`${key} is not configured`); }

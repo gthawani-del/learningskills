@@ -1,3 +1,4 @@
+import {saveRoutingPolicy} from '../routing-policy.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtemp,rm} from 'node:fs/promises';
@@ -113,4 +114,33 @@ test('start stays with the consent model after ranking changes and never switche
 test('known-call checks retain original identity after registry retirement without rerouting or submission',async t=>{
  const f=await controllerFixture(t),grant=await consent(f),call=await f.controller.start(command(f,{operation:'write_script',consentId:grant.id}));f.store.state.models=[];delete f.env.OPENAI_API_KEY;f.store.state.operationalControl.generationPaused=true;
  const polled=await f.controller.poll('owner',f.p.id,call.reservation.id);assert.equal(polled.providerResponseId,'resp_registry_1');assert.equal(f.polls(),1);assert.equal(f.submissions(),1);
+});
+
+async function preferQuality(f){
+ const p=saveRoutingPolicy(f.p,{expectedVersion:f.p.version,intent:{qualityGoals:[{goal:'narrativeCoherence',weight:10,minimumScore:80}]},operations:['write_script']},[]);await f.store.save(p,f.p.version);f.p=p;const record=p.production.records.at(-1);await f.store.approve(p,{artifactId:'record:'+record.id,version:record.currentVersion,decision:'approved'},'owner');
+ for(const [index,m]of f.store.state.models.entries())m.routing_profiles=[{verified:true,task:'screenplay_writing',modelId:m.id,endpoint:m.endpoint,modelVersion:m.model_version,evidenceVersion:'reviewed-story-quality-v1',sourceUrl:'https://example.test/quality',evaluatedAt:'2026-10-18T00:00:00Z',expiresAt,sampleCount:20,scores:{narrativeCoherence:index===0?65:95},latencyMs:10000}];
+ return record;
+}
+test('normal Director planning threads approved quality intent into quote consent execution and recovery',async t=>{
+ const f=await controllerFixture(t);await preferQuality(f);const summary=await f.controller.summary('owner',f.p.id,'write_script');assert.equal(summary.availability.enabled,true);assert.equal(summary.quote.modelId,'alternative');assert.equal(summary.route.routingPolicy.version,1);assert.equal(summary.route.selected.intentFit.score,95);
+ const grant=await consent(f);assert.equal(grant.modelId,'alternative');f.store.state.models[0].capabilities.priority=999;
+ const call=await f.controller.start(command(f,{operation:'write_script',consentId:grant.id}));assert.equal(f.lastRequest().model,'registry-model-alternative');assert.equal(f.submissions(),1);await f.controller.poll('owner',f.p.id,call.reservation.id);assert.equal(f.submissions(),1);
+});
+test('changing or revoking routing preferences invalidates the old allowance without a replacement call',async t=>{
+ const f=await controllerFixture(t),record=await preferQuality(f),grant=await consent(f);await f.store.approve(f.p,{artifactId:'record:'+record.id,version:record.currentVersion,decision:'revoked'},'owner');
+ await assert.rejects(()=>f.controller.start(command(f,{operation:'write_script',consentId:grant.id})),{status:409});assert.equal(f.submissions(),0);assert.equal((await f.controller.summary('owner',f.p.id,'write_script')).availability.enabled,false);
+});
+
+test('approved explicit utility ranks complete planning bounds without bypassing quality floors',async t=>{
+ const f=await controllerFixture(t);await preferQuality(f);f.store.state.models[0].routing_profiles[0].scores.narrativeCoherence=85;f.store.state.models[1].price_evidence.input.numeratorMicroUsd=3;f.store.state.models[1].price_evidence.output.numeratorMicroUsd=6;
+ let p=saveRoutingPolicy(f.p,{expectedVersion:f.p.version,intent:{qualityGoals:[{goal:'narrativeCoherence',weight:1,minimumScore:80}],optimization:{qualityWeight:20,costWeight:70,latencyWeight:10,costScaleMicroUsd:100000,latencyScaleMs:20000}},operations:['write_script']},[]);await f.store.save(p,f.p.version);f.p=p;const r=p.production.records.at(-1);await f.store.approve(p,{artifactId:'record:'+r.id,version:r.currentVersion,decision:'approved'},'owner');
+ let summary=await f.controller.summary('owner',p.id,'write_script');assert.equal(summary.quote.modelId,'approved');assert.equal(summary.route.selected.intentFit.utility.costBasis,'maximum_reservation_not_expected_cost');
+ f.store.state.models[0].routing_profiles[0].scores.narrativeCoherence=79;summary=await f.controller.summary('owner',p.id,'write_script');assert.equal(summary.quote.modelId,'alternative');assert.equal(f.submissions(),0);
+});
+
+test('classified provider health holds a pinned model without a replacement paid submission',async t=>{
+ const f=await controllerFixture(t),m=f.store.state.models[0];m.capabilities.healthPolicy={windowMs:900000,minimumSamples:2,maxErrorRate:0.4};const grant=await consent(f);
+ for(const id of ['health-a','health-b'])await f.store.add('audit',{projectId:f.p.id,type:'provider_health_observation',details:{kind:'provider_health_v1',modelId:m.id,modelVersion:m.model_version,endpoint:m.endpoint,requestId:id,observation:'provider_error',httpStatus:503,at:now}});
+ const summary=await f.controller.summary('owner',f.p.id,'write_script');assert.equal(summary.quote.modelId,'alternative');assert.ok(summary.route.candidates.find(c=>c.modelId===m.id).holds.includes('provider_health_held'));
+ await assert.rejects(()=>f.controller.start(command(f,{operation:'write_script',consentId:grant.id})),{status:409});assert.equal(f.submissions(),0);
 });

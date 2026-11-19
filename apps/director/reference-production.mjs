@@ -66,7 +66,7 @@ export function createReferenceController({store,providers,storage,fetcher=fetch
     identityUrl=await storage.sign(asset.storageKey,{bucket:asset.bucket||'director-media',expiresIn:3600});
    }else if(body.shareIdentityReference!==undefined&&body.shareIdentityReference!==false)fail(400,'Initial identity and location creation do not share an existing identity image.');
    const input=buildReferenceInput({project,subject,model,identityUrl}),requirements=quoteRequirements({task,requirements:requirementsFor(task),model,input});
-   const quote=createCostQuote({project,artifactId:'reference_brief:'+subject.id,artifactVersion:subject.current.version,task,requirements,model,input,now:new Date()});
+   const quote=createCostQuote({project,assets:info.assets,approvals:info.approvals,artifactId:'reference_brief:'+subject.id,artifactVersion:subject.current.version,task,requirements,model,input,now:new Date()});
    const saved=await store.persistCostQuote({actorId,projectId:project.id,requestId:body.requestId,expectedVersion:project.version,requestFingerprint,quote,input});
    return {quote:saved,saved:true};
   },

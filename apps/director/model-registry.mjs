@@ -1,3 +1,4 @@
+import {providerHealth} from './production-outcomes.mjs';
 import {PROJECT_FORMATS,isProjectFormat} from './public/studio-catalog.js';
 import {randomUUID} from 'node:crypto';
 import {fail,hash,canonicalJson} from './domain.mjs';
@@ -10,7 +11,7 @@ import {planningProfile,planningRequiredSchemaHash,planningOperationEvidence} fr
 // it neither performs execution tests nor manufactures quality evidence.
 export const REGISTRY_PROFILE_LIMIT_BYTES=100000;
 export const REGISTRY_PLANNING_TASKS=planningOperationTasks;
-export const REGISTRY_FAL_ADAPTER_TASKS=Object.freeze({'minimax/h3-max/reference-to-video':['reference_video'],'elevenlabs/tts/eleven-v4':['speech_synthesis'],'bytedance/seedream/v5/pro/edit':['image_edit'],'fal-ai/audio-understanding':['song_analysis','audio_analysis'],'fal-ai/elevenlabs/speech-to-text/scribe-v2':['transcription'],'fal-ai/elevenlabs/forced-alignment':['alignment']});
+export const REGISTRY_FAL_ADAPTER_TASKS=Object.freeze({'bytedance/omnihuman/v2':['singing_performance'],'minimax/h3-max/reference-to-video':['reference_video'],'elevenlabs/tts/eleven-v4':['speech_synthesis'],'bytedance/seedream/v5/pro/edit':['image_edit'],'fal-ai/audio-understanding':['song_analysis','audio_analysis'],'fal-ai/elevenlabs/speech-to-text/scribe-v2':['transcription'],'fal-ai/elevenlabs/forced-alignment':['alignment']});
 const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&[Object.prototype,null].includes(Object.getPrototypeOf(x));
 const clone=x=>structuredClone(x);
 const positive=x=>Number.isSafeInteger(x)&&x>0;
@@ -19,7 +20,7 @@ const modelIdPattern=/^[A-Za-z0-9][A-Za-z0-9._:-]{0,79}$/;
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const credentialKeys=new Set(['key','apikey','secret','secrets','password','authorization','accesstoken','refreshtoken','token','credentials','credential','servicerolekey','privatekey','headers','cookie','connectionstring']);
 const profileKeys=['provider','endpoint','model_version','capabilities','schema_evidence','price_evidence','price_version','routing_profiles'];
-const capKeys=['tasks','taskBindings','priority','outputModalities','inputModes','aspectRatios','resolutions','languages','minDurationSeconds','maxDurationSeconds','identityReferences','lipSync','purpose','description','admin_notes','input_names','required_inputs','planning'];
+const capKeys=['tasks','taskBindings','priority','outputModalities','inputModes','aspectRatios','resolutions','languages','minDurationSeconds','maxDurationSeconds','identityReferences','lipSync','purpose','description','admin_notes','input_names','required_inputs','planning','healthPolicy'];
 const planningKeys=['version','enabled','background','providerRetentionAcknowledged','contextWindowTokens','maxOutputTokens','maxRequestBytes','tokenBoundEvidence','operations','operationBindings','formats','songIntelligenceVersion','directorConversationVersion'];
 const schemaKeys=['verified','version','sourceUrl','expiresAt','endpoint','modelVersion','inputSchemaHash','snapshot','checked_at'];
 const priceKeys=['verified','configurationVerified','configuration','version','currency','model','sourceUrl','expiresAt','input','cachedInput','output','unit','unitMicroUsd','minimumUnits','rounding','tariff','endpoint_id','unit_price'];
@@ -37,7 +38,7 @@ export function normalizeModelDraft(value){
  safeJson(value);keys(value,profileKeys,profileKeys);if(Buffer.byteLength(JSON.stringify(value),'utf8')>REGISTRY_PROFILE_LIMIT_BYTES)fail(400,'Model draft exceeds the 100 KB profile limit.');
  if(!['fal','openai'].includes(value.provider))fail(400,'Only OpenAI and fal profiles are supported.');label(value.endpoint);label(value.model_version);label(value.price_version);
  if(value.provider==='fal'&&(!/^[A-Za-z0-9][A-Za-z0-9._-]*(?:\/[A-Za-z0-9][A-Za-z0-9._-]*)+$/.test(value.endpoint)||value.endpoint.split('/').some(x=>['.','..'].includes(x)))||value.provider==='openai'&&!https(value.endpoint))fail(400,'Invalid provider endpoint identity.');
- const cap=value.capabilities;keys(cap,capKeys);
+ const cap=value.capabilities;keys(cap,capKeys);if(cap.healthPolicy!==undefined)providerHealth({observations:[],policy:cap.healthPolicy});
  for(const key of ['tasks','outputModalities','inputModes','aspectRatios','resolutions','languages','input_names','required_inputs'])if(Object.hasOwn(cap,key))stringList(cap[key]);if(cap.tasks?.some(task=>!knownRoutingTask(task)))fail(400,'Unknown registry task.');
  if(cap.priority!==undefined&&(!Number.isInteger(cap.priority)||cap.priority<0||cap.priority>1000))fail(400,'Model priority must be zero through one thousand.');
  for(const key of ['identityReferences','lipSync'])if(Object.hasOwn(cap,key)&&typeof cap[key]!=='boolean')fail(400,'Model capability flags must be booleans.');

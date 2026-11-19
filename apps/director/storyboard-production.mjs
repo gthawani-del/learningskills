@@ -44,7 +44,7 @@ export function createStoryboardProductionController({store,providers,storage,fe
    assertStoryboardFramePricing(model.price_evidence,{num_images:1,image_urls:shot.uniqueReferenceAssets.map((a,i)=>'https://reference.example.test/image-'+i)});
    const referenceUrls=await Promise.all(shot.uniqueReferenceAssets.map(a=>storage.sign(a.storageKey,{bucket:a.bucket||'director-media',expiresIn:3600})));
    const input=buildStoryboardFrameInput({project,shot,model,referenceUrls}),requirements=quoteRequirements({task,requirements:storyboardFrameRequirements(shot),model,input});
-   const quote=createCostQuote({project,artifactId:'storyboard_brief:'+shot.shotId,artifactVersion:shot.current.version,task,requirements,model,input,now:new Date()});
+   const quote=createCostQuote({project,assets:info.assets,approvals:info.approvals,artifactId:'storyboard_brief:'+shot.shotId,artifactVersion:shot.current.version,task,requirements,model,input,now:new Date()});
    return {quote:await store.persistCostQuote({actorId,projectId:project.id,requestId:body.requestId,expectedVersion:project.version,requestFingerprint,quote,input}),saved:true};
   },
   async start(actorId,project,body){

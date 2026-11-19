@@ -1,0 +1,83 @@
+{
+  "baseline": "71cdcc558c30a5d8597da367c4632742942aba6a",
+  "publication": "The Git commit containing this evidence; exact hash reported after push.",
+  "scope": "Independent five-foundation production implementation; not a qualified full Music Video release.",
+  "node": {
+    "command": "node scripts/test-director.mjs",
+    "tests": 1023,
+    "passed": 1023,
+    "failed": 0,
+    "durationMs": 120327.84831,
+    "environment": "Local Node/FFmpeg/PGlite; local subprocess permissions; providers simulated where declared."
+  },
+  "laterTargetedChecks": {
+    "musicProductionAPI": {
+      "passed": 2,
+      "scope": "Playback/download and timeline approval; signed storage transport simulated."
+    },
+    "mediaStorage": {
+      "passed": 7
+    },
+    "musicProductionUI": {
+      "passed": 3
+    }
+  },
+  "syntax": "npm run check passed",
+  "build": "npm run build passed; dist production handler imported without provider calls",
+  "browser": {
+    "passed": true,
+    "provider": "simulated",
+    "paidCalls": 0,
+    "modeAndTranscriptReload": true,
+    "scopedRevisionOnly": true,
+    "sourceAndMediaPreserved": true,
+    "keyboard": true,
+    "draftRecovery": true,
+    "committedResponseLossReplay": true,
+    "desktopAndMobileViewport": true,
+    "motionControlsAndFullSongEditor": true,
+    "physicalDevice": false,
+    "pageErrors": [],
+    "httpErrors": [],
+    "unexpectedConsoleErrors": [],
+    "originalAudioTransport": "locally fulfilled fixture bytes; not live private-storage playback"
+  },
+  "actualMedia": {
+    "threeMinuteProof": "Real 180-second/4320-frame supplied-media MP4, original master unchanged, audio-frequency ordering and timed title/caption pixel checks.",
+    "privateWorkerProof": "Real four-second MP4 through private-source staging, durable render claim, decode/frame validation and private local publication. This is a worker transport proof, not the final product scope."
+  },
+  "review": {
+    "reviewers": 1,
+    "readOnly": true,
+    "importantFixes": [
+      "Visual source checksums before and after render",
+      "Exact reviewed selected motion, current direction/frame/reference approvals",
+      "Actual edit/motion/delivery evidence advances production package",
+      "Completed result normalized to visible asset and gated private playback/download",
+      "Complete cost-gate persistence and owned approvals",
+      "Released/unknown/render-accounting coverage and version-bound outcome evidence",
+      "Expired never-claimed render release and cancellation",
+      "Native same-version policy revocation/source fences",
+      "Pinned policy UX preserving unseen constraints/floors/scope",
+      "Transactional take selection plus accepted verdict",
+      "Navigation/unrelated reviews excluded from render source identity",
+      "Trusted private render worker entry point with truthful accounting"
+    ],
+    "deferredMinorFindings": []
+  },
+  "externalGates": [
+    "No production SQL applied",
+    "No model activated or live quality qualification",
+    "No paid inference or billable hosted processing",
+    "No live hosted-render/private-transfer/cost or two-account proof",
+    "No physical-device acceptance",
+    "Known broader attachment/department browser selector failures not fixed or newly claimed verified"
+  ],
+  "remainingScope": [
+    "Licensed stock and permitted cross-project reuse",
+    "Face-aware automatic editing",
+    "Authorized adaptive online experiments and creative benchmark execution",
+    "Complete commercial billing/refunds/support/retention/skill lifecycle/founder operations",
+    "Representative complete-song real-provider creative/cost pilots"
+  ]
+}

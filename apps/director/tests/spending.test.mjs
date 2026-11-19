@@ -86,3 +86,7 @@ test('any new project version invalidates earlier quotes while exact replays sta
  assert.deepEqual(persistQuote(f.state,f.persist,f),saved);
  const freshPersist={...f.persist,requestId:randomUUID(),expectedVersion:2};assert.throws(()=>persistQuote(f.state,freshPersist,f),{status:409});
 });
+test('exact media-cost preferences persist and authorize through the existing spending lifecycle',()=>{
+ const f=fixture();f.model.routing_profiles=[{verified:true,task:'image_edit',modelId:f.model.id,endpoint:f.model.endpoint,modelVersion:'v1',evidenceVersion:'utility-test',sourceUrl:'https://example.test/evaluation',evaluatedAt:'2026-10-17T12:00:00Z',expiresAt:'2026-10-18T13:00:00Z',sampleCount:10,scores:{realism:90},latencyMs:1000}];const intent={budgetMicroUsd:200,qualityGoals:[{goal:'realism',weight:1,minimumScore:80}],optimization:{qualityWeight:60,costWeight:30,latencyWeight:10,costScaleMicroUsd:1000,latencyScaleMs:10000}};f.persist.quote=createCostQuote({project:f.project,artifactId:'story',artifactVersion:1,task:'image_edit',requirements:{},model:f.model,input:f.persist.input,intent,now:f.now});f.auth.quoteId=f.persist.quote.id;
+ assert.equal(persistQuote(f.state,f.persist,f).totalMicroUsd,100);assert.equal(authorizeSpending(f.state,f.auth,f).quotedMicroUsd,100);
+});

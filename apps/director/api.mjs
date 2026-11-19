@@ -1,3 +1,11 @@
+import {saveMusicVideoTimeline,timelineContext} from './music-video-editing.mjs';
+import {currentMusicVideo} from './public/music-video-core.js';
+import {currentSongIntelligence} from './public/song-intelligence-core.js';
+import {createPerformanceController} from './performance-production.mjs';
+import {quoteRenderJob,requestRenderJob} from './render-jobs.mjs';
+import {createProductionPackageController} from './production-package-controller.mjs';
+import {recordProductionOutcome,productionOutcomeSummary,discountedOutcomeEvidence,outcomeModelEvidence,sampleOutcomeRecommendations} from './production-outcomes.mjs';
+import {saveRoutingPolicy,routingPolicyContext} from './routing-policy.mjs';
 import {approveMusicDepartmentPackage} from './music-department-package.mjs';
 import {directorSession,applyDirectorSessionCommand} from './public/director-session-core.js';
 import {recordDirectorReply,applyDirectorAction} from './director-actions.mjs';
@@ -62,7 +70,7 @@ export function validateUpload(body){
  if(body.mime&&body.mime!==mime&&!(mime==='video/mp4'&&body.mime==='video/quicktime'))fail(415,'File content does not match its declared type.');
  return {bytes,mime};
 }
-export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders,planningProvider:providedPlanningProvider,storage:providedStorage}={}){
+export async function createDirectorAPI({env=process.env,fetcher=fetch,store:providedStore,providers:providedProviders,planningProvider:providedPlanningProvider,storage:providedStorage,renderExecutor}={}){
  const demo=env.DIRECTOR_DEMO==='1'&&env.NODE_ENV!=='production'&&!env.VERCEL;
  const connected=!!(env.SUPABASE_URL&&env.SUPABASE_SERVICE_ROLE_KEY);
  const store=providedStore||(demo?await new LocalStore(env.DIRECTOR_DATA_FILE||'/tmp/director-studio/projects.json').init():connected?new SupabaseStore({url:env.SUPABASE_URL,key:env.SUPABASE_SERVICE_ROLE_KEY,fetcher}):null);
@@ -79,6 +87,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const referenceController=store?createReferenceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const songProviderController=store?createSongProviderController({store,providers,storage:mediaStorage,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
  const storyboardProductionController=store?createStoryboardProductionController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore)}):null;
+ const performanceController=store?createPerformanceController({store,providers,storage:mediaStorage,fetcher,generationConfigured:!!providedProviders||!demo&&!!env.FAL_API_KEY&&(connected||!!providedStore),...(demo?{assetDir:env.DIRECTOR_ASSET_DIR||'/tmp/director-studio/assets'}:{})}):null;
  const imports=store?createImportController({store,storage:mediaStorage}):null;
  const cookie=(name,token,maxAge,path='/')=>`${name}=${token}; Path=${path}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${env.NODE_ENV==='production'||env.VERCEL?'; Secure':''}`;
  const clearSession=()=>[cookie('director_session','',0),cookie('director_refresh','',0,'/api')];
@@ -134,13 +143,17 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(path==='/api/admin/commands'&&req.method==='POST'){const request=adminCommand(body,user.id,role);return reply(200,await store.operationalCommand(request));}
  if(path==='/api/admin/registry/commands'&&req.method==='POST'){const request=modelRegistryCommand(body,user.id,role);return reply(200,await store.registryCommand(request));}
  if(path==='/api/admin/registry'&&req.method==='GET'){permit('registry.read');const results=await Promise.allSettled([store.registry(),store.registryManagement()]);const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;return reply(200,{models:results[0].value,...results[1].value,planningSchemas:{legacy:{requestVersion:'director-planning-v3',inputSchemaHash:planningSchemaHash,operations:['interpret_brief','initial_plan','revise_plan','write_script','revise_script']},departments:{requestVersion:'director-planning-v4',inputSchemaHash:departmentPlanningSchemaHash,operations:['plan_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},departmentRevisions:{requestVersion:'director-planning-v5',inputSchemaHash:departmentRevisionSchemaHash,operations:['revise_departments'],guidance:DEPARTMENT_GUIDANCE_VERSION},directorConversation:{requestVersion:'director-planning-v7',inputSchemaHash:directorPlanningSchemaHash,operations:['director_turn'],conversationVersion:'director_conversation_v1'},storyboard:{requestVersion:'director-planning-v6',inputSchemaHash:storyboardPlanningSchemaHash,operations:['plan_storyboard']}},scope:'Schema hashes identify implemented request contracts; they do not provide execution or quality approval.'});}
+ if(path==='/api/admin/quality'&&req.method==='GET'){permit('jobs.read');const projects=await store.list(user.id),summaries=await Promise.all(projects.map(async p=>({projectId:p.id,title:p.title,...await productionOutcomeSummary({project:p,actorId:user.id,store})})));return reply(200,{scope:'Staff-owned projects only; no cross-tenant access implied.',summaries,modelQualificationGranted:false});}
  if(path==='/api/admin/overview'&&req.method==='GET'){permit('jobs.read');const ps=await store.list(user.id);const jobs=(await Promise.all(ps.map(p=>store.records('jobs',p.id)))).flat();return reply(200,{scope:'staff-owned projects only',projects:ps.length,jobs,productionEnabled:false});}
  fail(404,'Operation not found.');}
  const match=path.match(/^\/api\/projects\/([^/]+)(?:\/(.*))?$/);if(!match)fail(404,'API route not found.');
  const [,id,action]=match;if(!uuid.test(id))fail(400,'Invalid project ID.');const project=await store.get(id,user.id);
+ const productionPackage=createProductionPackageController({store,planningController});
  if(!action&&req.method==='GET')return reply(200,{project});
+ if(action==='director-production'&&req.method==='GET')return reply(200,{productionPackage:await productionPackage.summary(user.id,id)});
  if(action==='director-session'&&req.method==='GET')return reply(200,{session:directorSession(project)});
  if(project.importState?.status==='awaiting_media'&&req.method!=='GET'&&action!=='import-complete'&&!/^import-assets\/[0-9a-f-]+$/.test(action||''))fail(409,'This cloud copy is still importing. Reopen the device draft and choose Save to workspace to finish before editing or approving it.');
+ if(action==='director-production/actions'&&req.method==='POST')return reply(200,await productionPackage.action(user.id,id,body));
  if(action==='director-session'&&req.method==='POST'){const next=applyDirectorSessionCommand(project,body);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
  if(action==='director-session/replies'&&req.method==='POST')return reply(200,await recordDirectorReply({project,actorId:user.id,store,body}));
  if(action==='director-session/actions'&&req.method==='POST')return reply(200,await applyDirectorAction({project,actorId:user.id,store,body}));
@@ -164,6 +177,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  if(action==='reference-production/jobs'&&req.method==='POST')return reply(201,await referenceController.start(user.id,project,body));
  if(action==='reference-production/import'&&req.method==='POST')return reply(200,await referenceController.importOutput(user.id,project,body));
  if(action==='reference-production/reviews'&&req.method==='POST')return reply(200,await referenceController.review(user.id,project,body));
+ if(action==='spending-budget'&&req.method==='GET')return reply(200,await (store.readRenderSpendingBudget??store.readProjectSpendingBudget).call(store,user.id,id));
  if(action==='spending-budget'&&req.method==='POST'){
   const allowed=['requestId','expectedVersion','budgetMicroUsd','finishReserveMicroUsd'];
   if(Object.keys(body).some(k=>!allowed.includes(k))||!uuid.test(body.requestId||'')||!Number.isSafeInteger(body.expectedVersion)||body.expectedVersion<1||!Number.isSafeInteger(body.budgetMicroUsd)||body.budgetMicroUsd<0||!Number.isSafeInteger(body.finishReserveMicroUsd)||body.finishReserveMicroUsd<0||body.finishReserveMicroUsd>body.budgetMicroUsd)fail(400,'Supply a current project version and explicit integer USD project cap and protected reserve.');
@@ -235,17 +249,18 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const allowed=action==='routes'?['task','requirements','intent']:['task','requirements','intent','requestId','expectedVersion','modelId','artifactId','artifactVersion','input'];
  if(Object.keys(body).some(k=>!allowed.includes(k)))fail(400,'Unsupported routing or quote field.');
  if(!knownRoutingTask(body.task))fail(400,'Choose a known production task.');
+ if(action==='quotes'&&(body.task==='singing_performance'||project.format==='music_video'&&body.task==='reference_video'))fail(400,'Use current approved music-video motion directions and exact sources for this quote.');
  if(action==='quotes'&&['reference_image','reference_look','storyboard_frame'].includes(body.task))fail(400,'Use reference production to quote a reviewed direction; raw client image prompts are not accepted.');
  if(action==='quotes'&&['song_analysis','audio_analysis','transcription','alignment'].includes(body.task))fail(400,'Use Song Intelligence to quote the exact owned recording, inspected duration and canonical text.');
  const requestFingerprint=hash(body);
  if(action==='quotes'&&body.requestId!==undefined){if(!uuid.test(body.requestId))fail(400,'Use a valid quote request UUID.');if(typeof store.replayCostQuote!=='function')fail(503,'Saved spending controls are not configured.');const previous=await store.replayCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,requestFingerprint});if(previous)return reply(200,{quote:previous,saved:true});}
  const models=taskCandidates(body.task,await store.registry()),now=new Date();
- const routing=selectRoutes({task:body.task,requirements:body.requirements??{},intent:body.intent,models,now});
+ const routing=selectRoutes({task:body.task,requirements:body.requirements??{},...(action==='routes'?{intent:body.intent}:{}),models,now});
  if(action==='routes')return reply(200,routing);
  if(body.expectedVersion!==project.version)fail(409,'This project changed. Reopen it before requesting a quote.');
  const model=models.find(m=>m.id===body.modelId);if(!model||!routing.eligibleForQuote.includes(model.id))fail(409,'No verified route is eligible for this quote.');
  const requirements=quoteRequirements({task:body.task,requirements:body.requirements??{},model,input:body.input});
- const quote=createCostQuote({project,artifactId:body.artifactId,artifactVersion:body.artifactVersion,task:body.task,requirements,intent:body.intent,model,input:body.input,now});
+ const quote=createCostQuote({project,assets:await store.records('assets',id),approvals:await store.records('approvals',id),artifactId:body.artifactId,artifactVersion:body.artifactVersion,task:body.task,requirements,intent:body.intent,model,input:body.input,now});
  if(body.requestId!==undefined){const saved=await store.persistCostQuote({actorId:user.id,projectId:id,requestId:body.requestId,expectedVersion:body.expectedVersion,requestFingerprint,quote,input:body.input});return reply(201,{quote:saved,saved:true});}
  return reply(200,{quote});
  }
@@ -276,8 +291,43 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const next=saveMusicVideo(project,body,assets),saved=next.version===project.version?project:await store.save(next,project.version);
  return reply(200,{project:saved,musicVideo:musicVideoContext(saved,assets)});
  }
+ if(action==='music-video/timeline'&&['GET','POST'].includes(req.method)){
+  const [assets,approvals,outcomes]=await Promise.all([store.records('assets',id),store.records('approvals',id),store.records('audit',id)]);
+  if(req.method==='POST'){const next=saveMusicVideoTimeline(project,body,assets,approvals,outcomes);return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
+  const song=currentSongIntelligence(project)?.snapshot.content,plan=currentMusicVideo(project)?.snapshot.content;
+  return reply(200,{timeline:timelineContext(project,assets,approvals,outcomes),songPlan:plan??null,captionSuggestions:(song?.alignment||[]).map(a=>({text:song.lyrics.canonicalText.slice(a.startOffset,a.endOffset),startMs:a.startMs,endMs:a.endMs,uncertaintyMs:a.uncertaintyMs})),renderConfigured:!!renderExecutor});
+ }
+ if(action==='music-video/render/jobs'&&req.method==='GET')return reply(200,{jobs:await store.readRenderJobs(user.id,id)});
+ if(action==='music-video/motion'&&req.method==='GET')return reply(200,await performanceController.summary(user.id,project));
+ const motionMethod={'music-video/motion/specs':'spec','music-video/motion/quotes':'quote','music-video/motion/jobs':'start','music-video/motion/poll':'poll','music-video/motion/import':'importOutput','music-video/motion/reviews':'review','music-video/motion/selections':'selection'}[action];
+ if(motionMethod&&req.method==='POST')return reply(200,await performanceController[motionMethod](user.id,project,body));
+ if(action==='music-video/render/quote'&&req.method==='POST'){
+  if(Object.keys(body).some(k=>!['expectedVersion','timelineId'].includes(k)))fail(400,'Choose a saved timeline for the render estimate.');
+  return reply(200,{quote:await quoteRenderJob({store,actorId:user.id,projectId:id,...body,executor:renderExecutor})});
+ }
+ if(action==='music-video/render/jobs'&&req.method==='POST'){
+  if(Object.keys(body).some(k=>!['expectedVersion','timelineId','quoteId','idempotencyKey','maxMicroUsd','acknowledgeRender'].includes(k)))fail(400,'Supply the exact saved render authorization.');
+  return reply(200,{job:await requestRenderJob({store,actorId:user.id,projectId:id,...body})});
+ }
+ const renderRead=action?.match(/^music-video\/render\/jobs\/([0-9a-f-]+)$/);
+ const renderCancel=action?.match(/^music-video\/render\/jobs\/([0-9a-f-]+)\/cancel$/);
+ if(renderCancel&&req.method==='POST'){
+  if(Object.keys(body).some(k=>!['requestId','reason'].includes(k)))fail(400,'Cancel only the exact unclaimed render.');
+  return reply(200,{job:await store.cancelRenderJob({actorId:user.id,projectId:id,renderId:renderCancel[1],...body})});
+ }
+ if(renderRead&&req.method==='GET')return reply(200,{job:await store.readRenderJob(user.id,id,renderRead[1])});
+ if(action==='routing-policy'&&req.method==='POST'){const next=saveRoutingPolicy(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
+ if(action==='routing-policy'&&req.method==='GET'){const approvals=await store.records('approvals',id);let context;try{context=routingPolicyContext(project,approvals,'director_turn');}catch(error){if(!error.status)throw error;context={held:true,reason:error.message};}return reply(200,{routingPolicy:context});}
  if(action==='production-records'&&req.method==='GET')return reply(200,{production:project.production||{records:[]},dependencies:recordDependencies(project)});
  if(action==='production-records'&&req.method==='POST'){const next=applyProductionRecord(project,body,await store.records('assets',id));return reply(200,{project:next.version===project.version?project:await store.save(next,project.version)});}
+ if(action==='production-outcomes'&&req.method==='GET')return reply(200,await productionOutcomeSummary({project,actorId:user.id,store}));
+ if(action==='production-outcomes'&&req.method==='POST')return reply(200,await recordProductionOutcome({project,actorId:user.id,store,body}));
+ if(action==='production-outcomes/evidence'&&req.method==='GET'){const summary=await productionOutcomeSummary({project,actorId:user.id,store});return reply(200,{scope:'Explicit owned version/task-bound media verdicts only; not live routing activation.',evidence:outcomeModelEvidence(summary.reviews),generationAuthorized:false});}
+ if(action==='production-outcomes/replay'&&req.method==='POST'){
+  if(!body||Object.keys(body).some(k=>!['task','seed','minimumSamples'].includes(k))||!knownRoutingTask(body.task))fail(400,'Choose a known task and offline replay settings.');
+  const summary=await productionOutcomeSummary({project,actorId:user.id,store}),models=taskCandidates(body.task,await store.registry()),routing=selectRoutes({task:body.task,models}),candidates=routing.candidates.map(c=>({modelId:c.modelId,modelVersion:models.find(m=>m.id===c.modelId).model_version,task:body.task,eligible:c.eligibleForQuote}));
+  return reply(200,sampleOutcomeRecommendations({candidates,evidence:outcomeModelEvidence(summary.reviews),seed:body.seed,minimumSamples:body.minimumSamples??1}));
+ }
  if(action==='production-state'&&req.method==='GET')return reply(200,{production:productionState(project,await store.records('assets',id),await store.records('approvals',id),project.referenceProduction?await store.referenceCandidates(user.id,id):[],project.storyboardProduction?await store.storyboardCandidates(user.id,id):[])});
  if(action==='approvals'&&req.method==='POST'){
  if(!['approved','rejected','revoked'].includes(body.decision)||!Number.isSafeInteger(body.version))fail(400,'Invalid approval decision.');return reply(201,{approval:await store.approve(project,body,user.id)});}
@@ -288,7 +338,7 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  const assetId=randomUUID(),storageKey=`${user.id}/${id}/${assetId}`;
  await mediaStorage.putIfAbsent(storageKey,bytes,mime,hash(bytes.toString('base64')));
  const asset=await store.add('assets',{id:assetId,projectId:id,name:body.name,mime,role:body.role,scope:body.scope,shotId:body.shotId||null,version:1,storageKey,size:bytes.length,checksum:hash(bytes.toString('base64'))});const {storageKey:unused,...visible}=asset;return reply(201,{asset:{...visible,url:`/api/projects/${id}/assets/${assetId}/content`}});}
- const content=action?.match(/^assets\/([0-9a-f-]+)\/content$/);
+ const content=action?.match(/^assets\/([0-9a-f-]+)\/(content|download)$/);
  const savedSongAnalysis=action?.match(/^assets\/([0-9a-f-]+)\/song-analysis$/);
  if(savedSongAnalysis&&req.method==='GET'){
   if(project.format!=='music_video')fail(409,'Song analysis belongs to a music-video project.');
@@ -306,14 +356,23 @@ export async function createDirectorAPI({env=process.env,fetcher=fetch,store:pro
  }
  if(content&&req.method==='GET'){const asset=(await store.records('assets',id)).find(a=>a.id===content[1]);if(!asset)fail(404,'Reference not found.');let bytes;
  if(asset.bucket==='director-source-media'){
-  if(asset.sourceUploadId!==asset.id||asset.decodeVerified!==true||asset.inspectionVersion!=='director-source-inspection-v1'||asset.checksumAlgorithm!=='sha256-bytes')fail(409,'Source inspection is required before playback.');
+  if(asset.decodeVerified!==true||asset.checksumAlgorithm!=='sha256-bytes'||asset.storageKey!==`${user.id}/${id}/${asset.id}`)fail(409,'Source inspection is required before playback.');
+  if(asset.generated?.kind==='finished_movie'){
+   const render=await store.readRenderJob(user.id,id,asset.generated.renderId),result=render.asset??render.result;
+   if(render.status!=='completed'||result?.id!==asset.id||result.checksum!==asset.checksum||result.size!==asset.size||result.storageKey!==asset.storageKey||hash(result.generated)!==hash(asset.generated)||asset.technicalValidation!=='passed')fail(409,'The exact completed private render is required before playback.');
+  }else if(asset.generated?.kind==='music_video_motion'){
+   const scope=await store.performanceJobScope(user.id,id,asset.generated.jobId);
+   if(scope.job.status!=='completed'||scope.job.provider_request_id!==asset.generated.requestId||scope.job.payload_hash!==asset.generated.payloadHash||hash(scope.quote.performanceBinding)!==hash(asset.generated.performanceBinding)||asset.inspectionVersion!=='director-source-inspection-v1')fail(409,'The exact inspected motion output is required before playback.');
+  }else if(asset.sourceUploadId!==asset.id||asset.inspectionVersion!=='director-source-inspection-v1')fail(409,'Source inspection is required before playback.');
+  if(!demo){
   const expiresIn=Math.min(3600,Math.max(300,Math.ceil(asset.durationSeconds||0)+120));
-  const url=await mediaStorage.sign(asset.storageKey,{bucket:asset.bucket,expiresIn});
+  const url=await mediaStorage.sign(asset.storageKey,{bucket:asset.bucket,expiresIn,...(content[2]==='download'?{download:asset.generated?.kind==='finished_movie'?'music-video.mp4':'media-'+asset.id}:{} )});
   res.writeHead(302,{'Location':url,'Cache-Control':'private, no-store','Referrer-Policy':'no-referrer'});return res.end();
+  }
  }
  bytes=await mediaStorage.get(asset.storageKey,{bucket:asset.bucket||'director-media'});
  const headers={'Content-Type':asset.mime.startsWith('image/')||asset.mime.startsWith('video/')||asset.mime.startsWith('audio/')?asset.mime:'application/octet-stream','Content-Disposition':`attachment; filename="reference-${asset.id}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'};
- if(asset.mime.startsWith('audio/')){
+ if(asset.mime.startsWith('audio/')||asset.mime.startsWith('video/')){
   headers['Accept-Ranges']='bytes';headers['Content-Length']=bytes.length;
   const range=req.headers.range;
   if(range!==undefined){

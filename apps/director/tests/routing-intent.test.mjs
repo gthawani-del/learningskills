@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { selectRoutes } from '../model-router.mjs';
-import { validateRoutingIntent } from '../routing-intent.mjs';
+import { evaluateRoutingIntent,validateRoutingIntent } from '../routing-intent.mjs';
 const now = '2026-10-18T12:00:00Z';
 const expiry = '2026-10-19T12:00:00Z';
 function candidate(id, scores = { realism: 80, motion: 80 }, priority = 1) {
@@ -60,4 +60,16 @@ test('evaluated evidence cannot override basic capability validation or mutate r
   const result = route([a], { purpose: 'narrative film' });
   assert.deepEqual(result.eligibleForQuote, []); assert.ok(result.candidates[0].holds.includes('active_required'));
   assert.deepEqual(a, before);
+});
+
+test('explicit utility weighs qualified quality complete bounded cost and measured latency',()=>{
+ const m=candidate('a',{realism:90}),intent={qualityGoals:[{goal:'realism',weight:1,minimumScore:80}],optimization:{qualityWeight:70,costWeight:20,latencyWeight:10,costScaleMicroUsd:100000,latencyScaleMs:20000}};
+ const costAssessment={modelId:m.id,modelVersion:m.model_version,pricingVersion:m.price_version,totalMicroUsd:50000,expiresAt:expiry,quoteKind:'maximum_reservation_not_expected_cost'};
+ const fit=evaluateRoutingIntent({intent,model:m,task:'reference_video',now:Date.parse(now),costAssessment});assert.equal(fit.holds.length,0);assert.equal(fit.utility.raw,48);assert.equal(fit.utility.score,74);assert.equal(fit.score,90);assert.equal(fit.utility.costBasis,'maximum_reservation_not_expected_cost');
+ const unknown=evaluateRoutingIntent({intent,model:m,task:'reference_video',now:Date.parse(now)});assert.ok(unknown.holds.includes('intent_complete_cost_unavailable'));
+ const forged=evaluateRoutingIntent({intent,model:m,task:'reference_video',now:Date.parse(now),costAssessment:{...costAssessment,modelId:'other'}});assert.ok(forged.holds.includes('intent_complete_cost_unavailable'));
+});
+test('utility rejects undefined quality floors and invalid weight or normalization contracts',()=>{
+ const valid={qualityGoals:[{goal:'realism',weight:1,minimumScore:80}],optimization:{qualityWeight:70,costWeight:20,latencyWeight:10,costScaleMicroUsd:100000,latencyScaleMs:20000}};
+ for(const p of [{...valid,qualityGoals:[]},{...valid,optimization:{...valid.optimization,costWeight:25}},{...valid,optimization:{...valid.optimization,costScaleMicroUsd:0}},{...valid,optimization:{...valid.optimization,hiddenFallback:true}}])assert.throws(()=>validateRoutingIntent(p),{status:400});
 });

@@ -52,7 +52,7 @@ export function publishedReviewHolds(model,task,now=Date.now()){
   }
   return holds;
 }
-export function selectRoutes({ task, requirements = {}, models, intent, now = new Date() } = {}) {
+export function selectRoutes({ task, requirements = {}, models, intent, costAssessments={}, now = new Date() } = {}) {
   if (!nonempty(task)) invalid('Explicit task required.');
   requirementsValid(requirements);
   validateRoutingIntent(intent);
@@ -90,10 +90,10 @@ export function selectRoutes({ task, requirements = {}, models, intent, now = ne
       if (!Number.isFinite(minimum) || !Number.isFinite(maximum) || minimum <= 0 || maximum < minimum || requirements.durationSeconds < minimum || requirements.durationSeconds > maximum) holds.push('durationSeconds_unsupported');
     }
     for (const key of ['identityReferences', 'lipSync']) if (requirements[key] === true && capabilities[key] !== true) holds.push(`${key}_unsupported`);
-    const fit = evaluateRoutingIntent({ intent, model, task, now: time });
+    const fit = evaluateRoutingIntent({ intent, model, task, costAssessment:costAssessments[model.id], now: time });
     holds.push(...fit.holds);
     return { ...(intent === undefined ? {} : { intentFit: fit }), modelId: model.id, provider: model.provider, endpoint: model.endpoint, priority: Number.isInteger(priority) && priority >= 0 && priority <= 1000 ? priority : 0, eligibleForQuote: holds.length === 0, holds };
   });
-  candidates.sort((a, b) => Number(b.eligibleForQuote) - Number(a.eligibleForQuote) || (b.intentFit?.score ?? 0) - (a.intentFit?.score ?? 0) || b.priority - a.priority || (a.modelId < b.modelId ? -1 : a.modelId > b.modelId ? 1 : 0));
+  candidates.sort((a, b) => Number(b.eligibleForQuote) - Number(a.eligibleForQuote) || (b.intentFit?.utility?.score ?? b.intentFit?.score ?? 0) - (a.intentFit?.utility?.score ?? a.intentFit?.score ?? 0) || b.priority - a.priority || (a.modelId < b.modelId ? -1 : a.modelId > b.modelId ? 1 : 0));
   return { task, candidates, eligibleForQuote: candidates.filter(candidate => candidate.eligibleForQuote).map(candidate => candidate.modelId) };
 }

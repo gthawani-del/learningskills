@@ -1,3 +1,4 @@
+import {routingPolicyRecords} from './routing-policy.mjs';
 import {hash, fail} from './domain.mjs';
 const operations = new Set(['initial_plan', 'revise_plan', 'interpret_brief', 'write_script', 'revise_script', 'plan_departments', 'revise_departments', 'plan_storyboard','director_turn']);
 const digest = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -10,6 +11,7 @@ export function planningScope(project, approvals = []) {
  if (project.departmentPlanning) brief.departmentPlanning = project.departmentPlanning;
  if (project.storyboardHandoff) brief.storyboardHandoff = project.storyboardHandoff;
  if(project.format==='music_video')brief.songIntelligence=(project.production?.records||[]).filter(r=>r.type==='edit'&&r.versions?.find(v=>v.version===r.currentVersion)?.content?.kind==='song_intelligence_v1').map(r=>({id:r.id,version:r.currentVersion,content:r.versions.find(v=>v.version===r.currentVersion).content}));
+ const routing=routingPolicyRecords(project);if(routing.length)brief.routingPolicies=routing;
  const latest = new Map();
  for (const decision of approvals) {
   if (typeof decision?.artifactId !== 'string' || !Number.isSafeInteger(decision.version) || decision.version < 1) continue;

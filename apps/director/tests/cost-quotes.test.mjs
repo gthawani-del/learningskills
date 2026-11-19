@@ -86,3 +86,8 @@ test('quotes require and hash an exact positive project version',()=>{
  a.project.version=2;assert.notEqual(createCostQuote(a).id,q.id);
  for(const version of [undefined,0,-1,1.5]){a.project.version=version;assert.throws(()=>createCostQuote(a),{status:400});}
 });
+test('media utility uses the server complete configuration quote with a hard quality floor',()=>{
+ const a=fixture();a.model.capabilities={tasks:['image_edit']};a.model.routing_profiles=[{verified:true,task:'image_edit',modelId:a.model.id,endpoint:a.model.endpoint,modelVersion:a.model.version,evidenceVersion:'media-eval-v1',sourceUrl:'https://example.test/evaluations',evaluatedAt:'2026-10-17T12:00:00Z',expiresAt:'2026-10-18T12:10:00Z',sampleCount:20,scores:{realism:90},latencyMs:10000}];a.intent={qualityGoals:[{goal:'realism',weight:1,minimumScore:80}],optimization:{qualityWeight:60,costWeight:30,latencyWeight:10,costScaleMicroUsd:1000,latencyScaleMs:20000}};
+ const quote=createCostQuote(a);assert.equal(quote.totalMicroUsd,250);assert.ok(quote.intentEvaluation.utility.score>0);assert.equal(quote.intentEvaluation.utility.costBoundMicroUsd,250);
+ a.intent.qualityGoals[0].minimumScore=95;assert.throws(()=>createCostQuote(a),{status:409});
+});

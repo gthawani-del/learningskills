@@ -12,11 +12,11 @@ export function quoteRequirements({task,requirements={},model,input,trustedAudio
  if(input.image_url||input.end_image_url||input.middle_image_url||input.image_urls?.length||input.reference_image_urls?.length||input.reference_conditions?.some(r=>r.type==='image'))actual.inputModes.push('image');
  if(input.audio_url||input.reference_audio_urls?.length||input.reference_conditions?.some(r=>r.type==='audio'))actual.inputModes.push('audio');
  if(input.reference_video_urls?.length||input.reference_conditions?.some(r=>r.type==='video'))actual.inputModes.push('video');
- actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',storyboard_frame:'image',reference_video:'video',speech_synthesis:'audio',song_analysis:'text',transcription:'text',alignment:'text'}[task];
+ actual.modality={image_edit:'image',reference_image:'image',reference_look:'image',storyboard_frame:'image',reference_video:'video',speech_synthesis:'audio',song_analysis:'text',transcription:'text',alignment:'text',singing_performance:'video'}[task];
  if(!actual.modality)fail(409,'This task has no reviewed quote adapter.');
  // A capability flag cannot establish synchronized performance for these
  // adapters. A dedicated reviewed lip-sync payload adapter is required first.
- if(requirements.lipSync===true)fail(409,'No reviewed lip-sync quote adapter is available for this endpoint.');
+ if(requirements.lipSync===true&&task!=='singing_performance')fail(409,'No reviewed lip-sync quote adapter is available for this endpoint.');
  if(requirements.identityReferences===true&&!actual.inputModes.includes('image'))fail(400,'Identity references require at least one explicit image reference in the payload.');
  const payloadLanguages=[input.language_code,input.language].filter(value=>typeof value==='string'&&value.length>0);
  if(payloadLanguages.length>1&&payloadLanguages.some(value=>value!==payloadLanguages[0]))fail(400,'Payload language fields must agree.');
@@ -35,7 +35,7 @@ export function quoteRequirements({task,requirements={},model,input,trustedAudio
  }
  if(payloadLanguage)actual.language=canonicalFor(payloadLanguage);
  if(typeof input.duration==='number')actual.durationSeconds=input.duration;
- if(['song_analysis','transcription','alignment'].includes(task)){if(!Number.isFinite(trustedAudioDurationSeconds)||trustedAudioDurationSeconds<=0)fail(409,'Audio quotes require a trusted inspected source duration.');actual.durationSeconds=trustedAudioDurationSeconds;}
+ if(['song_analysis','transcription','alignment','singing_performance'].includes(task)){if(!Number.isFinite(trustedAudioDurationSeconds)||trustedAudioDurationSeconds<=0)fail(409,'Audio quotes require a trusted inspected source duration.');actual.durationSeconds=trustedAudioDurationSeconds;}
  if(input.resolution)actual.resolution=input.resolution;
  if(input.aspect_ratio)actual.aspectRatio=input.aspect_ratio;
  if(input.image_size&&typeof input.image_size==='object'){

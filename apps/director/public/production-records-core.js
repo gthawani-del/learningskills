@@ -10,7 +10,7 @@ function contentValue(value,type,depth=0,preserveText=false){
  if(value===null||typeof value==='boolean')return value;
  if(typeof value==='number'){if(!Number.isFinite(value))fail(400,'Production numbers must be finite.');return value;}
  if(Array.isArray(value)){if(value.length>200)fail(400,'Production content list is too long.');return value.map(x=>contentValue(x,type,depth+1,preserveText));}
- if(value&&typeof value==='object'){const entries=Object.entries(value);if(entries.length>60)fail(400,'Too many production content fields.');return Object.fromEntries(entries.sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>{if(!/^[a-zA-Z][a-zA-Z0-9_]{0,79}$/.test(k)||forbidden.has(k))fail(400,'Production content cannot grant ownership, acceptance or spending permissions.');return [k,contentValue(v,type,depth+1,preserveText||depth===0&&type==='edit'&&value.kind==='song_intelligence_v1')];}));}
+ if(value&&typeof value==='object'){const entries=Object.entries(value);if(entries.length>60)fail(400,'Too many production content fields.');return Object.fromEntries(entries.sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>{if(!/^[a-zA-Z][a-zA-Z0-9_]{0,79}$/.test(k)||forbidden.has(k))fail(400,'Production content cannot grant ownership, acceptance or spending permissions.');return [k,contentValue(v,type,depth+1,preserveText||depth===0&&type==='edit'&&['song_intelligence_v1','music_video_timeline_v1'].includes(value.kind))];}));}
  fail(400,'Invalid production content value.');
 }
 const current=r=>r.versions.find(v=>v.version===r.currentVersion);

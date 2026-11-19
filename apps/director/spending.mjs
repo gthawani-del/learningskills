@@ -26,12 +26,12 @@ function timestamp(now) {
  if (!Number.isSafeInteger(n) || Math.abs(n) > 8_640_000_000_000_000) fail(400, 'A valid operation time is required.');
  return n;
 }
-function checkQuote(project, quote, input, model, now, assets) {
+function checkQuote(project, quote, input, model, now, assets, approvals=[]) {
  const time = timestamp(now), created = Date.parse(quote?.createdAt), expiry = Date.parse(quote?.expiresAt);
  if (!quote || quote.projectId !== project.id || quote.projectVersion !== project.version || !Number.isFinite(created) || !Number.isFinite(expiry) || created > time || expiry <= time) fail(409, 'The quote is unavailable, expired or belongs to another project.');
- const selected = selectRoutes({task: quote.task, requirements: quote.requirements, intent: quote.intent, models: [model], now: time}).candidates[0];
+ const selected = selectRoutes({task: quote.task, requirements: quote.requirements, models: [model], now: time}).candidates[0];
  if (!selected?.eligibleForQuote) fail(409, 'The quote route no longer meets current task or preference evidence.');
- const rebuilt = createCostQuote({project, artifactId: quote.artifactId, artifactVersion: quote.artifactVersion, model, task: quote.task, requirements: quote.requirements, intent: quote.intent, input, assets, now: created, ttlMs: expiry - created});
+ const rebuilt = createCostQuote({project, artifactId: quote.artifactId, artifactVersion: quote.artifactVersion, model, task: quote.task, requirements: quote.requirements, intent: quote.intent, input, assets, approvals:(approvals||[]).filter(a=>a.projectId===project.id), now: created, ttlMs: expiry - created});
  if (hash(rebuilt) !== hash(quote)) fail(409, 'The quote no longer matches its artifact, payload, model, schema or price evidence.');
  return time;
 }
@@ -52,7 +52,7 @@ export function persistQuote(state, command, {model, now}) {
  const {project, fingerprint, previous} = context(state, command, operation, ['actorId','projectId','requestId','expectedVersion','quote','input']);
  if (previous) return structuredClone(previous.result);
  current(project, command.expectedVersion);
- checkQuote(project, command.quote, command.input, model, now, state.assets);
+ checkQuote(project, command.quote, command.input, model, now, state.assets,state.approvals);
  let record = (state.quotes || []).find(q => q.id === command.quote.id);
  if (record && (record.actorId !== command.actorId || hash(record.quote) !== hash(command.quote) || hash(record.input) !== hash(command.input))) fail(409, 'Conflicting persisted quote.');
  if (!record) {
@@ -75,7 +75,7 @@ export function authorizeSpending(state, command, {model, now}) {
  if(record.quote.artifactId?.startsWith('storyboard_brief:')){const frame=storyboardProductionContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id),{assets:state.assets||[],referenceCandidates:state.referenceCandidates||[],candidates:state.storyboardCandidates||[]}).shots.find(s=>'storyboard_brief:'+s.shotId===record.quote.artifactId);if(record.quote.task!=='storyboard_frame'||!frame?.directionApproved||frame.sourceStale||frame.referenceStale)fail(409,'Review the current storyboard frame direction, shot plan and exact reference selections before authorizing generation.');}
  if(reference){const subject=referenceProductionContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id),{assets:state.assets||[],candidates:state.referenceCandidates||[]}).subjects.find(s=>'reference_brief:'+s.id===record.quote.artifactId);if(!subject?.directionApproved||subject.sourceStale||subject.identityStale)fail(409,'Review the current reference direction and approved identity before authorizing this image.');}
  if(!songAnalysis&&!reference&&project.storyboardHandoff&&!storyboardHandoffContext(project,(state.approvals||[]).filter(a=>a.projectId===project.id)).planningApproved)fail(409,'Review the current shot contracts and sequence before authorizing media production. This approval does not approve generated frames, voices or footage.');
- const time = checkQuote(project, record.quote, record.input, model, now, state.assets);
+ const time = checkQuote(project, record.quote, record.input, model, now, state.assets,state.approvals);
  const finish = command.finishReserveMicroUsd;
  if (!positive(command.maxMicroUsd) || !Number.isSafeInteger(finish) || finish < 0 || finish > command.maxMicroUsd || !Number.isSafeInteger(record.quote.totalMicroUsd + finish) || command.maxMicroUsd < record.quote.totalMicroUsd + finish) fail(400, 'The generation cost cap must cover the quote and finish reserve in integer USD micro-units.');
  const q = record.quote;

@@ -1,5 +1,7 @@
 # Film Studio — Realism Intelligence Layer
 
+Implementation update, 19 November 2026: approved photographic/stylized directions now reach scene-specific motion compilation, with exact frame/identity/original-master pins, explicit take reviews, defects and selective source holds. See [implementation and qualification boundaries](FIVE_FOUNDATIONS_IMPLEMENTATION_2026-11-19.md). This does not establish real visual or singing quality or guarantee acceptance in two attempts.
+
 Revision 2 · 17 October 2026 UTC · Detailed planning specification
 
 ## 1. Purpose, authority and honest status

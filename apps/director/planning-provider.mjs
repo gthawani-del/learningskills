@@ -158,7 +158,7 @@ export function createPlanningProvider({ fetcher = globalThis.fetch, env = proce
   async function request(url, options) {
     if (!env.OPENAI_API_KEY) fail(503, 'OPENAI_API_KEY is not configured.');
     const response = await fetcher(url, { ...options, headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, redirect: 'error', signal: AbortSignal.timeout(60000) });
-    if (!response.ok) fail(502, 'Planning provider request failed; reconcile existing work before any resubmission.');
+    if (!response.ok) throw Object.assign(new Error('Planning provider request failed; reconcile existing work before any resubmission.'),{status:502,providerHttpStatus:response.status});
     return snapshot(await response.json());
   }
   return {

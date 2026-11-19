@@ -3,8 +3,9 @@ import {dirname} from 'node:path';
 import {persistQuote,authorizeSpending,revokeSpending} from './spending.mjs';
 import {fail} from './domain.mjs';
 
-const summary = (quotes,authorizations,reservations=[]) => ({quotes,authorizations,reservations,currency:'USD',generationEnabled:false,scope:'Generation cost estimates and spending limits; not customer billing or a wallet balance.'});
+const summary = (quotes,authorizations,reservations=[],renderReservations=null) => ({quotes,authorizations,reservations,renderReservations,renderAccountingAvailable:Array.isArray(renderReservations),currency:'USD',generationEnabled:false,scope:'Generation cost estimates and spending limits; not customer billing or a wallet balance.'});
 export const visibleQuote = q => Object.fromEntries(['id','projectId','projectVersion','artifactId','artifactVersion','modelId','endpoint','task','requirements','intent','currency','totalMicroUsd','components','createdAt','expiresAt','estimateOnly','generationAuthorized'].filter(k=>Object.hasOwn(q,k)).map(k=>[k,structuredClone(q[k])]));
+const renderReservations=async(store,actorId,projectId)=>{if(typeof store.readRenderJobs!=='function')return null;try{return (await store.readRenderJobs(actorId,projectId)).map(j=>({id:j.id,status:j.status,chargeState:j.status==='completed'?'settled':'unknown',reservedMicroUsd:j.quote.maxMicroUsd,actualMicroUsd:j.actualMicroUsd??null}));}catch(e){if(e.status!==503)throw e;return null;}};
 const owner = (state,actorId,projectId) => {const p=state.projects.find(p=>p.id===projectId&&p.ownerId===actorId);if(!p)fail(404,'Project not found.');return p;};
 
 export const localSpendingMethods={
@@ -41,7 +42,7 @@ export const localSpendingMethods={
  async revokeCostAuthorization(command){return this.spendingTransaction(state=>revokeSpending(state,command,new Date()));},
  async spendingSummary(actorId,projectId){
   owner(this.state,actorId,projectId);
-  return summary((this.state.quotes||[]).filter(q=>q.projectId===projectId).map(q=>visibleQuote(q.quote)),structuredClone((this.state.spendingAuthorizations||[]).filter(a=>a.projectId===projectId)),(this.state.jobs||[]).filter(j=>(j.projectId||j.project_id)===projectId).map(j=>({id:j.id,status:j.status,chargeState:j.charge_state,reservedMicroUsd:j.reserved_micro_usd,actualMicroUsd:j.actual_micro_usd??null})));
+  return summary((this.state.quotes||[]).filter(q=>q.projectId===projectId).map(q=>visibleQuote(q.quote)),structuredClone((this.state.spendingAuthorizations||[]).filter(a=>a.projectId===projectId)),(this.state.jobs||[]).filter(j=>(j.projectId||j.project_id)===projectId).map(j=>({id:j.id,status:j.status,chargeState:j.charge_state,reservedMicroUsd:j.reserved_micro_usd,actualMicroUsd:j.actual_micro_usd??null})),await renderReservations(this,actorId,projectId));
  }
 };
 
@@ -71,7 +72,7 @@ export const cloudSpendingMethods={
   // temporary pure transition below validates new requests without persisting.
   const request={actorId:c.actorId,expectedVersion:c.expectedVersion,quoteId:c.quoteId,maxMicroUsd:c.maxMicroUsd,finishReserveMicroUsd:c.finishReserveMicroUsd,expiresAt:saved.quote.expiresAt};
   const receipts=await this.request(`/rest/v1/director_spending_commands?project_id=eq.${c.projectId}&request_id=eq.${c.requestId}`);
-  if(!receipts.length){const model=await this.readModel(saved.quote.modelId),reference=saved.quote.artifactId?.startsWith('reference_brief:'),frame=saved.quote.artifactId?.startsWith('storyboard_brief:'),song=!!saved.quote.songIntelligenceBinding,facts=reference||frame||song?{assets:await this.records('assets',project.id),...(!song?{referenceCandidates:await this.referenceCandidates(c.actorId,project.id)}:{}),...(frame?{storyboardCandidates:await this.storyboardCandidates(c.actorId,project.id)}:{})}:{};authorizeSpending({projects:[project],quotes:[saved],...facts,approvals:project.departmentPlanning||project.storyboardHandoff||reference||frame?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
+  if(!receipts.length){const model=await this.readModel(saved.quote.modelId),reference=saved.quote.artifactId?.startsWith('reference_brief:'),frame=saved.quote.artifactId?.startsWith('storyboard_brief:'),song=!!saved.quote.songIntelligenceBinding,motion=!!saved.quote.performanceBinding,facts=reference||frame||song||motion?{assets:await this.records('assets',project.id),...(!song?{referenceCandidates:await this.referenceCandidates(c.actorId,project.id)}:{}),...(frame?{storyboardCandidates:await this.storyboardCandidates(c.actorId,project.id)}:{})}:{};authorizeSpending({projects:[project],quotes:[saved],...facts,approvals:project.departmentPlanning||project.storyboardHandoff||reference||frame||motion?await this.records('approvals',project.id):[]},c,{model,now:new Date()});}
   const result=await this.spendingRPC('director_authorize_quote',{p_actor_id:c.actorId,p_project_id:c.projectId,p_expected_version:c.expectedVersion,p_request_id:c.requestId,p_quote_id:c.quoteId,p_max_micro_usd:c.maxMicroUsd,p_finish_reserve_micro_usd:c.finishReserveMicroUsd,p_expires_at:request.expiresAt});
   return this.spendingAuthorizationView(result.authorization,saved.quote);
  },
@@ -91,6 +92,6 @@ export const cloudSpendingMethods={
   ]);
   const error=results.find(r=>r.status==='rejected');if(error)throw error.reason;
   const [quotes,authorizations,jobs]=results.map(r=>r.value);
-  return summary(quotes.map(q=>visibleQuote(q.quote)),authorizations.map(a=>this.spendingAuthorizationView(a,quotes.find(q=>q.proposal_id===a.proposal_id)?.quote)),jobs.map(j=>({id:j.id,status:j.status,chargeState:j.charge_state,reservedMicroUsd:j.reserved_micro_usd,actualMicroUsd:j.actual_micro_usd??null})));
+  return summary(quotes.map(q=>visibleQuote(q.quote)),authorizations.map(a=>this.spendingAuthorizationView(a,quotes.find(q=>q.proposal_id===a.proposal_id)?.quote)),jobs.map(j=>({id:j.id,status:j.status,chargeState:j.charge_state,reservedMicroUsd:j.reserved_micro_usd,actualMicroUsd:j.actual_micro_usd??null})),await renderReservations(this,actorId,projectId));
  }
 };

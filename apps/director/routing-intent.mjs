@@ -1,7 +1,7 @@
 import {hash} from './domain.mjs';
 // Brief preferences are supplied explicitly; no demographic or price-tier inference.
 const dimensions = { purpose: 'purposes', style: 'styles', stage: 'stages', audience: 'audiences', platform: 'platforms', emotionalEffect: 'emotionalEffects', creativeControl: 'creativeControls' };
-const allowed = new Set([...Object.keys(dimensions), 'qualityGoals', 'deadlineMs', 'budgetMicroUsd']);
+const allowed = new Set([...Object.keys(dimensions), 'qualityGoals', 'deadlineMs', 'budgetMicroUsd', 'optimization']);
 const label = x => typeof x === 'string' && x.trim().length > 0 && x.length <= 200;
 const object = x => x !== null && typeof x === 'object' && !Array.isArray(x) && [Object.prototype, null].includes(Object.getPrototypeOf(x));
 const validDate = x => typeof x === 'string' && /T.*(?:Z|[+-]\d{2}:\d{2})$/.test(x) && Number.isFinite(Date.parse(x));
@@ -22,12 +22,17 @@ export function validateRoutingIntent(intent) {
       seen.add(goal.goal);
     }
   }
+  if ('optimization' in intent) {
+    const o=intent.optimization,keys=['qualityWeight','costWeight','latencyWeight','costScaleMicroUsd','latencyScaleMs'];
+    if(!object(o)||Object.keys(o).length!==keys.length||keys.some(k=>!Object.hasOwn(o,k))||['qualityWeight','costWeight','latencyWeight'].some(k=>!score(o[k]))||o.qualityWeight+o.costWeight+o.latencyWeight!==100||!Number.isSafeInteger(o.costScaleMicroUsd)||o.costScaleMicroUsd<=0||!Number.isSafeInteger(o.latencyScaleMs)||o.latencyScaleMs<=0||!intent.qualityGoals?.length||!intent.qualityGoals.some(g=>g.minimumScore!==undefined))invalid('Optimization needs explicit weights totaling 100, positive normalization scales and a measured hard quality floor.');
+  }
   return intent;
 }
 function freshProfile(profile, model, task, now) {
   return object(profile) && profile.verified === true && profile.task === task && profile.modelId === model.id && profile.endpoint === model.endpoint && profile.modelVersion === (model.model_version ?? model.version) && label(profile.evidenceVersion) && source(profile.sourceUrl) && validDate(profile.expiresAt) && Date.parse(profile.expiresAt) > now && validDate(profile.evaluatedAt) && Date.parse(profile.evaluatedAt) <= now && Date.parse(profile.evaluatedAt) < Date.parse(profile.expiresAt) && Number.isSafeInteger(profile.sampleCount) && profile.sampleCount > 0;
 }
-export function evaluateRoutingIntent({ intent, model, task, now }) {
+function validCost(c,model,now){return c&&c.modelId===model.id&&c.modelVersion===(model.model_version??model.version)&&c.pricingVersion===model.price_version&&Number.isSafeInteger(c.totalMicroUsd)&&c.totalMicroUsd>0&&validDate(c.expiresAt)&&Date.parse(c.expiresAt)>now&&['maximum_reservation_not_expected_cost','configuration_bound'].includes(c.quoteKind);}
+export function evaluateRoutingIntent({ intent, model, task, now, costAssessment }) {
   validateRoutingIntent(intent);
   if (!intent || Object.keys(intent).length === 0 || (Object.keys(intent).length === 1 && Array.isArray(intent.qualityGoals) && intent.qualityGoals.length === 0)) return { holds: [], score: 0, explanation: ['No job-specific preferences supplied; existing capability checks and registry priority apply.'], tradeoffs: [], evidenceVersion: null };
   const profiles = Array.isArray(model.routing_profiles) ? model.routing_profiles : [];
@@ -58,11 +63,24 @@ export function evaluateRoutingIntent({ intent, model, task, now }) {
     if ('budgetMicroUsd' in intent) {
       // Per-unit rates cannot prove an entire workflow fits its budget. The quote
       // service must supply a complete, configuration-bound cost assessment.
-      holds.push('intent_workflow_budget_unverified');
-      explanation.push(`Budget ${intent.budgetMicroUsd} micro USD requires a complete workflow quote; no cheapest-route assumption is made.`);
+      if(!validCost(costAssessment,model,now))holds.push('intent_workflow_budget_unverified');
+      else if(costAssessment.totalMicroUsd>intent.budgetMicroUsd)holds.push('intent_budget_exceeded');
+      explanation.push(`Budget ${intent.budgetMicroUsd} micro USD requires a complete configuration-bound quote; no cheapest-route assumption is made.`);
     }
-    return { holds, score: weights ? Math.round(sum * 1000 / weights) / 1000 : 0, explanation, tradeoffs, evidenceVersion: profile.evidenceVersion, attestation: {evidenceVersion: profile.evidenceVersion, evidenceHash: hash(profile), expiresAt: profile.expiresAt, evaluatedAt: profile.evaluatedAt} };
+    let utility;const quality=weights?Math.round(sum*1000/weights)/1000:0;
+    if(intent.optimization){
+      const o=intent.optimization,costKnown=validCost(costAssessment,model,now),latencyKnown=Number.isSafeInteger(profile.latencyMs)&&profile.latencyMs>0;
+      if(o.costWeight>0&&!costKnown)holds.push('intent_complete_cost_unavailable');
+      if(o.latencyWeight>0&&!latencyKnown)holds.push('intent_latency_unmeasured');
+      if(holds.length===0){
+        const price=costKnown?Math.min(100,costAssessment.totalMicroUsd*100/o.costScaleMicroUsd):0,latency=latencyKnown?Math.min(100,profile.latencyMs*100/o.latencyScaleMs):0;
+        const raw=Math.round((o.qualityWeight*quality-o.costWeight*price-o.latencyWeight*latency)*1000)/100000;
+        utility={version:'director-utility-v1',raw,score:Math.round((raw+100)*500)/1000,quality,costBoundMicroUsd:costKnown?costAssessment.totalMicroUsd:null,pricePenalty:price,latencyPenalty:latency,costBasis:costKnown?costAssessment.quoteKind:null,measuredLatencyMs:latencyKnown?profile.latencyMs:null,weights:structuredClone(o)};
+        explanation.push(`Explicit utility ${utility.score}/100; quality ${quality}/100; price/latency penalties ${price}/${latency}. Bounded planning cost is not expected actual spend; measured latency is not live queue time.`);
+      }
+    }
+    return { holds, score: quality,...(utility?{utility}:{}), explanation, tradeoffs, evidenceVersion: profile.evidenceVersion, attestation: {evidenceVersion: profile.evidenceVersion, evidenceHash: hash(profile), expiresAt: profile.expiresAt, evaluatedAt: profile.evaluatedAt} };
   });
-  evaluated.sort((a, b) => Number(a.holds.length > 0) - Number(b.holds.length > 0) || b.score - a.score || (a.evidenceVersion < b.evidenceVersion ? -1 : a.evidenceVersion > b.evidenceVersion ? 1 : 0));
+  evaluated.sort((a, b) => Number(a.holds.length > 0) - Number(b.holds.length > 0) || (b.utility?.score??b.score) - (a.utility?.score??a.score) || (a.evidenceVersion < b.evidenceVersion ? -1 : a.evidenceVersion > b.evidenceVersion ? 1 : 0));
   return evaluated[0];
 }
